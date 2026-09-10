@@ -1,5 +1,13 @@
 # P-V-Fatigue-Manifold-Proprioception — partial handoff, local software ready for review
 
+## Day-3 preparation — 2026-09-09
+
+Number-checker regression: two intentionally altered candidate values passed the original checker (2 failed tests). After extending the same numeric requirements to the correction candidate, 193 tests and both manuscript numeric checks pass. The corrected text uses the deliberately narrower train-derived budget wording. No manuscript/PDF/result bytes or readiness approval fields changed.
+
+Review [DAY3_PLAN.md](DAY3_PLAN.md), [deliverable](AUTHOR_REVIEW_DAY3.md), and [commands/evidence](../evidence/task-day3-2026-09-09/README.md). Base: `d8b1e7eaef817394e169e16dabcc97c1efee3e88`; new PR branch: `task/day-three-20260909`. No original Owner/External gate is closed. Final source identity is the PR head, reported in its delivery record rather than embedded circularly here.
+
+PV-08 remains blocked on actual draft reconciliation, reviewed PDF and author posting decision.
+
 ## Review amendment — 2026-09-09
 
 Read [the reproduced findings, corrections and current checks](../evidence/review-2026-09-09/README.md)

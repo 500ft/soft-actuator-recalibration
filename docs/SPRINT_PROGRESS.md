@@ -1,5 +1,13 @@
 # Sprint progress — P-V-Fatigue-Manifold-Proprioception
 
+## Day-3 work — 2026-09-09
+
+Delivery update: the preparation was committed as 500ft and pushed; [day-3 PR](https://github.com/500ft/P-V-Fatigue-Manifold-Proprioception/pull/10) is open against main. Initial implementation source: `3b2bfb52cc4476c7cbb6cbd90aea0c075118d400` (later review/documentation commits are visible in the PR). This supersedes the pre-push stopping state below. Original day-1/day-2 PRs are merged; this new PR is not merged. Resume from the named unresolved project gates in [DAY3_PLAN.md](DAY3_PLAN.md), not from the already completed push step.
+
+Both reviewed PR layers merged into main; new work starts from `d8b1e7eaef817394e169e16dabcc97c1efee3e88` on `task/day-three-20260909`. Number-checker regression: two intentionally altered candidate values passed the original checker (2 failed tests). After extending the same numeric requirements to the correction candidate, 193 tests and both manuscript numeric checks pass. The corrected text uses the deliberately narrower train-derived budget wording. No manuscript/PDF/result bytes or readiness approval fields changed.
+
+The [evidence record](../evidence/task-day3-2026-09-09/README.md) contains checks and limits. Work is locally verified and not yet recorded here as pushed/merged. Current edits belong to this task; original checkouts were preserved. Next: finish verification, commit the bounded change and open the new PR; preserve all stated external gates.
+
 ## Review amendment — 2026-09-09
 
 Read [the reproduced findings, corrections and current checks](../evidence/review-2026-09-09/README.md)

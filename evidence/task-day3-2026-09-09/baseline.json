@@ -1,0 +1,20 @@
+{
+  "date": "2026-09-09",
+  "base": "d8b1e7eaef817394e169e16dabcc97c1efee3e88",
+  "command": "PYTHONPATH=. python -c 'import sys,types; sys.modules[\"readline\"]=types.ModuleType(\"readline\"); import pytest; raise SystemExit(pytest.main([\"-q\"]))'; python -m scripts.check_manuscript_numbers; python -m scripts.check_publication_fallback; python -m scripts.check_pdf_arxiv",
+  "initial": {
+    "chunk_id": "538df3",
+    "wall_time_seconds": 1.001042917,
+    "session_id": 62463,
+    "original_token_count": 14,
+    "output": "d8b1e7eaef817394e169e16dabcc97c1efee3e88\nPython 3.11.8\n"
+  },
+  "completion": {
+    "chunk_id": "12d819",
+    "wall_time_seconds": 0.000182333,
+    "exit_code": 0,
+    "original_token_count": 312,
+    "output": "........................................................................ [ 37%]\n........................................................................ [ 75%]\n..............................................                           [100%]\n190 passed in 7.78s\n  docs/results.md: cluster interval present\n  docs/result_spine.md: cluster interval present\nmanuscript numbers match study JSONs (incl. arXiv abstract and secondary docs)\nHistorical payload integrity: PASS\nPDF SHA-256: 6a6681fe1a77f7d972048dddc99a0a07b55e5d89dca1a83c11ba5b5cefd0777d\nPublication readiness: BLOCKED\n- Archived v1.3 contains a methods erratum; a separately reviewed corrected release is required.\n- Corrected PDF, artifact-bound author approval and deposit decision remain pending.\n/Users/redhose/Developer/day-three-20260909/P-V-Fatigue-Manifold-Proprioception/docs/preprint_v1.pdf: 10 pages, 5 font records\n  AAAAAA+DejaVuSans                    /TrueType  embedded\n  AAAAAA+DejaVuSans-Bold               /TrueType  embedded\n  AAAAAA+DejaVuSans-BoldOblique        /TrueType  embedded\n  AAAAAA+DejaVuSans-Oblique            /TrueType  embedded\n  AAAAAA+DejaVuSansMono                /TrueType  embedded\n\nOK: all fonts embedded as outlines; not encrypted; no JavaScript.\n"
+  },
+  "scope": "Baseline checks are repository integrity checks, not scientific validation"
+}

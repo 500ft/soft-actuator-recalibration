@@ -9,6 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MANUSCRIPT = ROOT / "docs" / "preprint_v1.md"
+CANDIDATE = ROOT / "docs" / "preprint_v1_4_candidate.md"
 ARXIV_ABSTRACT = ROOT / "docs" / "arxiv_abstract.txt"
 STUDY3 = ROOT / "data" / "sim" / "phaseD" / "study3_results.json"
 STUDY3_CLUSTER = ROOT / "data" / "sim" / "phaseD" / "study3_cluster_ci_results.json"
@@ -47,8 +48,8 @@ def frontier_point(s3, tau: float):
     raise AssertionError(f"missing frontier tau={tau}")
 
 
-def main():
-    text = MANUSCRIPT.read_text(encoding="utf-8")
+def check_manuscript(manuscript):
+    text = manuscript.read_text(encoding="utf-8")
     s3 = load_json(STUDY3)
     s4 = load_json(STUDY4)
 
@@ -80,7 +81,10 @@ def main():
     budget = s3["accuracy_budget_mm"]
     tau = s3["tau_selected"]
     period = s3["period_selected_cycles"]
-    require(text, f"{budget:.3f} mm accuracy budget")
+    if manuscript == MANUSCRIPT:
+        require(text, f"{budget:.3f} mm accuracy budget")
+    else:
+        require(text, f"train-derived {budget:.3f} mm budget")
     require(text, f"τ\\*={tau:.2f}")
     require(text, f"*T*\\* = {period:,.0f} cycles")
     for name in ("fixed", "scheduled", "triggered", "always"):
@@ -166,6 +170,12 @@ def main():
         print(f"  {doc.relative_to(ROOT)}: cluster interval present")
 
     print("manuscript numbers match study JSONs (incl. arXiv abstract and secondary docs)")
+
+
+def main():
+    for manuscript in (MANUSCRIPT, CANDIDATE):
+        check_manuscript(manuscript)
+        print(f"  checked manuscript: {manuscript.name}")
 
 
 if __name__ == "__main__":

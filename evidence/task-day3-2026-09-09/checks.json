@@ -1,0 +1,46 @@
+{
+  "date": "2026-09-09",
+  "base": "d8b1e7eaef817394e169e16dabcc97c1efee3e88",
+  "checks": [
+    {
+      "command": "PYTHONPATH=. python -c 'import sys,types; sys.modules[\"readline\"]=types.ModuleType(\"readline\"); import pytest; raise SystemExit(pytest.main([\"-q\"]))'",
+      "chunk_id": "e046ac",
+      "wall_time_seconds": 0.000002625,
+      "original_token_count": 65,
+      "output": "........................................................................ [ 37%]\n........................................................................ [ 74%]\n.................................................                        [100%]\n193 passed in 7.64s\n",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m scripts.check_manuscript_numbers",
+      "chunk_id": "9a24c1",
+      "wall_time_seconds": 0.000014958,
+      "exit_code": 0,
+      "original_token_count": 108,
+      "output": "  docs/results.md: cluster interval present\n  docs/result_spine.md: cluster interval present\nmanuscript numbers match study JSONs (incl. arXiv abstract and secondary docs)\n  checked manuscript: preprint_v1.md\n  docs/results.md: cluster interval present\n  docs/result_spine.md: cluster interval present\nmanuscript numbers match study JSONs (incl. arXiv abstract and secondary docs)\n  checked manuscript: preprint_v1_4_candidate.md\n"
+    },
+    {
+      "command": "python -m scripts.check_publication_fallback",
+      "chunk_id": "9107bd",
+      "wall_time_seconds": 0.0000035,
+      "exit_code": 0,
+      "original_token_count": 82,
+      "output": "Historical payload integrity: PASS\nPDF SHA-256: 6a6681fe1a77f7d972048dddc99a0a07b55e5d89dca1a83c11ba5b5cefd0777d\nPublication readiness: BLOCKED\n- Archived v1.3 contains a methods erratum; a separately reviewed corrected release is required.\n- Corrected PDF, artifact-bound author approval and deposit decision remain pending.\n"
+    },
+    {
+      "command": "python -m scripts.check_publication_fallback --for-publication",
+      "chunk_id": "aaa82b",
+      "wall_time_seconds": 0.000002208,
+      "exit_code": 2,
+      "original_token_count": 82,
+      "output": "Historical payload integrity: PASS\nPDF SHA-256: 6a6681fe1a77f7d972048dddc99a0a07b55e5d89dca1a83c11ba5b5cefd0777d\nPublication readiness: BLOCKED\n- Archived v1.3 contains a methods erratum; a separately reviewed corrected release is required.\n- Corrected PDF, artifact-bound author approval and deposit decision remain pending.\n"
+    },
+    {
+      "command": "python -m scripts.check_pdf_arxiv",
+      "chunk_id": "73a3ad",
+      "wall_time_seconds": 0.049393166,
+      "exit_code": 0,
+      "original_token_count": 123,
+      "output": "/Users/redhose/Developer/day-three-20260909/P-V-Fatigue-Manifold-Proprioception/docs/preprint_v1.pdf: 10 pages, 5 font records\n  AAAAAA+DejaVuSans                    /TrueType  embedded\n  AAAAAA+DejaVuSans-Bold               /TrueType  embedded\n  AAAAAA+DejaVuSans-BoldOblique        /TrueType  embedded\n  AAAAAA+DejaVuSans-Oblique            /TrueType  embedded\n  AAAAAA+DejaVuSansMono                /TrueType  embedded\n\nOK: all fonts embedded as outlines; not encrypted; no JavaScript.\n"
+    }
+  ]
+}
