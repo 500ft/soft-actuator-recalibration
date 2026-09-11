@@ -1,0 +1,65 @@
+{
+  "date": "2026-09-10",
+  "old_repository": "P-V-Fatigue-Manifold-Proprioception",
+  "repository": "500ft/soft-actuator-recalibration",
+  "base_commit": "e92d1ea284e3e0ee2bab45e6633923538be76af0",
+  "branch": "docs/professional-presentation-20260910",
+  "runtime": "Python 3.11.8\nv22.21.0\ngit version 2.39.5 (Apple Git-154)\n",
+  "baseline_commands": [
+    "PYTHONPATH=. python -c 'import sys,types; sys.modules[\"readline\"]=types.ModuleType(\"readline\"); import pytest; raise SystemExit(pytest.main([\"-q\"]))'",
+    "python -m scripts.check_manuscript_numbers",
+    "python -m scripts.check_publication_fallback",
+    "python -m scripts.check_pdf_arxiv"
+  ],
+  "baseline_start": {
+    "chunk_id": "abc59f",
+    "wall_time_seconds": 1.001612958,
+    "session_id": 14732,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "baseline_completion": {
+    "chunk_id": "dd137c",
+    "wall_time_seconds": 0.000002,
+    "exit_code": 0,
+    "original_token_count": 378,
+    "output": "........................................................................ [ 37%]\n........................................................................ [ 74%]\n.................................................                        [100%]\n193 passed in 7.86s\n  docs/results.md: cluster interval present\n  docs/result_spine.md: cluster interval present\nmanuscript numbers match study JSONs (incl. arXiv abstract and secondary docs)\n  checked manuscript: preprint_v1.md\n  docs/results.md: cluster interval present\n  docs/result_spine.md: cluster interval present\nmanuscript numbers match study JSONs (incl. arXiv abstract and secondary docs)\n  checked manuscript: preprint_v1_4_candidate.md\nHistorical payload integrity: PASS\nPDF SHA-256: 6a6681fe1a77f7d972048dddc99a0a07b55e5d89dca1a83c11ba5b5cefd0777d\nPublication readiness: BLOCKED\n- Archived v1.3 contains a methods erratum; a separately reviewed corrected release is required.\n- Corrected PDF, artifact-bound author approval and deposit decision remain pending.\n/Users/redhose/Developer/repo-professionalization-20260910/soft-actuator-recalibration/docs/preprint_v1.pdf: 10 pages, 5 font records\n  AAAAAA+DejaVuSans                    /TrueType  embedded\n  AAAAAA+DejaVuSans-Bold               /TrueType  embedded\n  AAAAAA+DejaVuSans-BoldOblique        /TrueType  embedded\n  AAAAAA+DejaVuSans-Oblique            /TrueType  embedded\n  AAAAAA+DejaVuSansMono                /TrueType  embedded\n\nOK: all fonts embedded as outlines; not encrypted; no JavaScript.\n"
+  },
+  "final_start": {
+    "chunk_id": "1ba390",
+    "wall_time_seconds": 1.002311084,
+    "session_id": 63784,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "final_completion": {
+    "chunk_id": "f15508",
+    "wall_time_seconds": 0.000144667,
+    "exit_code": 0,
+    "original_token_count": 378,
+    "output": "........................................................................ [ 36%]\n........................................................................ [ 73%]\n.....................................................                    [100%]\n197 passed in 6.84s\n  docs/results.md: cluster interval present\n  docs/result_spine.md: cluster interval present\nmanuscript numbers match study JSONs (incl. arXiv abstract and secondary docs)\n  checked manuscript: preprint_v1.md\n  docs/results.md: cluster interval present\n  docs/result_spine.md: cluster interval present\nmanuscript numbers match study JSONs (incl. arXiv abstract and secondary docs)\n  checked manuscript: preprint_v1_4_candidate.md\nHistorical payload integrity: PASS\nPDF SHA-256: 6a6681fe1a77f7d972048dddc99a0a07b55e5d89dca1a83c11ba5b5cefd0777d\nPublication readiness: BLOCKED\n- Archived v1.3 contains a methods erratum; a separately reviewed corrected release is required.\n- Corrected PDF, artifact-bound author approval and deposit decision remain pending.\n/Users/redhose/Developer/repo-professionalization-20260910/soft-actuator-recalibration/docs/preprint_v1.pdf: 10 pages, 5 font records\n  AAAAAA+DejaVuSans                    /TrueType  embedded\n  AAAAAA+DejaVuSans-Bold               /TrueType  embedded\n  AAAAAA+DejaVuSans-BoldOblique        /TrueType  embedded\n  AAAAAA+DejaVuSans-Oblique            /TrueType  embedded\n  AAAAAA+DejaVuSansMono                /TrueType  embedded\n\nOK: all fonts embedded as outlines; not encrypted; no JavaScript.\n"
+  },
+  "presentation_gate": {
+    "chunk_id": "d66cb4",
+    "wall_time_seconds": 0.149845416,
+    "exit_code": 0,
+    "original_token_count": 72,
+    "output": "{\n  \"repository\": \"soft-actuator-recalibration\",\n  \"files_checked\": 5,\n  \"local_links_checked\": 66,\n  \"external_links_not_fetched\": 9,\n  \"issues\": [],\n  \"scientific_validation\": false\n}\n....\n----------------------------------------------------------------------\nRan 4 tests in 0.114s\n\nOK\n"
+  },
+  "preservation": {
+    "chunk_id": "181a2c",
+    "wall_time_seconds": 0.000003667,
+    "exit_code": 0,
+    "original_token_count": 22,
+    "output": "4\t0\t.github/workflows/ci.yml\n104\t122\tREADME.md\ne92d1ea284e3e0ee2bab45e6633923538be76af0\n"
+  },
+  "scope": "Repository identity and presentation; no new scientific results or physical tests.",
+  "hosted_checks": "Verify against the candidate commit on the presentation PR; not claimed by this local snapshot.",
+  "expected_publication_block": {
+    "chunk_id": "e4ac40",
+    "wall_time_seconds": 0.000002792,
+    "exit_code": 2,
+    "original_token_count": 82,
+    "output": "Historical payload integrity: PASS\nPDF SHA-256: 6a6681fe1a77f7d972048dddc99a0a07b55e5d89dca1a83c11ba5b5cefd0777d\nPublication readiness: BLOCKED\n- Archived v1.3 contains a methods erratum; a separately reviewed corrected release is required.\n- Corrected PDF, artifact-bound author approval and deposit decision remain pending.\n"
+  }
+}

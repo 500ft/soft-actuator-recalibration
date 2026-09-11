@@ -24,3 +24,7 @@ jobs:
         run: python -m scripts.check_pdf_arxiv
       - name: Check citable-release fallback metadata and PDF bytes
         run: python -m scripts.check_publication_fallback
+      - name: Check README links, identity and negative controls
+        run: |
+          python tools/check_presentation.py . "Soft Actuator Recalibration" soft-actuator-recalibration
+          python tools/test_presentation.py
