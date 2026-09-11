@@ -121,3 +121,7 @@ The next bounded owner action is the [author review](AUTHOR_REVIEW_DAY3.md).
 There is no DOI, corrected-PDF approval, independent hardware validation, or
 prospective v2 result implied by a completed code review. The
 [review index](REVIEW_READY.md) links the supporting execution records.
+
+## September 11 completion correction
+
+Read the [item-by-item correction](COMPLETION_RECONCILIATION.md) before interpreting a prepared protocol, software check, or search export as a completed research gate. It identifies actual deliverables and the remaining measurement, review, or source-reading work separately.
