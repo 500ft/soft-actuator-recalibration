@@ -69,9 +69,12 @@ def _font_records(resources, seen, out):
             _font_records(x["/Resources"], seen, out)
 
 
-def main() -> int:
+def main(pdf_path: str | None = None) -> int:
+    """Gate `pdf_path` (default: the historical PDF); 0 on pass, 1 on failure.
+    A candidate render is gated the same way: python -m scripts.check_pdf_arxiv build/x.pdf"""
+    target = pdf_path or (sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith("-") else PDF)
     failures: list[str] = []
-    reader = PdfReader(PDF)
+    reader = PdfReader(target)
 
     if reader.is_encrypted:
         failures.append("PDF is encrypted — arXiv rejects encrypted PDFs")

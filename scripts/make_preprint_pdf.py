@@ -6,7 +6,13 @@ Self-contained: no pandoc / LaTeX needed. Handles the markdown subset the prepri
 ![img](path) figures + italic captions) and embeds the figures. Unicode (Greek/math) is
 supported by registering matplotlib's bundled DejaVuSans TTFs.
 
-Run: python -m scripts.make_preprint_pdf   ->  docs/preprint_v1.pdf
+Run: python -m scripts.make_preprint_pdf --source docs/preprint_v1_4_candidate.md --output build/preprint_v1_4_candidate.pdf
+
+Explicit paths only. The historical docs/preprint_v1.pdf is the archived v1.3 release whose
+SHA-256 is pinned in docs/publication-readiness.json; this script REFUSES to write to it and
+verifies its bytes are unchanged after every run. Each render writes a JSON manifest next to
+the output recording source and output SHA-256, renderer identity and library versions, with
+author_approval null -- a rendered PDF is not an approved PDF.
 """
 
 from __future__ import annotations
@@ -30,8 +36,12 @@ from reportlab.platypus import (HRFlowable, Image, Paragraph, SimpleDocTemplate,
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
-MD = os.path.join(REPO, "docs", "preprint_v1.md")
-OUT = os.path.join(REPO, "docs", "preprint_v1.pdf")
+HISTORICAL_MD = os.path.join(REPO, "docs", "preprint_v1.md")
+HISTORICAL_PDF = os.path.join(REPO, "docs", "preprint_v1.pdf")
+READINESS = os.path.join(REPO, "docs", "publication-readiness.json")
+# Set per run by build(); module-level for the helpers that resolve figure paths.
+MD = HISTORICAL_MD
+OUT = None
 
 # ── Unicode fonts (DejaVu ships with matplotlib) ────────────────────────────────
 _FONTDIR = os.path.join(os.path.dirname(matplotlib.__file__), "mpl-data", "fonts", "ttf")
@@ -124,7 +134,46 @@ def figure(relpath):
     return img
 
 
-def build():
+class ProtectedOutputError(RuntimeError):
+    """Raised when a render would overwrite the archived historical PDF."""
+
+
+def _sha256(path):
+    import hashlib
+    with open(path, "rb") as fh:
+        return hashlib.sha256(fh.read()).hexdigest()
+
+
+def _historical_pinned_sha():
+    import json
+    with open(READINESS, encoding="utf-8") as fh:
+        return json.load(fh)["historical_pdf_sha256"]
+
+
+def build(source=None, output=None, manifest=None):
+    """Render `source` markdown to `output` PDF and write `manifest` (JSON).
+
+    Refuses if `output` resolves to the archived historical PDF, and asserts the
+    historical PDF's bytes still match the pinned SHA-256 after the render.
+    """
+    global MD, OUT
+    import datetime, json, platform
+    import reportlab, pypdf
+    MD = os.path.abspath(source or HISTORICAL_MD)
+    if output is None:
+        raise ProtectedOutputError("--output is required; this script never writes to a default path")
+    OUT = os.path.abspath(output)
+    if os.path.realpath(OUT) == os.path.realpath(HISTORICAL_PDF):
+        raise ProtectedOutputError(
+            f"refusing to overwrite the archived historical PDF {HISTORICAL_PDF}; "
+            "its SHA-256 is pinned in docs/publication-readiness.json. Choose another --output.")
+    if not os.path.isfile(MD):
+        raise FileNotFoundError(MD)
+    pinned = _historical_pinned_sha()
+    before = _sha256(HISTORICAL_PDF)
+    if before != pinned:
+        raise ProtectedOutputError(f"historical PDF already differs from its pinned SHA-256 ({before[:12]} != {pinned[:12]}); refusing to render until that is resolved")
+    os.makedirs(os.path.dirname(OUT) or ".", exist_ok=True)
     lines = open(MD, encoding="utf-8").read().splitlines()
     story, para, tbl = [], [], []
 
@@ -169,8 +218,42 @@ def build():
                       topMargin=0.9*inch, bottomMargin=0.9*inch,
                       title="P-V Loop Shape as a Fatigue Health Indicator (preprint draft)"
                       ).build(story, canvasmaker=_EmbeddedFontCanvas)
+    after = _sha256(HISTORICAL_PDF)
+    if after != pinned:
+        raise ProtectedOutputError("historical PDF bytes changed during render; this is a bug, do not commit")
+    record = {
+        "schema_version": 1,
+        "rendered_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "source": os.path.relpath(MD, REPO), "source_sha256": _sha256(MD),
+        "output": os.path.relpath(OUT, REPO), "output_sha256": _sha256(OUT),
+        "renderer": "scripts/make_preprint_pdf.py",
+        "versions": {"python": platform.python_version(), "reportlab": reportlab.Version,
+                     "pypdf": pypdf.__version__, "matplotlib_fonts": matplotlib.__version__},
+        "historical_pdf_sha256_verified_unchanged": after,
+        "author_approval": None,
+        "note": "A rendered PDF is not an approved PDF. Publication readiness is governed by docs/publication-readiness.json, which this render does not modify.",
+    }
+    mpath = os.path.abspath(manifest) if manifest else OUT[:-4] + ".manifest.json"
+    with open(mpath, "w", encoding="utf-8") as fh:
+        json.dump(record, fh, indent=2); fh.write("\n")
     print(f"PDF written: {OUT}")
+    print(f"manifest:    {mpath}")
+    return record
+
+
+def main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--source", default=HISTORICAL_MD, help="markdown to render (default: the historical docs/preprint_v1.md)")
+    ap.add_argument("--output", required=True, help="PDF path to write; the archived docs/preprint_v1.pdf is refused")
+    ap.add_argument("--manifest", default=None, help="manifest JSON path (default: <output>.manifest.json)")
+    a = ap.parse_args(argv)
+    try:
+        build(a.source, a.output, a.manifest)
+    except ProtectedOutputError as e:
+        print(f"REFUSED: {e}"); return 2
+    return 0
 
 
 if __name__ == "__main__":
-    build()
+    raise SystemExit(main())

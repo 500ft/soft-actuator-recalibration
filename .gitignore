@@ -12,3 +12,6 @@ data/sim/phaseD/*.npz
 
 # personal correspondence — keep out of the public repo
 outreach/
+
+# rendered candidate PDFs and manifests; the archived docs/preprint_v1.pdf is the only committed PDF
+build/
