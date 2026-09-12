@@ -67,5 +67,66 @@ class RendererRouteTests(unittest.TestCase):
         self.assertEqual(G.main(), 0)
 
 
+class DestinationCollisionTests(unittest.TestCase):
+    """Review finding 2026-09-12: --manifest was unprotected and --output could equal the source.
+    Every destination must be validated against every protected file and alias BEFORE any write,
+    and the protected set re-verified AFTER the last write (the manifest)."""
+    PROTECTED = [HIST, ROOT / "docs/publication-readiness.json", ROOT / "docs/preprint_v1.md", CAND, ROOT / "docs/results.md"]
+
+    def setUp(self):
+        self.before = {p: sha(p) for p in self.PROTECTED}
+
+    def tearDown(self):
+        for p, h in self.before.items():
+            self.assertEqual(sha(p), h, f"{p.name} changed during a collision test")
+
+    def _refused(self, **kw):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            args = dict(source=str(CAND), output=str(Path(d) / "x.pdf"), manifest=None); args.update(kw)
+            with self.assertRaises(R.ProtectedOutputError):
+                R.build(args["source"], args["output"], args["manifest"])
+
+    def test_manifest_cannot_be_the_archive(self):
+        self._refused(manifest=str(HIST))
+
+    def test_manifest_cannot_be_the_readiness_record(self):
+        self._refused(manifest=str(ROOT / "docs/publication-readiness.json"))
+
+    def test_manifest_cannot_be_the_source(self):
+        self._refused(manifest=str(CAND))
+
+    def test_output_cannot_be_the_source_or_any_docs_file(self):
+        self._refused(output=str(CAND))
+        self._refused(output=str(ROOT / "docs/results.md"))
+        self._refused(output=str(ROOT / "docs/preprint_v1.md"))
+
+    def test_output_must_be_pdf_and_distinct_from_manifest(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaises(R.ProtectedOutputError):
+                R.build(str(CAND), str(Path(d) / "x.txt"))
+            with self.assertRaises(R.ProtectedOutputError):
+                R.build(str(CAND), str(Path(d) / "x.pdf"), str(Path(d) / "x.pdf"))
+
+    def test_symlink_and_case_aliases_of_the_archive_are_refused(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            link = Path(d) / "alias.pdf"; link.symlink_to(HIST)
+            self._refused(manifest=str(link))
+            self._refused(output=str(link))
+            upper = HIST.with_name(HIST.name.upper())
+            if upper.exists():                       # case-insensitive filesystem: the alias is live
+                self._refused(manifest=str(upper))
+
+    def test_default_manifest_path_derives_from_pdf_stem(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            rec = R.build(str(CAND), str(Path(d) / "cand.pdf"))
+            self.assertTrue((Path(d) / "cand.manifest.json").is_file())
+            self.assertEqual(rec["manifest"], os.path.relpath(Path(d) / "cand.manifest.json", ROOT))
+            self.assertEqual(rec["readiness_sha256_verified_unchanged"], sha(ROOT / "docs/publication-readiness.json"))
+
+
 if __name__ == "__main__":
     unittest.main()

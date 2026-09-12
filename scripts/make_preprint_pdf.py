@@ -150,11 +150,44 @@ def _historical_pinned_sha():
         return json.load(fh)["historical_pdf_sha256"]
 
 
+def _same_file(a, b):
+    """True if two paths name the same file, following symlinks and case-insensitive filesystems."""
+    ra, rb = os.path.realpath(a), os.path.realpath(b)
+    if ra == rb or os.path.normcase(ra) == os.path.normcase(rb):
+        return True
+    try:
+        return os.path.samefile(ra, rb)
+    except OSError:
+        return False
+
+
+def protected_paths():
+    """Files a render must never write: the pinned archive, its readiness record, and every
+    tracked source under docs/ that a render could take as --source."""
+    fixed = [HISTORICAL_PDF, READINESS, HISTORICAL_MD]
+    docs = os.path.join(REPO, "docs")
+    extra = [os.path.join(docs, n) for n in os.listdir(docs) if n.endswith((".md", ".pdf", ".json", ".txt"))]
+    return fixed + extra
+
+
+def validate_destinations(source, output, manifest):
+    """Every destination must be distinct from every protected file, from the source, and from each other."""
+    for label, dest in (("--output", output), ("--manifest", manifest)):
+        for prot in protected_paths():
+            if _same_file(dest, prot):
+                raise ProtectedOutputError(f"{label} {dest} is a protected file ({os.path.relpath(prot, REPO)}); choose another path")
+        if _same_file(dest, source):
+            raise ProtectedOutputError(f"{label} {dest} is the render source; choose another path")
+    if _same_file(output, manifest):
+        raise ProtectedOutputError("--output and --manifest resolve to the same file")
+
+
 def build(source=None, output=None, manifest=None):
     """Render `source` markdown to `output` PDF and write `manifest` (JSON).
 
-    Refuses if `output` resolves to the archived historical PDF, and asserts the
-    historical PDF's bytes still match the pinned SHA-256 after the render.
+    Every destination (output AND manifest) is validated against the archive, the readiness
+    record, every tracked docs/ file and the source itself, following symlinks, BEFORE any
+    write; the archive and readiness record are hash-verified AFTER the last write.
     """
     global MD, OUT
     import datetime, json, platform
@@ -163,17 +196,20 @@ def build(source=None, output=None, manifest=None):
     if output is None:
         raise ProtectedOutputError("--output is required; this script never writes to a default path")
     OUT = os.path.abspath(output)
-    if os.path.realpath(OUT) == os.path.realpath(HISTORICAL_PDF):
-        raise ProtectedOutputError(
-            f"refusing to overwrite the archived historical PDF {HISTORICAL_PDF}; "
-            "its SHA-256 is pinned in docs/publication-readiness.json. Choose another --output.")
+    if not OUT.lower().endswith(".pdf"):
+        raise ProtectedOutputError(f"--output must be a .pdf path, got {output}")
+    MANIFEST = os.path.abspath(manifest) if manifest else os.path.splitext(OUT)[0] + ".manifest.json"
     if not os.path.isfile(MD):
         raise FileNotFoundError(MD)
+    validate_destinations(MD, OUT, MANIFEST)
     pinned = _historical_pinned_sha()
     before = _sha256(HISTORICAL_PDF)
     if before != pinned:
         raise ProtectedOutputError(f"historical PDF already differs from its pinned SHA-256 ({before[:12]} != {pinned[:12]}); refusing to render until that is resolved")
+    readiness_before = _sha256(READINESS)
+    source_before = _sha256(MD)
     os.makedirs(os.path.dirname(OUT) or ".", exist_ok=True)
+    os.makedirs(os.path.dirname(MANIFEST) or ".", exist_ok=True)
     lines = open(MD, encoding="utf-8").read().splitlines()
     story, para, tbl = [], [], []
 
@@ -218,26 +254,33 @@ def build(source=None, output=None, manifest=None):
                       topMargin=0.9*inch, bottomMargin=0.9*inch,
                       title="P-V Loop Shape as a Fatigue Health Indicator (preprint draft)"
                       ).build(story, canvasmaker=_EmbeddedFontCanvas)
-    after = _sha256(HISTORICAL_PDF)
-    if after != pinned:
-        raise ProtectedOutputError("historical PDF bytes changed during render; this is a bug, do not commit")
+    def _verify_protected(stage):
+        if _sha256(HISTORICAL_PDF) != pinned:
+            raise ProtectedOutputError(f"historical PDF bytes changed ({stage}); this is a bug, do not commit")
+        if _sha256(READINESS) != readiness_before:
+            raise ProtectedOutputError(f"publication-readiness.json changed ({stage}); this is a bug, do not commit")
+        if _sha256(MD) != source_before:
+            raise ProtectedOutputError(f"render source changed ({stage}); this is a bug, do not commit")
+    _verify_protected("after PDF write")
     record = {
-        "schema_version": 1,
+        "schema_version": 2,
         "rendered_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "source": os.path.relpath(MD, REPO), "source_sha256": _sha256(MD),
+        "source": os.path.relpath(MD, REPO), "source_sha256": source_before,
         "output": os.path.relpath(OUT, REPO), "output_sha256": _sha256(OUT),
+        "manifest": os.path.relpath(MANIFEST, REPO),
         "renderer": "scripts/make_preprint_pdf.py",
         "versions": {"python": platform.python_version(), "reportlab": reportlab.Version,
                      "pypdf": pypdf.__version__, "matplotlib_fonts": matplotlib.__version__},
-        "historical_pdf_sha256_verified_unchanged": after,
+        "historical_pdf_sha256_verified_unchanged": pinned,
+        "readiness_sha256_verified_unchanged": readiness_before,
         "author_approval": None,
         "note": "A rendered PDF is not an approved PDF. Publication readiness is governed by docs/publication-readiness.json, which this render does not modify.",
     }
-    mpath = os.path.abspath(manifest) if manifest else OUT[:-4] + ".manifest.json"
-    with open(mpath, "w", encoding="utf-8") as fh:
+    with open(MANIFEST, "w", encoding="utf-8") as fh:
         json.dump(record, fh, indent=2); fh.write("\n")
+    _verify_protected("after manifest write")     # the LAST write, so the claim in the manifest is true
     print(f"PDF written: {OUT}")
-    print(f"manifest:    {mpath}")
+    print(f"manifest:    {MANIFEST}")
     return record
 
 
