@@ -71,7 +71,8 @@ class DestinationCollisionTests(unittest.TestCase):
     """Review finding 2026-09-12: --manifest was unprotected and --output could equal the source.
     Every destination must be validated against every protected file and alias BEFORE any write,
     and the protected set re-verified AFTER the last write (the manifest)."""
-    PROTECTED = [HIST, ROOT / "docs/publication-readiness.json", ROOT / "docs/preprint_v1.md", CAND, ROOT / "docs/results.md"]
+    PROTECTED = [HIST, ROOT / "docs/publication-readiness.json", ROOT / "docs/preprint_v1.md", CAND, ROOT / "docs/results.md",
+                 ROOT / "docs/SPRINT_TASKS.csv", ROOT / "docs/specs/cad-development/scope.md"]
 
     def setUp(self):
         self.before = {p: sha(p) for p in self.PROTECTED}
@@ -118,6 +119,39 @@ class DestinationCollisionTests(unittest.TestCase):
             upper = HIST.with_name(HIST.name.upper())
             if upper.exists():                       # case-insensitive filesystem: the alias is live
                 self._refused(manifest=str(upper))
+
+    def test_nested_spec_sprint_ledger_and_consumed_figure_are_protected(self):
+        # Review 2 (2026-09-12): the protected set scanned only top-level docs/ extensions.
+        figs = R.consumed_figures(str(CAND)); self.assertGreater(len(figs), 0)
+        for dest in (ROOT / "docs/specs/cad-development/scope.md", ROOT / "docs/SPRINT_TASKS.csv", Path(figs[0]), ROOT / "docs/../" / Path(figs[0]).relative_to(ROOT)):
+            self.assertTrue(dest.exists(), dest)
+            self._refused(manifest=str(dest))
+        # --output must be .pdf; the one tracked, non-archive PDF-typed protected target is the archive itself (covered above),
+        # so exercise --output against a consumed figure through a symlink named .pdf
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            link = Path(d) / "fig.pdf"; link.symlink_to(figs[0]); self._refused(output=str(link))
+
+    def test_protection_set_is_every_tracked_file_plus_consumed_figures(self):
+        protected, basis, figs = R.protected_paths(str(CAND))
+        self.assertEqual(basis, "git ls-files")
+        tracked = set(subprocess.run(["git", "-C", str(ROOT), "ls-files"], capture_output=True, text=True).stdout.split())
+        self.assertTrue(tracked, "git ls-files returned nothing")
+        prot_rel = {os.path.relpath(p, ROOT) for p in protected}
+        self.assertTrue(tracked <= prot_rel, sorted(tracked - prot_rel)[:5])
+        self.assertTrue({os.path.relpath(f, ROOT) for f in figs} <= prot_rel)
+
+    def test_manifest_carries_figure_hashes_and_renderer_revision(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            rec = R.build(str(CAND), str(Path(d) / "c.pdf"))
+        self.assertEqual(rec["schema_version"], 3)
+        self.assertEqual(len(rec["figures"]), len(R.consumed_figures(str(CAND))))
+        for f in rec["figures"]:
+            self.assertEqual(f["sha256"], sha(ROOT / f["path"]))
+        self.assertEqual(rec["renderer_revision"]["script_sha256"], sha(ROOT / "scripts/make_preprint_pdf.py"))
+        self.assertIsNotNone(rec["renderer_revision"]["git_head"])
+        self.assertGreater(rec["protection"]["files_verified_unchanged"], 100)
 
     def test_default_manifest_path_derives_from_pdf_stem(self):
         import tempfile

@@ -134,6 +134,18 @@ def figure(relpath):
     return img
 
 
+def _renderer_revision():
+    """Identity of the renderer itself: this script's SHA-256 and the repository HEAD, with a dirty flag."""
+    import subprocess
+    rec = {"script_sha256": _sha256(os.path.abspath(__file__))}
+    try:
+        rec["git_head"] = subprocess.run(["git", "-C", REPO, "rev-parse", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
+        rec["git_dirty"] = bool(subprocess.run(["git", "-C", REPO, "status", "--porcelain", "--untracked-files=no"], capture_output=True, text=True).stdout.strip())
+    except Exception:
+        rec["git_head"] = None; rec["git_dirty"] = None
+    return rec
+
+
 class ProtectedOutputError(RuntimeError):
     """Raised when a render would overwrite the archived historical PDF."""
 
@@ -161,23 +173,40 @@ def _same_file(a, b):
         return False
 
 
-def protected_paths():
-    """Files a render must never write: the pinned archive, its readiness record, and every
-    tracked source under docs/ that a render could take as --source."""
-    fixed = [HISTORICAL_PDF, READINESS, HISTORICAL_MD]
-    docs = os.path.join(REPO, "docs")
-    extra = [os.path.join(docs, n) for n in os.listdir(docs) if n.endswith((".md", ".pdf", ".json", ".txt"))]
-    return fixed + extra
+def tracked_files():
+    """Every path git tracks in this repository (absolute). Falls back to a filesystem walk of
+    docs/ and data/ if git is unavailable, and says so in the manifest via `protection_basis`."""
+    import subprocess
+    try:
+        out = subprocess.run(["git", "-C", REPO, "ls-files", "-z"], capture_output=True, check=True).stdout
+        paths = [os.path.join(REPO, x.decode("utf-8")) for x in out.split(b"\0") if x]
+        return paths, "git ls-files"
+    except Exception:
+        paths = [os.path.join(dp, f) for top in ("docs", "data", "scripts", "tests") for dp, _, fs in os.walk(os.path.join(REPO, top)) for f in fs]
+        return paths, "filesystem walk of docs/, data/, scripts/, tests/ (git unavailable)"
 
 
-def validate_destinations(source, output, manifest):
-    """Every destination must be distinct from every protected file, from the source, and from each other."""
+def consumed_figures(md_path):
+    """Every image the source markdown references, resolved the same way figure() resolves it."""
+    text = open(md_path, encoding="utf-8").read()
+    return [os.path.normpath(os.path.join(os.path.dirname(md_path), m)) for m in re.findall(r"!\[[^\]]*\]\(([^)]+)\)", text)]
+
+
+def protected_paths(source):
+    """The complete set a render must never write: every tracked file, the archive, the
+    readiness record, the historical markdown, the source, and every figure the source consumes."""
+    tracked, basis = tracked_files()
+    figs = consumed_figures(source)
+    return sorted(set(tracked) | {HISTORICAL_PDF, READINESS, HISTORICAL_MD, os.path.abspath(source)} | set(figs)), basis, figs
+
+
+def validate_destinations(source, output, manifest, protected):
+    """Every destination must be distinct from every protected file and from each other. Uses the
+    SAME complete set that is hash-verified after the last write."""
     for label, dest in (("--output", output), ("--manifest", manifest)):
-        for prot in protected_paths():
+        for prot in protected:
             if _same_file(dest, prot):
                 raise ProtectedOutputError(f"{label} {dest} is a protected file ({os.path.relpath(prot, REPO)}); choose another path")
-        if _same_file(dest, source):
-            raise ProtectedOutputError(f"{label} {dest} is the render source; choose another path")
     if _same_file(output, manifest):
         raise ProtectedOutputError("--output and --manifest resolve to the same file")
 
@@ -201,7 +230,13 @@ def build(source=None, output=None, manifest=None):
     MANIFEST = os.path.abspath(manifest) if manifest else os.path.splitext(OUT)[0] + ".manifest.json"
     if not os.path.isfile(MD):
         raise FileNotFoundError(MD)
-    validate_destinations(MD, OUT, MANIFEST)
+    protected, protection_basis, figs = protected_paths(MD)
+    missing_figs = [f for f in figs if not os.path.isfile(f)]
+    if missing_figs:
+        raise FileNotFoundError("source references figures that do not exist: " + ", ".join(os.path.relpath(f, REPO) for f in missing_figs))
+    validate_destinations(MD, OUT, MANIFEST, protected)
+    # Snapshot every protected file's hash BEFORE any write; the same set is re-verified after the last write.
+    protected_before = {pp: _sha256(pp) for pp in protected if os.path.isfile(pp)}
     pinned = _historical_pinned_sha()
     before = _sha256(HISTORICAL_PDF)
     if before != pinned:
@@ -257,13 +292,12 @@ def build(source=None, output=None, manifest=None):
     def _verify_protected(stage):
         if _sha256(HISTORICAL_PDF) != pinned:
             raise ProtectedOutputError(f"historical PDF bytes changed ({stage}); this is a bug, do not commit")
-        if _sha256(READINESS) != readiness_before:
-            raise ProtectedOutputError(f"publication-readiness.json changed ({stage}); this is a bug, do not commit")
-        if _sha256(MD) != source_before:
-            raise ProtectedOutputError(f"render source changed ({stage}); this is a bug, do not commit")
+        changed = [os.path.relpath(pp, REPO) for pp, h in protected_before.items() if not os.path.isfile(pp) or _sha256(pp) != h]
+        if changed:
+            raise ProtectedOutputError(f"protected files changed ({stage}): {', '.join(changed[:5])}; this is a bug, do not commit")
     _verify_protected("after PDF write")
     record = {
-        "schema_version": 2,
+        "schema_version": 3,
         "rendered_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "source": os.path.relpath(MD, REPO), "source_sha256": source_before,
         "output": os.path.relpath(OUT, REPO), "output_sha256": _sha256(OUT),
@@ -271,6 +305,9 @@ def build(source=None, output=None, manifest=None):
         "renderer": "scripts/make_preprint_pdf.py",
         "versions": {"python": platform.python_version(), "reportlab": reportlab.Version,
                      "pypdf": pypdf.__version__, "matplotlib_fonts": matplotlib.__version__},
+        "figures": [{"path": os.path.relpath(f, REPO), "sha256": protected_before[f]} for f in figs],
+        "renderer_revision": _renderer_revision(),
+        "protection": {"basis": protection_basis, "files_verified_unchanged": len(protected_before)},
         "historical_pdf_sha256_verified_unchanged": pinned,
         "readiness_sha256_verified_unchanged": readiness_before,
         "author_approval": None,
