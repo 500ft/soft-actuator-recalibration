@@ -48,6 +48,7 @@ from pipeline.coupling import (
 )
 from sim.kinematics import pcc_transform
 from sim.plant import SLSParams
+from scripts import figstyle
 
 DATA = "data/sim/phaseD"
 LIFE = [0.10, 0.30, 0.50, 0.70, 0.90]
@@ -387,14 +388,9 @@ def main():
               f"[{lt['min_lead_life']:.3f}, {lt['max_lead_life']:.3f}], "
               f"excluded={lt['n_excluded']}")
 
-    try:
-        import matplotlib
-        matplotlib.use("Agg")
-        import matplotlib.pyplot as plt
-        from scripts import figstyle
-        figstyle.apply()
-    except Exception as exc:  # pragma: no cover
-        print(f"(matplotlib unavailable, skipped figures: {exc})")
+    plt = figstyle.setup()
+    if plt is None:  # pragma: no cover
+        print("(matplotlib unavailable, skipped figures)")
         return
 
     # Fig 3: health indicator — health drift & fixed-cal error over life (mean over test acts)

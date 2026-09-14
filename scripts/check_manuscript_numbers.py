@@ -36,10 +36,6 @@ def require(text: str, snippet: str):
         raise AssertionError(f"missing manuscript snippet: {snippet!r}")
 
 
-def pct(x: float) -> str:
-    return f"{100 * x:.1f}%"
-
-
 def frontier_point(s3, tau: float):
     points = s3["lead_frontier_heldout"]["points"]
     for point in points:
@@ -121,7 +117,7 @@ def check_manuscript(manuscript):
     require(text, f"{100 * dyn:.1f}% over life")
     require(text, f"{100 * s3['tau_selected'] / dyn:.0f}% of the available range")
 
-    require(text, pct(s4["default_coupling"]))
+    require(text, f"{100 * s4['default_coupling']:.1f}%")
     rs = s4["softness_multiplier_at_threshold"]["R_s"]
     require(text, f"≈{rs['0.10']:.1f}×")
     require(text, f"≈{rs['0.20']:.1f}×")

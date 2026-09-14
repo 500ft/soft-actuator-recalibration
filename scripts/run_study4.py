@@ -46,6 +46,7 @@ from sim.fatigue import FatigueParams, degraded_sls, fatigue_state
 from sim.kinematics import PCCParams, curvature_from_pressure
 from sim.network import _conductances, probe_coupling, simulate_network
 from sim.plant import NetworkParams, SLSParams
+from scripts import figstyle
 
 DATA = "data/sim/phaseD"
 
@@ -255,14 +256,9 @@ def main():
               f"dyn_improvement={100*g['dynamic_improvement']:+.1f}%")
 
     # --- figure: coupling vs supply softness ---------------------------------
-    try:
-        import matplotlib
-        matplotlib.use("Agg")
-        import matplotlib.pyplot as plt
-        from scripts import figstyle
-        figstyle.apply()
-    except Exception as exc:  # pragma: no cover
-        print(f"(matplotlib unavailable, skipped figure: {exc})")
+    plt = figstyle.setup()
+    if plt is None:  # pragma: no cover
+        print("(matplotlib unavailable, skipped figure)")
         print(f"results -> {DATA}/study4_results.json")
         return
 

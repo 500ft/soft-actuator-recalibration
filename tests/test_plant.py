@@ -1,16 +1,9 @@
 """Phase A ground-truth tests for sim/plant.py. Run: python3 -m pytest tests/ -q"""
-import sys
-from pathlib import Path
-
 import numpy as np
-
-REPO = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(REPO))
-sys.path.insert(0, str(REPO / "scripts"))
 
 from sim.plant import (SLSParams, NetworkParams, pv_loop, sls_pressure,
                        sls_loss_energy_analytic, linear_network_crosstalk)
-import gate0_lumped_rc as g0
+from scripts import gate0_lumped_rc as g0
 
 
 def test_quasistatic_modulus_is_relaxed():

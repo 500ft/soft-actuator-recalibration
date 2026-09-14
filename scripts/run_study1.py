@@ -12,12 +12,10 @@ from collections import Counter
 from dataclasses import asdict, replace
 import json
 from pathlib import Path
-import sys
 
 import numpy as np
 
 REPO = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(REPO))
 
 from pipeline.degradation import (
     calibrate_cusum_to_sustained,
@@ -53,15 +51,9 @@ from pipeline.validation import (
 from sim.fatigue import FatigueParams, degraded_sls, fatigue_state
 from sim.plant import SLSParams, pv_loop
 
-try:
-    import matplotlib
+from scripts import figstyle
 
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    _MPL = True
-except Exception:
-    _MPL = False
+plt = figstyle.setup(style=False)
 
 
 FEATURE_NAMES = ("loop_area", "inflation_compliance")
@@ -533,7 +525,7 @@ def main(argv=None):
     result["verdict"] = "PASS" if all(checks.values()) else "CHECK"
     (outdir / "study1_results.json").write_text(json.dumps(_json_safe(result), indent=2))
 
-    if _MPL:
+    if plt is not None:
         _plots(outdir, result, representative_clean, base_sls, frequency, amplitude)
 
     print("=" * 76)

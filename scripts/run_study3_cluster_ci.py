@@ -43,6 +43,7 @@ from pipeline.hi_metrics import monotonicity, prognosability, trendability
 from sim.plant import SLSParams
 
 import scripts.run_study3 as S3
+from scripts import figstyle
 
 DATA = S3.DATA
 LIFE = S3.LIFE
@@ -481,16 +482,9 @@ def main():
 
 
 def _figures(results, per_act_xy, test_ids):
-    try:
-        import matplotlib
-
-        matplotlib.use("Agg")
-        import matplotlib.pyplot as plt
-        from scripts import figstyle
-
-        figstyle.apply()
-    except Exception as exc:  # pragma: no cover
-        print(f"(matplotlib unavailable, skipped figures: {exc})")
+    plt = figstyle.setup()
+    if plt is None:  # pragma: no cover
+        print("(matplotlib unavailable, skipped figures)")
         return
 
     C = results["correlation"]

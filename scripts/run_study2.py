@@ -28,6 +28,7 @@ import numpy as np
 
 from pipeline.correctors import RidgeCorrector, rmse
 from sim.kinematics import pcc_transform
+from scripts import figstyle
 
 DATA = "data/sim/phaseD"
 N_LAGS = 8
@@ -138,14 +139,9 @@ def main():
     print("  shared:  " + "  ".join(f"{v:.3f}" for v in expA["shared"]))
     print("  isolated:" + "  ".join(f"{v:.3f}" for v in expA["isolated"]))
 
-    try:
-        import matplotlib
-        matplotlib.use("Agg")
-        import matplotlib.pyplot as plt
-        from scripts import figstyle
-        figstyle.apply()
-    except Exception as exc:  # pragma: no cover
-        print(f"(matplotlib unavailable, skipped figures: {exc})")
+    plt = figstyle.setup()
+    if plt is None:  # pragma: no cover
+        print("(matplotlib unavailable, skipped figures)")
         return
     plt.figure()
     plt.plot(LIFE_ALL, expA["shared"], "o-", label="shared manifold")

@@ -24,7 +24,7 @@ from __future__ import annotations
 import numpy as np
 from scipy.integrate import solve_ivp
 
-from sim.plant import NetworkParams, SLSParams
+from sim.plant import NetworkParams
 
 
 def _sls_arrays(sls_list):

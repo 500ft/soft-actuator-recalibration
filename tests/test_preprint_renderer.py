@@ -8,10 +8,9 @@ and no author-approval claim anywhere in the output.
 """
 import hashlib, json, os, subprocess, sys, unittest
 from pathlib import Path
+from scripts import make_preprint_pdf as R
+from scripts import check_pdf_arxiv as G
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-from scripts import make_preprint_pdf as R  # noqa: E402
-from scripts import check_pdf_arxiv as G    # noqa: E402
 
 HIST = ROOT / "docs/preprint_v1.pdf"
 CAND = ROOT / "docs/preprint_v1_4_candidate.md"
