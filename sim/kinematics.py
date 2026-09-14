@@ -44,8 +44,6 @@ import math
 
 import numpy as np
 
-from sim.fatigue import FatigueState
-
 
 @dataclass(frozen=True)
 class PCCParams:
@@ -53,7 +51,6 @@ class PCCParams:
 
     length_m: float = 0.10              # backbone arc length L [m]
     kappa_gain: float = 2.0e-5          # curvature per (Pa * compliance) [1/(m*Pa)]
-    pressure_threshold_pa: float = 0.0  # bending-onset pressure [Pa]
     plane_azimuth_rad: float = 0.0      # fixed bending-plane angle phi [rad]
 
     def __post_init__(self) -> None:
@@ -61,24 +58,17 @@ class PCCParams:
             raise ValueError("length_m must be finite and > 0")
         if not math.isfinite(self.kappa_gain) or self.kappa_gain <= 0:
             raise ValueError("kappa_gain must be finite and > 0")
-        if not math.isfinite(self.pressure_threshold_pa) or self.pressure_threshold_pa < 0:
-            raise ValueError("pressure_threshold_pa must be finite and >= 0")
         if not math.isfinite(self.plane_azimuth_rad):
             raise ValueError("plane_azimuth_rad must be finite")
 
 
 def curvature_from_pressure(pressure_pa, compliance_multiplier, params: PCCParams):
-    """kappa = kappa_gain * compliance_multiplier * max(P - P_threshold, 0). Vectorized."""
+    """kappa = kappa_gain * compliance_multiplier * max(P, 0). Vectorized."""
     p = np.asarray(pressure_pa, dtype=float)
     if not math.isfinite(compliance_multiplier) or compliance_multiplier <= 0:
         raise ValueError("compliance_multiplier must be finite and > 0")
-    excess = np.clip(p - params.pressure_threshold_pa, 0.0, None)
+    excess = np.clip(p, 0.0, None)
     return params.kappa_gain * float(compliance_multiplier) * excess
-
-
-def curvature_from_fatigue(pressure_pa, state: FatigueState, params: PCCParams):
-    """Convenience: curvature using the Phase-B compliance multiplier carried by ``state``."""
-    return curvature_from_pressure(pressure_pa, state.compliance_multiplier, params)
 
 
 def _Rz(a: float) -> np.ndarray:
@@ -111,42 +101,3 @@ def pcc_transform(kappa: float, phi: float, length_m: float) -> np.ndarray:
                              math.sin(theta)])
     T[:3, :3] = _Rz(phi) @ _Ry(theta) @ _Rz(-phi)
     return T
-
-
-def tip_pose(pressure_pa: float, state: FatigueState, params: PCCParams) -> np.ndarray:
-    """Forward map: scalar realized pressure + fatigue state -> 4x4 tip transform."""
-    kappa = float(curvature_from_fatigue(float(pressure_pa), state, params))
-    return pcc_transform(kappa, params.plane_azimuth_rad, params.length_m)
-
-
-def invert_tip_position(position_xyz, length_m: float):
-    """Recover ``(kappa, phi)`` from a constant-curvature tip *position* and known arc length.
-
-    Exact inverse of the position part of :func:`pcc_transform`. Returns ``(kappa, phi)``;
-    a straight segment (zero transverse offset) returns ``(0.0, 0.0)``.
-    """
-    p = np.asarray(position_xyz, dtype=float)
-    if p.shape != (3,) or not np.all(np.isfinite(p)):
-        raise ValueError("position_xyz must be a finite length-3 vector")
-    d = math.hypot(p[0], p[1])        # = r (1 - cos theta)
-    z = p[2]                          # = r sin theta
-    if d <= 0.0:
-        return 0.0, 0.0
-    phi = math.atan2(p[1], p[0])
-    theta = 2.0 * math.atan2(d, z)    # since d / z = tan(theta / 2)
-    kappa = theta / length_m
-    return kappa, phi
-
-
-def pressure_from_curvature(kappa: float, compliance_multiplier: float, params: PCCParams):
-    """Inverse of the pressure->curvature law: realized pressure that produced ``kappa``.
-
-    Exact only for ``kappa >= 0`` produced by an above-threshold pressure; a zero curvature
-    maps back to the threshold pressure (sub-threshold pressures are unobservable from pose).
-    """
-    if not math.isfinite(kappa) or kappa < 0:
-        raise ValueError("kappa must be finite and >= 0")
-    if not math.isfinite(compliance_multiplier) or compliance_multiplier <= 0:
-        raise ValueError("compliance_multiplier must be finite and > 0")
-    denom = params.kappa_gain * float(compliance_multiplier)
-    return params.pressure_threshold_pa + kappa / denom

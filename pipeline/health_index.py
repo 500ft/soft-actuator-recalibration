@@ -56,12 +56,10 @@ def transform_features(values, model: BaselineModel):
     return (values - model.mean) / model.scale * model.directions
 
 
-def fused_hi(transformed, columns=None):
+def fused_hi(transformed):
     transformed = np.asarray(transformed, dtype=float)
     if transformed.ndim != 2 or transformed.shape[1] == 0:
         raise ValueError("transformed features must be a nonempty 2D matrix")
-    if columns is not None:
-        transformed = transformed[:, columns]
     return transformed.mean(axis=1)
 
 

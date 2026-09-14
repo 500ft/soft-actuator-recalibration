@@ -33,8 +33,8 @@ def test_pressure_noise_is_seeded_and_zero_noise_is_exact():
 
 
 def test_validation_cohort_is_reproducible_and_axis_isolated():
-    a = sample_validation_cohort(20, seed=20260623, vary=("rupture_cycles",))
-    b = sample_validation_cohort(20, seed=20260623, vary=("rupture_cycles",))
+    a = sample_validation_cohort(20, seed=20260623)
+    b = sample_validation_cohort(20, seed=20260623)
     assert [asdict(x) for x in a] == [asdict(x) for x in b]
     assert len({x.rupture_cycles for x in a}) == 20
     canonical = FatigueParams()
@@ -44,7 +44,7 @@ def test_validation_cohort_is_reproducible_and_axis_isolated():
 
 
 def test_weibull_fixture_has_registered_large_sample_mean_and_cv():
-    cohort = sample_validation_cohort(20_000, seed=7, vary=("rupture_cycles",))
+    cohort = sample_validation_cohort(20_000, seed=7)
     lives = np.array([x.rupture_cycles for x in cohort])
     assert abs(lives.mean() - 3500) / 3500 < 0.02
     assert abs(lives.std() / lives.mean() - 0.30) < 0.02

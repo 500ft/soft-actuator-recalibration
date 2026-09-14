@@ -36,7 +36,7 @@ import os
 
 import numpy as np
 
-from pipeline.correctors import RidgeCorrector, rmse
+from pipeline.correctors import RidgeCorrector
 from pipeline.coupling import (
     apply_schedule,
     bootstrap_correlation,
@@ -46,10 +46,10 @@ from pipeline.coupling import (
     per_group_correlations,
     recalibration_schedule,
 )
-from sim.kinematics import pcc_transform
 from sim.plant import SLSParams
+from scripts import figstyle
+from scripts.phased import DATA, feats, load, pose_rmse
 
-DATA = "data/sim/phaseD"
 LIFE = [0.10, 0.30, 0.50, 0.70, 0.90]
 ALPHA = 1.0
 CAL_REPS = {0, 1, 2}        # calibration split
@@ -61,16 +61,6 @@ LEAD_FRONTIER_TAU = [0.005, 0.01, 0.02, 0.03, 0.04, 0.05]
 # (always-on) pose error toward the never-recalibrate (fixed) error. Selected on TRAIN
 # actuators, then the triggering threshold is applied unchanged to held-out TEST actuators.
 BUDGET_FRAC = 0.5
-
-
-def load():
-    d = dict(np.load(os.path.join(DATA, "dataset.npz")))
-    m = json.load(open(os.path.join(DATA, "manifest.json")))
-    return d, m
-
-
-def feats(d, i):
-    return np.concatenate([d["meas_manifold_pressure"][i][:, None], d["cmd_all"][i]], axis=-1)
 
 
 def idxs(d, aid, life, reps):
@@ -85,24 +75,29 @@ def calibrate(d, aid, life):
         [feats(d, i) for i in ix], [d["true_kappa"][i] for i in ix])
 
 
-def pose_rmse(model, d, aid, life, act):
-    ix = idxs(d, aid, life, EVAL_REPS)
-    errs = []
-    for i in ix:
-        kp = np.clip(model.predict(feats(d, i)), 0.0, None)
-        pred = np.array([pcc_transform(float(k), act["plane_azimuth_rad"], act["length_m"])[:3, 3]
-                         for k in kp])
-        errs.append(rmse(pred, d["true_position"][i]))
-    return float(np.mean(errs))
-
-
 def error_matrix(d, aid, act):
     """err[i][j] = pose RMSE at life i using the calibration fitted at life j (mm)."""
     models = [calibrate(d, aid, lf) for lf in LIFE]
     n = len(LIFE)
-    err = [[pose_rmse(models[j], d, aid, LIFE[i], act) * 1e3 for j in range(n)]
+    err = [[pose_rmse(models[j], d, idxs(d, aid, LIFE[i], EVAL_REPS), act) * 1e3 for j in range(n)]
            for i in range(n)]
     return np.asarray(err)
+
+
+def prepare(d, m):
+    """Identity split, actuator table, and per-actuator error matrix / normalized health / cycles."""
+    train_ids = m["split_by_actuator_identity"]["train_ids"]
+    test_ids = m["split_by_actuator_identity"]["test_ids"]
+    acts = {a["id"]: a for a in m["actuators"]}
+    err, hn, cyc = {}, {}, {}
+    for aid in train_ids + test_ids:
+        a = acts[aid]
+        err[aid] = error_matrix(d, aid, a)
+        h = health_trajectory(SLSParams(k1=a["k1"], k2=a["k2"], tau=a["tau"]),
+                              a["rupture_cycles"], LIFE)
+        hn[aid] = h / h[0]                         # fractional growth, starts at 1.0
+        cyc[aid] = np.asarray(LIFE) * a["rupture_cycles"]   # absolute cycles at each stage
+    return train_ids, test_ids, acts, err, hn, cyc
 
 
 def realized(err, flags):
@@ -112,47 +107,74 @@ def realized(err, flags):
 
 
 def policy_metrics(err, hn, policy, tau=None):
-    flags = recalibration_schedule(hn, policy, tau=tau)
-    realized_err, n_recal = realized(err, flags)
-    return float(np.mean(realized_err)), n_recal, realized_err
+    """(mean realized pose RMSE, recalibration count) for one health-driven policy."""
+    realized_err, n_recal = realized(err, recalibration_schedule(hn, policy, tau=tau))
+    return float(np.mean(realized_err)), n_recal
 
 
 def scheduled_metrics(err, cycles, period):
-    flags = cycle_schedule(cycles, period)
-    realized_err, n_recal = realized(err, flags)
-    return float(np.mean(realized_err)), n_recal, realized_err
+    """(mean realized pose RMSE, recalibration count) for the cycle-count clock policy."""
+    realized_err, n_recal = realized(err, cycle_schedule(cycles, period))
+    return float(np.mean(realized_err)), n_recal
+
+
+def select_thresholds(train_ids, err, hn, cyc):
+    """Accuracy budget, tau* and clock period* selected on TRAIN actuators only."""
+    train_always = np.mean([policy_metrics(err[a], hn[a], "always")[0] for a in train_ids])
+    train_fixed = np.mean([policy_metrics(err[a], hn[a], "fixed")[0] for a in train_ids])
+    budget_mm = train_always + BUDGET_FRAC * (train_fixed - train_always)
+    sweep = []
+    for tau in TAU_GRID:
+        em = [policy_metrics(err[a], hn[a], "triggered", tau) for a in train_ids]
+        sweep.append({"tau": float(tau),
+                      "train_error_mm": float(np.mean([x[0] for x in em])),
+                      "train_recal": float(np.mean([x[1] for x in em]))})
+    ok = [s for s in sweep if s["train_error_mm"] <= budget_mm]
+    selected = max(ok, key=lambda s: s["tau"]) if ok else sweep[0]   # fewest recals within budget
+    period_sweep = []
+    for period in PERIOD_GRID:
+        em = [scheduled_metrics(err[a], cyc[a], period) for a in train_ids]
+        period_sweep.append({"period_cycles": float(period),
+                             "train_error_mm": float(np.mean([x[0] for x in em])),
+                             "train_recal": float(np.mean([x[1] for x in em]))})
+    ok_p = [s for s in period_sweep if s["train_error_mm"] <= budget_mm]
+    # fewest recals within budget -> longest period; tie-break toward lower error
+    sel_p = (max(ok_p, key=lambda s: s["period_cycles"]) if ok_p else period_sweep[0])
+    return {"train_always": train_always, "train_fixed": train_fixed, "budget_mm": budget_mm,
+            "sweep": sweep, "selected": selected, "tau_star": selected["tau"],
+            "period_sweep": period_sweep, "period_star": sel_p["period_cycles"]}
+
+
+def heldout_policies(test_ids, err, hn, cyc, tau_star, period_star):
+    """Per-held-out-actuator (pose RMSE list, recalibration-count list) for the four policies."""
+    out = {}
+    for name in ("fixed", "scheduled", "triggered", "always"):
+        pairs = [scheduled_metrics(err[a], cyc[a], period_star) if name == "scheduled"
+                 else policy_metrics(err[a], hn[a], name, tau_star if name == "triggered" else None)
+                 for a in test_ids]
+        out[name] = ([e for e, _ in pairs], [r for _, r in pairs])
+    return out
 
 
 def summarize_leads(records):
     finite = [r for r in records if r["lead_life"] is not None]
-    leads = [r["lead_life"] for r in finite]
-    trigger = [r["trigger_life"] for r in finite]
-    budget = [r["budget_violation_life"] for r in finite]
-    cycles = [r["lead_cycles"] for r in finite]
-    return {
-        "per_actuator": records,
-        "median_lead_life": float(np.median(leads)) if leads else None,
-        "min_lead_life": float(np.min(leads)) if leads else None,
-        "max_lead_life": float(np.max(leads)) if leads else None,
-        "median_trigger_life": float(np.median(trigger)) if trigger else None,
-        "min_trigger_life": float(np.min(trigger)) if trigger else None,
-        "max_trigger_life": float(np.max(trigger)) if trigger else None,
-        "median_budget_violation_life": float(np.median(budget)) if budget else None,
-        "min_budget_violation_life": float(np.min(budget)) if budget else None,
-        "max_budget_violation_life": float(np.max(budget)) if budget else None,
-        "min_lead_cycles": float(np.min(cycles)) if cycles else None,
-        "median_lead_cycles": float(np.median(cycles)) if cycles else None,
-        "max_lead_cycles": float(np.max(cycles)) if cycles else None,
-        "n_excluded": int(len(records) - len(finite)),
-        "status_counts": {s: int(sum(r["status"] == s for r in records))
-                          for s in ("ok", "never_triggers", "never_violates", "nonpositive_lead")},
-    }
+    out = {"per_actuator": records}
+    for key, stats in (("lead_life", ("median", "min", "max")),
+                       ("trigger_life", ("median", "min", "max")),
+                       ("budget_violation_life", ("median", "min", "max")),
+                       ("lead_cycles", ("min", "median", "max"))):
+        vals = [r[key] for r in finite]
+        for stat in stats:
+            out[f"{stat}_{key}"] = float(getattr(np, stat)(vals)) if vals else None
+    out["n_excluded"] = int(len(records) - len(finite))
+    out["status_counts"] = {s: int(sum(r["status"] == s for r in records))
+                            for s in ("ok", "never_triggers", "never_violates", "nonpositive_lead")}
+    return out
 
 
-def frontier_point(tau, test_ids, err, hn, acts, budget_mm):
-    """Held-out lead/error/recalibration summary for one descriptive threshold."""
-    records = []
-    errors, recals = [], []
+def lead_records(tau, test_ids, err, hn, acts, budget_mm):
+    """Per-held-out-actuator lead-time records plus triggered-policy error/recal lists at ``tau``."""
+    records, errors, recals = [], [], []
     for aid in test_ids:
         fixed_err = [err[aid][i][0] for i in range(len(LIFE))]
         lt = lead_time(hn[aid], fixed_err, tau, budget_mm, LIFE)
@@ -166,9 +188,15 @@ def frontier_point(tau, test_ids, err, hn, acts, budget_mm):
             "lead_cycles": float(lead_life * acts[aid]["rupture_cycles"]) if lead_life is not None else None,
             "status": lt["status"],
         })
-        e, r, _ = policy_metrics(err[aid], hn[aid], "triggered", tau)
+        e, r = policy_metrics(err[aid], hn[aid], "triggered", tau)
         errors.append(e)
         recals.append(r)
+    return records, errors, recals
+
+
+def frontier_point(tau, test_ids, err, hn, acts, budget_mm):
+    """Held-out lead/error/recalibration summary for one descriptive threshold."""
+    records, errors, recals = lead_records(tau, test_ids, err, hn, acts, budget_mm)
     lead = summarize_leads(records)
     return {
         "tau": float(tau),
@@ -207,35 +235,14 @@ def lead_frontier(test_ids, err, hn, acts, budget_mm, tau_values=LEAD_FRONTIER_T
 
 def main():
     d, m = load()
-    train_ids = m["split_by_actuator_identity"]["train_ids"]
-    test_ids = m["split_by_actuator_identity"]["test_ids"]
-    acts = {a["id"]: a for a in m["actuators"]}
-
-    # per-actuator error matrices + normalized health trajectories + absolute cycle counts
-    err = {}
-    hn = {}
-    cyc = {}
-    for aid in train_ids + test_ids:
-        a = acts[aid]
-        err[aid] = error_matrix(d, aid, a)
-        h = health_trajectory(SLSParams(k1=a["k1"], k2=a["k2"], tau=a["tau"]),
-                              a["rupture_cycles"], LIFE)
-        hn[aid] = h / h[0]                         # fractional growth, starts at 1.0
-        cyc[aid] = np.asarray(LIFE) * a["rupture_cycles"]   # absolute cycles at each stage
+    train_ids, test_ids, acts, err, hn, cyc = prepare(d, m)
 
     # --- threshold selection on TRAIN actuators only, against an accuracy budget ---
-    train_always = np.mean([policy_metrics(err[a], hn[a], "always")[0] for a in train_ids])
-    train_fixed = np.mean([policy_metrics(err[a], hn[a], "fixed")[0] for a in train_ids])
-    budget_mm = train_always + BUDGET_FRAC * (train_fixed - train_always)
-    sweep = []
-    for tau in TAU_GRID:
-        em = [policy_metrics(err[a], hn[a], "triggered", tau) for a in train_ids]
-        sweep.append({"tau": float(tau),
-                      "train_error_mm": float(np.mean([x[0] for x in em])),
-                      "train_recal": float(np.mean([x[1] for x in em]))})
+    sel = select_thresholds(train_ids, err, hn, cyc)
+    train_always, train_fixed, budget_mm = sel["train_always"], sel["train_fixed"], sel["budget_mm"]
+    sweep, selected, tau_star = sel["sweep"], sel["selected"], sel["tau_star"]
+    period_sweep, period_star = sel["period_sweep"], sel["period_star"]
     ok = [s for s in sweep if s["train_error_mm"] <= budget_mm]
-    selected = max(ok, key=lambda s: s["tau"]) if ok else sweep[0]   # fewest recals within budget
-    tau_star = selected["tau"]
 
     # --- what the budget-only rule costs in lead time (TRAIN actuators only) ---------
     # The rule above maximizes tau within the accuracy budget, which minimizes
@@ -288,30 +295,8 @@ def main():
         "rules_agree": (lead_aware is not None and lead_aware["tau"] == tau_star),
     }
 
-    # --- clock-baseline period selection on TRAIN actuators, same budget rule ---
-    period_sweep = []
-    for period in PERIOD_GRID:
-        em = [scheduled_metrics(err[a], cyc[a], period) for a in train_ids]
-        period_sweep.append({"period_cycles": float(period),
-                             "train_error_mm": float(np.mean([x[0] for x in em])),
-                             "train_recal": float(np.mean([x[1] for x in em]))})
-    ok_p = [s for s in period_sweep if s["train_error_mm"] <= budget_mm]
-    # fewest recals within budget -> longest period; tie-break toward lower error
-    sel_p = (max(ok_p, key=lambda s: s["period_cycles"]) if ok_p else period_sweep[0])
-    period_star = sel_p["period_cycles"]
-
     # --- apply to held-out TEST actuators ---
-    def agg(policy, tau=None):
-        es, rs = [], []
-        for a in test_ids:
-            if policy == "scheduled":
-                e, r, _ = scheduled_metrics(err[a], cyc[a], period_star)
-            else:
-                e, r, _ = policy_metrics(err[a], hn[a], policy, tau)
-            es.append(e); rs.append(r)
-        return {"mean_pose_rmse_mm": float(np.mean(es)),
-                "total_recalibrations": int(np.sum(rs)),
-                "recal_per_actuator": float(np.mean(rs))}
+    heldout = heldout_policies(test_ids, err, hn, cyc, tau_star, period_star)
 
     results = {
         "estimator": "static ridge (Phase E: dynamic adds nothing)",
@@ -321,10 +306,10 @@ def main():
         "train_fixed_error_mm": float(train_fixed), "train_always_error_mm": float(train_always),
         "train_actuators": train_ids, "test_actuators": test_ids,
         "policies_on_heldout": {
-            "fixed": agg("fixed"),
-            "scheduled": agg("scheduled"),
-            "triggered": agg("triggered", tau_star),
-            "always": agg("always"),
+            name: {"mean_pose_rmse_mm": float(np.mean(es)),
+                   "total_recalibrations": int(np.sum(rs)),
+                   "recal_per_actuator": float(np.mean(rs))}
+            for name, (es, rs) in heldout.items()
         },
         "threshold_sweep_train": sweep,
         "tau_selection_alternatives": tau_selection_alternatives,
@@ -334,20 +319,7 @@ def main():
     # --- health indicator: P-V health drift vs fixed-calibration pose error (held-out) ---
     hx, ey = [], []
     corr_groups = []
-    lead_records = []
     for a in test_ids:
-        fixed_err = [err[a][i][0] for i in range(len(LIFE))]
-        lt = lead_time(hn[a], fixed_err, tau_star, budget_mm, LIFE)
-        lead_life = lt["lead_life"]
-        lead_records.append({
-            "actuator_id": int(a),
-            "rupture_cycles": float(acts[a]["rupture_cycles"]),
-            "trigger_life": lt["trigger_life"],
-            "budget_violation_life": lt["budget_violation_life"],
-            "lead_life": lead_life,
-            "lead_cycles": float(lead_life * acts[a]["rupture_cycles"]) if lead_life is not None else None,
-            "status": lt["status"],
-        })
         for i in range(len(LIFE)):
             hx.append(hn[a][i] - 1.0)           # fractional loop-area growth from young
             ey.append(err[a][i][0])             # fixed (young) calibration error at life i
@@ -358,7 +330,8 @@ def main():
     per_act["values"] = [{"actuator_id": rec["group"], "r": rec["r"], "n": rec["n"]}
                          for rec in per_act["values"]]
     results["per_actuator_r"] = per_act
-    results["lead_time_heldout"] = summarize_leads(lead_records)
+    results["lead_time_heldout"] = summarize_leads(
+        lead_records(tau_star, test_ids, err, hn, acts, budget_mm)[0])
     results["lead_frontier_heldout"] = lead_frontier(test_ids, err, hn, acts, budget_mm)
 
     os.makedirs(DATA, exist_ok=True)
@@ -387,14 +360,9 @@ def main():
               f"[{lt['min_lead_life']:.3f}, {lt['max_lead_life']:.3f}], "
               f"excluded={lt['n_excluded']}")
 
-    try:
-        import matplotlib
-        matplotlib.use("Agg")
-        import matplotlib.pyplot as plt
-        from scripts import figstyle
-        figstyle.apply()
-    except Exception as exc:  # pragma: no cover
-        print(f"(matplotlib unavailable, skipped figures: {exc})")
+    plt = figstyle.setup()
+    if plt is None:  # pragma: no cover
+        print("(matplotlib unavailable, skipped figures)")
         return
 
     # Fig 3: health indicator — health drift & fixed-cal error over life (mean over test acts)

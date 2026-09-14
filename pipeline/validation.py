@@ -7,7 +7,6 @@ import math
 import numpy as np
 from scipy.optimize import brentq
 from scipy.special import expit, gamma
-from scipy.stats import truncnorm
 
 from sim.fatigue import FatigueParams, FatigueState, fatigue_state
 
@@ -46,58 +45,14 @@ def _weibull_shape_for_cv(target_cv):
     return float(brentq(residual, 0.2, 100.0))
 
 
-def _lognormal_draws(rng, mean, cv, n):
-    sigma2 = math.log(1 + cv**2)
-    mu = math.log(mean) - sigma2 / 2
-    return rng.lognormal(mu, math.sqrt(sigma2), n)
-
-
-def _truncated_normal_draws(rng, mean, sd, low, high, n):
-    a, b = (low - mean) / sd, (high - mean) / sd
-    return truncnorm.rvs(a, b, loc=mean, scale=sd, size=n, random_state=rng)
-
-
-def sample_validation_cohort(n=20, seed=20260623, vary=("rupture_cycles",)):
-    """Sample registered parameter axes; unspecified axes stay canonical."""
+def sample_validation_cohort(n=20, seed=20260623):
+    """Canonical parameters with Weibull-distributed rupture life (mean 3500 cycles, CV 0.30)."""
     if not isinstance(n, (int, np.integer)) or n <= 0:
         raise ValueError("n must be a positive integer")
-    allowed = {
-        "rupture_cycles",
-        "acceleration_onset_fraction",
-        "amplitudes",
-        "mullins_permanent_fraction",
-        "terminal_leak_multiplier",
-    }
-    vary = set(vary)
-    if not vary <= allowed:
-        raise ValueError(f"unknown variability axes: {sorted(vary - allowed)}")
     rng = np.random.default_rng(seed)
-    base = FatigueParams()
-
-    values = {name: np.full(n, getattr(base, name), dtype=float) for name in base.__dataclass_fields__}
-    if "rupture_cycles" in vary:
-        shape = _weibull_shape_for_cv(0.30)
-        scale = 3500.0 / gamma(1 + 1 / shape)
-        values["rupture_cycles"] = rng.weibull(shape, n) * scale
-    if "acceleration_onset_fraction" in vary:
-        values["acceleration_onset_fraction"] = _truncated_normal_draws(
-            rng, 0.70, 0.08, 0.40, 0.90, n
-        )
-    if "amplitudes" in vary:
-        for name in (
-            "mullins_amplitude",
-            "slow_fatigue_amplitude",
-            "accelerating_fatigue_amplitude",
-        ):
-            values[name] = _lognormal_draws(rng, getattr(base, name), 0.20, n)
-    if "mullins_permanent_fraction" in vary:
-        values["mullins_permanent_fraction"] = _truncated_normal_draws(
-            rng, 0.30, 0.08, 0.05, 0.70, n
-        )
-    if "terminal_leak_multiplier" in vary:
-        values["terminal_leak_multiplier"] = _lognormal_draws(rng, 20.0, 0.30, n)
-
-    return [FatigueParams(**{name: float(array[i]) for name, array in values.items()}) for i in range(n)]
+    shape = _weibull_shape_for_cv(0.30)
+    scale = 3500.0 / gamma(1 + 1 / shape)
+    return [replace(FatigueParams(), rupture_cycles=float(r)) for r in rng.weibull(shape, n) * scale]
 
 
 def logistic_fatigue_state(cycles, rest_s, params: FatigueParams, sharpness=20.0) -> FatigueState:

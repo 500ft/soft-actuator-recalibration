@@ -36,13 +36,13 @@ from scipy.stats import t as tdist
 from pipeline.coupling import (
     bootstrap_correlation,
     health_trajectory,
-    lead_time,
     per_group_correlations,
 )
 from pipeline.hi_metrics import monotonicity, prognosability, trendability
 from sim.plant import SLSParams
 
 import scripts.run_study3 as S3
+from scripts import figstyle
 
 DATA = S3.DATA
 LIFE = S3.LIFE
@@ -66,42 +66,11 @@ def fisher_ci(r, n_eff, alpha=1 - CI):
 
 def main():
     d, m = S3.load()
-    train_ids = m["split_by_actuator_identity"]["train_ids"]
-    test_ids = m["split_by_actuator_identity"]["test_ids"]
-    acts = {a["id"]: a for a in m["actuators"]}
+    train_ids, test_ids, acts, err, hn, cyc = S3.prepare(d, m)
 
-    err, hn, cyc = {}, {}, {}
-    for aid in train_ids + test_ids:
-        a = acts[aid]
-        err[aid] = S3.error_matrix(d, aid, a)
-        h = health_trajectory(
-            SLSParams(k1=a["k1"], k2=a["k2"], tau=a["tau"]), a["rupture_cycles"], LIFE
-        )
-        hn[aid] = h / h[0]
-        cyc[aid] = np.asarray(LIFE) * a["rupture_cycles"]
-
-    # --- reproduce study 3's train-side selection so tau*/T* match exactly ---
-    train_always = np.mean([S3.policy_metrics(err[a], hn[a], "always")[0] for a in train_ids])
-    train_fixed = np.mean([S3.policy_metrics(err[a], hn[a], "fixed")[0] for a in train_ids])
-    budget_mm = train_always + S3.BUDGET_FRAC * (train_fixed - train_always)
-
-    sweep = []
-    for tau in S3.TAU_GRID:
-        em = [S3.policy_metrics(err[a], hn[a], "triggered", tau) for a in train_ids]
-        sweep.append({"tau": float(tau), "train_error_mm": float(np.mean([x[0] for x in em]))})
-    ok_t = [s for s in sweep if s["train_error_mm"] <= budget_mm]
-    tau_star = (max(ok_t, key=lambda s: s["tau"]) if ok_t else sweep[0])["tau"]
-
-    psweep = []
-    for period in S3.PERIOD_GRID:
-        em = [S3.scheduled_metrics(err[a], cyc[a], period) for a in train_ids]
-        psweep.append(
-            {"period_cycles": float(period), "train_error_mm": float(np.mean([x[0] for x in em]))}
-        )
-    ok_p = [s for s in psweep if s["train_error_mm"] <= budget_mm]
-    period_star = (max(ok_p, key=lambda s: s["period_cycles"]) if ok_p else psweep[0])[
-        "period_cycles"
-    ]
+    # --- study 3's train-side selection, so tau*/T* match exactly ---
+    sel = S3.select_thresholds(train_ids, err, hn, cyc)
+    budget_mm, tau_star, period_star = sel["budget_mm"], sel["tau_star"], sel["period_star"]
 
     # --- the correlation sample, kept in cluster form ---
     per_act_xy = {}
@@ -290,23 +259,8 @@ def main():
     }
 
     # --- policy metrics with the same cluster treatment ---
-    def policy_per_actuator(policy, tau=None):
-        e_list, r_list = [], []
-        for a in test_ids:
-            if policy == "scheduled":
-                e, r, _ = S3.scheduled_metrics(err[a], cyc[a], period_star)
-            else:
-                e, r, _ = S3.policy_metrics(err[a], hn[a], policy, tau)
-            e_list.append(e)
-            r_list.append(r)
-        return np.array(e_list, float), np.array(r_list, float)
-
-    policies = {
-        "fixed": policy_per_actuator("fixed"),
-        "scheduled": policy_per_actuator("scheduled"),
-        "triggered": policy_per_actuator("triggered", tau_star),
-        "always": policy_per_actuator("always"),
-    }
+    policies = {name: (np.array(es, float), np.array(rs, float))
+                for name, (es, rs) in S3.heldout_policies(test_ids, err, hn, cyc, tau_star, period_star).items()}
 
     policy_ci = {}
     for name, (e_arr, r_arr) in policies.items():
@@ -342,16 +296,8 @@ def main():
     # --- lead-time frontier with cluster CIs ---
     frontier = []
     for tau in S3.LEAD_FRONTIER_TAU:
-        recs, leads, errs, recals = [], [], [], []
-        for a in test_ids:
-            fixed_err = [err[a][i][0] for i in range(len(LIFE))]
-            lt = lead_time(hn[a], fixed_err, tau, budget_mm, LIFE)
-            recs.append(lt)
-            leads.append(lt["lead_life"] if lt["lead_life"] is not None else np.nan)
-            e, r, _ = S3.policy_metrics(err[a], hn[a], "triggered", tau)
-            errs.append(e)
-            recals.append(r)
-        leads = np.array(leads, float)
+        recs, errs, recals = S3.lead_records(tau, test_ids, err, hn, acts, budget_mm)
+        leads = np.array([np.nan if r["lead_life"] is None else r["lead_life"] for r in recs], float)
         errs = np.array(errs, float)
         recals = np.array(recals, float)
         lb = np.array([np.nanmean(leads[list(c)]) for c in combos])
@@ -481,16 +427,9 @@ def main():
 
 
 def _figures(results, per_act_xy, test_ids):
-    try:
-        import matplotlib
-
-        matplotlib.use("Agg")
-        import matplotlib.pyplot as plt
-        from scripts import figstyle
-
-        figstyle.apply()
-    except Exception as exc:  # pragma: no cover
-        print(f"(matplotlib unavailable, skipped figures: {exc})")
+    plt = figstyle.setup()
+    if plt is None:  # pragma: no cover
+        print("(matplotlib unavailable, skipped figures)")
         return
 
     C = results["correlation"]

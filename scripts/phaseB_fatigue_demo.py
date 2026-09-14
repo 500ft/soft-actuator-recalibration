@@ -10,12 +10,10 @@ from __future__ import annotations
 from dataclasses import asdict, replace
 import json
 from pathlib import Path
-import sys
 
 import numpy as np
 
 REPO = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(REPO))
 
 from sim.fatigue import FatigueParams, degraded_network, degraded_sls, fatigue_state
 from sim.plant import (
@@ -27,15 +25,9 @@ from sim.plant import (
     sls_loss_energy_analytic,
 )
 
-try:
-    import matplotlib
+from scripts import figstyle
 
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    _MPL = True
-except Exception:
-    _MPL = False
+plt = figstyle.setup(style=False)
 
 
 LIFE_STAGES = [0, 5, 10, 250, 1000, 2000, 2450, 2800, 3200, 3500]
@@ -200,7 +192,7 @@ def main():
     }
     (outdir / "phaseB_results.json").write_text(json.dumps(results, indent=2))
 
-    if _MPL:
+    if plt is not None:
         _plots(
             outdir,
             params,

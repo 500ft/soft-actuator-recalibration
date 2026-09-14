@@ -42,6 +42,19 @@ def apply():
     })
 
 
+def setup(style: bool = True):
+    """Headless pyplot (with the publication style unless ``style=False``), or None if matplotlib is unavailable."""
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+    except Exception:  # pragma: no cover
+        return None
+    if style:
+        apply()
+    return plt
+
+
 def save(fig, path_stem: str):
     """Write ``path_stem.png`` (300 dpi raster) and ``path_stem.pdf`` (vector)."""
     fig.savefig(f"{path_stem}.png")

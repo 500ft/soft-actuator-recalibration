@@ -27,25 +27,14 @@ import os
 import numpy as np
 
 from pipeline.correctors import RidgeCorrector, rmse
-from sim.kinematics import pcc_transform
+from scripts import figstyle
+from scripts.phased import DATA, feats, load, pose_rmse
 
-DATA = "data/sim/phaseD"
 N_LAGS = 8
 ALPHA = 1.0
 YOUNG_MID = [0.10, 0.30, 0.50]
 OLD = [0.70, 0.90]
 LIFE_ALL = [0.10, 0.30, 0.50, 0.70, 0.90]
-
-
-def load():
-    d = dict(np.load(os.path.join(DATA, "dataset.npz")))
-    m = json.load(open(os.path.join(DATA, "manifest.json")))
-    return d, m
-
-
-def trace_features(d, i):
-    # shared-manifold pressure + ALL chamber valve commands (focal + neighbors)
-    return np.concatenate([d["meas_manifold_pressure"][i][:, None], d["cmd_all"][i]], axis=-1)
 
 
 def idx_for(d, aid, lifes, topo=None):
@@ -57,24 +46,13 @@ def idx_for(d, aid, lifes, topo=None):
 
 
 def fit(d, idxs, n_lags):
-    feats = [trace_features(d, i) for i in idxs]
-    tgts = [d["true_kappa"][i] for i in idxs]
-    return RidgeCorrector(n_lags=n_lags, alpha=ALPHA).fit(feats, tgts)
+    return RidgeCorrector(n_lags=n_lags, alpha=ALPHA).fit(
+        [feats(d, i) for i in idxs], [d["true_kappa"][i] for i in idxs])
 
 
 def k_rmse(model, d, idxs):
-    return float(np.mean([rmse(model.predict(trace_features(d, i)), d["true_kappa"][i])
+    return float(np.mean([rmse(model.predict(feats(d, i)), d["true_kappa"][i])
                           for i in idxs]))
-
-
-def pos_rmse(model, d, idxs, a):
-    errs = []
-    for i in idxs:
-        kp = np.clip(model.predict(trace_features(d, i)), 0.0, None)
-        pred = np.array([pcc_transform(float(k), a["plane_azimuth_rad"], a["length_m"])[:3, 3]
-                         for k in kp])
-        errs.append(rmse(pred, d["true_position"][i]))
-    return float(np.mean(errs))
 
 
 def main():
@@ -95,8 +73,8 @@ def main():
                 continue
             perB[name]["static"].append(k_rmse(static, d, te))
             perB[name]["dynamic"].append(k_rmse(dynamic, d, te))
-            perB[name]["pos_static"].append(pos_rmse(static, d, te, acts_by_id[aid]))
-            perB[name]["pos_dynamic"].append(pos_rmse(dynamic, d, te, acts_by_id[aid]))
+            perB[name]["pos_static"].append(pose_rmse(static, d, te, acts_by_id[aid]))
+            perB[name]["pos_dynamic"].append(pose_rmse(dynamic, d, te, acts_by_id[aid]))
     expB = {}
     for name, v in perB.items():
         expB[name] = {
@@ -138,14 +116,9 @@ def main():
     print("  shared:  " + "  ".join(f"{v:.3f}" for v in expA["shared"]))
     print("  isolated:" + "  ".join(f"{v:.3f}" for v in expA["isolated"]))
 
-    try:
-        import matplotlib
-        matplotlib.use("Agg")
-        import matplotlib.pyplot as plt
-        from scripts import figstyle
-        figstyle.apply()
-    except Exception as exc:  # pragma: no cover
-        print(f"(matplotlib unavailable, skipped figures: {exc})")
+    plt = figstyle.setup()
+    if plt is None:  # pragma: no cover
+        print("(matplotlib unavailable, skipped figures)")
         return
     plt.figure()
     plt.plot(LIFE_ALL, expA["shared"], "o-", label="shared manifold")

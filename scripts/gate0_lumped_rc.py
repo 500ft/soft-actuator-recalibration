@@ -58,7 +58,7 @@ Run:  python3 scripts/gate0_lumped_rc.py
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, asdict, field
+from dataclasses import dataclass, asdict
 from pathlib import Path
 
 import numpy as np
@@ -301,7 +301,8 @@ def robustness_sweep(n: int = 400, seed: int = 0) -> dict:
     """Monte-Carlo over plausible R/C/P decades to confirm the PASS verdict is not an
     artifact of the hand-picked nominal parameters. Returns summary stats."""
     rng = np.random.default_rng(seed)
-    fats = np.linspace(1.0, 2.0, 11)
+    d = Params()
+    fats = np.linspace(d.fatigue_min, d.fatigue_max, d.fatigue_steps)
     rhos, drifts = [], []
     for _ in range(n):
         p = Params(
@@ -315,11 +316,11 @@ def robustness_sweep(n: int = 400, seed: int = 0) -> dict:
         rhos.append(spearmanr(fats, ct)[0])
         drifts.append(abs(ct[-1] - ct[0]) / ct[0])
     rhos, drifts = np.array(rhos), np.array(drifts)
-    mono = np.abs(rhos) >= 0.99
+    mono = np.abs(rhos) >= d.monotonic_rho_min
     return {
         "n": n,
         "frac_monotone": float(mono.mean()),
-        "frac_pass": float((mono & (drifts >= 0.10)).mean()),
+        "frac_pass": float((mono & (drifts >= d.rel_drift_min)).mean()),
         "all_same_sign_positive": bool(np.all(rhos > 0)),
         "median_abs_rho": float(np.median(np.abs(rhos))),
         "drift_median": float(np.median(drifts)),

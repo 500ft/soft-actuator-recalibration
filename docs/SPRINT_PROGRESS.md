@@ -1,5 +1,16 @@
 # Sprint progress — P-V-Fatigue-Manifold-Proprioception
 
+## 2026-09-14 — PV-R04: ponytail audit applied, outputs byte-identical
+
+An over-engineering audit of the Python tree was applied on `audit/ponytail-20260914`: duplicated
+study-runner logic, a duplicate steady-state solver, three hand-rolled interpolated crossings, dead
+parameter axes and keyword arguments, an orphan report script and boilerplate guards. 492 lines
+removed. Every generator was rerun on clones of `main` and of the branch; all 50 regenerated files are
+identical (per array for the dataset, PDFs modulo timestamps). No result, figure, threshold, manifest,
+PDF or approval field changed; 213 tests and all publication checkers unchanged. The one audit item
+that would alter the dataset (unread arrays and the contact loop) is left for the author.
+[Evidence](../evidence/ponytail-2026-09-14/README.md). PV-08 remains the gate.
+
 ## 2026-09-11 — evidence-gap correction
 
 The [current correction](COMPLETION_RECONCILIATION.md) supersedes any interpretation that earlier preparation closed a physical, approval, or source-review gate. Work is on `fix/evidence-gaps-20260911` from current renamed main; historical entries below retain their original dates and PR snapshots. The original day-3 and presentation PRs are now merged, but this correction is a new reviewable change, not an asserted merge or publication.

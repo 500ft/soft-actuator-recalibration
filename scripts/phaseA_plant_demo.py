@@ -17,27 +17,18 @@ Validation checks (printed):
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import numpy as np
 
 REPO = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(REPO))
-from sim.plant import (SLSParams, NetworkParams, pv_loop, loop_area,
+from sim.plant import (SLSParams, NetworkParams, pv_loop,
                        sls_loss_energy_analytic, linear_network_crosstalk)
+from scripts import gate0_lumped_rc as g0  # Gate 0 model for the consistency check
 
-# import the Gate 0 model for the consistency check
-sys.path.insert(0, str(REPO / "scripts"))
-import gate0_lumped_rc as g0
+from scripts import figstyle
 
-try:
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-    _MPL = True
-except Exception:
-    _MPL = False
+plt = figstyle.setup(style=False)
 
 
 def main():
@@ -94,7 +85,7 @@ def main():
     }
     (outdir / "phaseA_results.json").write_text(json.dumps(results, indent=2))
 
-    if _MPL:
+    if plt is not None:
         _plots(outdir, sls, A, fpk, freqs, area_num, area_ana,
                test_freqs, ct_const, ct_g0, ct_sls)
 

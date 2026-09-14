@@ -5,8 +5,6 @@ the shared supply gets softer (larger R_s, or smaller manifold buffer C_m), and 
 operating point must sit in the second-order regime.
 """
 
-import dataclasses
-
 import numpy as np
 
 from scripts.run_study4 import SWEEP_MULT, coupling_curve, first_crossing_mult
