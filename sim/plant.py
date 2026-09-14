@@ -27,7 +27,7 @@ Pneumatic network (same topology as Gate 0)
 -------------------------------------------
     regulated supply --R_s--> manifold (C_m) --R_v_i--> chamber_i --R_l_i--> atm
 Volumetric flow Q = g*dP (g = 1/R). Chamber volume changes with net flow:
-    dV_i/dt = g_v_i (P_m - P_i) - g_l_i (P_i - P_atm)
+    dV_i/dt = g_v_i (P_m - P_i) - g_l_i P_i
 Manifold node:
     C_m dP_m/dt = g_s (P_s - P_m) - sum_i g_v_i (P_m - P_i)
 with P_i the SLS wall pressure (function of V_i, x_d_i).
@@ -77,7 +77,6 @@ class NetworkParams:
     R_v: float = 8.0e8      # nominal valve resistance [Pa*s/m^3]
     R_l: float = 8.0e9      # chamber bleed/leak [Pa*s/m^3]
     C_m: float = 5.0e-12    # manifold node compliance [m^3/Pa]
-    P_atm: float = 0.0
 
 
 # --------------------------------------------------------------------------- #
@@ -104,14 +103,13 @@ def sls_loss_energy_analytic(amplitude, omega, sls: SLSParams):
 # --------------------------------------------------------------------------- #
 # Drive mode 1: volumetric (impose V(t), read P) -- the P-V loop generator
 # --------------------------------------------------------------------------- #
-def simulate_volumetric(t, V_func, sls: SLSParams, x_d0=None):
+def simulate_volumetric(t, V_func, sls: SLSParams):
     """Impose chamber volume V_func(t) (scalar, single chamber); integrate the dashpot
     state and return P(t), V(t).
 
     Returns dict with keys: t, V, P, x_d.
     """
-    if x_d0 is None:
-        x_d0 = V_func(t[0]) - sls.V0  # start relaxed (x_d = x) -> no startup transient
+    x_d0 = V_func(t[0]) - sls.V0  # start relaxed (x_d = x) -> no startup transient
 
     def rhs(tt, y):
         x = V_func(tt) - sls.V0
@@ -171,6 +169,25 @@ def simulate_pressure_decay(t, P_initial, sls: SLSParams, R_l, P_atm=0.0):
     return {"t": t, "V": V, "P": P, "x_d": x_d}
 
 
+def first_crossing(xs, ys, threshold):
+    """Linearly interpolated first ``x`` where ``y`` reaches ``threshold`` (rising); None if never."""
+    xs = np.asarray(xs, float)
+    ys = np.asarray(ys, float)
+    if xs.shape != ys.shape or xs.ndim != 1 or xs.size < 2:
+        raise ValueError("xs and ys must be matching 1-D arrays with >= 2 points")
+    if ys[0] >= threshold:
+        return float(xs[0])
+    for i in range(1, ys.size):
+        y0, y1 = ys[i - 1], ys[i]
+        if y1 >= threshold:
+            x0, x1 = xs[i - 1], xs[i]
+            if y1 == y0:
+                return float(x1)
+            frac = (threshold - y0) / (y1 - y0)
+            return float(x0 + frac * (x1 - x0))
+    return None
+
+
 def operational_half_life(t, P, P_initial):
     """Return first interpolated time where pressure reaches ``P_initial/2``.
 
@@ -186,18 +203,8 @@ def operational_half_life(t, P, P_initial):
     if not np.isfinite(P_initial) or P_initial <= 0:
         raise ValueError("P_initial must be finite and > 0")
 
-    threshold = P_initial / 2.0
-    crossings = np.flatnonzero(P <= threshold)
-    if crossings.size == 0:
-        return float("nan")
-    i = int(crossings[0])
-    if i == 0:
-        return float(t[0])
-    p0, p1 = P[i - 1], P[i]
-    if p1 == p0:
-        return float(t[i])
-    fraction = (threshold - p0) / (p1 - p0)
-    return float(t[i - 1] + fraction * (t[i] - t[i - 1]))
+    x = first_crossing(t, -P, -(P_initial / 2.0))     # falling crossing = rising crossing of -P
+    return float("nan") if x is None else x
 
 
 def pv_loop(frequency, amplitude, sls: SLSParams, n_periods=8, n_per_period=400):
@@ -225,23 +232,26 @@ def loop_area(V, P):
 # --------------------------------------------------------------------------- #
 # Drive mode 2: pneumatic network (full state) -- for cross-talk / dynamics
 # --------------------------------------------------------------------------- #
-def _operating_volumes(net: NetworkParams, sls: SLSParams, gv, gl, gs):
-    """Steady-state chamber volumes / manifold pressure with nominal valves.
-    At steady state x_d = x, so P_i = k1*(V_i - V0). Solve the static flow balance."""
-    n = net.n_chambers
-    # chamber: gv(P_m - P_i) - gl(P_i - P_atm) = 0, P_i = k1 (V_i - V0)
-    #   -> P_i = (gv P_m + gl P_atm)/(gv+gl)
-    # manifold: gs(P_s - P_m) = sum gv (P_m - P_i)
-    a = gv / (gv + gl)                      # P_i = a P_m + (1-a) P_atm
-    coef = gs + np.sum(gv * (1 - a))
-    P_m = (gs * net.P_s + np.sum(gv * (1 - a)) * net.P_atm) / coef
-    P_i = a * P_m + (1 - a) * net.P_atm
-    V_i = sls.V0 + P_i / sls.k1
-    return V_i, P_m
+def steady_state(topology, gv0, k1, V0, gl, gs, P_s):
+    """Closed-form operating point for a constant nominal valve conductance ``gv0`` (per chamber).
+
+    At steady state x_d = x, so P_i = k1 (V_i - V0); chamber gv(P_m - P_i) - gl P_i = 0 and
+    manifold gs(P_s - P_m) = sum gv (P_m - P_i). Returns ``(V, x_d, P_m state)``.
+    """
+    a = gv0 / (gv0 + gl)                       # P_i = a * P_m
+    if topology == "shared":
+        P_m = gs * P_s / (gs + np.sum(gv0 * (1 - a)))
+        Pm_state = np.array([P_m])
+    elif topology == "isolated":
+        P_m = gs * P_s / (gs + gv0 * (1 - a))
+        Pm_state = P_m
+    else:
+        raise ValueError("topology must be 'shared' or 'isolated'")
+    V = V0 + a * P_m / k1
+    return V, V - V0, Pm_state
 
 
-def linear_network_crosstalk(omega, net: NetworkParams, sls: SLSParams,
-                             compliance_override=None, driven=0, neighbor=1):
+def linear_network_crosstalk(omega, net: NetworkParams, sls: SLSParams, compliance_override=None):
     """Small-signal cross-talk |H_neighbor,driven|/|H_driven,driven| of the pneumatic
     network, using the SLS complex compliance Chat(w) (or a fixed override, to reproduce
     the Gate-0 constant-compliance model). This is the bridge back to Gate 0.
@@ -250,7 +260,8 @@ def linear_network_crosstalk(omega, net: NetworkParams, sls: SLSParams,
     gv = np.full(n, 1.0 / net.R_v); gl = np.full(n, 1.0 / net.R_l); gs = 1.0 / net.R_s
     Chat = (sls_complex_compliance(omega, sls) if compliance_override is None
             else complex(compliance_override))
-    Vi0, Pm0 = _operating_volumes(net, sls, gv, gl, gs)
+    Vi0, _, Pm0 = steady_state("shared", gv, sls.k1, sls.V0, gl, gs, net.P_s)
+    Pm0 = Pm0[0]
     Pi0 = sls.k1 * (Vi0 - sls.V0)
 
     # state = [P_1..P_n, P_m]; chamber capacitance is the (complex) Chat, manifold C_m.
@@ -269,4 +280,4 @@ def linear_network_crosstalk(omega, net: NetworkParams, sls: SLSParams,
         B[n, k] = -drop / net.C_m
     Cout = np.zeros((n, n + 1)); Cout[range(n), range(n)] = 1.0
     H = Cout @ np.linalg.solve(1j * omega * np.eye(n + 1) - A, B)
-    return float(abs(H[neighbor, driven]) / abs(H[driven, driven]))
+    return float(abs(H[1, 0]) / abs(H[0, 0]))       # neighbor 1 driven by chamber 0

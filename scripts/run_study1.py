@@ -19,14 +19,11 @@ REPO = Path(__file__).resolve().parents[1]
 
 from pipeline.degradation import (
     calibrate_cusum_to_sustained,
+    FITTERS,
     chronological_forecast,
     cusum_alarm,
     false_alarm_rate,
     fit_all_models,
-    fit_double_logistic,
-    fit_linear,
-    fit_logistic,
-    fit_segmented_quadratic,
     roc_auc,
     sustained_sigma_alarm,
 )
@@ -164,15 +161,6 @@ def _build_null_calibrations(base_sls, frequency, amplitude, noises, cadences,
     return calibrations
 
 
-def _fitters():
-    return {
-        "linear": fit_linear,
-        "segmented_quadratic": fit_segmented_quadratic,
-        "logistic": fit_logistic,
-        "double_logistic": fit_double_logistic,
-    }
-
-
 def _run_condition(generator, sharpness, onset, noise, cadence, trials,
                    null_calibrations, seed, base_sls, frequency, amplitude):
     params = replace(FatigueParams(), acceleration_onset_fraction=onset)
@@ -186,8 +174,8 @@ def _run_condition(generator, sharpness, onset, noise, cadence, trials,
     rng = np.random.default_rng(seed)
     n_trials = 1 if noise == 0 else trials
 
-    onset_errors = {name: [] for name in _fitters()}
-    forecasts = {name: [] for name in _fitters()}
+    onset_errors = {name: [] for name in FITTERS}
+    forecasts = {name: [] for name in FITTERS}
     selected = Counter()
     alarms_3s, alarms_cusum = [], []
     auc_onset, auc_horizons = [], {0.1: [], 0.2: [], 0.3: []}
@@ -224,7 +212,7 @@ def _run_condition(generator, sharpness, onset, noise, cadence, trials,
         for name, fit in fits.items():
             if fit.status == "ok" and np.isfinite(fit.onset):
                 onset_errors[name].append(abs(fit.onset - onset))
-            rmse, status = chronological_forecast(_fitters()[name], u, hi)
+            rmse, status = chronological_forecast(FITTERS[name], u, hi)
             if status == "ok":
                 forecasts[name].append(rmse)
 
@@ -240,7 +228,7 @@ def _run_condition(generator, sharpness, onset, noise, cadence, trials,
                 auc_horizons[horizon].append(roc_auc(detector_hi, u >= 1 - horizon))
 
     model_summary = {}
-    for name in _fitters():
+    for name in FITTERS:
         errors = np.asarray(onset_errors[name])
         forecast_values = np.asarray(forecasts[name])
         model_summary[name] = {
@@ -288,7 +276,7 @@ def _run_condition(generator, sharpness, onset, noise, cadence, trials,
 
 def _metric_fixtures():
     u = np.linspace(0, 1, 101)
-    cohort = sample_validation_cohort(20, seed=20260623, vary=("rupture_cycles",))
+    cohort = sample_validation_cohort(20, seed=20260623)
     normal_curves = []
     corrupted_curves = []
     for i, params in enumerate(cohort):

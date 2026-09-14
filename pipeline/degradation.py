@@ -243,13 +243,16 @@ def predict_fit(fit: DegradationFit, u):
     raise ValueError(f"unknown fitted model: {fit.model}")
 
 
+FITTERS = {
+    "linear": fit_linear,
+    "segmented_quadratic": fit_segmented_quadratic,
+    "logistic": fit_logistic,
+    "double_logistic": fit_double_logistic,
+}
+
+
 def fit_all_models(u, y):
-    return {
-        "linear": fit_linear(u, y),
-        "segmented_quadratic": fit_segmented_quadratic(u, y),
-        "logistic": fit_logistic(u, y),
-        "double_logistic": fit_double_logistic(u, y),
-    }
+    return {name: fit(u, y) for name, fit in FITTERS.items()}
 
 
 def chronological_forecast(fitter, u, y, train_fraction=0.80, min_holdout=2):

@@ -43,12 +43,13 @@ import numpy as np
 
 from pipeline.correctors import RidgeCorrector, rmse
 from sim.fatigue import FatigueParams, degraded_sls, fatigue_state
-from sim.kinematics import PCCParams, curvature_from_pressure
+from sim.kinematics import curvature_from_pressure
 from sim.network import _conductances, probe_coupling, simulate_network
-from sim.plant import NetworkParams, SLSParams
+from sim.plant import NetworkParams, SLSParams, first_crossing
 from scripts import figstyle
+from scripts.phased import DATA
+from scripts.phaseD_dataset import all_commands, build_actuators, make_drive
 
-DATA = "data/sim/phaseD"
 
 # --- sweep grid (multiples of the default network parameter) ------------------
 # log-spaced so the 10 %/20 % crossings are well resolved; default (x1.0) is included.
@@ -86,39 +87,13 @@ def coupling_curve(base, sls_list, field):
 def first_crossing_mult(mults, coupling, threshold):
     """Multiple of the default at which a *monotone-increasing* coupling curve crosses
     ``threshold`` (log-linear interpolation). ``None`` if it never reaches it on the grid."""
-    coupling = np.asarray(coupling)
-    if coupling[-1] < threshold or coupling[0] >= threshold:
-        # never reaches it, or already above it at the softest-buffered end of the grid
-        if coupling[0] >= threshold:
-            return float(mults[0])
-        return None
-    k = int(np.searchsorted(coupling, threshold))
-    lm0, lm1 = np.log(mults[k - 1]), np.log(mults[k])
-    c0, c1 = coupling[k - 1], coupling[k]
-    return float(np.exp(lm0 + (threshold - c0) / (c1 - c0) * (lm1 - lm0)))
+    x = first_crossing(np.log(mults), coupling, threshold)
+    return None if x is None else float(np.exp(x))
 
 
 # --------------------------------------------------------------------------- #
 # Corrector check (does dynamic start to beat static as the supply softens?)
 # --------------------------------------------------------------------------- #
-def _build_actuators(n=N_ACTUATORS):
-    acts = []
-    for aid in range(n):
-        r = np.random.default_rng(1000 + aid)
-        pcc = PCCParams(
-            length_m=0.08 + 0.06 * r.random(),
-            kappa_gain=1.5e-5 + 1.0e-5 * r.random(),
-            plane_azimuth_rad=2.0 * np.pi * r.random(),
-        )
-        sls = SLSParams(
-            k1=2.0e10 * (0.9 + 0.2 * r.random()),
-            k2=2.0e10 * (0.9 + 0.2 * r.random()),
-            tau=0.10 * (0.8 + 0.4 * r.random()),
-        )
-        acts.append({"pcc": pcc, "sls": sls, "rupture": 3000.0 + 1000.0 * r.random()})
-    return acts
-
-
 def _dataset_for(net):
     """Regenerate a small shared-manifold per-actuator dataset under network ``net``.
 
@@ -128,7 +103,7 @@ def _dataset_for(net):
     nb = net.n_chambers
     _, _, gv0 = _conductances(nb, net, None)
     t = np.linspace(0.0, T_DURATION, T_POINTS)
-    acts = _build_actuators()
+    acts = build_actuators(N_ACTUATORS)
     freqs = np.asarray(EXCITE_FREQS, dtype=float)
     recs = []
     for aid in range(len(acts)):
@@ -144,12 +119,8 @@ def _dataset_for(net):
                 np.random.default_rng([GLOBAL_SEED, aid, 0, ch]).uniform(0.0, 2.0 * np.pi, freqs.size)
                 for ch in range(nb)])
 
-            def gv(tt, phases=phases):
-                s = np.sin(2.0 * np.pi * freqs[None, :] * tt + phases).mean(axis=1)
-                return gv0 * (1.0 + EXCITE_DEPTH * s)
-
-            arg = 2.0 * np.pi * freqs[None, None, :] * t[:, None, None] + phases[None, :, :]
-            cmd_all = EXCITE_DEPTH * np.sin(arg).mean(axis=2)               # (T, nb)
+            gv = make_drive(gv0, freqs, phases, EXCITE_DEPTH)
+            cmd_all = all_commands(t, freqs, phases, EXCITE_DEPTH)           # (T, nb)
             res = simulate_network(t, gv, "shared", sls_list, net, leak_multiplier=leak)
             kappa = curvature_from_pressure(res["P"][0], fs.compliance_multiplier, pcc)
             feats = np.concatenate([res["P_m"][:, None], cmd_all], axis=-1)
@@ -200,7 +171,6 @@ def main():
     assert np.all(d_Rs > 0), f"coupling not monotone increasing in R_s: min d={d_Rs.min():.2e}"
     assert np.all(d_Cm_soft > 0), \
         f"coupling not monotone increasing as C_m softens (decreases): min d={d_Cm_soft.min():.2e}"
-    monotonic_ok = True
 
     crossings = {
         "R_s": {f"{th:.2f}": first_crossing_mult(SWEEP_MULT, c_Rs, th) for th in THRESHOLDS},
@@ -231,7 +201,7 @@ def main():
         },
         "thresholds": THRESHOLDS,
         "softness_multiplier_at_threshold": crossings,
-        "monotonic_increase_with_supply_softness": monotonic_ok,
+        "monotonic_increase_with_supply_softness": True,   # the asserts above would have raised
         "corrector_check_static_vs_dynamic": corrector,
     }
     os.makedirs(DATA, exist_ok=True)
@@ -247,8 +217,7 @@ def main():
         m = crossings["R_s"][f"{th:.2f}"]
         print(f"  coupling = {th*100:.0f}%  at  R_s x {m:.2f}" if m else
               f"  coupling = {th*100:.0f}%  not reached on grid")
-    print("monotone increase with supply softness (R_s up, C_m down): "
-          f"{'PASS' if monotonic_ok else 'FAIL'}")
+    print("monotone increase with supply softness (R_s up, C_m down): PASS")
     print("corrector check (static vs dynamic, young+mid -> old):")
     for key, g in corrector.items():
         print(f"  {key:10s} coupling={g['coupling']*100:5.2f}%  "

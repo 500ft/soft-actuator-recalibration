@@ -19,30 +19,24 @@ from __future__ import annotations
 import numpy as np
 
 from sim.fatigue import FatigueParams, degraded_sls, fatigue_state
-from sim.plant import SLSParams, pv_loop
+from sim.plant import SLSParams, first_crossing, pv_loop
 
 
-def pv_loop_area(sls: SLSParams, *, frequency=None, amplitude_frac=0.1, n_periods=8):
+def pv_loop_area(sls: SLSParams):
     """Observable P-V hysteresis loop area from a volumetric probe (energy/cycle).
 
-    Uses a fixed sinusoidal volume drive at (by default) the loss-peak frequency; the enclosed
-    P-V area grows with the fatigue loss modulus. This is the measurable loop-shape signal, not
+    Fixed sinusoidal volume drive (10 % of V0) at the loss-peak frequency; the enclosed P-V
+    area grows with the fatigue loss modulus. This is the measurable loop-shape signal, not
     a ground-truth state.
     """
-    f = sls.f_loss_peak if frequency is None else frequency
-    amplitude = amplitude_frac * sls.V0
-    return float(pv_loop(f, amplitude, sls, n_periods=n_periods)["area"])
+    return float(pv_loop(sls.f_loss_peak, 0.1 * sls.V0, sls)["area"])
 
 
-def health_trajectory(base_sls: SLSParams, rupture_cycles, life_fractions,
-                      fp: FatigueParams | None = None, **probe):
+def health_trajectory(base_sls: SLSParams, rupture_cycles, life_fractions):
     """P-V loop-area health signal at each normalized life fraction for one actuator."""
-    fp = fp or FatigueParams(rupture_cycles=float(rupture_cycles))
-    out = []
-    for lf in life_fractions:
-        state = fatigue_state(lf * rupture_cycles, 0.0, fp)
-        out.append(pv_loop_area(degraded_sls(base_sls, state), **probe))
-    return np.asarray(out, dtype=float)
+    fp = FatigueParams(rupture_cycles=float(rupture_cycles))
+    return np.asarray([pv_loop_area(degraded_sls(base_sls, fatigue_state(lf * rupture_cycles, 0.0, fp)))
+                       for lf in life_fractions], dtype=float)
 
 
 def bootstrap_correlation(x, y, n_boot=1000, seed=0, ci=0.95):
@@ -69,25 +63,6 @@ def bootstrap_correlation(x, y, n_boot=1000, seed=0, ci=0.95):
     return {"r": point, "ci_low": lo, "ci_high": hi}
 
 
-def _first_crossing(xs, ys, threshold):
-    """Linearly interpolated first ``x`` where ``y`` reaches ``threshold``."""
-    xs = np.asarray(xs, float)
-    ys = np.asarray(ys, float)
-    if xs.shape != ys.shape or xs.ndim != 1 or xs.size < 2:
-        raise ValueError("xs and ys must be matching 1-D arrays with >= 2 points")
-    if ys[0] >= threshold:
-        return float(xs[0])
-    for i in range(1, ys.size):
-        y0, y1 = ys[i - 1], ys[i]
-        if y1 >= threshold:
-            x0, x1 = xs[i - 1], xs[i]
-            if y1 == y0:
-                return float(x1)
-            frac = (threshold - y0) / (y1 - y0)
-            return float(x0 + frac * (x1 - x0))
-    return None
-
-
 def lead_time(health_norm, errors_fixed_cal, tau, budget_mm, life_fractions):
     """Trigger-vs-budget lead time from one young-calibrated trajectory.
 
@@ -102,8 +77,8 @@ def lead_time(health_norm, errors_fixed_cal, tau, budget_mm, life_fractions):
     life_fractions = np.asarray(life_fractions, float)
     if health_norm.shape != errors_fixed_cal.shape or health_norm.shape != life_fractions.shape:
         raise ValueError("health, error, and life arrays must have matching shapes")
-    trigger_life = _first_crossing(life_fractions, health_norm, 1.0 + float(tau))
-    budget_life = _first_crossing(life_fractions, errors_fixed_cal, float(budget_mm))
+    trigger_life = first_crossing(life_fractions, health_norm, 1.0 + float(tau))
+    budget_life = first_crossing(life_fractions, errors_fixed_cal, float(budget_mm))
     if trigger_life is None:
         return {"trigger_life": None, "budget_violation_life": budget_life,
                 "lead_life": None, "status": "never_triggers"}

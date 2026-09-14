@@ -4,14 +4,7 @@ import numpy as np
 import pytest
 
 from sim.fatigue import FatigueParams, FatigueState, fatigue_state
-from sim.kinematics import (
-    PCCParams,
-    curvature_from_pressure,
-    invert_tip_position,
-    pcc_transform,
-    pressure_from_curvature,
-    tip_pose,
-)
+from sim.kinematics import PCCParams, curvature_from_pressure, pcc_transform
 
 
 def _state(compliance: float) -> FatigueState:
@@ -22,6 +15,20 @@ def _state(compliance: float) -> FatigueState:
         fatigue_slow=0.0, fatigue_accelerating=0.0, fatigue_total=0.0,
         compliance_multiplier=compliance, loss_multiplier=1.0, leak_multiplier=1.0,
     )
+
+
+def tip_pose(pressure_pa, state, params):
+    kappa = float(curvature_from_pressure(pressure_pa, state.compliance_multiplier, params))
+    return pcc_transform(kappa, params.plane_azimuth_rad, params.length_m)
+
+
+def invert_tip_position(position_xyz, length_m):
+    """Exact inverse of the position part of pcc_transform -> (kappa, phi)."""
+    x, y, z = position_xyz
+    d = math.hypot(x, y)              # = r (1 - cos theta); z = r sin theta
+    if d <= 0.0:
+        return 0.0, 0.0
+    return 2.0 * math.atan2(d, z) / length_m, math.atan2(y, x)
 
 
 def test_straight_segment_when_no_pressure():
@@ -56,7 +63,7 @@ def test_forward_inverse_roundtrip_machine_precision(phi, P, compliance):
     assert abs(math.cos(phi_rec) - math.cos(phi)) < 1e-9
     assert abs(math.sin(phi_rec) - math.sin(phi)) < 1e-9
     # pose -> "effective pressure" recovery (the proprioception ground truth)
-    P_rec = pressure_from_curvature(kappa_rec, compliance, params)
+    P_rec = kappa_rec / (params.kappa_gain * compliance)
     assert abs(P_rec - P) <= 1e-6 * P
 
 
