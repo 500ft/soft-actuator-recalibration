@@ -90,6 +90,10 @@ External feedback: pending.
 
 Next action: PV-08: author review of docs/preprint_v1_4_candidate.md; no deposit of archived v1.3.
 
+Code-hygiene layer (2026-09-14, PV-R04): the ponytail over-engineering audit was applied and merged; every
+regenerated output is byte-identical to the pre-refactor code ([evidence](../evidence/ponytail-2026-09-14/README.md)).
+This is repository hygiene, not a scientific or approval change.
+
 Evidence-supported portfolio bullet: “Corrected simulation evidence lineage and hardened publication checks to separate archived artifact integrity from scientific readiness.”
 This concerns engineering quality, not adoption or measured scientific performance.
 

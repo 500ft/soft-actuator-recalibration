@@ -1,5 +1,14 @@
 # Sprint progress — P-V-Fatigue-Manifold-Proprioception
 
+## 2026-09-15 — Day-4 tasks T1–T3 executed
+
+Per the merged [day-4 plan](DAY4_PLAN.md) defaults: the unapproved v1.4 candidate PDF was rendered
+through the safe route into the gitignored `build/` (arXiv gate 0, archive and readiness record
+byte-identical, hashes in [evidence](../evidence/task-2026-09-14/README.md)); the bare render
+instruction in `REVISION_PLAN.md` was retired; the review index links the PV-R04 evidence and
+CONTRIBUTING adds the ponytail pre-PR step. Audit item 4 was not applied (D3 default). Nothing is
+approved or committed under `build/`; PV-08 remains the gate and now has a rendered artifact to review.
+
 ## 2026-09-14 — PV-R04: ponytail audit applied, outputs byte-identical
 
 An over-engineering audit of the Python tree was applied on `audit/ponytail-20260914`: duplicated
