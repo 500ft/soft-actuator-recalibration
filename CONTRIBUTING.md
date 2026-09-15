@@ -36,6 +36,11 @@ python -m scripts.check_publication_fallback
 If a study output changes, include the regenerated data, figures, and affected
 manuscript text in the same commit.
 
+For code changes, also run `/ponytail-review` (the ponytail Claude Code plugin) on the
+diff before opening the PR and act on its delete-list; a refactor that touches a study
+runner must show its committed outputs regenerate byte-identical
+(`evidence/ponytail-2026-09-14/compare.py`).
+
 ## Pull requests
 
 Describe:
