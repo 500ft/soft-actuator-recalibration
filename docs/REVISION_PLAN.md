@@ -23,7 +23,10 @@ arXiv upload; Wave B is the RoboSoft-deadline package and does NOT block it._
 - Every number that appears in the manuscript is re-verified against the
   study JSONs after any dataset or study change (`data/sim/phaseD/*.json`).
 - `python -m pytest` green before any commit; new analysis gets new tests.
-- PDF re-rendered (`python scripts/make_preprint_pdf.py`) after any text edit.
+- PDF re-rendered after any text edit with the safe route only:
+  `python -m scripts.make_preprint_pdf --source <md> --output build/<name>.pdf`.
+  The archived `docs/preprint_v1.pdf` is refused as an output and hash-verified before and
+  after every render (see `evidence/task-2026-09-12/README.md`).
 - The 5-stage dataset and its committed results stay untouched until Wave B
   deliberately supersedes them — Wave A adds analysis, it does not regenerate.
 - **Execute from updated `main`.** The owner's local checkout sits on
