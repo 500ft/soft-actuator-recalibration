@@ -90,9 +90,27 @@ External feedback: pending.
 
 Next action: PV-08: author review of docs/preprint_v1_4_candidate.md; no deposit of archived v1.3.
 
-Code-hygiene layer (2026-09-14, PV-R04): the ponytail over-engineering audit was applied and merged; every
-regenerated output is byte-identical to the pre-refactor code ([evidence](../evidence/ponytail-2026-09-14/README.md)).
-This is repository hygiene, not a scientific or approval change.
+## Current entries
+
+### 2026-09-15 — unapproved v1.4 preview prepared (PV-D04c, partial)
+
+The candidate was rendered through the safe route into the ignored `build/day4/` and every page inspected;
+PDF SHA-256 `746448862bfa7377d5b210228ea2a005f4dedbaa8135ee8dfaa7adaa7866056c`, source `d700684b…`, archive and
+readiness record unchanged. One renderer defect (Markdown `\*` escapes rendered as a backslash) and two
+cosmetic items are recorded in the [evidence](../evidence/task-2026-09-14/README.md); the renderer repair is a
+separate follow-up. **Preview only: nothing is approved and PV-08 is not complete.** Reproduce with the command in
+the evidence and compare the PDF hash.
+
+### 2026-09-14 — PV-R04 code-hygiene refactor merged ([PR #16](https://github.com/500ft/soft-actuator-recalibration/pull/16))
+
+The ponytail over-engineering audit was applied and merged. Comparison scope, from the
+[evidence](../evidence/ponytail-2026-09-14/README.md): the nine generators were run once on a clone of
+pre-refactor `main` and once on a clone of the refactored branch in the same environment; 50/50
+regenerated outputs matched, dataset equality per array, generated PDFs compared after removing date
+metadata. Both runs retained the pre-existing drift from the committed artifacts described in
+[START_HERE.md](START_HERE.md#reviewer-inspect-or-regenerate-the-study). This establishes that the
+refactor changed no output of the current code; it does not establish fresh reproduction of the
+archived results. No result, threshold, manifest, PDF or approval field changed.
 
 Evidence-supported portfolio bullet: “Corrected simulation evidence lineage and hardened publication checks to separate archived artifact integrity from scientific readiness.”
 This concerns engineering quality, not adoption or measured scientific performance.

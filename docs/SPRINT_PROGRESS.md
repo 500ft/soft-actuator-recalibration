@@ -1,13 +1,18 @@
 # Sprint progress — P-V-Fatigue-Manifold-Proprioception
 
-## 2026-09-15 — Day-4 tasks T1–T3 executed
+## 2026-09-15 — Day-4 executed under the reviewed plan (PR #18); T1 partial
 
-Per the merged [day-4 plan](DAY4_PLAN.md) defaults: the unapproved v1.4 candidate PDF was rendered
-through the safe route into the gitignored `build/` (arXiv gate 0, archive and readiness record
-byte-identical, hashes in [evidence](../evidence/task-2026-09-14/README.md)); the bare render
-instruction in `REVISION_PLAN.md` was retired; the review index links the PV-R04 evidence and
-CONTRIBUTING adds the ponytail pre-PR step. Audit item 4 was not applied (D3 default). Nothing is
-approved or committed under `build/`; PV-08 remains the gate and now has a rendered artifact to review.
+[DAY4_PLAN.md](DAY4_PLAN.md) (PR #18, superseding #17) was executed in order T0 → T2 → T3 → T1.
+The render instruction is corrected (PV-D04a), the review index carries an accurately scoped
+entry for PR #16 and CONTRIBUTING a simplicity-review step (PV-D04b), and an **unapproved** v1.4
+preview was rendered into the ignored `build/day4/`, gated and inspected page by page (PV-D04c,
+partial): the renderer drops Markdown `\*` escapes, leaving backslash artifacts in §4.4–4.5, so a
+renderer repair precedes any exact-bytes decision. D1 stays unknown; D3 deferred; nothing is
+approved and PV-08 is not complete. [Evidence](../evidence/task-2026-09-14/README.md).
+
+Correction: PR #19 was first merged at its pre-rebuild head (the #17-default execution) because a
+force-push failed silently; the follow-up PR replaced that evidence, ledger rows and index entry
+with the #18 execution. No result, PDF, manifest or approval field was affected either way.
 
 ## 2026-09-14 — PV-R04: ponytail audit applied, outputs byte-identical
 
