@@ -95,13 +95,13 @@ CELLH = ParagraphStyle("cellh", parent=CELL, fontName="DejaVu-Bold")
 def inline(s: str) -> str:
     """Markdown inline -> reportlab mini-markup (escape, then bold/italic/code/links)."""
     s = s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    s = s.replace(r"\*", "\x00").replace(r"\[", "\x01").replace(r"\]", "\x02")   # protect escapes first
     s = re.sub(r"!\[.*?\]\(.*?\)", "", s)                       # strip stray image md
     s = re.sub(r"\[(.+?)\]\((.+?)\)", r"\1", s)                 # links -> text
     s = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", s)
     s = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<i>\1</i>", s)
     s = re.sub(r"`(.+?)`", r'<font face="DejaVuMono" size="8">\1</font>', s)
-    s = s.replace(r"\*", "*").replace(r"\[", "[").replace(r"\]", "]")
-    return s
+    return s.replace("\x00", "*").replace("\x01", "[").replace("\x02", "]")
 
 
 def make_table(rows):

@@ -63,11 +63,13 @@ def spread_metrics(h):
     return {"sd_between": sd_between, "sd_within": sd_within, "ratio": ratio, "icc": icc}
 
 
-def verdict(ideal_sd_between_end, ratio, icc, trigger_sd):
+def verdict(ideal_sd_between_end, ratio, icc, trigger_sd, amended=False):
+    """Preregistered rule (criteria i, ii, iii); ``amended=True`` applies the 2026-09-16 owner amendment
+    that withdraws criterion iii (see the preregistration's amendment section)."""
     late = np.asarray(LIFE) >= 0.30
     if ideal_sd_between_end < 1e-6:
         return "A-DEGENERATE"
-    ok = (np.median(ratio[late]) >= 2.0 and np.median(icc[late]) >= 0.5 and trigger_sd >= 0.10)
+    ok = np.median(ratio[late]) >= 2.0 and np.median(icc[late]) >= 0.5 and (amended or trigger_sd >= 0.10)
     return "A-PASS" if ok else "A-FAIL"
 
 
@@ -100,6 +102,7 @@ def main():
         "n_never_trigger": int(sum(t is None for t in trig)),
         "ablation_one_axis": ablation,
         "verdict": v,
+        "verdict_amended_2026_09_16": verdict(ideal_sd[-1], m["ratio"], m["icc"], trigger_sd, amended=True),
         "verdict_inputs": {"ideal_sd_between_u095": float(ideal_sd[-1]),
                            "median_ratio_u_ge_030": float(np.median(m["ratio"][np.asarray(LIFE) >= 0.3])),
                            "median_icc_u_ge_030": float(np.median(m["icc"][np.asarray(LIFE) >= 0.3]))},
@@ -110,7 +113,7 @@ def main():
     }
     os.makedirs(DATA, exist_ok=True)
     json.dump(results, open(os.path.join(DATA, "studyA_results.json"), "w"), indent=2)
-    print(f"Study A verdict: {v}")
+    print(f"Study A verdict: {v} (preregistered rule) | {results['verdict_amended_2026_09_16']} (2026-09-16 amendment)")
     print(f"  ideal SD_between at u=0.95: {ideal_sd[-1]:.4g} | median ratio (u>=0.3): "
           f"{results['verdict_inputs']['median_ratio_u_ge_030']:.2f} | median ICC: "
           f"{results['verdict_inputs']['median_icc_u_ge_030']:.2f} | trigger-life SD: {trigger_sd:.3f} "

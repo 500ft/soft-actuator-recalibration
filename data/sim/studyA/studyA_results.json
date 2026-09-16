@@ -211,6 +211,7 @@
     }
   },
   "verdict": "A-FAIL",
+  "verdict_amended_2026_09_16": "A-PASS",
   "verdict_inputs": {
     "ideal_sd_between_u095": 0.014062233629744679,
     "median_ratio_u_ge_030": 6.708264733603498,

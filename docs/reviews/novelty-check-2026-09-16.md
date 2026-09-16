@@ -99,3 +99,22 @@ Sources fetched in full today: [Frontiers 2023](https://www.frontiersin.org/jour
 [arXiv:2208.10299](https://arxiv.org/pdf/2208.10299), [Han 2025](https://advanced.onlinelibrary.wiley.com/doi/full/10.1002/aisy.202500444),
 [ASME Letters](https://asmedigitalcollection.asme.org/lettersdynsys/article/2/2/021009/1127945/Fisher-Identifiability-Analysis-of-Longitudinal),
 [US 9,907,898](https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/9907898), [Springer 10.1007/s00170-024-14216-0](https://link.springer.com/article/10.1007/s00170-024-14216-0) (paywalled).
+
+## Database pass, 2026-09-16 (IEEE Xplore via domain-restricted web search; Scopus not accessible)
+
+Three queries restricted to `ieeexplore.ieee.org` (fatigue state estimation / hysteresis / identifiability;
+proprioception transfer to unseen actuators / degradation; Fisher information / observability / health state).
+Results graded on aboutness:
+
+| Source (IEEE Xplore) | About. | Evid. | Note |
+|---|---|---|---|
+| Boyacıoğlu & van Breugel, "Duality of Stochastic Observability and Constructability and Links to Fisher Information", IEEE journal version (document 10908645) | 2 | B (theory) | Published form of the arXiv method anchor already in the ledger. |
+| Nonlinear estimation and control of bending SPAs using feedback linearization and UKF (document 9735162) | 1 | B (abstract) | State estimation with an added resistive flex sensor; no fatigue state, no cross-unit transfer. |
+| Adaptive state estimation with constant-curvature dynamics using force–torque sensors (document 10610370) | 1 | B (abstract) | Base force/torque sensing, not pressure-only; no degradation. |
+| Controlling a pneumatic bending actuator with gain-scheduled feedforward and physical-reservoir state estimation (document 10840268) | 1 | B (abstract) | Hysteresis compensation and state estimation for control; no latent fatigue state. |
+| Position control for a soft actuator with high uncertainty and hysteresis (document 10521939) | 1 | C (abstract) | Control under hysteresis; no health state. |
+
+No IEEE Xplore hit addresses identifiability of a latent fatigue state from pressure-only features under unit
+dispersion, or unseen-unit transfer of such an estimator; Claim 5 stands. **Scopus was not searched**: it requires an
+institutional login this session does not have; the owner should run the same three queries there before any submission.
+Retrieval limit: a web-search index restricted to the IEEE domain is not the IEEE Xplore search engine itself.
