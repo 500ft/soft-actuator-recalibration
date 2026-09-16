@@ -1,7 +1,7 @@
 # Observability program — Studies A and B execution evidence (2026-09-16)
 
-Branch `research/observability-program-20260916` from main `151683b`. Preregistration commit **`e0543be`** (novelty
-check, program, Study A/B/C specs) precedes the generator change (`6e82307`) and every run below.
+Branch `research/observability-program-20260916` from main `151683b`. Preregistration commit **`9e71a3f`** (novelty
+check, program, Study A/B/C specs) precedes the generator change (`e828596`) and every run below.
 Environment: Python 3.11.8; numpy 2.4.6, scipy 1.17.1, matplotlib 3.11.2; `MPLBACKEND=Agg`.
 
 ## PV-OBS-00 — novelty check
@@ -79,7 +79,7 @@ declared in `docs/figure-manifest.json`.
 
 ## Regeneration after the generator change
 All nine generators run on a clone of the pre-refactor baseline (`f3a71ff`, equal to main's generator code) and on a
-clone of this branch (`6e82307`), same venv: **49/50 regenerated files identical** (JSON/PNG by SHA-256, dataset per
+clone of this branch (`e828596`), same venv: **49/50 regenerated files identical** (JSON/PNG by SHA-256, dataset per
 array, PDFs modulo timestamps). The one difference is `data/sim/phaseB/phaseB_results.json`, whose
 `canonical_parameters` block serialises `FatigueParams` and now carries the added field `"fatigue_exponent": 2.0`;
 a key-by-key walk shows **no numeric value changed** in that file. No regenerated file is committed; the committed

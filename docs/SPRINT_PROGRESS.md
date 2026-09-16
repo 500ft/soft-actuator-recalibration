@@ -3,7 +3,7 @@
 ## 2026-09-16 — Observability program preregistered; Studies A and B executed
 
 A cross-unit observability program ([specs/observability-program/program.md](specs/observability-program/program.md)) was preregistered at
-`e0543be` after a [novelty check](reviews/novelty-check-2026-09-16.md), then executed on the same branch.
+`9e71a3f` after a [novelty check](reviews/novelty-check-2026-09-16.md), then executed on the same branch.
 Study A (assumed between-unit dispersion vs the normalised-indicator invariance) records **A-FAIL** under
 its own rules: indicator-value spread is 5–17× measurement noise from mid-life (criteria i, ii pass) but the
 trigger-life spread at τ = 0.05 is 0.044 life (< 0.10, criterion iii). The one-axis ablation confirms that

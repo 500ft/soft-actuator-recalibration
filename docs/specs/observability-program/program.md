@@ -1,6 +1,6 @@
 # Cross-unit observability program — is soft-actuator fatigue state observable from pressure alone?
 
-Proposed 2026-09-16. Status: **preregistered at `e0543be`; Studies A and B executed on the same branch afterwards.**
+Proposed 2026-09-16. Status: **preregistered at `9e71a3f`; Studies A and B executed on the same branch afterwards.**
 Recorded verdicts: Study A **A-FAIL** (value spread passes, trigger-timing spread fails), Study B **B-PASS** with the
 latent coordinate identifiable only before the acceleration onset — see the
 [evidence](../../../evidence/observability-2026-09-16/README.md). Task status lives only in
