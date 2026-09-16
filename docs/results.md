@@ -76,4 +76,3 @@ Question: is the fatigue state observable from pressure alone across dispersed u
   Verdict **B-PASS** by its rule; the regime boundary is the result.
 
 Boundary: one synthetic generator, assumed dispersion magnitudes, local bounds; no physical claim.
-
