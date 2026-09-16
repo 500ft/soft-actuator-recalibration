@@ -92,6 +92,13 @@ Next action: PV-08: author review of docs/preprint_v1_4_candidate.md; no deposit
 
 ## Current entries
 
+### 2026-09-16 — Observability program: preregistered Studies A–C, A and B executed
+
+[Program](specs/observability-program/program.md) · [novelty check](reviews/novelty-check-2026-09-16.md) · [evidence](../evidence/observability-2026-09-16/README.md). Study A verdict **A-FAIL** (value spread passes, trigger-timing
+spread fails; ablation: only degradation-law dispersion breaks the invariance). Study B verdict and the byte-identity
+check of the `fatigue_exponent` generator change are in the evidence. Synthetic generator with assumed dispersion
+magnitudes; no physical claim; PV-08 unchanged.
+
 ### 2026-09-15 — unapproved v1.4 preview prepared (PV-D04c, partial)
 
 The candidate was rendered through the safe route into the ignored `build/day4/` and every page inspected;

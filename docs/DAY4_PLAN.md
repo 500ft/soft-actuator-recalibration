@@ -1,6 +1,8 @@
 # Day-4 plan — prepare the corrected manuscript for author review
 
-Planned date: 2026-09-14; revised 2026-09-15. Status: **proposed; execution has not started**.
+Planned date: 2026-09-14; revised 2026-09-15. Status: **executed 2026-09-15** (PR #19 corrected by PR #20;
+T2, T3 done, T1 partial, T4 deferred, T5 owner's) — see [evidence](../evidence/task-2026-09-14/README.md).
+The text below is the accepted plan as reviewed, unchanged.
 This plan supersedes [PR #17](https://github.com/500ft/soft-actuator-recalibration/pull/17)
 at `d22fff94b629d8a685088387bd391b99d3599200`. Reviewed main:
 `9bc984829537b0a33ee1305a819bd13c3d3803c7`, including merged

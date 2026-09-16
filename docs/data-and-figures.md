@@ -116,3 +116,21 @@ python -m scripts.phaseD_dataset
 
 Recreating a figure confirms deterministic execution of the committed model and
 analysis. It does not validate the model parameters against a physical actuator.
+
+## Study A — dispersion vs indicator invariance (observability program)
+
+- **Generator:** `scripts/run_studyA.py` · **Command:** `python -m scripts.run_studyA` (51 s)
+- **Inputs:** `pipeline/dispersion.py` (seed 20260916), `sim/fatigue.py`, `sim/plant.py`, `sim/sensors.py`
+- **Outputs:** `data/sim/studyA/studyA_results.json`, `studyA_fig_indicator_spread.(png|pdf)`, `studyA_fig_ablation.(png|pdf)`
+- **Preregistration:** `docs/specs/observability-program/studyA-preregistration.md`; verdict field in the JSON.
+- **Boundary:** assumed dispersion magnitudes on a synthetic generator; the verdict is about whether this
+  cohort can pose the cross-unit question, not about physical actuators.
+
+## Study B — identifiability map (observability program)
+
+- **Generator:** `scripts/run_studyB.py` · **Command:** `python -m scripts.run_studyB` (minutes; 24 sensor repeats per point)
+- **Inputs:** `pipeline/identifiability.py`, `pipeline/dispersion.py`, `sim/fatigue.py`, `sim/plant.py`, `sim/sensors.py`
+- **Outputs:** `data/sim/studyB/studyB_results.json`, `studyB_fig_identifiability_map.(png|pdf)`
+- **Preregistration:** `docs/specs/observability-program/studyB-identifiability.md`.
+- **Boundary:** local Cramér–Rao bounds from finite-difference sensitivities of the synthetic generator's
+  pressure-only features; a map of where the latent life coordinate is identifiable *in this generator*.

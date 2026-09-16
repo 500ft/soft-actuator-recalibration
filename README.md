@@ -30,7 +30,7 @@ error grow. This project asks whether an intermittent P-V probe can inform that
 decision while normal pose estimation continues to use pressure alone.
 
 The repository combines a pneumatic-network simulator, fatigue and sensing
-models, pose estimators, four study runners, and checks connecting figures and
+models, pose estimators, study runners, and checks connecting figures and
 reported numbers to committed artifacts. Its strongest current contribution is
 the **recalibration-policy comparison and its limits**, not the discovery that
 hysteresis changes with fatigue.
@@ -41,6 +41,7 @@ hysteresis changes with fatigue.
 | Does shared-manifold coupling dominate pose error? | Conditional network-sensitivity study, including a negative result |
 | Does the deployed trigger warn before the error budget is crossed? | No positive lead at `tau = 0.05` |
 | Does this work on physical actuators? | Not established; no physical testing is included |
+| Is the fatigue state observable from pressure alone across units? | [Preregistered observability program](docs/specs/observability-program/program.md): dispersion breaks the indicator's unit-invariance in value but not in trigger timing (Study A); identifiability map in Study B |
 
 ## Evidence snapshot
 
@@ -98,6 +99,7 @@ recording the source revision. Regeneration is not publication clearance.
 | [Author-review packet](docs/AUTHOR_REVIEW_DAY3.md) | Which interpretation and release decisions are still open? |
 | [Correction](docs/corrections/v1.3-methods-2026-09-05.md) · [Candidate manuscript](docs/preprint_v1_4_candidate.md) | What differs from the archived account? |
 | [Prospective v2 claim spine](docs/specs/robosoft-v2/claim-spine.md) | Which stronger tests are proposed, rather than accomplished? |
+| [Observability program](docs/specs/observability-program/program.md) · [novelty check](docs/reviews/novelty-check-2026-09-16.md) | Can the fatigue state be identified from pressure alone across dispersed units, and what did Studies A and B find? |
 | [Literature review](docs/A01_A04_Literature_Review.md) | How does the study relate to prior work? |
 | [Review index](docs/REVIEW_READY.md) | Where are check outputs, provenance, and remaining gates? |
 

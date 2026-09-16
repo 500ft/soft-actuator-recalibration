@@ -1,5 +1,19 @@
 # Sprint progress — P-V-Fatigue-Manifold-Proprioception
 
+## 2026-09-16 — Observability program preregistered; Studies A and B executed
+
+A cross-unit observability program ([specs/observability-program/program.md](specs/observability-program/program.md)) was preregistered at
+`9e71a3f` after a [novelty check](reviews/novelty-check-2026-09-16.md), then executed on the same branch.
+Study A (assumed between-unit dispersion vs the normalised-indicator invariance) records **A-FAIL** under
+its own rules: indicator-value spread is 5–17× measurement noise from mid-life (criteria i, ii pass) but the
+trigger-life spread at τ = 0.05 is 0.044 life (< 0.10, criterion iii). The one-axis ablation confirms that
+only degradation-law dispersion moves the normalised indicator; plant-level dispersion is cancelled by
+young-normalisation. Study B (Cramér–Rao identifiability map) records **B-PASS** by its rule, with the latent life coordinate
+identifiable before the acceleration onset (σ_u ≈ 0.02–0.03 life with a young baseline) and structurally aliased
+with onset fraction and leak after it. The generator change regenerates 49/50 outputs byte-identical; the one
+difference is the new parameter field in a serialised parameter block, no numeric change. Details in the [evidence](../evidence/observability-2026-09-16/README.md). Study C stays blocked on
+A; Studies D/E are owner- and funding-gated. The RoboSoft candidate, PV-08 and the archive are untouched.
+
 ## 2026-09-15 — Day-4 executed under the reviewed plan (PR #18); T1 partial
 
 [DAY4_PLAN.md](DAY4_PLAN.md) (PR #18, superseding #17) was executed in order T0 → T2 → T3 → T1.

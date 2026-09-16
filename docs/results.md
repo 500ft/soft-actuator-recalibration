@@ -59,3 +59,20 @@ physical gripper.
 - Frozen claim ledger: [`result_spine.md`](result_spine.md)
 - Figure-generation lineage: [`data-and-figures.md`](data-and-figures.md)
 - Manuscript-number checks: `scripts/check_manuscript_numbers.py`
+
+## Observability program — Studies A and B (2026-09-16, synthetic, preregistered)
+
+[Program](specs/observability-program/program.md) · [evidence](../evidence/observability-2026-09-16/README.md).
+Question: is the fatigue state observable from pressure alone across dispersed units?
+
+- **Study A** (30 units with assumed dispersion of the degradation law and plant): the normalised loop-area
+  indicator's between-unit spread is 5–17× its measurement noise from mid-life (ICC 0.98), so the value is no
+  longer unit-invariant; only degradation-law dispersion produces this, plant-level dispersion cancels under
+  young-normalisation. The trigger life at τ = 0.05 still spreads by only 0.044 life, so the preregistered
+  verdict is **A-FAIL** on its timing criterion and Study C stays blocked.
+- **Study B** (Cramér–Rao bounds on the latent life coordinate from five pressure-only features): with a young
+  baseline the coordinate is identifiable before the acceleration onset (σ_u ≈ 0.02–0.03 life, scaling with
+  noise/amplitude) and structurally unidentifiable after it (aliased with the unit's onset fraction and leak).
+  Verdict **B-PASS** by its rule; the regime boundary is the result.
+
+Boundary: one synthetic generator, assumed dispersion magnitudes, local bounds; no physical claim.
