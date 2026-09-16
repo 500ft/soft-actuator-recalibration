@@ -1,6 +1,6 @@
 # Novelty check — pressure-only observability of a latent fatigue state under unit dispersion
 
-Date: 2026-09-16. Scope: the PhD-scope question in [the program](../specs/phd-program/program.md). This check
+Date: 2026-09-16. Scope: the question in [the program](../specs/observability-program/program.md). This check
 runs *before* any new study, as the program requires. It complements, and does not replace, the
 [annotated literature base](../A01_A04_Literature_Review.md) and the [2026-08-03 novelty audit](novelty-evidence-audit-2026-08-03.md).
 

@@ -5,7 +5,7 @@
 **Author:** [Name] · NYU Tandon, Dept. of Mechanical & Aerospace Engineering
 **Target venue:** IEEE Robotics and Automation Letters (RA-L) — primary; *Soft Robotics* — alternate
 **Est. effort:** one semester (≈15 weeks), solo · **Hardware:** ≈ $320
-**Companion docs:** [`Draft1_A01_A04_Combined.pdf`](Draft1_A01_A04_Combined.pdf), [`A01_A04_Literature_Review.md`](A01_A04_Literature_Review.md)
+**Companion docs:** `Draft1_A01_A04_Combined.pdf` (Draft 1, not committed to the repository), [`A01_A04_Literature_Review.md`](A01_A04_Literature_Review.md)
 
 ---
 

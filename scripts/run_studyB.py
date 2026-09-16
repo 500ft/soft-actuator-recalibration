@@ -1,6 +1,6 @@
 """Study B — identifiability map of the latent life coordinate from pressure-only features.
 
-Preregistered in docs/specs/phd-program/studyB-identifiability.md. Writes data/sim/studyB/.
+Preregistered in docs/specs/observability-program/studyB-identifiability.md. Writes data/sim/studyB/.
 """
 
 from __future__ import annotations
@@ -80,7 +80,7 @@ def main():
         v = "B-KILL"
     else:
         v = "B-CONDITIONAL"
-    out = {"preregistration": "docs/specs/phd-program/studyB-identifiability.md", "seed": SEED,
+    out = {"preregistration": "docs/specs/observability-program/studyB-identifiability.md", "seed": SEED,
            "features": FEATURES, "parameters": PARAMS, "u_grid": U_GRID, "u_baseline": U_BASE,
            "noise_scales": NOISE_SCALES, "amplitude_fracs": AMPS, "n_rep": N_REP,
            "sigma_target": SIGMA_TARGET, "sigma_kill": SIGMA_KILL,

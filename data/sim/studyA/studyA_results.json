@@ -1,5 +1,5 @@
 {
-  "preregistration": "docs/specs/phd-program/studyA-preregistration.md",
+  "preregistration": "docs/specs/observability-program/studyA-preregistration.md",
   "seed": 20260916,
   "n_units": 30,
   "life_fractions": [

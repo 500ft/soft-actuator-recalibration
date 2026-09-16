@@ -1,10 +1,10 @@
-# PhD program — Studies A and B execution evidence (2026-09-16)
+# Observability program — Studies A and B execution evidence (2026-09-16)
 
-Branch `research/phd-program-20260916` from main `151683b`. Preregistration commit **`e0543be`** (novelty
+Branch `research/observability-program-20260916` from main `151683b`. Preregistration commit **`e0543be`** (novelty
 check, program, Study A/B/C specs) precedes the generator change (`6e82307`) and every run below.
 Environment: Python 3.11.8; numpy 2.4.6, scipy 1.17.1, matplotlib 3.11.2; `MPLBACKEND=Agg`.
 
-## PV-PHD-00 — novelty check
+## PV-OBS-00 — novelty check
 [docs/reviews/novelty-check-2026-09-16.md](../../docs/reviews/novelty-check-2026-09-16.md): 6 searches + the
 60-entry literature base; two full texts fetched; claim ledger with graded evidence. Verdict: the identifiability
 and unseen-unit-transfer question is open within retrieved evidence; a Scopus/IEEE Xplore pass is still required.
@@ -14,7 +14,7 @@ and unseen-unit-transfer question is open within retrieved evidence; a Scopus/IE
 test asserts the canonical law is reproduced exactly. Byte identity of all committed generators: see the
 "Regeneration" section at the end (filled after the background run).
 
-## PV-PHD-A — Study A (`python -m scripts.run_studyA`, 51 s, seed 20260916, N = 30 units, 19 stages, 5 repeats)
+## PV-OBS-A — Study A (`python -m scripts.run_studyA`, 51 s, seed 20260916, N = 30 units, 19 stages, 5 repeats)
 
 **Verdict under the preregistered rules: `A-FAIL`** (criteria i and ii pass; criterion iii fails).
 

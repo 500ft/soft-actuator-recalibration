@@ -2,7 +2,7 @@
 
 Feature vector y(theta) with theta = (u, k1_0, k2_0, tau, terminal_leak_multiplier,
 acceleration_onset_fraction, fatigue_exponent). FIM = J^T Sigma^-1 J with J by central differences
-and Sigma from seeded sensor-model repeats. Preregistered in docs/specs/phd-program/studyB-identifiability.md.
+and Sigma from seeded sensor-model repeats. Preregistered in docs/specs/observability-program/studyB-identifiability.md.
 """
 
 from __future__ import annotations

@@ -2,7 +2,7 @@
 
 Every unit draws all axes in a fixed order so that ablations (``axes`` subset) reuse the same
 realisations and differ only in which draws are applied. Magnitudes are assumed with a cited
-order of magnitude (docs/specs/phd-program/studyA-preregistration.md), not measured.
+order of magnitude (docs/specs/observability-program/studyA-preregistration.md), not measured.
 """
 
 from __future__ import annotations

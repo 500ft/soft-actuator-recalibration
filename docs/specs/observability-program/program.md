@@ -1,8 +1,8 @@
-# PhD-scope research program — pressure-only observability of soft-actuator fatigue state
+# Cross-unit observability program — is soft-actuator fatigue state observable from pressure alone?
 
 Proposed 2026-09-16. Status: **preregistered plan; Studies A and B executed on the same branch after this
 file was committed (the evidence records the commit).** Task status lives only in
-[SPRINT_TASKS.csv](../../SPRINT_TASKS.csv) (rows PV-PHD-*). This program does not modify the frozen v1.3
+[SPRINT_TASKS.csv](../../SPRINT_TASKS.csv) (rows PV-OBS-*). This program does not modify the frozen v1.3
 release, the v1.4 candidate, PV-08, or the [RoboSoft v2 claim spine](../robosoft-v2/claim-spine.md).
 
 ## Audited state, verified against the tree on 2026-09-16
@@ -71,9 +71,9 @@ reviewed and fit the six-page core before 2026-10-15.
 
 | Row | Study | Owner | Status rule |
 |---|---|---|---|
-| PV-PHD-00 | novelty check | Agent | done when the claim ledger exists |
-| PV-PHD-A | Study A | Agent | done when the preregistered verdict (PASS/FAIL/DEGENERATE) is recorded with evidence |
-| PV-PHD-B | Study B | Agent | done when the identifiability map and kill-criterion verdict are recorded |
-| PV-PHD-C | Study C | Agent | blocked until PV-PHD-A = PASS |
-| PV-PHD-D | Study D | Owner | blocked on PV-PHD-C and the CAD/rig entry decision |
-| PV-PHD-E | Study E | Owner | blocked on funding and PV-PHD-D |
+| PV-OBS-00 | novelty check | Agent | done when the claim ledger exists |
+| PV-OBS-A | Study A | Agent | done when the preregistered verdict (PASS/FAIL/DEGENERATE) is recorded with evidence |
+| PV-OBS-B | Study B | Agent | done when the identifiability map and kill-criterion verdict are recorded |
+| PV-OBS-C | Study C | Agent | blocked until PV-OBS-A = PASS |
+| PV-OBS-D | Study D | Owner | blocked on PV-OBS-C and the CAD/rig entry decision |
+| PV-OBS-E | Study E | Owner | blocked on funding and PV-OBS-D |

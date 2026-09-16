@@ -160,7 +160,7 @@
         "data/sim/studyA/studyA_fig_ablation.png",
         "data/sim/studyA/studyA_fig_ablation.pdf"
       ],
-      "boundary": "Preregistered Study A (docs/specs/phd-program/studyA-preregistration.md): does assumed between-unit dispersion break the normalised-indicator invariance? Synthetic cohort, assumed dispersion magnitudes; verdict recorded in the numeric file",
+      "boundary": "Preregistered Study A (docs/specs/observability-program/studyA-preregistration.md): does assumed between-unit dispersion break the normalised-indicator invariance? Synthetic cohort, assumed dispersion magnitudes; verdict recorded in the numeric file",
       "numeric": "data/sim/studyA/studyA_results.json"
     },
     {
@@ -179,7 +179,7 @@
         "data/sim/studyB/studyB_fig_identifiability_map.png",
         "data/sim/studyB/studyB_fig_identifiability_map.pdf"
       ],
-      "boundary": "Preregistered Study B (docs/specs/phd-program/studyB-identifiability.md): Cramer-Rao bound on the latent life coordinate from pressure-only features on the synthetic generator; a local-identifiability map, not a physical observability result",
+      "boundary": "Preregistered Study B (docs/specs/observability-program/studyB-identifiability.md): Cramer-Rao bound on the latent life coordinate from pressure-only features on the synthetic generator; a local-identifiability map, not a physical observability result",
       "numeric": "data/sim/studyB/studyB_results.json"
     }
   ],

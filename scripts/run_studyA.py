@@ -1,6 +1,6 @@
 """Study A — does between-unit dispersion break the normalised-indicator invariance?
 
-Preregistered in docs/specs/phd-program/studyA-preregistration.md. Writes data/sim/studyA/.
+Preregistered in docs/specs/observability-program/studyA-preregistration.md. Writes data/sim/studyA/.
 """
 
 from __future__ import annotations
@@ -90,7 +90,7 @@ def main():
 
     v = verdict(ideal_sd[-1], m["ratio"], m["icc"], trigger_sd)
     results = {
-        "preregistration": "docs/specs/phd-program/studyA-preregistration.md",
+        "preregistration": "docs/specs/observability-program/studyA-preregistration.md",
         "seed": SEED, "n_units": N_UNITS, "life_fractions": LIFE, "probe_hz": F_PROBE_HZ,
         "amplitude_frac": AMP_FRAC, "repeats": REPEATS, "tau_trigger": TAU_TRIGGER,
         "ideal_sd_between": ideal_sd.tolist(),
