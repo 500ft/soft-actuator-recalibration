@@ -1,5 +1,14 @@
 # Sprint progress — P-V-Fatigue-Manifold-Proprioception
 
+## 2026-09-16 (later) — five follow-ups: renderer fix, database pass, Study A amendment, Study C, cleanup
+
+The renderer now honours Markdown escapes and the preview re-renders without backslash artifacts (PDF `0345c5dc…`,
+unapproved). An IEEE Xplore pass was added to the novelty check (Scopus is the owner's). The owner withdrew Study A's
+trigger-timing criterion; both verdicts are recorded and Study C ran under a trajectory design fixed before the run:
+**C-FAIL** (6/10 held-out units within 0.10 life, 7/10 below the clock-only baseline; mean 0.093 vs 0.123), the misses
+being short-lived units whose probes fall mostly pre-onset. Portfolio-wide research artifacts were removed.
+[Evidence](../evidence/next-five-2026-09-16/README.md). PV-08 unchanged.
+
 ## 2026-09-16 — Observability program preregistered; Studies A and B executed
 
 A cross-unit observability program ([specs/observability-program/program.md](specs/observability-program/program.md)) was preregistered at

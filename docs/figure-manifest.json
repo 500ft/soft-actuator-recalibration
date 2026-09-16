@@ -181,6 +181,26 @@
       ],
       "boundary": "Preregistered Study B (docs/specs/observability-program/studyB-identifiability.md): Cramer-Rao bound on the latent life coordinate from pressure-only features on the synthetic generator; a local-identifiability map, not a physical observability result",
       "numeric": "data/sim/studyB/studyB_results.json"
+    },
+    {
+      "id": "study-c-unseen-unit-transfer",
+      "evidence_type": "simulation",
+      "generator": "scripts/run_studyC.py",
+      "command": "python -m scripts.run_studyC",
+      "inputs": [
+        "sim/fatigue.py",
+        "sim/plant.py",
+        "sim/sensors.py",
+        "pipeline/dispersion.py",
+        "pipeline/identifiability.py",
+        "scripts/run_studyB.py"
+      ],
+      "outputs": [
+        "data/sim/studyC/studyC_fig_transfer.png",
+        "data/sim/studyC/studyC_fig_transfer.pdf"
+      ],
+      "boundary": "Preregistered Study C (docs/specs/observability-program/studyC-transfer.md, amended 2026-09-16): one ridge estimator transferred to 10 held-out synthetic units against a clock-only baseline; a synthetic transfer result, not a device claim",
+      "numeric": "data/sim/studyC/studyC_results.json"
     }
   ],
   "generated_inputs": {

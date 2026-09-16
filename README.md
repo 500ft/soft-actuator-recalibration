@@ -41,7 +41,7 @@ hysteresis changes with fatigue.
 | Does shared-manifold coupling dominate pose error? | Conditional network-sensitivity study, including a negative result |
 | Does the deployed trigger warn before the error budget is crossed? | No positive lead at `tau = 0.05` |
 | Does this work on physical actuators? | Not established; no physical testing is included |
-| Is the fatigue state observable from pressure alone across units? | [Preregistered observability program](docs/specs/observability-program/program.md): dispersion breaks the indicator's unit-invariance in value but not in trigger timing (Study A); identifiability map in Study B |
+| Is the fatigue state observable from pressure alone across units? | [Preregistered observability program](docs/specs/observability-program/program.md): dispersion breaks the indicator's unit-invariance in value (Study A); the life coordinate is identifiable from pressure only before the acceleration onset (Study B); one transferred estimator misses the preregistered bar on short-lived units (Study C) |
 
 ## Evidence snapshot
 

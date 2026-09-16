@@ -3,7 +3,10 @@
 Proposed 2026-09-16. Status: **preregistered at `9e71a3f`; Studies A and B executed on the same branch afterwards.**
 Recorded verdicts: Study A **A-FAIL** (value spread passes, trigger-timing spread fails), Study B **B-PASS** with the
 latent coordinate identifiable only before the acceleration onset — see the
-[evidence](../../../evidence/observability-2026-09-16/README.md). Task status lives only in
+[evidence](../../../evidence/observability-2026-09-16/README.md). Owner amendment 2026-09-16 withdrew Study A's
+criterion iii (amended verdict A-PASS); Study C then ran under its amended trajectory design and records **C-FAIL**
+(6/10 held-out units within 0.10 life, 7/10 below the clock; [evidence](../../../evidence/next-five-2026-09-16/README.md)).
+Studies D and E remain gated; no transfer claim is made. Task status lives only in
 [SPRINT_TASKS.csv](../../SPRINT_TASKS.csv) (rows PV-OBS-*). This program does not modify the frozen v1.3
 release, the v1.4 candidate, PV-08, or the [RoboSoft v2 claim spine](../robosoft-v2/claim-spine.md).
 
@@ -76,6 +79,6 @@ reviewed and fit the six-page core before 2026-10-15.
 | PV-OBS-00 | novelty check | Agent | done when the claim ledger exists |
 | PV-OBS-A | Study A | Agent | done when the preregistered verdict (PASS/FAIL/DEGENERATE) is recorded with evidence |
 | PV-OBS-B | Study B | Agent | done when the identifiability map and kill-criterion verdict are recorded |
-| PV-OBS-C | Study C | Agent | blocked until PV-OBS-A = PASS |
+| PV-OBS-C | Study C | Agent | done (C-FAIL) after the PV-OBS-A2 amendment |
 | PV-OBS-D | Study D | Owner | blocked on PV-OBS-C and the CAD/rig entry decision |
 | PV-OBS-E | Study E | Owner | blocked on funding and PV-OBS-D |

@@ -134,3 +134,11 @@ analysis. It does not validate the model parameters against a physical actuator.
 - **Preregistration:** `docs/specs/observability-program/studyB-identifiability.md`.
 - **Boundary:** local Cramér–Rao bounds from finite-difference sensitivities of the synthetic generator's
   pressure-only features; a map of where the latent life coordinate is identifiable *in this generator*.
+
+## Study C — unseen-unit transfer (observability program)
+
+- **Generator:** `scripts/run_studyC.py` · **Command:** `python -m scripts.run_studyC` (~4 min)
+- **Inputs:** `pipeline/dispersion.py` (seeds 20260916, 20260918), `pipeline/identifiability.py` features, `sim/*`
+- **Outputs:** `data/sim/studyC/studyC_results.json`, `studyC_fig_transfer.(png|pdf)`
+- **Preregistration:** `docs/specs/observability-program/studyC-transfer.md` (amendment of 2026-09-16 fixes the trajectory design).
+- **Boundary:** one estimator on a synthetic dispersed cohort; verdict per the spec's rule; no device claim.

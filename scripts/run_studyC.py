@@ -46,8 +46,9 @@ def unit_records(unit, index):
     return rows
 
 
-def ridge_fit(X, y, lam):
-    mu, sd = X.mean(axis=0), X.std(axis=0) + 1e-12
+def ridge_fit(X, y, lam, scaler=None):
+    """Ridge on standardised inputs; ``scaler`` (mu, sd) reuses another fit's standardisation."""
+    mu, sd = scaler if scaler else (X.mean(axis=0), X.std(axis=0) + 1e-12)
     Z = (X - mu) / sd
     A = Z.T @ Z + lam * np.eye(Z.shape[1])
     w = np.linalg.solve(A, Z.T @ (y - y.mean()))
@@ -85,7 +86,8 @@ def evaluate(units, records, model, median_rupture):
         X, y = stack(rows)
         pred = ridge_predict(model, X)
         clock = np.clip(np.array([r["cycles"] for r in rows]) / median_rupture, 0.0, 1.0)
-        own = ridge_fit(X[:3], y[:3], model["lam"]) if len(rows) >= 3 else None
+        own = (ridge_fit(X[:3], y[:3], model["lam"], scaler=(model["mu"], model["sd"]))   # same ridge, own labels
+               if len(rows) >= 3 else None)
         post = np.array([r["post_onset"] for r in rows])
         out.append({
             "rupture_cycles": unit.fatigue.rupture_cycles, "onset": unit.fatigue.acceleration_onset_fraction,
