@@ -33,6 +33,7 @@ class FatigueParams:
     mullins_loss_coupling: float = 1.0
     fatigue_loss_coupling: float = 1.0
     terminal_leak_multiplier: float = 20.0
+    fatigue_exponent: float = 2.0     # power of the acceleration coordinate z in the accelerating term
 
     def __post_init__(self) -> None:
         positive = {
@@ -59,6 +60,8 @@ class FatigueParams:
                 raise ValueError(f"{name} must be finite and >= 0")
         if not math.isfinite(self.terminal_leak_multiplier) or self.terminal_leak_multiplier < 1:
             raise ValueError("terminal_leak_multiplier must be finite and >= 1")
+        if not math.isfinite(self.fatigue_exponent) or self.fatigue_exponent <= 0:
+            raise ValueError("fatigue_exponent must be finite and > 0")
 
 
 @dataclass(frozen=True)
@@ -104,7 +107,7 @@ def fatigue_state(cycles: float, rest_s: float, params: FatigueParams) -> Fatigu
     mullins_total = mullins_permanent + mullins_recoverable
 
     fatigue_slow = params.slow_fatigue_amplitude * u
-    fatigue_accelerating = params.accelerating_fatigue_amplitude * z**2
+    fatigue_accelerating = params.accelerating_fatigue_amplitude * z**params.fatigue_exponent
     fatigue_total = fatigue_slow + fatigue_accelerating
     compliance_multiplier = 1.0 + mullins_total + fatigue_total
     loss_multiplier = (
