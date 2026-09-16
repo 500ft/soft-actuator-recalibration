@@ -1,7 +1,9 @@
 # Cross-unit observability program — is soft-actuator fatigue state observable from pressure alone?
 
-Proposed 2026-09-16. Status: **preregistered plan; Studies A and B executed on the same branch after this
-file was committed (the evidence records the commit).** Task status lives only in
+Proposed 2026-09-16. Status: **preregistered at `e0543be`; Studies A and B executed on the same branch afterwards.**
+Recorded verdicts: Study A **A-FAIL** (value spread passes, trigger-timing spread fails), Study B **B-PASS** with the
+latent coordinate identifiable only before the acceleration onset — see the
+[evidence](../../../evidence/observability-2026-09-16/README.md). Task status lives only in
 [SPRINT_TASKS.csv](../../SPRINT_TASKS.csv) (rows PV-OBS-*). This program does not modify the frozen v1.3
 release, the v1.4 candidate, PV-08, or the [RoboSoft v2 claim spine](../robosoft-v2/claim-spine.md).
 
