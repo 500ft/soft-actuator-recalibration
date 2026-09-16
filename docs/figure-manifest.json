@@ -142,6 +142,45 @@
       ],
       "boundary": "Sensitivity sweep of assumed network parameters",
       "numeric": "data/sim/phaseD/study4_results.json"
+    },
+    {
+      "id": "study-a-dispersion-invariance",
+      "evidence_type": "simulation",
+      "generator": "scripts/run_studyA.py",
+      "command": "python -m scripts.run_studyA",
+      "inputs": [
+        "sim/fatigue.py",
+        "sim/plant.py",
+        "sim/sensors.py",
+        "pipeline/dispersion.py"
+      ],
+      "outputs": [
+        "data/sim/studyA/studyA_fig_indicator_spread.png",
+        "data/sim/studyA/studyA_fig_indicator_spread.pdf",
+        "data/sim/studyA/studyA_fig_ablation.png",
+        "data/sim/studyA/studyA_fig_ablation.pdf"
+      ],
+      "boundary": "Preregistered Study A (docs/specs/phd-program/studyA-preregistration.md): does assumed between-unit dispersion break the normalised-indicator invariance? Synthetic cohort, assumed dispersion magnitudes; verdict recorded in the numeric file",
+      "numeric": "data/sim/studyA/studyA_results.json"
+    },
+    {
+      "id": "study-b-identifiability-map",
+      "evidence_type": "simulation",
+      "generator": "scripts/run_studyB.py",
+      "command": "python -m scripts.run_studyB",
+      "inputs": [
+        "sim/fatigue.py",
+        "sim/plant.py",
+        "sim/sensors.py",
+        "pipeline/dispersion.py",
+        "pipeline/identifiability.py"
+      ],
+      "outputs": [
+        "data/sim/studyB/studyB_fig_identifiability_map.png",
+        "data/sim/studyB/studyB_fig_identifiability_map.pdf"
+      ],
+      "boundary": "Preregistered Study B (docs/specs/phd-program/studyB-identifiability.md): Cramer-Rao bound on the latent life coordinate from pressure-only features on the synthetic generator; a local-identifiability map, not a physical observability result",
+      "numeric": "data/sim/studyB/studyB_results.json"
     }
   ],
   "generated_inputs": {
