@@ -1,0 +1,566 @@
+SOFT ACTUATOR RECALIBRATION
+CLAUDE BUILD HANDOFF — WEEK OF 2026-09-21 THROUGH 2026-09-25
+
+Planning status: ready for implementation review. This file is a plan only. It
+does not authorize a new scientific claim, a manuscript edit, a hardware action,
+or a publication action.
+
+PRIMARY OUTCOME FOR THE WEEK
+
+Explain the Study C-FAIL result well enough to choose the next research move.
+The week must distinguish two causes that currently look similar:
+
+1. OBSERVATION-TIMING LIMITATION: the pressure features could help, but the fixed
+   250-cycle schedule observes short-lived units mostly before their informative
+   post-onset regime.
+
+2. SIGNAL/IDENTIFIABILITY LIMITATION: even when observations are placed after
+   onset, the measured feature family cannot distinguish normalized life from
+   onset, leak, or other nuisance parameters well enough for unseen-unit transfer.
+
+The desired result is a failure map and a pre-registered decision, not a tuned
+model that is made to cross the C-PASS threshold. Study C remains C-FAIL unless
+the existing, already-registered rule is met by a new, pre-declared evaluation.
+If a follow-up passes, describe it as conditional on this generator and tested
+schedule. Do not retroactively revise the original C verdict.
+
+CURRENT RESEARCH STATE
+
+Use the exact tree state at the start of execution. At the time this handoff was
+written, origin/main was c8bbaf4 and the Study C follow-up PR was open at
+1525a1b (PR #22). PR #22 contains the renderer repair, Study A amendment, Study
+C implementation and result, the IEEE database pass, and removal of unrelated
+portfolio research artifacts. Resolve the base before coding:
+
+- If PR #22 is merged, start from its merge commit on updated main.
+- If PR #22 remains open, do not silently copy its changes into main. Either
+  wait for the owner to merge it or create a clearly stacked research branch
+  from 1525a1b and state that dependency in the PR.
+- Record the exact base commit, branch, dirty state, Python version, dependency
+  versions, and hashes of the existing Study C JSON and figure before any run.
+
+Authoritative files to read before implementation:
+
+- docs/specs/observability-program/program.md
+- docs/specs/observability-program/studyA-preregistration.md
+- docs/specs/observability-program/studyB-identifiability.md
+- docs/specs/observability-program/studyC-transfer.md
+- evidence/next-five-2026-09-16/README.md
+- evidence/observability-2026-09-16/README.md
+- data/sim/studyC/studyC_results.json
+- scripts/run_studyC.py
+- pipeline/identifiability.py
+- pipeline/dispersion.py
+- sim/fatigue.py
+- sim/sensors.py
+
+The committed Study C result is:
+
+- one ridge estimator;
+- 20 training units and 10 held-out units, split by identity;
+- probes every 250 cycles from cycle 100 until rupture;
+- five pressure-only features, young-baseline log ratios, a one-step lag, and
+  cycle count divided by 1000;
+- lambda selected by leave-one-unit-out on training units;
+- 6/10 held-out units within u-RMSE 0.10;
+- 7/10 held-out units better than the clock-only baseline;
+- mean u-RMSE 0.093 versus 0.123 for the clock;
+- C-FAIL because the preregistered rule requires at least 8/10 on both counts;
+- the largest errors occur on short-lived units whose probes are mostly before
+  their acceleration onset;
+- Study B already shows that the latent life coordinate becomes structurally
+  aliased with onset fraction and leak after acceleration begins.
+
+Do not describe the 0.093 mean as a pass. Do not call the C result a transfer
+claim. Do not delete, overwrite, or re-pin data/sim/studyC/studyC_results.json.
+
+WEEKLY WORK BUDGET
+
+Target: 17–20 focused hours. The minimum useful path is 7–9 hours and ends with
+the failure map plus a frozen follow-up design. The full path runs the follow-up
+and produces a decision memo. A task may be stopped at its stated gate without
+starting the next task.
+
+DAY-BY-DAY ORDER
+
+Monday, 21 September — provenance and forensic failure map
+  R0 Base and artifact lock, 1 hour.
+  R1 Existing-result failure map, 3–4 hours.
+
+Tuesday, 22 September — follow-up design freeze
+  R2 Study C2 preregistration and acceptance tests, 3–4 hours.
+
+Wednesday, 23 September — implementation
+  R3 Schedule-sweep runner and deterministic test fixtures, 4–5 hours.
+
+Thursday, 24 September — execution and diagnostics
+  R4 Run the fixed schedule grid and oracle diagnostic, 4–5 hours.
+
+Friday, 25 September — interpretation and decision gate
+  R5 Synthesis memo, artifact review, and next-step recommendation, 3 hours.
+  M1 Manuscript review checkpoint, 45 minutes, review-only.
+
+If the base is not resolved by Monday morning, do R1 as a read-only analysis on
+the exact PR #22 head and stop before R3. Do not create a second implementation
+of Study C merely to avoid waiting for the base decision.
+
+M1 — SMALL MANUSCRIPT REVIEW CHECKPOINT (REVIEW ONLY)
+
+Owner: author/Claude as requested. Estimate: 45 minutes. This is deliberately
+small because research progress is the week's priority.
+
+Read docs/preprint_v1_4_candidate.md, the corrected-methods notice, and the latest
+unapproved preview manifest from evidence/next-five-2026-09-16/README.md. Check
+only whether the candidate's current wording remains consistent with the already
+committed Study C-FAIL and the Study B observability boundary. Record comments in
+evidence/weekly-research-2026-09-21/m1-manuscript-notes.txt.
+
+M1 may identify sentences that should later be revised, but it must not edit the
+candidate, render a new PDF, fill publication-readiness fields, or count as PV-08
+author approval. If a sentence is affected by C2, mark it “wait for R5 decision”
+instead of changing it during this week.
+
+R0 — BASELINE, PROVENANCE, AND IMMUTABILITY LOCK
+
+Owner: Claude executor. Type: read-only preparation. Estimate: 1 hour.
+
+Files to create:
+
+- evidence/weekly-research-2026-09-21/baseline.json
+- evidence/weekly-research-2026-09-21/README.txt
+
+Commands to record exactly:
+
+    git rev-parse HEAD
+    git status --short --branch
+    git log -1 --format='%H %ad %s' --date=iso-strict
+    python --version
+    python -m pip freeze
+    sha256sum data/sim/studyC/studyC_results.json
+    sha256sum data/sim/studyC/studyC_fig_transfer.png
+    python -m scripts.check_manuscript_numbers
+    python -m scripts.check_publication_fallback
+    python -m scripts.check_publication_fallback --for-publication
+
+On macOS, use shasum -a 256 if sha256sum is unavailable. Record exit 2 from
+--for-publication as the expected publication BLOCKED state. Run the checks from
+the repository root. Do not regenerate any study during R0.
+
+Acceptance conditions:
+
+- the exact base revision and PR dependency are written down;
+- the Study C result and figure hashes are recorded in full;
+- numbers and historical-integrity checks pass;
+- publication remains blocked;
+- the working tree is clean before implementation begins, or every pre-existing
+  change is listed and avoided.
+
+R1 — FORENSIC FAILURE MAP FROM THE EXISTING STUDY C RUN
+
+Owner: Claude executor. Type: post-hoc descriptive analysis; no new fitting.
+Estimate: 3–4 hours.
+
+Purpose: test whether the observed C failures are concentrated in units with
+poor post-onset coverage, rather than pretending that the aggregate RMSE answers
+that question.
+
+Files to add:
+
+- scripts/analyze_studyC_failure.py
+- tests/test_studyC_failure.py
+- data/sim/studyC/studyC_failure_analysis.json
+- data/sim/studyC/studyC_fig_failure_map.png
+- data/sim/studyC/studyC_fig_failure_map.pdf
+- docs/specs/observability-program/studyC-failure-analysis.txt
+- evidence/weekly-research-2026-09-21/r1-failure-map.txt
+
+The analysis must consume the committed Study C result and the same deterministic
+unit generator. It must not refit the ridge model, change lambda, alter the
+held-out split, or select a new threshold.
+
+For each of the 10 held-out units, compute and store:
+
+- stable unit identity and the unit's rupture_cycles;
+- acceleration_onset_fraction;
+- number of probes and cycle values;
+- number and fraction of probes before onset;
+- number and fraction of probes at or after onset;
+- cycle and normalized-life value of the first post-onset probe, if one exists;
+- normalized life at the last observed probe;
+- gap from onset to the first post-onset probe in cycles and life;
+- transferred RMSE, clock RMSE, transferred-minus-clock delta;
+- pre-onset RMSE and post-onset RMSE, retaining null when a segment is empty;
+- whether the unit passes the 0.10 target and whether it beats the clock;
+- a categorical coverage label: no_post_onset, sparse_post_onset, or adequate_post_onset.
+
+Use explicit definitions. “Sparse” is not a free-form judgment: define it in the
+analysis document before calculating it. Recommended initial rule: sparse means
+one or two post-onset probes; adequate means at least three. Also report the raw
+counts so a later reader can change the descriptive grouping without rerunning the
+study.
+
+Aggregate outputs must include:
+
+- a table sorted by rupture_cycles;
+- a table sorted by transferred-minus-clock delta;
+- mean and median RMSE by coverage label, descriptive only;
+- counts within target and beating the clock by coverage label;
+- the relationship between post-onset probe fraction and error delta as a scatter
+  plot with unit labels;
+- the relationship between rupture life, onset fraction, and probe coverage as a
+  second panel;
+- a short limitations field stating n=10 held-out units, no inferential p-values,
+  and reuse of the existing evaluation output.
+
+The analysis JSON must include a schema_version, source_sha256, generator commit,
+definitions of all derived fields, and a boolean post_hoc_descriptive=true. The
+figure caption must say “diagnostic failure map; not a new held-out evaluation.”
+
+Tests must use hand-built records to verify:
+
+- exact pre-/post-onset counts at a boundary;
+- no-post-onset returns null post-onset RMSE and the correct label;
+- the sparse/adequate threshold is deterministic;
+- a unit that beats the clock but misses 0.10 is not counted as a target pass;
+- source hash mismatch stops the script before writing outputs;
+- the aggregate calculation does not silently drop units with missing segments.
+
+R1 decision gate:
+
+- If errors are clearly concentrated in no/sparse-post-onset units, proceed to
+  R2 with “schedule limitation” as a hypothesis, not a conclusion.
+- If errors remain high in adequately observed post-onset units, proceed to R2
+  with “signal limitation” as the leading hypothesis.
+- If the data are mixed, carry both hypotheses forward.
+
+R2 — FREEZE STUDY C2: INFORMATION-TIMING AND SCHEDULE SENSITIVITY
+
+Owner: Claude executor prepares the document; owner reviews before execution.
+Type: new preregistered simulation design. Estimate: 3–4 hours.
+
+File to add before any C2 run:
+
+- docs/specs/observability-program/studyC2-schedule-preregistration.txt
+
+This is a follow-up to diagnose C-FAIL, not an amendment that changes C's verdict.
+The document must contain the question, hypotheses, schedule grid, random seeds,
+metrics, split, selection rules, stopping rules, and downgrade language before
+R3 or R4 begins. Record its commit hash in the evidence file.
+
+Primary question:
+
+Does giving the same estimator more observations in the informative regime reduce
+the held-out failure pattern, or does Study B's post-onset non-identifiability
+remain the limiting factor?
+
+Hypotheses:
+
+- H-C2-SCHEDULE: fixed-cycle schedules with better post-onset coverage reduce
+  the short-lived-unit error and improve the C metrics without changing features
+  or estimator architecture.
+- H-C2-SIGNAL: even a diagnostic schedule with post-onset coverage does not reach
+  the target; pressure features remain confounded with onset/leak nuisance state.
+- H-C2-MIXED: the schedule helps some units but cannot meet the cohort threshold
+  under a practical probe budget.
+
+Fixed cohort and split:
+
+- reuse sample_units(N=30, seed=SEED) and the exact seeded train/test permutation
+  from scripts/run_studyC.py;
+- 20 train and 10 held-out units by identity;
+- no trace-level random split;
+- no new units or new degradation-family claim;
+- keep Study C's 10 held-out identities unchanged;
+- do not use Study C held-out outcomes to choose a schedule, lambda, features, or
+  any other hyperparameter.
+
+Estimator contract:
+
+- exactly the current C estimator: ridge regression;
+- exactly the current 11-input representation: five log ratios to the young
+  baseline, five previous-probe log ratios, and cycle count / 1000;
+- same three lambdas (0.01, 0.1, 1.0), selected by leave-one-unit-out on the
+  20 training units separately for each schedule;
+- standardization fitted on training units and reused unchanged on held-out units;
+- no new estimator variants, neural networks, feature selection, or post-hoc
+  threshold tuning.
+
+Schedule contract:
+
+- every condition obtains a baseline at cycle 100;
+- follow-up starts are 100, 250, or 500 cycles;
+- follow-up cadences are 125, 250, or 500 cycles;
+- probes stop before rupture;
+- duplicate cycle-100 baseline observations are de-duplicated;
+- include the original “start 100, cadence 250” condition as a named reference;
+- keep the original Study C seed namespace for that reference condition so its
+  outputs can be compared exactly to the committed run;
+- use a separate, deterministic namespace for new schedules, such as
+  SeedSequence([SEED, 8, unit_index, schedule_id, probe_index]);
+- report mean, median, minimum, and maximum probe count per condition;
+- do not report a schedule as practical without its probe count and coverage cost.
+
+Diagnostic oracle arm:
+
+- baseline remains at cycle 100;
+- add a predeclared diagnostic schedule that places probes at the unit's true
+  onset and at two fixed post-onset cycle offsets when those probes remain before
+  rupture;
+- the oracle uses generator truth and is impossible to deploy; label it
+  “mechanistic diagnostic upper bound,” never a production policy;
+- fit and evaluate the same estimator contract under this schedule;
+- use it only to distinguish observation timing from feature identifiability.
+
+If an oracle schedule is considered too strong, retain it anyway as a diagnostic
+arm or document the explicit decision to omit it before implementation. Do not
+quietly replace it with a schedule chosen after inspecting C outcomes.
+
+Metrics for every schedule, on every held-out unit:
+
+- u-RMSE;
+- RMSE before and after onset;
+- clock-only RMSE using the training-median rupture life;
+- delta versus clock;
+- number and fraction of post-onset probes;
+- probe count and probe-count ratio versus the original schedule;
+- target pass (RMSE <= 0.10);
+- beat-clock flag;
+- C-PASS counts using the unchanged rule: at least 8/10 target passes and at
+  least 8/10 units better than clock.
+
+Uncertainty and reporting:
+
+- actuator-cluster bootstrap over complete held-out units with the existing 2000
+  resamples and a recorded seed;
+- leave-one-held-out-unit-out range;
+- retain all per-unit rows, including failures and missing pre/post segments;
+- report every schedule row, not only the best row;
+- do not compute a p-value or claim statistical significance from n=10.
+
+Predeclared interpretation rules:
+
+- schedule-limited evidence: the oracle and at least one feasible fixed schedule
+  materially reduce the short-lived-unit errors, and a feasible schedule reaches
+  the unchanged C-PASS rule;
+- signal-limited evidence: the oracle does not reach the target or does not
+  remove the post-onset error pattern, even with adequate coverage;
+- mixed evidence: the oracle helps, but no feasible schedule meets C-PASS under
+  the stated probe budget;
+- null/clock-dominated evidence: most schedules do not beat the clock and any
+  gains occur only where the clock is already inaccurate; no transfer claim.
+
+“Materially reduce” must be fixed in the preregistration as a numeric descriptive
+rule before the run. Recommended rule: at least 0.05 life reduction in mean RMSE
+on the three currently worst short-lived held-out units, with the same estimator
+and a stated probe-count cost. If the owner chooses another rule, record it before
+R3.
+
+R3 — IMPLEMENT THE C2 RUNNER WITHOUT TOUCHING STUDY C
+
+Owner: Claude executor. Estimate: 4–5 hours.
+
+Files to add:
+
+- scripts/run_studyC2.py
+- tests/test_studyC2.py
+- data/sim/studyC2/studyC2_results.json
+- data/sim/studyC2/studyC2_fig_schedule_sensitivity.png
+- data/sim/studyC2/studyC2_fig_schedule_sensitivity.pdf
+- evidence/weekly-research-2026-09-21/r3-implementation.txt
+
+Implementation requirements:
+
+- factor schedule generation into a pure function returning cycle values and
+  normalized life only for diagnostics;
+- keep life fraction out of estimator inputs;
+- factor deterministic seed construction into a pure function and test it;
+- keep the exact current Study C reference path and add a regression assertion
+  against the committed Study C held-out rows or aggregate values;
+- use a copied/generated output directory data/sim/studyC2; never write into
+  data/sim/studyC;
+- fail if the output directory contains an existing result from a different
+  preregistration hash unless an explicit --overwrite is documented and used in
+  a disposable checkout;
+- write a results manifest containing preregistration_sha256, base_commit,
+  generator_hashes, seed, schedule definitions, train/test indices, and all
+  output hashes;
+- write JSON atomically through a temporary file in the same output directory;
+- make plots deterministic with MPLBACKEND=Agg and the repository figure style.
+
+Tests must cover:
+
+- schedules never emit a probe at or after rupture;
+- cycle-100 baseline is present exactly once;
+- no estimator feature includes normalized life;
+- train standardization is reused for held-out predictions;
+- lambda selection only reads training records;
+- reference schedule reproduces Study C's seed/order contract;
+- cluster bootstrap resamples units, not individual probes;
+- C-PASS remains false for the existing C result;
+- a synthetic fixture can exercise each interpretation label without running the
+  full simulation.
+
+R4 — EXECUTE, VERIFY, AND CAPTURE THE C2 RESULTS
+
+Owner: Claude executor. Estimate: 4–5 hours, likely the longest runtime.
+
+Run only after R2's preregistration is committed:
+
+    MPLBACKEND=Agg python -m scripts.run_studyC2
+    python -m pytest -q tests/test_studyC_failure.py tests/test_studyC2.py
+    python -m scripts.check_manuscript_numbers
+    python -m scripts.check_publication_fallback
+    python -m scripts.check_publication_fallback --for-publication
+    git diff --check
+
+Run the full suite before opening the implementation PR. Use the repository's
+documented Python 3.11 environment. Record wall time, package versions, exact
+commands, exits, and output hashes. If a run is interrupted, do not silently
+resume with a different seed; record the interruption and restart from a clean,
+disposable output directory.
+
+Required result review:
+
+- verify every schedule has 10 held-out unit rows;
+- verify every held-out unit appears exactly once per schedule;
+- verify the reference schedule comparison against Study C;
+- verify no output claims C-PASS unless both counts are >= 8;
+- verify oracle rows are clearly marked diagnostic and excluded from any practical
+  recommendation;
+- inspect both generated figures page/image-wise and check labels, legends,
+  thresholds, schedule names, and captions;
+- compare the original Study C JSON and figure hashes before and after; they must
+  remain unchanged;
+- verify the publication readiness record remains byte-identical and blocked.
+
+Do not update the manuscript, abstract, citation metadata, publication record, or
+frozen v1.3 result files as part of R4.
+
+R5 — DECISION MEMO AND NEXT-GATE RECOMMENDATION
+
+Owner: Claude executor writes; owner reviews. Estimate: 3 hours.
+
+Files to add or update:
+
+- docs/specs/observability-program/studyC2-decision.txt
+- docs/results.md (only a dated observability-program entry, if the owner agrees)
+- evidence/weekly-research-2026-09-21/README.txt
+- docs/SPRINT_PROGRESS.md (only after evidence and review are complete)
+- docs/SPRINT_TASKS.csv (new rows only; preserve historical rows and verdicts)
+
+The decision memo must include:
+
+- the original C-FAIL unchanged;
+- the forensic failure map from R1;
+- every C2 schedule row, not just the most favorable one;
+- the oracle diagnostic outcome and its non-deployable status;
+- probe-count cost and coverage for each condition;
+- cluster bootstrap and leave-one-unit-out ranges;
+- the interpretation label: schedule-limited, signal-limited, mixed, or
+  clock-dominated;
+- the exact evidence supporting that label and what it cannot establish;
+- a recommendation for one next experiment, or an explicit stop rule;
+- a claim-language section using only “within this synthetic generator” wording.
+
+Decision gate for the following week:
+
+SCHEDULE-LIMITED:
+  Promote one cost-constrained fixed schedule into a separately preregistered
+  confirmatory run. Do not call it transfer yet. Require a fresh held-out unit
+  split or an untouched degradation family before any stronger claim.
+
+SIGNAL-LIMITED:
+  Stop adding probe cadence variants. Design a feature/intervention study that
+  addresses onset/leak confounding, or move to the hardware-entry decision. Do
+  not spend another week tuning ridge inputs on the same generator.
+
+MIXED:
+  Report a bounded operating envelope and choose between a cost study and an
+  alternate-observable study. Require a declared probe budget before selection.
+
+CLOCK-DOMINATED:
+  Keep the clock baseline as a serious competitor and narrow the method claim to
+  conditional improvement on atypical rupture lives. Do not present average RMSE
+  improvement as successful transfer.
+
+INSUFFICIENT/INVALID:
+  If provenance, deterministic seeds, reference reproduction, or output integrity
+  fails, stop. Repair the pipeline before scientific interpretation.
+
+NON-NEGOTIABLE RESEARCH GUARDRAILS
+
+- Never change the C-PASS threshold after seeing C2 results.
+- Never choose a schedule, feature, lambda, or model using held-out outcomes.
+- Never remove the three worst units from an aggregate.
+- Never convert an oracle schedule into a deployment recommendation.
+- Never call a post-hoc failure map a new validation result.
+- Never increase N from the same generator and call that mechanism-level
+  generalization.
+- Never use the C2 result to rewrite the frozen v1.3 manuscript without a separate
+  author-reviewed manuscript task.
+- Never run hardware, CAD fabrication, spending, or a publication action under
+  this research plan.
+- Preserve the original Study A verdict, amended Study A verdict, Study B verdict,
+  and Study C-FAIL side by side.
+
+THIS WEEK'S MUST-HAVE / NICE-TO-HAVE / MAYBE-LATER SCOPE
+
+MUST-HAVE:
+
+- R0 provenance lock;
+- R1 forensic failure map;
+- R2 preregistered C2 design;
+- a decision about whether the next limitation is timing or signal information;
+- evidence that the original Study C result and publication gate were untouched.
+
+NICE-TO-HAVE:
+
+- execute the full C2 schedule grid;
+- produce the oracle diagnostic arm;
+- generate publication-quality schedule and coverage figures;
+- add a small synthetic test fixture for each interpretation branch.
+
+MAYBE-LATER, TRIGGER-GATED:
+
+- alternate pressure features or a new estimator: only if C2's oracle arm shows
+  schedule is not the bottleneck and the owner approves a new preregistration;
+- new degradation families: only after the current failure mechanism is fixed and
+  a holdout family can remain untouched until final evaluation;
+- hardware pilot: only after Study C's predicted trajectory and a competing sensor
+  protocol are frozen, CAD/rig access is confirmed, and PV-OBS-D is owner-approved;
+- larger cohort: only if a new mechanism or family is added; more samples from the
+  same canonical generator are not sufficient.
+
+OUT FOR THIS WEEK:
+
+- editing docs/preprint_v1.pdf or docs/preprint_v1_4_candidate.md;
+- changing docs/publication-readiness.json;
+- changing Study C's verdict or preregistration;
+- adding neural models, CUSUM variants, contact estimators, or feature families;
+- regenerating Phase D or Study A/B artifacts;
+- applying the deferred ponytail dataset/contact-loop cleanup;
+- claiming physical validation, early warning, prognosis, or general transfer.
+
+TRACEABILITY
+
+R0  Artifact identity and immutability              baseline.json, evidence README
+R1  Explain existing C-FAIL                          failure JSON, figure, tests
+R2  Freeze causal follow-up question                 C2 preregistration
+R3  Implement deterministic schedule comparison      runner, tests, C2 artifacts
+R4  Verify held-out integrity and limits              evidence, hashes, checks
+R5  Decide next research direction                   decision memo, progress entry
+M1  Preserve manuscript awareness without scope drift manuscript-notes.txt
+
+FINAL HANDOFF TO CLAUDE
+
+Start by reading this file and the authoritative files listed above. Build in the
+order R0 → R1 → R2 → R3 → R4 → R5. Do not begin R3 until the C2 preregistration
+has a commit hash. Do not begin R4 until the owner has reviewed the preregistration
+or explicitly authorized execution. Keep every generated artifact in a new
+studyC2 namespace. Open one implementation PR containing code, tests, artifacts,
+evidence, and ledger updates only after the full verification table passes.
+
+The success condition for this week is a trustworthy decision about what to build
+next. A result that confirms the method is limited is a successful scientific
+outcome if the evidence makes the limitation specific and prevents another week
+of tuning the wrong variable.

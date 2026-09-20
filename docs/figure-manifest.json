@@ -201,6 +201,24 @@
       ],
       "boundary": "Preregistered Study C (docs/specs/observability-program/studyC-transfer.md, amended 2026-09-16): one ridge estimator transferred to 10 held-out synthetic units against a clock-only baseline; a synthetic transfer result, not a device claim",
       "numeric": "data/sim/studyC/studyC_results.json"
+    },
+    {
+      "id": "study-c-failure-map",
+      "evidence_type": "simulation",
+      "generator": "scripts/analyze_studyC_failure.py",
+      "command": "python -m scripts.analyze_studyC_failure",
+      "inputs": [
+        "data/sim/studyC/studyC_results.json",
+        "scripts/run_studyC.py",
+        "pipeline/dispersion.py",
+        "pipeline/identifiability.py"
+      ],
+      "outputs": [
+        "data/sim/studyC/studyC_fig_failure_map.png",
+        "data/sim/studyC/studyC_fig_failure_map.pdf"
+      ],
+      "boundary": "R1 post-hoc diagnostic map of the committed Study C result (docs/specs/observability-program/studyC-failure-analysis.md). Descriptive, n = 10 held-out units, no refit and no new evaluation; Study C's C-FAIL verdict is unchanged",
+      "numeric": "data/sim/studyC/studyC_failure_analysis.json"
     }
   ],
   "generated_inputs": {

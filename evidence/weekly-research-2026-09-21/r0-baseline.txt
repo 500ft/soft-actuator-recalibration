@@ -1,0 +1,25 @@
+=== R0 baseline, 2026-09-19T23:56:38Z ===
+-- git
+1525a1be28210cfeb30dc7b79cce3a79a65a1606
+## research/weekly-r0-r1-20260921
+?? docs/WEEKLY_RESEARCH_PLAN_2026-09-21.txt
+?? evidence/weekly-research-2026-09-21/
+1525a1be28210cfeb30dc7b79cce3a79a65a1606 2026-09-16T10:13:49-04:00 Study C executed under the amended design (C-FAIL: 6/10 within 0.10 life, 7/10 below the clock); evidence, ledger, program and results updated
+-- python
+Python 3.11.8
+matplotlib==3.10.1
+numpy==2.1.1
+pypdf==6.12.2
+pytest==8.4.2
+reportlab==4.5.1
+scipy==1.15.2
+-- locked artifact hashes
+aac3c48826bdd11090cb2a1e91f8be5aa4da61c601e7d3d328e32595aa194edc  data/sim/studyC/studyC_results.json
+ebdcdb1bfd7066c2d59562aa8adf9513e34efc8714e182408a70f4ff584b0bdd  data/sim/studyC/studyC_fig_transfer.png
+02529a6e998c16fdb1ade697f393b4668b2b592c49741e239aa923837578b6c4  data/sim/studyC/studyC_fig_transfer.pdf
+6a6681fe1a77f7d972048dddc99a0a07b55e5d89dca1a83c11ba5b5cefd0777d  docs/preprint_v1.pdf
+6b58769bdb6b696da120f813ccb9bdbe636fe232177f208e2e4c25424a70b533  docs/publication-readiness.json
+-- checks
+check_manuscript_numbers rc=0
+check_publication_fallback rc=0
+check_publication_fallback --for-publication rc=2 (expected 2 = BLOCKED)
