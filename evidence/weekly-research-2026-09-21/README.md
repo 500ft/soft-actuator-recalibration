@@ -114,3 +114,63 @@ spending, no publication action. PV-08 unchanged.
 
 R2 (C2 preregistration), R3, R4, R5 and M1 are Tuesday–Friday. R2 should be written against the critique's
 recommendation, and per the plan R3 must not begin until R2 has a commit hash.
+
+---
+
+# Day 2 (R2) — executed 2026-09-20
+
+Branch `research/weekly-r2-20260922`, from main `347a94b` (PRs #22 and #23 merged, so the Day 1 stack is
+no longer a dependency).
+
+## R2 — Study C2 design frozen before any C2 run
+
+Preregistration: [`studyC2-preregistration.md`](../../docs/specs/observability-program/studyC2-preregistration.md).
+Per the week plan, R3 may not start until this file has a commit hash, and R4 not until the owner reviews it.
+
+The design departs from the plan's R2 sketch on three points, each traceable to a Day 1 measurement and
+each recorded in the preregistration itself:
+
+| # | plan's sketch | C2 as frozen | why |
+|---|---|---|---|
+| 1 | schedule is the only manipulated variable; 11 inputs frozen | **input arm is the primary axis** (`full`, `pressure_only`, `clock_only`); schedule secondary | R1: muting the clock costs 0.120 life vs 0.051 for pressure; a schedule-only grid cannot reach the plan's own *clock-dominated* label |
+| 2 | "the three currently worst short-lived held-out units" | **rupture below the training median** | the plan's own guardrail forbids choosing from held-out outcomes; the pre-specifiable rule selects the same units 7, 12, 17 |
+| 3 | oracle changes placement and probe count | **oracle matches the reference probe count per unit** | otherwise timing and count are confounded in the arm that exists to isolate timing |
+
+### Design validated before freezing (generator parameters only; no estimator, no errors)
+
+| schedule | probes/unit (held-out mean) | post-onset mean | cost vs reference |
+|---|---|---|---|
+| reference | 14.2 | 4.7 | 1.00x |
+| dense | 27.6 | 9.2 | 1.94x |
+| sparse | 7.4 | 2.4 | 0.52x |
+| late_start | 13.3 | 4.4 | 0.94x |
+| **onset_anchored_oracle** | **14.2** | **13.2** | **1.00x** |
+
+The oracle fix works: identical probe cost, post-onset coverage nearly tripled. On unit 7, the worst unit,
+it moves 1-of-6 post-onset probes to 5-of-6 at the same total count. Under `sparse`, unit 7 receives zero
+post-onset probes, which makes that a useful negative condition rather than merely a cheap one.
+
+### The contract is code, not prose
+
+The parts that must not drift during R3 are pure functions in
+[`pipeline/schedules.py`](../../pipeline/schedules.py), pinned by **46 acceptance tests**
+(`tests/test_schedules.py`) committed *before* the runner exists: the reference schedule reproduces Study
+C's cycles and seed namespace exactly; no schedule probes at or after rupture; every condition carries the
+baseline exactly once and de-duplicates; schedule ordinals are stable under insertion so adding a schedule
+cannot renumber existing seeds; the oracle matches reference probe count; normalised life is never an
+input; the unchanged C rule still fails the committed (6, 7) counts; and every interpretation branch is
+reachable and correctly ordered, with a feasible pass always outranking the oracle.
+
+This is a small, deliberate reordering of the plan: the plan assigned the pure schedule and seed functions
+to R3, but R2 owes "acceptance tests", and tests are only meaningful against a contract. Implementing the
+contract in R2 and the runner in R3 keeps the design from drifting while the runner is written.
+
+## Scope held
+
+No C2 run was executed; `data/sim/studyC2/` does not exist yet. Study C's verdict, preregistration,
+result JSON and figure are untouched, as are the v1.3 archive, the readiness record and PV-08.
+
+## Next
+
+R3 (runner) may begin: this preregistration now has a commit hash. R4 execution awaits owner review of the
+preregistration, per the plan. M1 remains a Friday review-only checkpoint.
