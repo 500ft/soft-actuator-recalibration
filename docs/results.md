@@ -75,4 +75,10 @@ Question: is the fatigue state observable from pressure alone across dispersed u
   noise/amplitude) and structurally unidentifiable after it (aliased with the unit's onset fraction and leak).
   Verdict **B-PASS** by its rule; the regime boundary is the result.
 
+- **Study C** (one ridge estimator on baseline-normalised pressure features plus the clock, transferred to 10
+  held-out units; run after the owner withdrew Study A's timing criterion): mean held-out u-RMSE 0.093 vs 0.123 for
+  the clock alone, but only 6 of 10 units within 0.10 and 7 of 10 below the clock, so the preregistered verdict is
+  **C-FAIL**. The estimator helps exactly where the clock's rupture prior is wrong (short-lived units) and adds
+  little where it is right; no transfer claim.
+
 Boundary: one synthetic generator, assumed dispersion magnitudes, local bounds; no physical claim.

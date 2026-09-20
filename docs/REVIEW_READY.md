@@ -92,6 +92,13 @@ Next action: PV-08: author review of docs/preprint_v1_4_candidate.md; no deposit
 
 ## Current entries
 
+### 2026-09-16 — renderer escape fix, database pass, Study A amendment, Study C, cleanup
+
+Renderer escapes fixed and the preview re-rendered without artifacts (PDF `0345c5dc…`, unapproved); IEEE Xplore pass
+added to the novelty check (Scopus left to the owner); Study A criterion iii withdrawn by owner amendment (both verdicts
+recorded); Study C run under its amended trajectory design; portfolio-wide research artifacts removed.
+[Evidence](../evidence/next-five-2026-09-16/README.md). PV-08 unchanged.
+
 ### 2026-09-16 — Observability program: preregistered Studies A–C, A and B executed
 
 [Program](specs/observability-program/program.md) · [novelty check](reviews/novelty-check-2026-09-16.md) · [evidence](../evidence/observability-2026-09-16/README.md). Study A verdict **A-FAIL** (value spread passes, trigger-timing

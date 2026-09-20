@@ -22,3 +22,6 @@ def test_verdict_rules():
     assert verdict(0.1, *good, 0.2) == "A-PASS"
     assert verdict(0.1, *good, 0.05) == "A-FAIL"
     assert verdict(0.1, np.full(n, 1.0), np.full(n, 0.9), 0.2) == "A-FAIL"
+    assert verdict(0.1, *good, 0.05, amended=True) == "A-PASS"
+    assert verdict(0.1, np.full(n, 1.0), np.full(n, 0.9), 0.2, amended=True) == "A-FAIL"
+

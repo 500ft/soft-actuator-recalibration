@@ -79,3 +79,13 @@ Life grid u ∈ {0.05, 0.10, …, 0.95} (19 stages). Cohort N = 30 units.
 via `python -m scripts.run_studyA` (seeded, deterministic). Tests in `tests/test_dispersion.py` and
 `tests/test_studyA.py` cover: default `fatigue_exponent` reproduces the canonical law exactly; sampled units
 are reproducible and within the stated supports; metric functions on a hand-built case; verdict logic.
+
+## Amendment 2026-09-16 (owner decision, recorded after the first run)
+
+Owner decision on 2026-09-16: criterion iii (trigger-life spread at the deployed τ = 0.05) is **withdrawn as a gate**
+for the question this study asks. Rationale: criterion iii measures timing at one threshold, which conflates
+between-unit spread with the generator's small normalised dynamic range (6–11 % over life); criteria i and ii
+already test whether the indicator carries between-unit information above its noise, which is what "the cohort
+can pose the cross-unit question" means. The original run and its `A-FAIL` under the original rule remain recorded
+in the evidence and the results file; the amended rule is reported separately as `verdict_amended_2026_09_16`
+(A-PASS if i and ii hold and the cohort is not degenerate). Study C proceeds under the amended verdict.

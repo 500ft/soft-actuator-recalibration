@@ -163,3 +163,14 @@ class DestinationCollisionTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class InlineEscapeTests(unittest.TestCase):
+    """Markdown escapes must survive the emphasis regexes (2026-09-15 preview finding)."""
+
+    def test_escaped_asterisks_are_literal_and_do_not_pair_with_emphasis(self):
+        self.assertEqual(R.inline(r"τ\* = 0.05 and *T*\* = 2,700"), "τ* = 0.05 and <i>T</i>* = 2,700")
+        self.assertEqual(R.inline(r"(τ\*=0.05)"), "(τ*=0.05)")
+        self.assertEqual(R.inline(r"a \[b\] **c**"), "a [b] <b>c</b>")
+        self.assertNotIn("\\", R.inline(r"τ\*"))
+

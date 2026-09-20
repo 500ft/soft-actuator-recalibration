@@ -1,0 +1,183 @@
+{
+  "preregistration": "docs/specs/observability-program/studyC-transfer.md (amended 2026-09-16)",
+  "seed": 20260916,
+  "train_units": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8,
+    9,
+    10,
+    11,
+    13,
+    14,
+    15,
+    16,
+    18,
+    19,
+    20,
+    21,
+    25,
+    27
+  ],
+  "test_units": [
+    0,
+    7,
+    12,
+    17,
+    22,
+    23,
+    24,
+    26,
+    28,
+    29
+  ],
+  "probe_schedule_cycles": {
+    "start": 100.0,
+    "step": 250.0
+  },
+  "lambda_selected": 1.0,
+  "lambda_loo_scores": {
+    "0.01": 0.09192359220278404,
+    "0.1": 0.09145607992290752,
+    "1.0": 0.09114205455176563
+  },
+  "median_training_rupture_cycles": 3625.60074636404,
+  "heldout": [
+    {
+      "rupture_cycles": 4164.648898775884,
+      "onset": 0.6035111338687582,
+      "n_probes": 17,
+      "rmse": 0.06118637155218688,
+      "rmse_clock": 0.07423421750686075,
+      "rmse_per_unit_calibration": 0.5148800227644289,
+      "rmse_pre_onset": 0.0568502831163288,
+      "rmse_post_onset": 0.06689499039455271
+    },
+    {
+      "rupture_cycles": 1415.7448003062905,
+      "onset": 0.7798164767933006,
+      "n_probes": 6,
+      "rmse": 0.22680615811956129,
+      "rmse_clock": 0.3622347242785912,
+      "rmse_per_unit_calibration": 0.40673193102696353,
+      "rmse_pre_onset": 0.2483650553704415,
+      "rmse_post_onset": 0.01483902018059724
+    },
+    {
+      "rupture_cycles": 2204.631914172956,
+      "onset": 0.7377619249270418,
+      "n_probes": 9,
+      "rmse": 0.13030911521478789,
+      "rmse_clock": 0.22673458388628193,
+      "rmse_per_unit_calibration": 0.44355741402313864,
+      "rmse_pre_onset": 0.14584223972933955,
+      "rmse_post_onset": 0.04435356438696175
+    },
+    {
+      "rupture_cycles": 2471.0579757712635,
+      "onset": 0.7224566130118919,
+      "n_probes": 10,
+      "rmse": 0.1309321297108003,
+      "rmse_clock": 0.1829866067995485,
+      "rmse_per_unit_calibration": 0.42789801067097916,
+      "rmse_pre_onset": 0.10595008192008172,
+      "rmse_post_onset": 0.17593018207417216
+    },
+    {
+      "rupture_cycles": 3670.5349806797685,
+      "onset": 0.6698007586165046,
+      "n_probes": 15,
+      "rmse": 0.05595057273850965,
+      "rmse_clock": 0.007233273988089095,
+      "rmse_per_unit_calibration": 0.5136662265850798,
+      "rmse_pre_onset": 0.043518282042320014,
+      "rmse_post_onset": 0.0748579857161008
+    },
+    {
+      "rupture_cycles": 3856.767992945911,
+      "onset": 0.6749792382119075,
+      "n_probes": 16,
+      "rmse": 0.05445061973810346,
+      "rmse_clock": 0.034293428177723725,
+      "rmse_per_unit_calibration": 0.526994544605536,
+      "rmse_pre_onset": 0.061709105473636776,
+      "rmse_post_onset": 0.033315969611872207
+    },
+    {
+      "rupture_cycles": 4248.485235794755,
+      "onset": 0.597099453697832,
+      "n_probes": 17,
+      "rmse": 0.08028174161496753,
+      "rmse_clock": 0.08491732041746061,
+      "rmse_per_unit_calibration": 0.49795634397705746,
+      "rmse_pre_onset": 0.05452859163779743,
+      "rmse_post_onset": 0.1067935348260065
+    },
+    {
+      "rupture_cycles": 4120.724963277421,
+      "onset": 0.6541688199450963,
+      "n_probes": 17,
+      "rmse": 0.041335592249562327,
+      "rmse_clock": 0.06857620216007466,
+      "rmse_per_unit_calibration": 0.520215518205697,
+      "rmse_pre_onset": 0.04851657614364689,
+      "rmse_post_onset": 0.022928477216662843
+    },
+    {
+      "rupture_cycles": 3930.1628184987962,
+      "onset": 0.6097556119037564,
+      "n_probes": 16,
+      "rmse": 0.052926138111858756,
+      "rmse_clock": 0.04462638127720648,
+      "rmse_per_unit_calibration": 0.5097934625741175,
+      "rmse_pre_onset": 0.06356345578401712,
+      "rmse_post_onset": 0.02712836281735955
+    },
+    {
+      "rupture_cycles": 4775.058421448078,
+      "onset": 0.737641030894199,
+      "n_probes": 19,
+      "rmse": 0.10074527045193128,
+      "rmse_clock": 0.13959315417665077,
+      "rmse_per_unit_calibration": 0.5037800870858842,
+      "rmse_pre_onset": 0.08113559419454011,
+      "rmse_post_onset": 0.14190193502275258
+    }
+  ],
+  "heldout_mean_rmse": 0.09349237095022693,
+  "heldout_mean_rmse_clock": 0.12254298926684878,
+  "cluster_bootstrap_ci": [
+    0.06422862009529913,
+    0.13149087375028018
+  ],
+  "leave_one_unit_out_range": [
+    0.07867972793141201,
+    0.09928756858363412
+  ],
+  "n_within_target": 6,
+  "n_beats_clock": 7,
+  "verdict": "C-FAIL",
+  "adversarial": {
+    "n_units": 200,
+    "seed": 20260918,
+    "worst_rmse": 0.2218639783889307,
+    "worst_rmse_clock": 0.406520284620831,
+    "fraction_within_target": 0.575,
+    "worst_unit": {
+      "rupture_cycles": 986.7560142916813,
+      "onset": 0.6947242368275871,
+      "fatigue_exponent": 2.465061498604593,
+      "terminal_leak_multiplier": 10.693854692326276,
+      "mullins_amplitude": 0.039272536220985116,
+      "k1": 21115218874.57383,
+      "k2": 21669550633.95875,
+      "tau": 0.07858311018867481,
+      "temperature_c": 27.42807837516496,
+      "thickness_ratio": 1.0237992273359158
+    }
+  }
+}
