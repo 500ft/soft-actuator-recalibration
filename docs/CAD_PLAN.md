@@ -24,6 +24,13 @@ Entire CAD branch parked until manuscript decisions and explicit owner election.
 
 ## Tool and verification decision
 
+**Reusable tooling reference, 2026-09-21.** Before planning CAD or FEA, also read
+[CAD_PLANNING_ADDENDUM_2026-09-21.txt](CAD_PLANNING_ADDENDUM_2026-09-21.txt). It maps documented
+CAD machinery in `500ft/engineering-audit` (pinned revision `cf56cdf`) onto the work orders below
+and sets a minimum acceptance workflow and FEA limits. It is a planning reference only: it selects
+no tooling, proves no host access, and leaves every task below `deferred`. If a SOLIDWORKS host is
+chosen at activation, amend the selection below through PV-CAD-08 rather than silently.
+
 **Selected design approach:** CadQuery code-CAD for parameterized families and neutral STEP verification; Onshape for hand-modeled fixtures with confirmed owner account/access. No Onshape automation, credentials or paid access is assumed. Agent owns code-CAD generators/tests; Owner or an authorized CAD operator owns interactive Onshape work. Lack of Onshape access blocks only affected fixture modeling and requires a documented alternative, not the entire parameter pipeline.
 
 The dedicated tooling task budgets environment locking and CI setup. Pin actual Python/CadQuery/OCP versions only after a clean isolated install plus STEP export/reimport smoke test. No version, environment or geometry CI is claimed tested today. CadQuery's official [installation](https://cadquery.readthedocs.io/en/stable/installation.html) and [STEP import/export](https://cadquery.readthedocs.io/en/stable/importexport.html) docs establish the chosen workflow, not a completed build.

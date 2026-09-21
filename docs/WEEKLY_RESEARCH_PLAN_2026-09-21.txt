@@ -5,6 +5,13 @@ Planning status: ready for implementation review. This file is a plan only. It
 does not authorize a new scientific claim, a manuscript edit, a hardware action,
 or a publication action.
 
+FOR FUTURE CAD PLANNING — REFERENCE ADDED 2026-09-21
+
+The owner supplied 500ft/engineering-audit -> docs/cad_agent_briefing.md as the
+CAD/FEA handoff to consider going forward. Read the project-specific mapping in
+docs/CAD_PLANNING_ADDENDUM_2026-09-21.txt when preparing the conditional pilot.
+This reference note leaves the research schedule and C2 specification unchanged.
+
 PRIMARY OUTCOME FOR THE WEEK
 
 Explain the Study C-FAIL result well enough to choose the next research move.

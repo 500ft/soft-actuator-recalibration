@@ -1,0 +1,139 @@
+SOFT ACTUATOR RECALIBRATION — CAD GUIDANCE FOR FUTURE CLAUDE SESSIONS
+Recorded 2026-09-21. Planning reference supplied by the owner.
+
+SOURCE TO READ BEFORE PLANNING CAD OR FEA
+
+500ft/engineering-audit -> docs/cad_agent_briefing.md
+https://github.com/500ft/engineering-audit/blob/main/docs/cad_agent_briefing.md
+
+Reviewed revision: cf56cdff50b09c9a266292006cbf5b2a0f2e8ac6.
+The local checkout and remote main matched this revision on 2026-09-21.
+Pinned copy of the reviewed briefing:
+https://github.com/500ft/engineering-audit/blob/cf56cdff50b09c9a266292006cbf5b2a0f2e8ac6/docs/cad_agent_briefing.md
+
+Local reference: /Users/redhose/Developer/engineering-audit/docs/cad_agent_briefing.md
+For actual host setup, read engineering-audit/docs/host_setup.md. Before any
+SOLIDWORKS COM implementation, read engineering-audit/docs/solidworks_api_findings.md
+and verify method signatures against the installed version's documentation.
+
+HOW THIS CHANGES FUTURE PLANNING
+
+Reuse the documented CAD machinery in engineering-audit when the soft-actuator
+pilot reaches its existing entry decision. Evaluate native SOLIDWORKS authoring
+with CadQuery-based independent geometry checks before proposing another host
+automation stack. Keep soft-actuator parameters, fixture designs, acceptance
+contracts and evidence in this repository. Pin the dependency revision and record
+the interface used; do not copy a second maintenance fork of the host machinery.
+
+The briefing reports native part creation, parameter re-driving, independent
+volume checks, STEP round-trips and an initial MAPDL linear-static solve. Those
+are results from its own fixtures and RoboRacer parts, not completed work on a
+soft actuator. Its RoboRacer mast contract and dimensions are examples only.
+
+docs/CAD_PLAN.md currently selects CadQuery plus Onshape for some fixtures.
+When CAD is activated, explicitly amend that tooling choice in PV-CAD-08 if the
+available SOLIDWORKS host is selected. This note identifies the reusable option;
+it does not silently rewrite the accepted work orders or mark host access proven
+for this project. Retain an operator-driven route for capabilities not yet shown.
+
+APPLICATION TO THE EXISTING WORK ORDERS
+
+PV-CAD-02 — Owner confirms the existing specimen/mold, apparatus and pilot entry.
+            An available CAD host does not supply missing geometry or lab access.
+PV-CAD-01 — Register actual dimensions and measurement needs, including chamber
+            volume, tubing/dead volume, drive displacement and pose references.
+PV-CAD-08 — Pin the shared tooling; prove one small geometry case, a parameter
+            change and a STEP round-trip before accepting project parts.
+PV-CAD-03 — Verify the reused specimen/mold geometry, wall bounds and chamber
+            volume against its authorized source. Do not start a new mold family.
+PV-CAD-04 — Apply the checked-part workflow to the specimen base/clamp, pressure
+            tee supports and tubing routing; check active-chamber clearance.
+PV-CAD-05 — Apply it to the adapter around the selected volumetric drive; check
+            full travel and alignment. Displaced syringe volume is not by itself
+            a measurement of actual chamber volume.
+PV-CAD-06 — Apply it to pose-target/camera supports; check target position,
+            visibility over the motion envelope and mass assumptions.
+PV-CAD-07 — Assemble the review packet only after its constituent checks pass.
+            Native assemblies, mates and automated drawings need their own
+            demonstrated route; individual part exports do not establish them.
+
+Carry these mappings into the next CAD implementation plan. CAD_TASKS.csv remains
+the sole CAD task-status ledger; this addendum is not a new scheduled CAD phase.
+
+MINIMUM ACCEPTANCE WORKFLOW FOR A FUTURE PART
+
+1. Resolve inputs. Keep cad/pilot/parameters.csv as the proposed evidence register.
+   For every required value, retain units, source, evidence state and acquisition
+   route. Distinguish design_then_inspect, vendor_drawing and measurement. A vendor
+   drawing cannot close a measurement requirement. Unresolved required dimensions
+   block that part; optional unresolved features may be omitted only with the
+   reduced scope explicitly recorded.
+
+2. Create one explicit geometry contract for the part, supplied to both the
+   authoring route and its independent geometry checker. If derived from the CSV,
+   record the source rows/revision and the conversion; do not maintain conflicting
+   dimensions in two places. Tag designer choices provisional_design and preserve
+   their inspection requirement.
+
+3. Define expected geometry before authoring. Use an independent hand calculation
+   or separately implemented CadQuery construction. Sharing input dimensions is
+   useful; sharing the candidate's computed output as its expected answer is not.
+   Declare absolute/relative tolerances and units in advance. The briefing's
+   near-machine-precision agreements are observations, not universal tolerances.
+
+4. Check the quantities that matter to this part. Volume is necessary where used
+   as the oracle, but it does not establish hole position, wall thickness, chamber
+   connectivity or fit. Add bounding box, body count, bore/port location, minimum
+   wall bounds and clearance checks as the part's contract requires. Include a
+   deliberately wrong feature case that the relevant check must reject.
+
+5. Author and instrument. Verify sketch orientation with a small measured probe;
+   do not assume another host's plane mapping. Record per-feature measurements,
+   rejected equations and null feature returns. Check saved files exist and are
+   non-empty. A clean rebuild or plausible screenshot is insufficient evidence.
+
+6. Prove parameter control. Change a declared parameter within a reviewed range,
+   rebuild, and compare against independently computed new expectations. Include
+   position/clearance effects where relevant. Equations appearing in a feature
+   tree do not establish that all dependent features actually move.
+
+7. Export STEP and re-import in a fresh process. Recheck the geometry contract,
+   retain source/export hashes and tool versions, and record a clear verdict.
+   If no independent expected values exist, report accepted: null / unverified.
+
+8. Deliver editable geometry, neutral export, numeric evidence and explanatory
+   views. Dimensions, fit tolerances, materials and inspection requirements must
+   still be supplied for fabrication review. Poll actual host completion and
+   retain timeout/failure evidence; a successful launch is not a completed build.
+
+FEA LIMITS TO CARRY FORWARD
+
+The briefing's initial solve is a rigid plate example. It explicitly states that
+the FEA side has no independent oracle. Before interpreting fixture stress or
+displacement, plan an independent benchmark, boundary/load checks, units checks
+and mesh-convergence evidence for the intended problem.
+
+It supplies no demonstrated validation of this project's elastomer deformation,
+fatigue, recovery or pneumatic coupling. A successful plate solve cannot close
+those research questions. Formulating and validating such a model would be a
+separate research task if the project needs it.
+
+Native assembly authoring, mates, drawing automation and fully parametric feature
+positions are gaps named by the briefing. Recheck their evidence when the tooling
+is next used; do not promise them from this snapshot.
+
+PRIORITY AND SESSION HANDOFF
+
+The owner's current priority remains understanding and improving Study C. The
+current C2 specification is docs/specs/observability-program/studyC2-preregistration.md;
+this CAD reference does not amend its experiment, evidence or review status.
+
+At the next pilot-planning decision, read this addendum plus docs/CAD_PLAN.md,
+docs/CAD_ITEMS.md and docs/CAD_TASKS.csv. Use the shared machinery to estimate the
+remaining project-specific work; do not treat its existence as completed CAD,
+measurement, hardware access or author approval. Resolve any disagreement between
+older CAD and research entry conditions explicitly in that next plan.
+
+The Codex role remains planning; deliver proposed changes as text for Claude's
+review and implementation. No host operation, CAD build or solver run was made
+when preparing this reference.
