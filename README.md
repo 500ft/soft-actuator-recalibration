@@ -101,6 +101,7 @@ recording the source revision. Regeneration is not publication clearance.
 | [Prospective v2 claim spine](docs/specs/robosoft-v2/claim-spine.md) | Which stronger tests are proposed, rather than accomplished? |
 | [Observability program](docs/specs/observability-program/program.md) · [novelty check](docs/reviews/novelty-check-2026-09-16.md) | Can the fatigue state be identified from pressure alone across dispersed units, and what did Studies A and B find? |
 | [Literature review](docs/A01_A04_Literature_Review.md) | How does the study relate to prior work? |
+| [Literature folder](literature/README.md) · [claim ledger](literature/claim-ledger.md) · [gaps](literature/gaps.md) | Which evidence supports, and which contradicts, each current claim? |
 | [Review index](docs/REVIEW_READY.md) | Where are check outputs, provenance, and remaining gates? |
 
 ```text
