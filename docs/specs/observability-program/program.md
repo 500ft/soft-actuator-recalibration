@@ -51,7 +51,8 @@ One actuator from an existing released mold or a purchased PneuNet, one pressure
 or regulator with a stroke encoder (volume proxy per [Gate 1](../../Gate1_Volume_Estimation_Literature.md)),
 cycled to failure; competing sensor: a camera on a printed target or a strain gauge. Before the run, the
 Study C estimator's prediction of the unit's state trajectory is committed with its hash. Entry decision and
-fixtures: [CAD_PLAN.md](../../CAD_PLAN.md) PV-CAD-02. Costs are assumed order-of-magnitude, not quoted.
+fixtures: [CAD_PLAN.md](../../CAD_PLAN.md) PV-CAD-02, with the tooling reference in
+[CAD_PLANNING_ADDENDUM_2026-09-21.txt](../../CAD_PLANNING_ADDENDUM_2026-09-21.txt). Costs are assumed order-of-magnitude, not quoted.
 Pass: the predicted-vs-measured state trajectory error lies inside the Study C held-out interval. Fail: report.
 
 ### Study E — decisive (funded)
