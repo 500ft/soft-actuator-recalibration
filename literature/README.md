@@ -47,18 +47,45 @@ Honest limits of this pass, stated up front:
 4. **No entry here changes a study verdict.** Study A's A-FAIL, Study B's B-PASS and Study C's C-FAIL stand
    on their own evidence.
 
-## Contents
+## What is here
 
-| file | theme | serves |
-|---|---|---|
-| [`01-identifiability-observability.md`](01-identifiability-observability.md) | Fisher information, CRLB, structural vs practical identifiability, parameter aliasing | Study B |
-| [`02-unit-variability-population.md`](02-unit-variability-population.md) | random-effects degradation, lifetime scatter, population vs individual prognostics | Study A, Study C |
-| [`03-transfer-unseen-units.md`](03-transfer-unseen-units.md) | cross-unit transfer, domain generalisation, calibration transfer, unit-level holdout | Study C |
-| [`04-rul-unknown-life.md`](04-rul-unknown-life.md) | Bayesian personalisation of a population prior, condition-based vs scheduled policies | R1's clock-prior finding |
-| [`05-measurement-scheduling.md`](05-measurement-scheduling.md) | optimal inspection intervals, degradation-test measurement planning | Study C2's schedule axis |
-| [`06-soft-actuator-recent.md`](06-soft-actuator-recent.md) | 2024–2026 soft actuator durability, self-sensing, multi-specimen data | the project's empirical foundation |
-| [`claim-ledger.md`](claim-ledger.md) | every project claim mapped to supporting and counter evidence | the whole programme |
-| [`gaps.md`](gaps.md) | what the literature does **not** answer, and what only an experiment can settle | next-step decisions |
+**173 unique works**, graded and annotated, across six themes. 25 were read at full text or had a specific claim
+independently re-verified; the remainder rest on a database record plus a search summary and are marked
+`[search-snippet]`, which means *unverified*, not merely less important.
+
+| file | entries | theme | serves |
+|---|--:|---|---|
+| [`01-identifiability-observability.md`](01-identifiability-observability.md) | 28 | Fisher information, Cramér–Rao, structural vs practical identifiability, parameter aliasing | Study B |
+| [`02-unit-variability-population.md`](02-unit-variability-population.md) | 34 | random-effects degradation, lifetime scatter, population vs individual prognostics | Studies A and C |
+| [`03-transfer-unseen-units.md`](03-transfer-unseen-units.md) | 36 | cross-unit transfer, domain generalisation, calibration transfer, holdout protocols | Study C |
+| [`04-rul-unknown-life.md`](04-rul-unknown-life.md) | 33 | Bayesian personalisation of a population prior, condition-based vs scheduled policies | R1's clock-prior finding |
+| [`05-measurement-scheduling.md`](05-measurement-scheduling.md) | 21 | optimal inspection intervals, degradation-test measurement planning | Study C2's schedule axis |
+| [`06-soft-actuator-recent.md`](06-soft-actuator-recent.md) | 24 | 2024–2026 soft actuator durability, self-sensing, multi-specimen data | the empirical foundation |
+
+Three works appear in two files each, deliberately, where a theme genuinely spans both.
+
+Two synthesis documents make the folder usable rather than merely long:
+
+- [`claim-ledger.md`](claim-ledger.md) — every project claim mapped to supporting *and* counter evidence,
+  with a confidence grade and an explicit list of claims the evidence does **not** support.
+- [`gaps.md`](gaps.md) — what the literature does not answer, split into five items actionable inside this
+  repository and six that need an experiment.
+
+## Five findings that bear directly on the project's own numbers
+
+1. **Measured between-unit lifetime scatter is far below the simulation's assumption.** Torzini 2024 reports
+   CoV 3.9 % and 6.1 % at n = 5 per group; Du 2025 reports 17.5 % at n = 3. Study A assumes CV 0.30, citing
+   Torzini as its order of magnitude. See [gaps](gaps.md) item 1.
+2. **The nearest precedent for Study C's failure is real and in-domain.** Wall et al. 2023 report 97 %
+   within-unit accuracy collapsing to 35 % on an unseen *nominally identical* soft pneumatic actuator.
+3. **A published objection to Study B's method exists.** Wieland et al. 2021 argue the Fisher-information
+   approach is "insensitive to practical non-identifiability" and recommend profile likelihood instead.
+4. **An unrebutted counterexample to the C2 framing.** Severson et al. 2019 predicted battery cycle life to
+   9.1 % error from the first 100 cycles, before any capacity fade — so "probes fell pre-onset" cannot by
+   itself explain transfer failure.
+5. **The pass criterion has no precedent and may be inside sampling noise.** No located source states a
+   conventional threshold for unit-level holdout, and Little et al. 2017 warn that entity-wise validation is
+   high-variance when entities are few. At n = 10, 6 versus 8 may not be distinguishable.
 
 ## How to use this when writing
 

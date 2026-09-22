@@ -117,6 +117,10 @@ Keep historical manuscript titles and release artifacts intact during repository
 maintenance. A name change is explained in [REPOSITORY_IDENTITY.md](REPOSITORY_IDENTITY.md),
 not implemented by rewriting archival scientific metadata.
 
+Prior work and the evidence for and against each current claim are in the
+[literature folder](../literature/README.md); its [claim ledger](../literature/claim-ledger.md) lists
+counter-evidence alongside support, and [gaps.md](../literature/gaps.md) records what no paper settles.
+
 The next bounded owner action is the [author review](AUTHOR_REVIEW_DAY3.md).
 There is no DOI, corrected-PDF approval, independent hardware validation, or
 prospective v2 result implied by a completed code review. The
