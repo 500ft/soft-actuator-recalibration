@@ -1,4 +1,4 @@
 # Gate 0 lumped-RC coupling simulation + report scripts
-numpy>=1.24
+numpy>=2.5.3
 scipy>=1.10
 matplotlib>=3.11.2
