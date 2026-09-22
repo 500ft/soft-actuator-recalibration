@@ -174,3 +174,69 @@ result JSON and figure are untouched, as are the v1.3 archive, the readiness rec
 
 R3 (runner) may begin: this preregistration now has a commit hash. R4 execution awaits owner review of the
 preregistration, per the plan. M1 remains a Friday review-only checkpoint.
+
+---
+
+# Day 3 (R3) — executed 2026-09-21
+
+Branch `research/weekly-r3-20260923`, **stacked on the R2 branch** (`12bafe6`) because the runner consumes
+`pipeline/schedules.py`, which lands with the still-open R2 pull request. Merge R2 first.
+
+Precondition met: the C2 preregistration has commit hash `12bafe61aa252d3b3f45c7bbd1a426c0ba26827f`, which
+the plan requires before R3 may begin.
+
+## What R3 delivers
+
+`scripts/run_studyC2.py` — the 15-cell grid (5 schedules x 3 input arms) implementing the frozen design. It
+consumes `pipeline.schedules` and does not redefine any part of it. Reused verbatim from Study C:
+`ridge_fit`, `ridge_predict`, `rmse`, the lambda set, the bootstrap count, the split derivation and the
+record construction; only the probe cycles, the seed namespace and the input columns vary.
+
+Guards built into the runner:
+
+- **Reference-cell verification.** The (`reference`, `full`) cell must reproduce the committed Study C
+  held-out u-RMSEs within 1e-9, or the run aborts before anything is interpreted.
+- **Study C immutability.** Every file in `data/sim/studyC/` is hashed before and after; a change aborts
+  the run. C2 writes only to `data/sim/studyC2/`.
+- **Preregistration binding.** The result manifest records `preregistration_sha256`, the base commit and a
+  hash of every generator file. Re-running against a *different* preregistration revision refuses unless
+  `--overwrite` is passed, which the help text scopes to a disposable checkout.
+- **Atomic write.** The JSON is written to a temporary file in the output directory and moved into place.
+
+## Tests (16, `tests/test_studyC2.py`)
+
+The decisive one: **the reference schedule reproduces Study C record for record** — same probe cycles, same
+noise draws, same 11 inputs, same targets — checked on a short-lived and a median-life held-out unit. The
+rest cover what the plan asked of R3: a new schedule draws from a separate seed namespace; records carry
+exactly 11 inputs and normalised life is never among them; each arm selects its declared columns; lambda
+selection reads training units only; held-out predictions reuse the training standardisation and differ
+from a fresh one; the cluster bootstrap resamples whole units; no summary reports a pass below the
+unchanged 8/10 rule; failing units are listed for the below-median check; the reference-mismatch guard
+raises; and the runner declares the preregistration it was frozen against and never targets Study C's
+directory.
+
+Two wiring tests run `main()` end to end on a **stub cohort** (10 units, a replaced 3-probe schedule, a
+stub Study C file in a temporary directory) and assert the manifest is complete, every held-out unit
+appears exactly once per cell, and the figure is written. The numbers such a run produces are meaningless
+by construction, and nothing is written to `data/sim/studyC2/`.
+
+### A bug the wiring test caught
+
+The figure originally hard-coded all five schedule names instead of deriving them from the schedule set, so
+it raised `StopIteration` whenever the set differed. Fixed to derive the order from the cells actually
+present, sorted by probe cost with the oracle last.
+
+## Not done, deliberately
+
+**The preregistered grid was not run.** `data/sim/studyC2/` does not exist. The plan gates execution (R4) on
+the owner reviewing the preregistration, and every arm other than (`reference`, `full`) would produce new
+research numbers, so a "smoke run" of the real grid would have been R4 under another name. The stub-cohort
+wiring tests establish that the runner works without pre-empting that gate.
+
+Study C's verdict, preregistration, result and figure are untouched; the v1.3 archive, readiness record and
+PV-08 are unchanged.
+
+## Next
+
+R4 on your authorisation: `MPLBACKEND=Agg python -m scripts.run_studyC2`, then the plan's result-review
+checklist. R5 writes the decision memo. M1 stays a Friday review-only checkpoint.
