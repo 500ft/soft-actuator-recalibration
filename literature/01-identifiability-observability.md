@@ -2,7 +2,12 @@
 
 Serves [Study B](../docs/specs/observability-program/studyB-identifiability.md), which computes a
 Cramér–Rao bound on a latent normalised-life coordinate from pressure-only features and reports it
-identifiable before the acceleration onset and structurally aliased with onset fraction and leak after it.
+identifiable before the acceleration onset and aliased with onset fraction and leak after it.
+
+**Outcome:** the objection recorded below was acted on. Brun's subset index and a profile likelihood were run
+on 2026-09-23; the aliasing group is confirmed and is a *triple*, but the limit is **practical at this noise
+level**, not structural, and the wording was corrected repo-wide.
+[Evidence](../evidence/studyB-structural-2026-09-23/README.md).
 
 Grading and provenance rules are in [README](README.md). `[full-text]` means the abstract or paper page was
 fetched; `[search-snippet]` means a search summary plus a verified metadata record.
@@ -17,18 +22,18 @@ fetched; `[search-snippet]` means a search summary plus a verified metadata reco
   Fisher information matrix has severe shortcomings" for practical identifiability: FIM-based intervals are
   local, can be unreliable for finite samples under nonlinearity, and are *insensitive to practical
   non-identifiability*. Recommends profile likelihood instead.
-  **Bearing:** this is a published objection to Study B's core inference. It must be cited and answered in
-  any write-up, not omitted. Study B computes a local, linearised bound; this paper says that object cannot
-  by itself certify practical identifiability.
+  **Bearing:** a published objection to Study B's core inference, now answered rather than omitted. Study B
+  computed a local linearised bound; this paper says that object cannot certify practical identifiability. The
+  profile likelihood it recommends was run on 2026-09-23 and downgraded the claim from structural to practical.
 
 - **Chis, Villaverde, Banga & Balsa-Canto 2016** — "On the relationship between sloppiness and
   identifiability," *Mathematical Biosciences* 282:147–161. DOI 10.1016/j.mbs.2016.10.009.
   **[3] [B] [search-snippet]** Concludes sloppiness is *not* equivalent to lack of structural or practical
   identifiability — sloppy models can be identifiable — and that identifiability criteria beat sloppiness
   measures for experimental design.
-  **Bearing:** guards against the overreach of reading an ill-conditioned information matrix as proof of
-  non-identifiability. Study B's "structurally aliased" wording needs a structural test to be safe, not only
-  a rank-deficient FIM.
+  **Bearing:** guarded against the overreach of reading an ill-conditioned information matrix as proof of
+  non-identifiability. The test was run on 2026-09-23 and this caution proved correct: the wording was
+  downgraded from structural to practical.
 
 ---
 

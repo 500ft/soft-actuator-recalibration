@@ -18,7 +18,7 @@ Not executable until Study A records A-PASS. Fixed now so that A's result cannot
 
 ## Amendment 2026-09-16 (recorded before any Study C run)
 
-Study B showed the latent life coordinate is structurally unidentifiable from one probe plus a young baseline
+Study B showed the latent life coordinate is poorly resolved from one probe plus a young baseline
 after the acceleration onset (aliased with the unit's onset fraction and leak), and Study A's amendment
 (criteria i, ii) unblocked this study. The design is therefore fixed as follows before running; the original
 draft above is retained.

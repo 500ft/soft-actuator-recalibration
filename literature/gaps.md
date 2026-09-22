@@ -10,6 +10,8 @@ candidates for the owner to schedule.
 
 ## Actionable now, inside the repository
 
+*Item 3 is resolved; the rest stand.*
+
 ### 1. The dispersion magnitude is higher than any measured value, and the two randomisations may be inconsistent
 
 [Study A](../docs/specs/observability-program/studyA-preregistration.md) draws rupture life Weibull with
@@ -42,7 +44,7 @@ itself has **no precedent** in the literature — it is a defensible preregister
 under the same estimator. If 8 of 10 falls comfortably inside that distribution, the verdict stands but must
 be reported with its variance. Cost: hours, and it strengthens the result either way.
 
-### 3. "Structurally aliased" needs a structural test
+### 3. ~~"Structurally aliased" needs a structural test~~ — RESOLVED 2026-09-23
 
 [Study B](../docs/specs/observability-program/studyB-identifiability.md) reports the life coordinate as
 structurally aliased after onset, on the evidence of a rank-deficient information matrix and small whitened
@@ -50,9 +52,15 @@ angles. Wieland et al. 2021 argue the Fisher approach is "insensitive to practic
 Chis et al. 2016 show sloppiness is not equivalent to non-identifiability. The current evidence does not
 license the word *structurally*.
 
-*Check:* compute Brun's collinearity index over the {life, onset, leak} subset — it scores subsets rather
-than pairs, so it names the aliasing group directly — and add a profile-likelihood pass on the reduced
-model. Either upgrade the wording or downgrade it to "practically aliased at this noise level." Cost: a day.
+**RESOLVED 2026-09-23.** Both diagnostics were run
+([evidence](../evidence/studyB-structural-2026-09-23/README.md)). Brun's subset index confirms the aliasing
+group and shows it is a *triple* — {u, onset, leak} at 6.3 × 10⁵ against 57 for {u, onset} and 8.3 for
+{u, leak} — a joint dependency no pairwise measure reveals. The profile likelihood rises on one side only at
+u = 0.90 and on both sides at u = 0.50, which by Raue et al. 2009 is **practical**, not structural,
+non-identifiability. The wording was downgraded to "practically aliased at this noise level, resolvable to
+about ±0.05 life" across `docs/results.md`, the Study B preregistration, the 2026-09-16 evidence record and
+the claim ledger. A side finding: pre-onset the onset fraction, leak and exponent are exactly inert, so they
+are irrelevant there rather than confounded.
 
 ### 4. The probe may be measuring a rate artefact rather than a hysteretic state
 

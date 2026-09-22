@@ -85,3 +85,12 @@ array, PDFs modulo timestamps). The one difference is `data/sim/phaseB/phaseB_re
 a key-by-key walk shows **no numeric value changed** in that file. No regenerated file is committed; the committed
 artifacts are untouched (they retain the documented current-code drift on both sides).
 Comparison script: `evidence/ponytail-2026-09-14/compare.py`.
+
+---
+
+**Correction, 2026-09-23.** The word "structurally" above is too strong and is superseded. A follow-up ran
+Brun's subset collinearity index and a profile likelihood: the aliasing group is confirmed and is a *triple*
+({u, onset, leak} at 6.3e5 versus 57 and 8.3 for the pairs), but the profile rises on one side only, so the
+limit is **practical at this noise level**, not structural. The bounds and B-PASS verdict recorded above are
+unchanged. See [evidence/studyB-structural-2026-09-23](../studyB-structural-2026-09-23/README.md). This
+record is annotated rather than edited, so the original reading stays auditable.

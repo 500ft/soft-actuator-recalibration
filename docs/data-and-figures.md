@@ -142,3 +142,11 @@ analysis. It does not validate the model parameters against a physical actuator.
 - **Outputs:** `data/sim/studyC/studyC_results.json`, `studyC_fig_transfer.(png|pdf)`
 - **Preregistration:** `docs/specs/observability-program/studyC-transfer.md` (amendment of 2026-09-16 fixes the trajectory design).
 - **Boundary:** one estimator on a synthetic dispersed cohort; verdict per the spec's rule; no device claim.
+
+## Study B follow-up — structural vs practical aliasing (observability program)
+
+- **Generator:** `scripts/run_studyB_structural.py` · **Command:** `python -m scripts.run_studyB_structural` (~7 min; `--replot` redraws from the saved result)
+- **Inputs:** `pipeline/identifiability.py` (Brun collinearity index, profile likelihood), `pipeline/dispersion.py`, `sim/*`
+- **Outputs:** `data/sim/studyB/studyB_structural.json`, `studyB_fig_structural.(png|pdf)`
+- **Task:** `literature/gaps.md` item 3.
+- **Boundary:** local diagnostics on the synthetic generator. Decides the wording of Study B's finding, not its verdict.

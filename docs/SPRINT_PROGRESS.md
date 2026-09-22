@@ -9,6 +9,20 @@ trigger-timing criterion; both verdicts are recorded and Study C ran under a tra
 being short-lived units whose probes fall mostly pre-onset. Portfolio-wide research artifacts were removed.
 [Evidence](../evidence/next-five-2026-09-16/README.md). PV-08 unchanged.
 
+## 2026-09-23 — Study B's aliasing shown to be practical, not structural
+
+The literature review flagged that Study B's "structurally aliased" wording rested on a rank-deficient Fisher
+matrix, which Wieland et al. 2021 argue cannot certify practical identifiability. Both prescribed diagnostics
+were run. Brun's subset collinearity index **confirms and sharpens** the aliasing group: the {u, onset, leak}
+triple sits at 6.3e5 against 57 and 8.3 for the pairs, a joint dependency no pairwise angle reveals. But the
+profile likelihood, with every nuisance parameter re-optimised, rises on one side only at u = 0.90 and on
+both sides at u = 0.50 — **practical**, not structural, non-identifiability. Post-onset life is resolvable to
+about ±0.05 life, not finer. Wording corrected in `results.md`, the Study B and Study C preregistrations, the
+claim ledger and the literature folder; the 2026-09-16 evidence record was annotated rather than edited so
+the original reading stays auditable. A side finding: pre-onset the onset fraction, leak and exponent are
+exactly inert, so they are irrelevant there rather than confounded. Study B's B-PASS verdict and its bounds
+are unchanged. [Evidence](../evidence/studyB-structural-2026-09-23/README.md).
+
 ## 2026-09-16 — Observability program preregistered; Studies A and B executed
 
 A cross-unit observability program ([specs/observability-program/program.md](specs/observability-program/program.md)) was preregistered at

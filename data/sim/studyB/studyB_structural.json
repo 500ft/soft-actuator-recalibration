@@ -1,0 +1,581 @@
+{
+  "question": "Is Study B's post-onset aliasing structural, or practical at this noise level?",
+  "task": "literature/gaps.md item 3",
+  "method": {
+    "collinearity": "Brun et al. 2001 gamma_K on unit-length whitened sensitivity columns; gamma above 10.0 flags a poorly identifiable subset",
+    "profile": "negative log-likelihood profiled over u with all six nuisance parameters re-optimised at each point; 1.92 is the 95% chi-square(1) cut",
+    "design": "B2 stacked design (snapshot + young baseline), noise scale 1, amplitude 0.1"
+  },
+  "does_not_change": "Study B's B-PASS verdict and its reported bounds are unchanged",
+  "subsets": {
+    "u_alone": [
+      "u"
+    ],
+    "u+onset": [
+      "u",
+      "acceleration_onset_fraction"
+    ],
+    "u+leak": [
+      "u",
+      "terminal_leak_multiplier"
+    ],
+    "u+onset+leak": [
+      "u",
+      "acceleration_onset_fraction",
+      "terminal_leak_multiplier"
+    ],
+    "u+k1": [
+      "u",
+      "k1_0"
+    ],
+    "u+k2": [
+      "u",
+      "k2_0"
+    ],
+    "u+tau": [
+      "u",
+      "tau"
+    ],
+    "all_seven": [
+      "u",
+      "k1_0",
+      "k2_0",
+      "tau",
+      "terminal_leak_multiplier",
+      "acceleration_onset_fraction",
+      "fatigue_exponent"
+    ]
+  },
+  "collinearity_by_point": [
+    {
+      "unit": "canonical",
+      "u": 0.3,
+      "post_onset": false,
+      "inert_parameters": [
+        "terminal_leak_multiplier",
+        "acceleration_onset_fraction",
+        "fatigue_exponent"
+      ],
+      "u_alone": 1.0,
+      "u_alone_is_inert": false,
+      "u+onset": Infinity,
+      "u+onset_is_inert": true,
+      "u+leak": Infinity,
+      "u+leak_is_inert": true,
+      "u+onset+leak": Infinity,
+      "u+onset+leak_is_inert": true,
+      "u+k1": 1.1652141052426896,
+      "u+k1_is_inert": false,
+      "u+k2": 2.0127795131489394,
+      "u+k2_is_inert": false,
+      "u+tau": 1.0940939589277476,
+      "u+tau_is_inert": false,
+      "all_seven": Infinity,
+      "all_seven_is_inert": true
+    },
+    {
+      "unit": "canonical",
+      "u": 0.5,
+      "post_onset": false,
+      "inert_parameters": [
+        "terminal_leak_multiplier",
+        "acceleration_onset_fraction",
+        "fatigue_exponent"
+      ],
+      "u_alone": 1.0,
+      "u_alone_is_inert": false,
+      "u+onset": Infinity,
+      "u+onset_is_inert": true,
+      "u+leak": Infinity,
+      "u+leak_is_inert": true,
+      "u+onset+leak": Infinity,
+      "u+onset+leak_is_inert": true,
+      "u+k1": 1.1007330185725959,
+      "u+k1_is_inert": false,
+      "u+k2": 2.0803928645413983,
+      "u+k2_is_inert": false,
+      "u+tau": 1.1076805200515307,
+      "u+tau_is_inert": false,
+      "all_seven": Infinity,
+      "all_seven_is_inert": true
+    },
+    {
+      "unit": "canonical",
+      "u": 0.9,
+      "post_onset": true,
+      "inert_parameters": [],
+      "u_alone": 1.0,
+      "u_alone_is_inert": false,
+      "u+onset": 60.83466930483901,
+      "u+onset_is_inert": false,
+      "u+leak": 5.834741635722212,
+      "u+leak_is_inert": false,
+      "u+onset+leak": 1245902.415775129,
+      "u+onset+leak_is_inert": false,
+      "u+k1": 1.2219483359319985,
+      "u+k1_is_inert": false,
+      "u+k2": 1.2219638286668735,
+      "u+k2_is_inert": false,
+      "u+tau": 1.0655554859950507,
+      "u+tau_is_inert": false,
+      "all_seven": 59455243.463233545,
+      "all_seven_is_inert": false
+    },
+    {
+      "unit": "dispersed_0",
+      "u": 0.3,
+      "post_onset": false,
+      "inert_parameters": [
+        "terminal_leak_multiplier",
+        "acceleration_onset_fraction",
+        "fatigue_exponent"
+      ],
+      "u_alone": 1.0000000000000002,
+      "u_alone_is_inert": false,
+      "u+onset": Infinity,
+      "u+onset_is_inert": true,
+      "u+leak": Infinity,
+      "u+leak_is_inert": true,
+      "u+onset+leak": Infinity,
+      "u+onset+leak_is_inert": true,
+      "u+k1": 1.0962096368245233,
+      "u+k1_is_inert": false,
+      "u+k2": 2.0612589833933765,
+      "u+k2_is_inert": false,
+      "u+tau": 1.0989269314490695,
+      "u+tau_is_inert": false,
+      "all_seven": Infinity,
+      "all_seven_is_inert": true
+    },
+    {
+      "unit": "dispersed_0",
+      "u": 0.5,
+      "post_onset": false,
+      "inert_parameters": [
+        "terminal_leak_multiplier",
+        "acceleration_onset_fraction",
+        "fatigue_exponent"
+      ],
+      "u_alone": 1.0,
+      "u_alone_is_inert": false,
+      "u+onset": Infinity,
+      "u+onset_is_inert": true,
+      "u+leak": Infinity,
+      "u+leak_is_inert": true,
+      "u+onset+leak": Infinity,
+      "u+onset+leak_is_inert": true,
+      "u+k1": 1.0365205392171188,
+      "u+k1_is_inert": false,
+      "u+k2": 2.3914407671145574,
+      "u+k2_is_inert": false,
+      "u+tau": 1.1595002996471904,
+      "u+tau_is_inert": false,
+      "all_seven": Infinity,
+      "all_seven_is_inert": true
+    },
+    {
+      "unit": "dispersed_0",
+      "u": 0.9,
+      "post_onset": true,
+      "inert_parameters": [],
+      "u_alone": 1.0,
+      "u_alone_is_inert": false,
+      "u+onset": 51.654378830006344,
+      "u+onset_is_inert": false,
+      "u+leak": 7.559541135819856,
+      "u+leak_is_inert": false,
+      "u+onset+leak": 8832.027236756872,
+      "u+onset+leak_is_inert": false,
+      "u+k1": 1.0723569181019594,
+      "u+k1_is_inert": false,
+      "u+k2": 1.205869281956497,
+      "u+k2_is_inert": false,
+      "u+tau": 1.0323619350331246,
+      "u+tau_is_inert": false,
+      "all_seven": 86261161.75751913,
+      "all_seven_is_inert": false
+    },
+    {
+      "unit": "dispersed_1",
+      "u": 0.3,
+      "post_onset": false,
+      "inert_parameters": [
+        "terminal_leak_multiplier",
+        "acceleration_onset_fraction",
+        "fatigue_exponent"
+      ],
+      "u_alone": 1.0,
+      "u_alone_is_inert": false,
+      "u+onset": Infinity,
+      "u+onset_is_inert": true,
+      "u+leak": Infinity,
+      "u+leak_is_inert": true,
+      "u+onset+leak": Infinity,
+      "u+onset+leak_is_inert": true,
+      "u+k1": 1.2799332562759982,
+      "u+k1_is_inert": false,
+      "u+k2": 2.076994304025454,
+      "u+k2_is_inert": false,
+      "u+tau": 1.073960606856683,
+      "u+tau_is_inert": false,
+      "all_seven": Infinity,
+      "all_seven_is_inert": true
+    },
+    {
+      "unit": "dispersed_1",
+      "u": 0.5,
+      "post_onset": false,
+      "inert_parameters": [
+        "terminal_leak_multiplier",
+        "acceleration_onset_fraction",
+        "fatigue_exponent"
+      ],
+      "u_alone": 1.0,
+      "u_alone_is_inert": false,
+      "u+onset": Infinity,
+      "u+onset_is_inert": true,
+      "u+leak": Infinity,
+      "u+leak_is_inert": true,
+      "u+onset+leak": Infinity,
+      "u+onset+leak_is_inert": true,
+      "u+k1": 1.2302659765657873,
+      "u+k1_is_inert": false,
+      "u+k2": 2.1856800588062697,
+      "u+k2_is_inert": false,
+      "u+tau": 1.0905093117155957,
+      "u+tau_is_inert": false,
+      "all_seven": Infinity,
+      "all_seven_is_inert": true
+    },
+    {
+      "unit": "dispersed_1",
+      "u": 0.9,
+      "post_onset": true,
+      "inert_parameters": [],
+      "u_alone": 1.0,
+      "u_alone_is_inert": false,
+      "u+onset": 53.08539793506171,
+      "u+onset_is_inert": false,
+      "u+leak": 8.987308117083701,
+      "u+leak_is_inert": false,
+      "u+onset+leak": 6961.924829787649,
+      "u+onset+leak_is_inert": false,
+      "u+k1": 1.1636479373408297,
+      "u+k1_is_inert": false,
+      "u+k2": 1.09736056214348,
+      "u+k2_is_inert": false,
+      "u+tau": 1.137757708628571,
+      "u+tau_is_inert": false,
+      "all_seven": 64453398.001666635,
+      "all_seven_is_inert": false
+    },
+    {
+      "unit": "dispersed_2",
+      "u": 0.3,
+      "post_onset": false,
+      "inert_parameters": [
+        "terminal_leak_multiplier",
+        "acceleration_onset_fraction",
+        "fatigue_exponent"
+      ],
+      "u_alone": 1.0,
+      "u_alone_is_inert": false,
+      "u+onset": Infinity,
+      "u+onset_is_inert": true,
+      "u+leak": Infinity,
+      "u+leak_is_inert": true,
+      "u+onset+leak": Infinity,
+      "u+onset+leak_is_inert": true,
+      "u+k1": 1.2754919662733375,
+      "u+k1_is_inert": false,
+      "u+k2": 1.8772801688143093,
+      "u+k2_is_inert": false,
+      "u+tau": 1.1165539714255304,
+      "u+tau_is_inert": false,
+      "all_seven": Infinity,
+      "all_seven_is_inert": true
+    },
+    {
+      "unit": "dispersed_2",
+      "u": 0.5,
+      "post_onset": false,
+      "inert_parameters": [
+        "terminal_leak_multiplier",
+        "acceleration_onset_fraction",
+        "fatigue_exponent"
+      ],
+      "u_alone": 1.0,
+      "u_alone_is_inert": false,
+      "u+onset": Infinity,
+      "u+onset_is_inert": true,
+      "u+leak": Infinity,
+      "u+leak_is_inert": true,
+      "u+onset+leak": Infinity,
+      "u+onset+leak_is_inert": true,
+      "u+k1": 1.332441272735252,
+      "u+k1_is_inert": false,
+      "u+k2": 1.9004351849500214,
+      "u+k2_is_inert": false,
+      "u+tau": 1.1138481542783294,
+      "u+tau_is_inert": false,
+      "all_seven": Infinity,
+      "all_seven_is_inert": true
+    },
+    {
+      "unit": "dispersed_2",
+      "u": 0.9,
+      "post_onset": true,
+      "inert_parameters": [],
+      "u_alone": 1.0,
+      "u_alone_is_inert": false,
+      "u+onset": 65.35916325128605,
+      "u+onset_is_inert": false,
+      "u+leak": 9.27280007058374,
+      "u+leak_is_inert": false,
+      "u+onset+leak": 4891791.817922263,
+      "u+onset+leak_is_inert": false,
+      "u+k1": 1.1850236454844132,
+      "u+k1_is_inert": false,
+      "u+k2": 1.0061710810801643,
+      "u+k2_is_inert": false,
+      "u+tau": 1.0047716656265113,
+      "u+tau_is_inert": false,
+      "all_seven": 139753674.65673742,
+      "all_seven_is_inert": false
+    }
+  ],
+  "collinearity_summary": {
+    "note": "Pre-onset the onset fraction, leak multiplier and exponent are exactly inert, so their collinearity is undefined rather than infinite-because-aliased. Only post-onset points where every subset member responds are aggregated below.",
+    "n_post_onset_points": 4,
+    "median_u_onset_post_onset": 56.96003361995036,
+    "median_u_leak_post_onset": 8.273424626451778,
+    "median_u_onset_leak_post_onset": 627367.221505943,
+    "median_u_tau_post_onset": 1.0489587105140876,
+    "poor_flag": 10.0,
+    "reading": "the triple is orders of magnitude above either pair, so the dependency is joint: no pairwise angle reveals it, which is why a subset index was required"
+  },
+  "profiles": [
+    {
+      "u_true": 0.5,
+      "verdict": "identifiable",
+      "flat_fraction": 0.058823529411764705,
+      "u_at_minimum": 0.5,
+      "profile": [
+        {
+          "u": 0.1,
+          "nll": 392.4884268878719,
+          "converged": true,
+          "delta_nll": 391.7661477991977
+        },
+        {
+          "u": 0.15,
+          "nll": 301.00922003283756,
+          "converged": true,
+          "delta_nll": 300.28694094416335
+        },
+        {
+          "u": 0.2,
+          "nll": 221.7038376962127,
+          "converged": true,
+          "delta_nll": 220.98155860753852
+        },
+        {
+          "u": 0.25,
+          "nll": 154.55855612474477,
+          "converged": true,
+          "delta_nll": 153.83627703607058
+        },
+        {
+          "u": 0.3,
+          "nll": 99.55917790293522,
+          "converged": true,
+          "delta_nll": 98.83689881426103
+        },
+        {
+          "u": 0.35,
+          "nll": 56.68983783962917,
+          "converged": true,
+          "delta_nll": 55.96755875095498
+        },
+        {
+          "u": 0.4,
+          "nll": 25.93698499710888,
+          "converged": true,
+          "delta_nll": 25.21470590843469
+        },
+        {
+          "u": 0.45,
+          "nll": 7.28584485093638,
+          "converged": true,
+          "delta_nll": 6.563565762262192
+        },
+        {
+          "u": 0.5,
+          "nll": 0.7222790886741883,
+          "converged": true,
+          "delta_nll": 0.0
+        },
+        {
+          "u": 0.55,
+          "nll": 6.231610647449725,
+          "converged": true,
+          "delta_nll": 5.5093315587755365
+        },
+        {
+          "u": 0.6,
+          "nll": 23.799431602534973,
+          "converged": true,
+          "delta_nll": 23.077152513860785
+        },
+        {
+          "u": 0.65,
+          "nll": 53.41230619784052,
+          "converged": true,
+          "delta_nll": 52.69002710916634
+        },
+        {
+          "u": 0.7,
+          "nll": 95.05680784212326,
+          "converged": false,
+          "delta_nll": 94.33452875344908
+        },
+        {
+          "u": 0.75,
+          "nll": 148.72047509285045,
+          "converged": true,
+          "delta_nll": 147.99819600417626
+        },
+        {
+          "u": 0.8,
+          "nll": 214.3892113593849,
+          "converged": true,
+          "delta_nll": 213.6669322707107
+        },
+        {
+          "u": 0.85,
+          "nll": 292.04750351963173,
+          "converged": true,
+          "delta_nll": 291.3252244309575
+        },
+        {
+          "u": 0.9,
+          "nll": 336.7176985033209,
+          "converged": true,
+          "delta_nll": 335.9954194146467
+        }
+      ]
+    },
+    {
+      "u_true": 0.9,
+      "verdict": "practical",
+      "flat_fraction": 0.17647058823529413,
+      "u_at_minimum": 0.8,
+      "profile": [
+        {
+          "u": 0.1,
+          "nll": 3864381.2407043213,
+          "converged": true,
+          "delta_nll": 3864380.680702546
+        },
+        {
+          "u": 0.15,
+          "nll": 3863357.5352685093,
+          "converged": true,
+          "delta_nll": 3863356.975266734
+        },
+        {
+          "u": 0.2,
+          "nll": 3862301.9719390497,
+          "converged": true,
+          "delta_nll": 3862301.4119372745
+        },
+        {
+          "u": 0.25,
+          "nll": 3861214.738760608,
+          "converged": true,
+          "delta_nll": 3861214.1787588326
+        },
+        {
+          "u": 0.3,
+          "nll": 3860096.023318845,
+          "converged": true,
+          "delta_nll": 3860095.4633170697
+        },
+        {
+          "u": 0.35,
+          "nll": 3858946.012747314,
+          "converged": true,
+          "delta_nll": 3858945.4527455387
+        },
+        {
+          "u": 0.4,
+          "nll": 3857764.893703993,
+          "converged": true,
+          "delta_nll": 3857764.333702218
+        },
+        {
+          "u": 0.45,
+          "nll": 3856552.85238161,
+          "converged": true,
+          "delta_nll": 3856552.2923798347
+        },
+        {
+          "u": 0.5,
+          "nll": 3855310.0744991717,
+          "converged": true,
+          "delta_nll": 3855309.5144973965
+        },
+        {
+          "u": 0.55,
+          "nll": 3854036.745291258,
+          "converged": true,
+          "delta_nll": 3854036.185289483
+        },
+        {
+          "u": 0.6,
+          "nll": 3852733.049503046,
+          "converged": true,
+          "delta_nll": 3852732.489501271
+        },
+        {
+          "u": 0.65,
+          "nll": 3851399.171396791,
+          "converged": true,
+          "delta_nll": 3851398.611395016
+        },
+        {
+          "u": 0.7,
+          "nll": 3850035.2947362764,
+          "converged": true,
+          "delta_nll": 3850034.734734501
+        },
+        {
+          "u": 0.75,
+          "nll": 13.108422077615927,
+          "converged": true,
+          "delta_nll": 12.54842030236261
+        },
+        {
+          "u": 0.8,
+          "nll": 0.5600017752533177,
+          "converged": true,
+          "delta_nll": 0.0
+        },
+        {
+          "u": 0.85,
+          "nll": 0.5600017755233332,
+          "converged": true,
+          "delta_nll": 2.7001545443994246e-10
+        },
+        {
+          "u": 0.9,
+          "nll": 0.5600017759239544,
+          "converged": true,
+          "delta_nll": 6.706366573183686e-10
+        }
+      ]
+    }
+  ],
+  "conclusion": "practical",
+  "wording_supported": "practically aliased at this noise level"
+}
