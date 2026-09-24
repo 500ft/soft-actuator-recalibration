@@ -10,9 +10,9 @@ candidates for the owner to schedule.
 
 ## Actionable now, inside the repository
 
-*Item 3 is resolved; the rest stand.*
+*Items 1 and 3 are resolved; the rest stand.*
 
-### 1. The dispersion magnitude is higher than any measured value, and the two randomisations may be inconsistent
+### 1. ~~The dispersion magnitude and the two randomisations~~ — RESOLVED 2026-09-23
 
 [Study A](../docs/specs/observability-program/studyA-preregistration.md) draws rupture life Weibull with
 **CV 0.30**, citing "repo fixture (validation cohort); order of Torzini 2024 / Frontiers 2023 scatter."
@@ -28,10 +28,26 @@ Two problems, both checkable:
   model plus a random-parameter distribution already *implies* a lifetime distribution. If the implied and
   imposed distributions disagree, the generator is internally inconsistent.
 
-*Check:* sample the generator, compute the implied rupture-life distribution from the dispersed
-degradation-law parameters alone, and compare against the imposed Weibull. Then re-run Study C at CV 0.05
-and 0.15 to see whether the C-FAIL verdict and the distance-from-median effect survive realistic dispersion.
-Cost: hours. This is the highest-value item in this folder.
+**RESOLVED 2026-09-23** ([evidence](../evidence/dispersion-audit-2026-09-23/README.md)), with two
+corrections to this item as filed.
+
+*Correction 1 — the inconsistency framing was wrong.* Rupture life is definitional here, an input to
+`fatigue_state`, with every multiplier expressed in normalised life. There is no absolute failure threshold
+to invert, so there is no "implied" distribution to disagree with the imposed one. Bae/Kuo/Kvam concerns
+threshold-crossing models and this is not one. The well-posed version is the reverse: because rupture is
+imposed, the *state at rupture* may vary — and it does. Across 200 units the leak multiplier at rupture
+spans 8.75–45.80 (CV 0.32), an implicit random failure threshold the preregistration never declares.
+
+*Correction 2 — the prediction was wrong.* This item predicted an overstated CV was inflating the
+distance-from-median effect. It is not: the correlation is +0.948, +0.965 and +0.956 at CV 0.05, 0.15 and
+0.30. The effect is scale-invariant.
+
+*The real finding.* C-FAIL survives every dispersion level **for opposite reasons**. At a measured-realistic
+CV 0.05 the estimator is accurate (10/10 within target) but a bare cycle counter is *better* (2/10 beat it).
+At Study A's CV 0.30 it beats the clock (7/10) but is no longer accurate (6/10). The two criteria move in
+opposite directions and neither point clears 8 on both. The unified per-unit rule at every CV: the pressure
+features earn their place only on units where the clock prior is wrong. Study A's CV 0.30 still needs
+justifying, since it is above every measured value and decides which criterion Study C fails.
 
 ### 2. At ten held-out units, the pass/fail distinction may be inside sampling noise
 

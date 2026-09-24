@@ -238,6 +238,24 @@
       ],
       "boundary": "Follow-up to Study B (literature/gaps.md item 3): Brun subset collinearity and a profile likelihood deciding whether the post-onset aliasing is structural or practical. Local diagnostics on the synthetic generator; Study B's B-PASS verdict and bounds are unchanged",
       "numeric": "data/sim/studyB/studyB_structural.json"
+    },
+    {
+      "id": "dispersion-audit",
+      "evidence_type": "simulation",
+      "generator": "scripts/run_dispersion_audit.py",
+      "command": "python -m scripts.run_dispersion_audit",
+      "inputs": [
+        "pipeline/dispersion.py",
+        "scripts/run_studyC.py",
+        "pipeline/identifiability.py",
+        "sim/fatigue.py"
+      ],
+      "outputs": [
+        "data/sim/dispersion_audit/dispersion_audit_fig.png",
+        "data/sim/dispersion_audit/dispersion_audit_fig.pdf"
+      ],
+      "boundary": "literature/gaps.md item 1: sensitivity of the Study C transfer result to the assumed rupture-life dispersion, plus the degradation state reached at rupture. Synthetic generator; changes no committed study output or verdict",
+      "numeric": "data/sim/dispersion_audit/dispersion_audit.json"
     }
   ],
   "generated_inputs": {

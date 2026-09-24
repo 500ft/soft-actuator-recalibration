@@ -150,3 +150,11 @@ analysis. It does not validate the model parameters against a physical actuator.
 - **Outputs:** `data/sim/studyB/studyB_structural.json`, `studyB_fig_structural.(png|pdf)`
 - **Task:** `literature/gaps.md` item 3.
 - **Boundary:** local diagnostics on the synthetic generator. Decides the wording of Study B's finding, not its verdict.
+
+## Dispersion audit — sensitivity to the assumed rupture-life CV (observability program)
+
+- **Generator:** `scripts/run_dispersion_audit.py` · **Command:** `python -m scripts.run_dispersion_audit` (~12 min; `--replot` redraws from the saved result)
+- **Inputs:** `pipeline/dispersion.py` (`rupture_cv`, default unchanged), `scripts/run_studyC.py`, `sim/fatigue.py`
+- **Outputs:** `data/sim/dispersion_audit/dispersion_audit.json`, `dispersion_audit_fig.(png|pdf)`
+- **Task:** `literature/gaps.md` item 1.
+- **Boundary:** re-runs the Study C evaluation on cohorts drawn at other dispersions. Changes no committed study output; Study C's verdict and artifacts are untouched.

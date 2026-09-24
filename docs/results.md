@@ -84,6 +84,12 @@ Question: is the fatigue state observable from pressure alone across dispersed u
   held-out units; run after the owner withdrew Study A's timing criterion): mean held-out u-RMSE 0.093 vs 0.123 for
   the clock alone, but only 6 of 10 units within 0.10 and 7 of 10 below the clock, so the preregistered verdict is
   **C-FAIL**. The estimator helps exactly where the clock's rupture prior is wrong (short-lived units) and adds
-  little where it is right; no transfer claim.
+  little where it is right; no transfer claim. A dispersion audit on 2026-09-23 re-ran this at rupture-life
+  CV 0.05 and 0.15, bracketing the values measured in the literature, and found **C-FAIL survives at every
+  level but for opposite reasons**: at CV 0.05 the estimator is accurate (10/10 within target) yet a bare
+  cycle counter beats it (2/10), while at CV 0.30 it beats the clock (7/10) but is no longer accurate (6/10).
+  The two criteria move in opposite directions, and the per-unit rule is the same throughout — pressure
+  features add value only where the clock prior is wrong for that unit.
+  [Evidence](../evidence/dispersion-audit-2026-09-23/README.md).
 
 Boundary: one synthetic generator, assumed dispersion magnitudes, local bounds; no physical claim.

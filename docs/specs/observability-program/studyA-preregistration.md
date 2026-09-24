@@ -89,3 +89,19 @@ already test whether the indicator carries between-unit information above its no
 can pose the cross-unit question" means. The original run and its `A-FAIL` under the original rule remain recorded
 in the evidence and the results file; the amended rule is reported separately as `verdict_amended_2026_09_16`
 (A-PASS if i and ii hold and the cohort is not degenerate). Study C proceeds under the amended verdict.
+
+## Audit 2026-09-23 — two properties of this dispersion model that were not declared
+
+Recorded after [gaps item 1](../../../literature/gaps.md). The preregistration and Study A's verdicts are
+unchanged; these are disclosures, not amendments.
+
+1. **The cohort has an implicit random failure threshold.** Rupture life is an input rather than a threshold
+   crossing, so the degradation state reached at rupture varies between units. Across 200 units the leak
+   multiplier at rupture spans 8.75–45.80 (CV 0.32); compliance and loss vary mildly (CV 0.022). A reader
+   would reasonably assume a shared end-of-life condition, so this should be stated.
+2. **The assumed rupture-life CV of 0.30 is above every measured value found.** The table above cites
+   Torzini 2024 as its order of magnitude, but Torzini measures CoV 0.039 and 0.061, and the highest located
+   measurement is 0.175 (Du 2025, n = 3). The choice is consequential: it decides *which* of Study C's two
+   criteria fails. It should be justified as a deliberately conservative envelope or changed.
+
+[Evidence](../../../evidence/dispersion-audit-2026-09-23/README.md).

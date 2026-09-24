@@ -41,10 +41,17 @@ def _truncnorm(rng, mean, sd, low, high):
     return float(truncnorm.rvs((low - mean) / sd, (high - mean) / sd, loc=mean, scale=sd, random_state=rng))
 
 
-def sample_unit(rng: np.random.Generator, axes=AXES) -> Unit:
-    """One unit: draws every axis in a fixed order, applies only those in ``axes``."""
+RUPTURE_CV = 0.30      # Study A's assumed rupture-life dispersion; see literature/gaps.md item 1
+
+
+def sample_unit(rng: np.random.Generator, axes=AXES, rupture_cv: float = RUPTURE_CV) -> Unit:
+    """One unit: draws every axis in a fixed order, applies only those in ``axes``.
+
+    ``rupture_cv`` exists so the assumed dispersion can be varied in a sensitivity study. The default
+    reproduces every committed result exactly; changing it changes the cohort.
+    """
     fp, sls = FatigueParams(), SLSParams()
-    shape = _weibull_shape_for_cv(0.30)
+    shape = _weibull_shape_for_cv(rupture_cv)
     d = {
         "rupture": float(rng.weibull(shape) * 3500.0 / gamma(1 + 1 / shape)),
         "mullins_amplitude": _lognormal(rng, fp.mullins_amplitude, 0.25),
@@ -87,7 +94,7 @@ def sample_unit(rng: np.random.Generator, axes=AXES) -> Unit:
     return Unit(fp, sls, temperature_c, thickness)
 
 
-def sample_units(n: int, seed: int = SEED, axes=AXES) -> list[Unit]:
+def sample_units(n: int, seed: int = SEED, axes=AXES, rupture_cv: float = RUPTURE_CV) -> list[Unit]:
     """``n`` independent units; unit ``i`` always uses the ``i``-th spawned stream."""
-    return [sample_unit(np.random.default_rng(child), axes)
+    return [sample_unit(np.random.default_rng(child), axes, rupture_cv)
             for child in np.random.SeedSequence(seed).spawn(n)]
