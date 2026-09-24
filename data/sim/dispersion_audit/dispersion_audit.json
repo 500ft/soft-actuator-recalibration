@@ -288,8 +288,9 @@
         ]
       }
     ],
-    "verdict_stable_at_realistic_cv": true,
-    "distance_from_median_effect_weakens_at_realistic_cv": false
+    "verdict_stable_at_lower_cv": true,
+    "distance_from_median_effect_weakens_at_lower_cv": false,
+    "dispersion_interpretation": "0.05 and 0.15 are anchored to published cohorts (Torzini 2024, Du 2025); 0.30 is Study A's assumed stress case. None is a measurement of this project's apparatus, and three small cohorts of particular materials and loading protocols do not establish a universal lifetime CV. Read the trend across the sweep, not a verdict at any one CV."
   },
   "does_not_change": "no committed study output; Study A/B/C verdicts and artifacts are untouched"
 }

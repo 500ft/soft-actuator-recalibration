@@ -42,12 +42,14 @@ spans 8.75–45.80 (CV 0.32), an implicit random failure threshold the preregist
 distance-from-median effect. It is not: the correlation is +0.948, +0.965 and +0.956 at CV 0.05, 0.15 and
 0.30. The effect is scale-invariant.
 
-*The real finding.* C-FAIL survives every dispersion level **for opposite reasons**. At a measured-realistic
+*The real finding.* C-FAIL survives every dispersion level **for opposite reasons**. At a literature-anchored
 CV 0.05 the estimator is accurate (10/10 within target) but a bare cycle counter is *better* (2/10 beat it).
 At Study A's CV 0.30 it beats the clock (7/10) but is no longer accurate (6/10). The two criteria move in
 opposite directions and neither point clears 8 on both. The unified per-unit rule at every CV: the pressure
 features earn their place only on units where the clock prior is wrong. Study A's CV 0.30 still needs
-justifying, since it is above every measured value and decides which criterion Study C fails.
+justifying, since it is above every measured value and decides which criterion Study C fails. Equally, no
+tested CV may be called the realistic one: the published figures are specific designs, not a measurement of
+this project's apparatus, so 0.30 stays an assumed stress case and 0.05/0.15 a literature-anchored floor.
 
 ### 2. At ten held-out units, the pass/fail distinction may be inside sampling noise
 

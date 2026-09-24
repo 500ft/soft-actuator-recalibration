@@ -37,14 +37,19 @@ declared rather than discovered, because a reader would reasonably assume a shar
 ## Correction 2 — my prediction about the transfer effect was wrong
 
 The gaps item predicted that an overstated CV was "inflating the very effect Study C reports," so that a
-realistic CV would weaken it. **It does not.** The correlation between held-out error and a unit's distance
+lower CV would weaken it. **It does not.** The correlation between held-out error and a unit's distance
 from the training median is +0.948, +0.965 and +0.956 at CV 0.05, 0.15 and 0.30 — essentially unchanged.
 The effect is scale-invariant, not an artefact of the assumed dispersion.
 
 ## Finding B — C-FAIL survives every dispersion level, but for opposite reasons
 
-Study C's evaluation re-run on cohorts drawn at three rupture-life CVs. Measured values in the literature
-for reference: Torzini 2024 gives 0.039 and 0.061, Du 2025 gives 0.175. Study A assumes 0.30.
+Study C's evaluation re-run on cohorts drawn at three rupture-life CVs. Published cohorts for reference:
+Torzini 2024 gives 0.039 and 0.061, Du 2025 gives 0.175. Study A assumes 0.30.
+
+**None of the three is "the realistic" CV.** The published values come from small cohorts of particular
+materials, geometries and loading protocols, and none of them measures the apparatus this project will
+build; they anchor a lower end rather than establishing a universal lifetime CV. 0.30 remains an *assumed
+stress case*. What the sweep supports is the direction of travel across it, not a verdict at any one CV.
 
 | rupture CV | within 0.10 life | beats the clock | estimator mean | clock mean | verdict |
 |--:|--:|--:|--:|--:|---|
@@ -53,7 +58,7 @@ for reference: Torzini 2024 gives 0.039 and 0.061, Du 2025 gives 0.175. Study A 
 | **0.30** (Study A) | 6 / 10 | **7 / 10** | 0.093 | 0.123 | C-FAIL |
 
 The two pass criteria move in **opposite directions** as dispersion changes, and across the tested range
-neither point clears 8 on both. At realistic dispersion the estimator is accurate — every held-out unit
+neither point clears 8 on both. At the low, literature-anchored CVs the estimator is accurate — every unit
 inside the target — but a bare cycle counter is *more* accurate, so it fails the beat-the-clock criterion.
 At the assumed dispersion it beats the clock, because the clock has become bad, but it is no longer accurate
 enough. On three points the curves cross at roughly CV 0.27 at about 6.5 of 10, so no tested dispersion

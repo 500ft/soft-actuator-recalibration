@@ -15,11 +15,17 @@ A. **Is there an implicit random failure threshold?** The item as filed said to 
    random failure threshold (Wang, Chen & Cai 2020), which is a modelling choice worth stating rather
    than an inconsistency.
 
-B. **Does the transfer result survive a realistic dispersion?** Study A assumes rupture-life CV 0.30,
+B. **Does the transfer result survive lower dispersion?** Study A assumes rupture-life CV 0.30,
    citing Torzini 2024 as its order of magnitude, but Torzini measures CoV 3.9 % and 6.1 % and the
    highest measured value found anywhere is 17.5 %. Since R1 found transfer error tracks a unit's
    distance from the training median, an overstated CV would inflate that effect. This re-runs the
    Study C evaluation at several CVs and reports whether the verdict and the effect survive.
+
+   None of the three CVs is "the realistic one". The published values are small cohorts of particular
+   materials, geometries and loading protocols, and none of them measures this project's future
+   apparatus; they anchor a *lower* end, they do not establish a universal lifetime CV. 0.30 stays an
+   assumed stress case. The result worth having is the direction of travel across the sweep, not a
+   verdict at any single CV.
 
 Writes data/sim/dispersion_audit/. Changes no committed study output.
 """
@@ -38,7 +44,9 @@ from scripts.run_studyC import (LAMBDAS, N_TRAIN, N_UNITS, PASS_RMSE, choose_lam
 from sim.fatigue import fatigue_state
 
 DATA = "data/sim/dispersion_audit"
-CV_GRID = [0.05, 0.15, RUPTURE_CV]       # measured (Torzini), measured (Du), and Study A's assumption
+# two literature-anchored low values and Study A's assumed stress case; see the docstring on why none
+# of them is "the realistic" dispersion for this project's apparatus
+CV_GRID = [0.05, 0.15, RUPTURE_CV]
 MEASURED = {"Torzini 2024 TPU": 0.039, "Torzini 2024 silicone": 0.061, "Du 2025 composite": 0.175}
 N_STATE = 200                            # cohort size for the failure-state question (cheap, no simulation)
 
@@ -111,7 +119,8 @@ def main():
           f"(the state at rupture is {'not ' if implicit else ''}constant across units)")
 
     print("\nB. transfer sensitivity to the assumed rupture-life CV")
-    print(f"   measured values for reference: " + ", ".join(f"{k} {v:.3f}" for k, v in MEASURED.items()))
+    print(f"   published cohorts for reference: " + ", ".join(f"{k} {v:.3f}" for k, v in MEASURED.items())
+          + "  (specific designs, not this project's apparatus)")
     transfer = []
     for cv in CV_GRID:
         t = transfer_at_cv(cv)
@@ -122,10 +131,10 @@ def main():
               f"{t['error_vs_rupture_deviation']:+.3f}")
 
     baseline = next(t for t in transfer if t["rupture_cv"] == RUPTURE_CV)
-    realistic = [t for t in transfer if t["rupture_cv"] < RUPTURE_CV]
-    verdict_stable = all(t["verdict"] == baseline["verdict"] for t in realistic)
+    lower_cv = [t for t in transfer if t["rupture_cv"] < RUPTURE_CV]
+    verdict_stable = all(t["verdict"] == baseline["verdict"] for t in lower_cv)
     effect_weakens = all((t["error_vs_rupture_deviation"] or 0) < (baseline["error_vs_rupture_deviation"] or 0)
-                         for t in realistic)
+                         for t in lower_cv)
 
     results = {
         "task": "literature/gaps.md item 1",
@@ -144,8 +153,13 @@ def main():
             "cv_grid": CV_GRID, "measured_reference_values": MEASURED,
             "study_a_assumption": RUPTURE_CV,
             "results": transfer,
-            "verdict_stable_at_realistic_cv": bool(verdict_stable),
-            "distance_from_median_effect_weakens_at_realistic_cv": bool(effect_weakens),
+            "verdict_stable_at_lower_cv": bool(verdict_stable),
+            "distance_from_median_effect_weakens_at_lower_cv": bool(effect_weakens),
+            "dispersion_interpretation": (
+                "0.05 and 0.15 are anchored to published cohorts (Torzini 2024, Du 2025); 0.30 is Study A's "
+                "assumed stress case. None is a measurement of this project's apparatus, and three small "
+                "cohorts of particular materials and loading protocols do not establish a universal "
+                "lifetime CV. Read the trend across the sweep, not a verdict at any one CV."),
         },
         "does_not_change": "no committed study output; Study A/B/C verdicts and artifacts are untouched",
     }
@@ -155,7 +169,7 @@ def main():
     with open(tmp, "w") as fh:
         json.dump(results, fh, indent=2)
     os.replace(tmp, out)
-    print(f"\n   verdict stable at realistic CV: {verdict_stable} | "
+    print(f"\n   verdict stable at the lower CVs: {verdict_stable} | "
           f"distance-from-median effect weakens: {effect_weakens}")
     plot(results)
     print(f"results + figure -> {DATA}/")
@@ -174,7 +188,7 @@ def plot(results):
     for k, v in results["B_transfer_sensitivity"]["measured_reference_values"].items():
         a.axvline(v, ls="-", lw=0.8, color="grey", alpha=0.6)
     a.set_xlabel("assumed rupture-life CV"); a.set_ylabel("mean held-out u-RMSE [life]")
-    a.set_title("grey lines = measured CoV in the literature", fontsize=9); a.legend(fontsize=7)
+    a.set_title("grey lines = CoV of specific published cohorts", fontsize=9); a.legend(fontsize=7)
     b.plot(cvs, [x["n_within_target"] for x in t], "o-", label="within 0.10 life")
     b.plot(cvs, [x["n_beats_clock"] for x in t], "s-", label="beats the clock")
     b.axhline(8, ls="--", color="k", lw=0.8)
