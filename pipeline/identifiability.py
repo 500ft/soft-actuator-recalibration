@@ -127,3 +127,98 @@ def whitened_angles_deg(J, sigma):
         c = abs(a @ b) / den
         out.append(float(np.degrees(np.arccos(np.clip(c, 0.0, 1.0)))))
     return out
+
+
+# --- structural vs practical identifiability (2026-09-23) -----------------------------------------
+# Study B reports the life coordinate as "structurally" aliased after onset on the evidence of a
+# rank-deficient FIM. Wieland et al. 2021 argue a Fisher-based analysis is insensitive to practical
+# non-identifiability, and Chis et al. 2016 that sloppiness is not the same thing. These two tools are
+# the standard way to separate the cases: Brun's collinearity index scores a parameter *subset*, and a
+# profile likelihood distinguishes a structurally flat direction from one that is merely poorly
+# constrained at this noise level. See literature/01-identifiability-observability.md.
+
+COLLINEARITY_POOR = 10.0          # Brun et al. 2001: gamma above ~10-20 flags a poorly identifiable subset
+
+
+def normalised_sensitivities(J, sigma):
+    """Whitened sensitivity matrix with every column scaled to unit length.
+
+    Brun's index is defined on unit-length columns so that it measures *direction* overlap rather than
+    relative magnitude: a parameter the data barely responds to is not thereby collinear with another.
+    """
+    L = np.linalg.cholesky(np.linalg.inv(sigma))
+    W = L.T @ J
+    norms = np.linalg.norm(W, axis=0)
+    keep = norms > 0
+    out = np.zeros_like(W)
+    out[:, keep] = W[:, keep] / norms[keep]
+    return out, norms
+
+
+def collinearity_index(J, sigma, subset):
+    """Brun's gamma_K for a parameter subset: 1 / sqrt(smallest eigenvalue of S~^T S~).
+
+    gamma = 1 means orthogonal sensitivities; gamma -> infinity means the subset's effects on the
+    observables are linearly dependent, i.e. a change in one can be compensated by the others.
+    Returns infinity for a subset containing a parameter with no sensitivity at all.
+    """
+    S, norms = normalised_sensitivities(J, sigma)
+    idx = list(subset)
+    if np.any(norms[idx] == 0):
+        return float("inf")
+    lam = np.linalg.eigvalsh(S[:, idx].T @ S[:, idx]).min()
+    return float("inf") if lam <= 0 else float(1.0 / np.sqrt(lam))
+
+
+def neg_log_likelihood(theta, y_obs, sigma_inv, base_fp, base_sls, amp_frac=0.1):
+    """Gaussian negative log-likelihood of one observation vector under the feature model."""
+    r = np.asarray(y_obs, float) - features(theta, base_fp, base_sls, amp_frac)
+    return float(0.5 * r @ sigma_inv @ r)
+
+
+def profile_likelihood_u(u_grid, theta_true, y_obs, sigma, base_fp, base_sls, free_idx,
+                         bounds, amp_frac=0.1, maxiter=60):
+    """Profile the negative log-likelihood over ``u``, re-optimising the free nuisance parameters.
+
+    At each fixed u the nuisance parameters are re-fitted, so the resulting curve is the likelihood's
+    true shape along u rather than a quadratic approximation to it. Raue et al. 2009: a profile flat in
+    both directions indicates *structural* non-identifiability; one that rises on one side only
+    indicates a *practical* limit set by the data.
+    """
+    from scipy.optimize import minimize
+    sigma_inv = np.linalg.inv(sigma)
+    out = []
+    for u in u_grid:
+        def obj(free):
+            th = theta_true.copy()
+            th[0] = u
+            th[list(free_idx)] = free
+            return neg_log_likelihood(th, y_obs, sigma_inv, base_fp, base_sls, amp_frac)
+        x0 = theta_true[list(free_idx)].copy()
+        res = minimize(obj, x0, method="L-BFGS-B", bounds=[bounds[i] for i in free_idx],
+                       options={"maxiter": maxiter})
+        out.append({"u": float(u), "nll": float(res.fun), "converged": bool(res.success)})
+    best = min(o["nll"] for o in out)
+    for o in out:
+        o["delta_nll"] = o["nll"] - best          # profile likelihood ratio statistic / 2
+    return out
+
+
+def profile_verdict(profile, threshold=1.92):
+    """Classify a profile. ``threshold`` 1.92 is the 95% chi-square(1) cut on delta(-log L).
+
+    Returns (verdict, flat_fraction). "structural" = the profile never rises above the threshold
+    anywhere on the grid, so the data cannot distinguish any u. "practical" = it rises on one side
+    only. "identifiable" = it rises on both sides of the minimum.
+    """
+    d = np.array([p["delta_nll"] for p in profile])
+    u = np.array([p["u"] for p in profile])
+    flat = float(np.mean(d <= threshold))
+    i = int(np.argmin(d))
+    rises_left = bool(np.any(d[:i] > threshold)) if i > 0 else False
+    rises_right = bool(np.any(d[i + 1:] > threshold)) if i < len(d) - 1 else False
+    if not rises_left and not rises_right:
+        return "structural", flat
+    if rises_left and rises_right:
+        return "identifiable", flat
+    return "practical", flat

@@ -1,0 +1,296 @@
+{
+  "task": "literature/gaps.md item 1",
+  "correction_to_the_filed_item": "The item asked for the rupture-life distribution 'implied' by the dispersed degradation-law parameters, citing Bae, Kuo & Kvam 2007. That framing does not apply here: rupture life is an input to fatigue_state and every multiplier is expressed in normalised life, so the generator has no absolute failure threshold to invert. Bae/Kuo/Kvam concerns threshold-crossing models. The well-posed version, reported below, is whether the degradation state reached at rupture varies across units, i.e. whether the generator has an implicit random failure threshold.",
+  "A_state_at_rupture": {
+    "n_units": 200,
+    "spread": {
+      "compliance_multiplier": {
+        "mean": 1.1599722028384596,
+        "sd": 0.025372017892368672,
+        "cv": 0.021872953360678106,
+        "min": 1.10561127717328,
+        "max": 1.258881953500265,
+        "range_over_mean": 0.13213305969912964
+      },
+      "loss_multiplier": {
+        "mean": 1.1599722028384596,
+        "sd": 0.025372017892368672,
+        "cv": 0.021872953360678106,
+        "min": 1.10561127717328,
+        "max": 1.258881953500265,
+        "range_over_mean": 0.13213305969912964
+      },
+      "leak_multiplier": {
+        "mean": 20.6934702176535,
+        "sd": 6.665960441010922,
+        "cv": 0.3221286894319071,
+        "min": 8.752916880746605,
+        "max": 45.79630553553105,
+        "range_over_mean": 1.7901003681433243
+      },
+      "fatigue_total": {
+        "mean": 0.12085256530088843,
+        "sd": 0.023310246414281952,
+        "cv": 0.1928816848549808,
+        "min": 0.07097889618300958,
+        "max": 0.22617175717198268,
+        "range_over_mean": 1.284150324840744
+      }
+    },
+    "implicit_random_failure_threshold": true,
+    "reading": "rupture is imposed rather than derived, so the state at rupture is free to vary; the spread above is that variation"
+  },
+  "B_transfer_sensitivity": {
+    "cv_grid": [
+      0.05,
+      0.15,
+      0.3
+    ],
+    "measured_reference_values": {
+      "Torzini 2024 TPU": 0.039,
+      "Torzini 2024 silicone": 0.061,
+      "Du 2025 composite": 0.175
+    },
+    "study_a_assumption": 0.3,
+    "results": [
+      {
+        "rupture_cv": 0.05,
+        "lambda_selected": 1.0,
+        "median_training_rupture_cycles": 3541.685148455086,
+        "rupture_spread_heldout": {
+          "min": 3079.07597474992,
+          "max": 3689.8799282853656
+        },
+        "mean_rmse": 0.02695239938971612,
+        "mean_rmse_clock": 0.02134889355203329,
+        "n_within_target": 10,
+        "n_beats_clock": 2,
+        "verdict": "C-FAIL",
+        "error_vs_rupture_deviation": 0.948023417138929,
+        "mean_abs_rupture_deviation": 0.038642074421902275,
+        "per_unit": [
+          {
+            "rupture_cycles": 3615.517800769074,
+            "rmse": 0.024822623478721557,
+            "rmse_clock": 0.011183649412375533,
+            "deviation": 0.020846757749257885
+          },
+          {
+            "rupture_cycles": 3079.07597474992,
+            "rmse": 0.07017705367553953,
+            "rmse_clock": 0.07249470626362504,
+            "deviation": 0.13061837919357688
+          },
+          {
+            "rupture_cycles": 3288.9089874631436,
+            "rmse": 0.033286638966107736,
+            "rmse_clock": 0.04021959365541151,
+            "deviation": 0.07137172007009311
+          },
+          {
+            "rupture_cycles": 3345.2370655585423,
+            "rmse": 0.031997761503423636,
+            "rmse_clock": 0.030730831771405384,
+            "deviation": 0.0554674045439178
+          },
+          {
+            "rupture_cycles": 3548.1847921654808,
+            "rmse": 0.013017191113970731,
+            "rmse_clock": 0.0010333033466760988,
+            "deviation": 0.0018351839415284542
+          },
+          {
+            "rupture_cycles": 3574.42041994216,
+            "rmse": 0.007411787223658143,
+            "rmse_clock": 0.005166005093499789,
+            "deviation": 0.009242851951804186
+          },
+          {
+            "rupture_cycles": 3626.259731857276,
+            "rmse": 0.029373402553862626,
+            "rmse_clock": 0.012846744555328898,
+            "deviation": 0.023879757758558003
+          },
+          {
+            "rupture_cycles": 3609.816162208259,
+            "rmse": 0.011885953359462848,
+            "rmse_clock": 0.01030937183856605,
+            "deviation": 0.019236891732991025
+          },
+          {
+            "rupture_cycles": 3584.46439721981,
+            "rmse": 0.017327079285556463,
+            "rmse_clock": 0.006732144018619311,
+            "deviation": 0.012078783678268118
+          },
+          {
+            "rupture_cycles": 3689.8799282853656,
+            "rmse": 0.030224502736857926,
+            "rmse_clock": 0.022772585564825285,
+            "deviation": 0.041843013599027375
+          }
+        ]
+      },
+      {
+        "rupture_cv": 0.15,
+        "lambda_selected": 1.0,
+        "median_training_rupture_cycles": 3603.1347174299085,
+        "rupture_spread_heldout": {
+          "min": 2316.664560298726,
+          "max": 4100.665837371951
+        },
+        "mean_rmse": 0.06702263756145499,
+        "mean_rmse_clock": 0.06404092525720216,
+        "n_within_target": 9,
+        "n_beats_clock": 4,
+        "verdict": "C-FAIL",
+        "error_vs_rupture_deviation": 0.96542966183392,
+        "mean_abs_rupture_deviation": 0.11486874341359177,
+        "per_unit": [
+          {
+            "rupture_cycles": 3845.518424169449,
+            "rmse": 0.04814871761306967,
+            "rmse_clock": 0.03747442184956063,
+            "deviation": 0.06727023154783159
+          },
+          {
+            "rupture_cycles": 2316.664560298726,
+            "rmse": 0.17109111651491313,
+            "rmse_clock": 0.1965646170113307,
+            "deviation": 0.3570419254400826
+          },
+          {
+            "rupture_cycles": 2852.382541136626,
+            "rmse": 0.08957571121066714,
+            "rmse_clock": 0.1248333827262103,
+            "deviation": 0.20836083998235538
+          },
+          {
+            "rupture_cycles": 3009.3952150732684,
+            "rmse": 0.08540959142467958,
+            "rmse_clock": 0.09357473953232312,
+            "deviation": 0.16478415294450893
+          },
+          {
+            "rupture_cycles": 3624.0408104234607,
+            "rmse": 0.03546516185931025,
+            "rmse_clock": 0.0034297796026656483,
+            "deviation": 0.0058021957637110965
+          },
+          {
+            "rupture_cycles": 3709.2711212840964,
+            "rmse": 0.026037658721011644,
+            "rmse_clock": 0.01701226759327008,
+            "deviation": 0.02945668485298663
+          },
+          {
+            "rupture_cycles": 3881.685686148671,
+            "rmse": 0.06922390718875626,
+            "rmse_clock": 0.041360485765761686,
+            "deviation": 0.07730795281433463
+          },
+          {
+            "rupture_cycles": 3826.4152863116665,
+            "rmse": 0.026359946938461894,
+            "rmse_clock": 0.034693270487121765,
+            "deviation": 0.06196842094236834
+          },
+          {
+            "rupture_cycles": 3742.2595939295666,
+            "rmse": 0.0410991325235608,
+            "rmse_clock": 0.02210330906447045,
+            "deviation": 0.03861217728736351
+          },
+          {
+            "rupture_cycles": 4100.665837371951,
+            "rmse": 0.07781543162011945,
+            "rmse_clock": 0.06936297893930736,
+            "deviation": 0.138082852560375
+          }
+        ]
+      },
+      {
+        "rupture_cv": 0.3,
+        "lambda_selected": 1.0,
+        "median_training_rupture_cycles": 3625.60074636404,
+        "rupture_spread_heldout": {
+          "min": 1415.7448003062905,
+          "max": 4775.058421448078
+        },
+        "mean_rmse": 0.09349237095022693,
+        "mean_rmse_clock": 0.12254298926684878,
+        "n_within_target": 6,
+        "n_beats_clock": 7,
+        "verdict": "C-FAIL",
+        "error_vs_rupture_deviation": 0.9555318263169003,
+        "mean_abs_rupture_deviation": 0.22541217876540434,
+        "per_unit": [
+          {
+            "rupture_cycles": 4164.648898775884,
+            "rmse": 0.06118637155218688,
+            "rmse_clock": 0.07423421750686075,
+            "deviation": 0.14867829916254083
+          },
+          {
+            "rupture_cycles": 1415.7448003062905,
+            "rmse": 0.22680615811956129,
+            "rmse_clock": 0.3622347242785912,
+            "deviation": 0.609514422754331
+          },
+          {
+            "rupture_cycles": 2204.631914172956,
+            "rmse": 0.13030911521478789,
+            "rmse_clock": 0.22673458388628193,
+            "deviation": 0.3919264507036835
+          },
+          {
+            "rupture_cycles": 2471.0579757712635,
+            "rmse": 0.1309321297108003,
+            "rmse_clock": 0.1829866067995485,
+            "deviation": 0.318441784234135
+          },
+          {
+            "rupture_cycles": 3670.5349806797685,
+            "rmse": 0.05595057273850965,
+            "rmse_clock": 0.007233273988089095,
+            "deviation": 0.012393596939980572
+          },
+          {
+            "rupture_cycles": 3856.767992945911,
+            "rmse": 0.05445061973810346,
+            "rmse_clock": 0.034293428177723725,
+            "deviation": 0.06375970846036999
+          },
+          {
+            "rupture_cycles": 4248.485235794755,
+            "rmse": 0.08028174161496753,
+            "rmse_clock": 0.08491732041746061,
+            "deviation": 0.1718017324592012
+          },
+          {
+            "rupture_cycles": 4120.724963277421,
+            "rmse": 0.041335592249562327,
+            "rmse_clock": 0.06857620216007466,
+            "deviation": 0.13656335916466258
+          },
+          {
+            "rupture_cycles": 3930.1628184987962,
+            "rmse": 0.052926138111858756,
+            "rmse_clock": 0.04462638127720648,
+            "deviation": 0.0840032020735291
+          },
+          {
+            "rupture_cycles": 4775.058421448078,
+            "rmse": 0.10074527045193128,
+            "rmse_clock": 0.13959315417665077,
+            "deviation": 0.3170392317016097
+          }
+        ]
+      }
+    ],
+    "verdict_stable_at_lower_cv": true,
+    "distance_from_median_effect_weakens_at_lower_cv": false,
+    "dispersion_interpretation": "0.05 and 0.15 are anchored to published cohorts (Torzini 2024, Du 2025); 0.30 is Study A's assumed stress case. None is a measurement of this project's apparatus, and three small cohorts of particular materials and loading protocols do not establish a universal lifetime CV. Read the trend across the sweep, not a verdict at any one CV."
+  },
+  "does_not_change": "no committed study output; Study A/B/C verdicts and artifacts are untouched"
+}

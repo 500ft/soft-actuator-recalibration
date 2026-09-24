@@ -72,13 +72,24 @@ Question: is the fatigue state observable from pressure alone across dispersed u
   verdict is **A-FAIL** on its timing criterion and Study C stays blocked.
 - **Study B** (Cramér–Rao bounds on the latent life coordinate from five pressure-only features): with a young
   baseline the coordinate is identifiable before the acceleration onset (σ_u ≈ 0.02–0.03 life, scaling with
-  noise/amplitude) and structurally unidentifiable after it (aliased with the unit's onset fraction and leak).
-  Verdict **B-PASS** by its rule; the regime boundary is the result.
+  noise/amplitude) and only **practically** aliased after it, with the unit's onset fraction and leak.
+  Verdict **B-PASS** by its rule; the regime boundary is the result. A follow-up on 2026-09-23 ran the
+  two diagnostics the literature prescribes and corrected the wording: Brun's collinearity index puts the
+  {life, onset, leak} *triple* at 6.3e5 against 57 and 8.3 for the pairs, confirming a joint dependency no
+  pairwise measure shows; but the profile likelihood rises on one side only, so the limit is practical at
+  this noise level — post-onset life is resolvable to about ±0.05 life, not finer — rather than structural.
+  [Evidence](../evidence/studyB-structural-2026-09-23/README.md).
 
 - **Study C** (one ridge estimator on baseline-normalised pressure features plus the clock, transferred to 10
   held-out units; run after the owner withdrew Study A's timing criterion): mean held-out u-RMSE 0.093 vs 0.123 for
   the clock alone, but only 6 of 10 units within 0.10 and 7 of 10 below the clock, so the preregistered verdict is
   **C-FAIL**. The estimator helps exactly where the clock's rupture prior is wrong (short-lived units) and adds
-  little where it is right; no transfer claim.
+  little where it is right; no transfer claim. A dispersion audit on 2026-09-23 re-ran this at rupture-life
+  CV 0.05 and 0.15, bracketing the values measured in the literature, and found **C-FAIL survives at every
+  level but for opposite reasons**: at CV 0.05 the estimator is accurate (10/10 within target) yet a bare
+  cycle counter beats it (2/10), while at CV 0.30 it beats the clock (7/10) but is no longer accurate (6/10).
+  The two criteria move in opposite directions, and the per-unit rule is the same throughout — pressure
+  features add value only where the clock prior is wrong for that unit.
+  [Evidence](../evidence/dispersion-audit-2026-09-23/README.md).
 
 Boundary: one synthetic generator, assumed dispersion magnitudes, local bounds; no physical claim.

@@ -50,3 +50,22 @@ the canonical unit and on 5 dispersed units from the Study A cohort (seeds 0–4
 `data/sim/studyB/studyB_results.json`, `studyB_fig_identifiability_map.png/.pdf` via
 `python -m scripts.run_studyB`. Tests: FIM of a linear toy model equals the analytic value; singular
 condition detected; whitened angle of an orthogonal pair is 90°.
+
+## Follow-up 2026-09-23 — wording corrected from "structural" to "practical"
+
+This preregistration's text is unchanged; its B-PASS verdict and bounds stand. The reported *characterisation*
+of the post-onset regime has been corrected after running the two diagnostics the identifiability literature
+prescribes, which this study's Fisher-only analysis could not supply.
+
+- **Brun collinearity index** over subsets confirms and sharpens the aliasing group: post-onset medians are
+  1.05 for {u, τ} (orthogonal control), 8.27 for {u, leak}, 56.96 for {u, onset}, and **6.27 × 10⁵ for
+  {u, onset, leak}**. The dependency is *joint* — four orders above either pair — so the pairwise whitened
+  angles reported here under-stated it.
+- **Profile likelihood** with all nuisance parameters re-optimised rises on one side only at u = 0.90, and on
+  both sides at u = 0.50. By Raue et al. 2009 that is **practical**, not structural, non-identifiability.
+- Pre-onset, the onset fraction, leak and exponent are **exactly inert** (zero sensitivity), so their
+  collinearity there is undefined rather than infinite. They are irrelevant before onset, not confounded.
+
+Supported wording: *practically aliased at this noise level, resolvable to about ±0.05 life within the
+post-onset region*. Generator `scripts/run_studyB_structural.py`;
+[evidence](../../../evidence/studyB-structural-2026-09-23/README.md).

@@ -31,6 +31,23 @@ and sets a minimum acceptance workflow and FEA limits. It is a planning referenc
 no tooling, proves no host access, and leaves every task below `deferred`. If a SOLIDWORKS host is
 chosen at activation, amend the selection below through PV-CAD-08 rather than silently.
 
+**Unattended-host requirement, recorded 2026-09-23 (owner).** The CAD host has no monitor — a GPU only —
+so nothing may wait on a human to accept a dimension, confirm a rebuild or dismiss a prompt. Two parts, and
+only the first is currently met:
+
+- *Met.* `cadloop`'s host-side scripts already set `sw.Visible = False`, so SOLIDWORKS runs without a
+  visible window and needs no display for normal operation.
+- **Not met.** Running invisibly is not the same as raising no dialogs. A modal prompt — a rebuild error, a
+  missing reference, a units mismatch, a "document was saved in a different version" notice — can still
+  block a COM call with no one to dismiss it, and the job would hang rather than fail. Neither
+  `docs/host_setup.md` nor `docs/solidworks_api_findings.md` in the tooling repository documents dialog
+  suppression or a hang timeout.
+
+So PV-CAD-08 acquires two acceptance conditions before any project part is authored on the host: every job
+must run to a recorded verdict with no interactive input, and a job that stalls must **time out and report**
+rather than wait. A successful launch is not a completed build, and a hung job must not be silently counted
+as one. This is a requirement note; it selects no tooling and proves no host access.
+
 **Selected design approach:** CadQuery code-CAD for parameterized families and neutral STEP verification; Onshape for hand-modeled fixtures with confirmed owner account/access. No Onshape automation, credentials or paid access is assumed. Agent owns code-CAD generators/tests; Owner or an authorized CAD operator owns interactive Onshape work. Lack of Onshape access blocks only affected fixture modeling and requires a documented alternative, not the entire parameter pipeline.
 
 The dedicated tooling task budgets environment locking and CI setup. Pin actual Python/CadQuery/OCP versions only after a clean isolated install plus STEP export/reimport smoke test. No version, environment or geometry CI is claimed tested today. CadQuery's official [installation](https://cadquery.readthedocs.io/en/stable/installation.html) and [STEP import/export](https://cadquery.readthedocs.io/en/stable/importexport.html) docs establish the chosen workflow, not a completed build.

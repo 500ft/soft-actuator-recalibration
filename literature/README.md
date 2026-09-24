@@ -14,7 +14,7 @@ The June base predates every result in the [observability programme](../docs/spe
 | finding | date | what it created a literature need for |
 |---|---|---|
 | Study A: dispersion breaks the indicator's unit-invariance in value but not in trigger timing | 2026-09-16 | between-unit variability and population/hierarchical degradation models |
-| Study B: the latent life coordinate is identifiable before the acceleration onset and structurally aliased with onset and leak after it | 2026-09-16 | identifiability and observability theory — Fisher information, practical identifiability, parameter aliasing |
+| Study B: the latent life coordinate is identifiable before the acceleration onset and aliased with onset and leak after it (shown *practically* so, 2026-09-23) | 2026-09-16 | identifiability and observability theory — Fisher information, practical identifiability, parameter aliasing |
 | Study C: one estimator transferred to 10 unseen units reached only 6/10 within target, **C-FAIL** | 2026-09-16 | cross-unit transfer, domain generalisation, unit-level holdout protocols |
 | R1 failure map: the estimator is *a clock corrected by pressure*; muting the clock costs 0.120 life, muting pressure 0.051; failures concentrate on units whose life is atypical | 2026-09-19 | remaining-useful-life estimation when a unit's total life is unknown, and population-prior personalisation |
 | C2 design: a probe-schedule axis with a probe-count-matched oracle | 2026-09-20 | optimal inspection scheduling and degradation-test measurement planning |
@@ -78,8 +78,10 @@ Two synthesis documents make the folder usable rather than merely long:
    Torzini as its order of magnitude. See [gaps](gaps.md) item 1.
 2. **The nearest precedent for Study C's failure is real and in-domain.** Wall et al. 2023 report 97 %
    within-unit accuracy collapsing to 35 % on an unseen *nominally identical* soft pneumatic actuator.
-3. **A published objection to Study B's method exists.** Wieland et al. 2021 argue the Fisher-information
-   approach is "insensitive to practical non-identifiability" and recommend profile likelihood instead.
+3. **A published objection to Study B's method existed — and it was acted on.** Wieland et al. 2021 argue
+   the Fisher approach is "insensitive to practical non-identifiability." The prescribed diagnostics were run
+   on 2026-09-23: the aliasing group is confirmed and is a *triple*, but the limit is **practical**, not
+   structural, and the wording was corrected repo-wide. See [gaps](gaps.md) item 3.
 4. **An unrebutted counterexample to the C2 framing.** Severson et al. 2019 predicted battery cycle life to
    9.1 % error from the first 100 cycles, before any capacity fade — so "probes fell pre-onset" cannot by
    itself explain transfer failure.

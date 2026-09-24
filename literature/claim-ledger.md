@@ -67,7 +67,7 @@ Confidence: MODERATE-HIGH, up from moderate. Still distinctiveness within retrie
 
 ```
 Claim 6 (Study B): The latent life coordinate is identifiable before the acceleration onset and
-structurally aliased with onset fraction and leak after it.
+practically aliased with onset fraction and leak after it (wording corrected 2026-09-23).
 Support (method): Kay 1993 (A), Hermann & Krener 1977 (A), Powel & Morgansen 2015 (B) for empirical
          Gramian rank tests, Acuna 2018 (B) for a Bayesian CRLB used as a prognostic design criterion
 Support (precedent for regime-dependent identifiability): Lin & Khoo 2024 (B) -- batteries, four regimes
@@ -77,8 +77,10 @@ Counter -- and this is the important one: Wieland 2021 (D) argues the FIM approa
          recommending profile likelihood; Chis 2016 (B) shows sloppiness is NOT equivalent to
          non-identifiability, so an ill-conditioned FIM does not license the word "structurally"
 Confidence: MODERATE for the regime boundary as an observation about this generator.
-            LOW for the word "structurally" until a structural test (profile likelihood, Lie symmetry,
-            or Brun collinearity index on the subset) is run. See gaps.md item 3.
+            RESOLVED 2026-09-23 for the wording: the test was run. Brun's subset index confirms the
+            {u, onset, leak} triple aliases jointly (6.3e5 vs 57 and 8.3 for the pairs), but the profile
+            likelihood rises on one side only, so the limit is PRACTICAL, not structural. Wording
+            corrected repo-wide. See evidence/studyB-structural-2026-09-23/.
 ```
 
 ```
@@ -146,8 +148,9 @@ Confidence: LOW-MODERATE, and conditional. Every comparison found assumes a CORR
 - That the pressure–volume indicator is validated on hardware. No study tracks P–V features over a full
   fatigue life on multiple specimens; the closest tracks tip-trajectory hysteresis and stops before failure.
 - That transfer failure is *caused* by observation timing. Severson 2019 is an unrebutted counterexample.
-- That the life coordinate is *structurally* non-identifiable. That word needs a structural test, not a
-  rank-deficient information matrix.
+- That the life coordinate is *structurally* non-identifiable. Tested on 2026-09-23 and the answer is no:
+  the profile likelihood rises on one side, so the limit is practical at this noise level. Say "practically
+  aliased, resolvable to about ±0.05 life within the post-onset region".
 - That the assumed CV of 0.30 is realistic for soft actuators. Every measured value found is lower.
 - That a state-triggered policy beats a clock in general. The literature says it depends on measurement
   accuracy and life dispersion, and can reverse under a variance-aware objective.

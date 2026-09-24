@@ -142,3 +142,19 @@ analysis. It does not validate the model parameters against a physical actuator.
 - **Outputs:** `data/sim/studyC/studyC_results.json`, `studyC_fig_transfer.(png|pdf)`
 - **Preregistration:** `docs/specs/observability-program/studyC-transfer.md` (amendment of 2026-09-16 fixes the trajectory design).
 - **Boundary:** one estimator on a synthetic dispersed cohort; verdict per the spec's rule; no device claim.
+
+## Study B follow-up — structural vs practical aliasing (observability program)
+
+- **Generator:** `scripts/run_studyB_structural.py` · **Command:** `python -m scripts.run_studyB_structural` (~7 min; `--replot` redraws from the saved result)
+- **Inputs:** `pipeline/identifiability.py` (Brun collinearity index, profile likelihood), `pipeline/dispersion.py`, `sim/*`
+- **Outputs:** `data/sim/studyB/studyB_structural.json`, `studyB_fig_structural.(png|pdf)`
+- **Task:** `literature/gaps.md` item 3.
+- **Boundary:** local diagnostics on the synthetic generator. Decides the wording of Study B's finding, not its verdict.
+
+## Dispersion audit — sensitivity to the assumed rupture-life CV (observability program)
+
+- **Generator:** `scripts/run_dispersion_audit.py` · **Command:** `python -m scripts.run_dispersion_audit` (~12 min; `--replot` redraws from the saved result)
+- **Inputs:** `pipeline/dispersion.py` (`rupture_cv`, default unchanged), `scripts/run_studyC.py`, `sim/fatigue.py`
+- **Outputs:** `data/sim/dispersion_audit/dispersion_audit.json`, `dispersion_audit_fig.(png|pdf)`
+- **Task:** `literature/gaps.md` item 1.
+- **Boundary:** re-runs the Study C evaluation on cohorts drawn at other dispersions. Changes no committed study output; Study C's verdict and artifacts are untouched.

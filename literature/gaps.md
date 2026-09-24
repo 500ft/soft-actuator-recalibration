@@ -10,7 +10,9 @@ candidates for the owner to schedule.
 
 ## Actionable now, inside the repository
 
-### 1. The dispersion magnitude is higher than any measured value, and the two randomisations may be inconsistent
+*Items 1 and 3 are resolved; the rest stand.*
+
+### 1. ~~The dispersion magnitude and the two randomisations~~ — RESOLVED 2026-09-23
 
 [Study A](../docs/specs/observability-program/studyA-preregistration.md) draws rupture life Weibull with
 **CV 0.30**, citing "repo fixture (validation cohort); order of Torzini 2024 / Frontiers 2023 scatter."
@@ -26,10 +28,28 @@ Two problems, both checkable:
   model plus a random-parameter distribution already *implies* a lifetime distribution. If the implied and
   imposed distributions disagree, the generator is internally inconsistent.
 
-*Check:* sample the generator, compute the implied rupture-life distribution from the dispersed
-degradation-law parameters alone, and compare against the imposed Weibull. Then re-run Study C at CV 0.05
-and 0.15 to see whether the C-FAIL verdict and the distance-from-median effect survive realistic dispersion.
-Cost: hours. This is the highest-value item in this folder.
+**RESOLVED 2026-09-23** ([evidence](../evidence/dispersion-audit-2026-09-23/README.md)), with two
+corrections to this item as filed.
+
+*Correction 1 — the inconsistency framing was wrong.* Rupture life is definitional here, an input to
+`fatigue_state`, with every multiplier expressed in normalised life. There is no absolute failure threshold
+to invert, so there is no "implied" distribution to disagree with the imposed one. Bae/Kuo/Kvam concerns
+threshold-crossing models and this is not one. The well-posed version is the reverse: because rupture is
+imposed, the *state at rupture* may vary — and it does. Across 200 units the leak multiplier at rupture
+spans 8.75–45.80 (CV 0.32), an implicit random failure threshold the preregistration never declares.
+
+*Correction 2 — the prediction was wrong.* This item predicted an overstated CV was inflating the
+distance-from-median effect. It is not: the correlation is +0.948, +0.965 and +0.956 at CV 0.05, 0.15 and
+0.30. The effect is scale-invariant.
+
+*The real finding.* C-FAIL survives every dispersion level **for opposite reasons**. At a literature-anchored
+CV 0.05 the estimator is accurate (10/10 within target) but a bare cycle counter is *better* (2/10 beat it).
+At Study A's CV 0.30 it beats the clock (7/10) but is no longer accurate (6/10). The two criteria move in
+opposite directions and neither point clears 8 on both. The unified per-unit rule at every CV: the pressure
+features earn their place only on units where the clock prior is wrong. Study A's CV 0.30 still needs
+justifying, since it is above every measured value and decides which criterion Study C fails. Equally, no
+tested CV may be called the realistic one: the published figures are specific designs, not a measurement of
+this project's apparatus, so 0.30 stays an assumed stress case and 0.05/0.15 a literature-anchored floor.
 
 ### 2. At ten held-out units, the pass/fail distinction may be inside sampling noise
 
@@ -42,7 +62,7 @@ itself has **no precedent** in the literature — it is a defensible preregister
 under the same estimator. If 8 of 10 falls comfortably inside that distribution, the verdict stands but must
 be reported with its variance. Cost: hours, and it strengthens the result either way.
 
-### 3. "Structurally aliased" needs a structural test
+### 3. ~~"Structurally aliased" needs a structural test~~ — RESOLVED 2026-09-23
 
 [Study B](../docs/specs/observability-program/studyB-identifiability.md) reports the life coordinate as
 structurally aliased after onset, on the evidence of a rank-deficient information matrix and small whitened
@@ -50,9 +70,15 @@ angles. Wieland et al. 2021 argue the Fisher approach is "insensitive to practic
 Chis et al. 2016 show sloppiness is not equivalent to non-identifiability. The current evidence does not
 license the word *structurally*.
 
-*Check:* compute Brun's collinearity index over the {life, onset, leak} subset — it scores subsets rather
-than pairs, so it names the aliasing group directly — and add a profile-likelihood pass on the reduced
-model. Either upgrade the wording or downgrade it to "practically aliased at this noise level." Cost: a day.
+**RESOLVED 2026-09-23.** Both diagnostics were run
+([evidence](../evidence/studyB-structural-2026-09-23/README.md)). Brun's subset index confirms the aliasing
+group and shows it is a *triple* — {u, onset, leak} at 6.3 × 10⁵ against 57 for {u, onset} and 8.3 for
+{u, leak} — a joint dependency no pairwise measure reveals. The profile likelihood rises on one side only at
+u = 0.90 and on both sides at u = 0.50, which by Raue et al. 2009 is **practical**, not structural,
+non-identifiability. The wording was downgraded to "practically aliased at this noise level, resolvable to
+about ±0.05 life" across `docs/results.md`, the Study B preregistration, the 2026-09-16 evidence record and
+the claim ledger. A side finding: pre-onset the onset fraction, leak and exponent are exactly inert, so they
+are irrelevant there rather than confounded.
 
 ### 4. The probe may be measuring a rate artefact rather than a hysteretic state
 
