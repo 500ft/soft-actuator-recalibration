@@ -1,0 +1,566 @@
+SOFT ACTUATOR RECALIBRATION — LITERATURE CRITIQUE AND NEXT STUDIES
+Prepared 2026-09-24 for the owner and Claude
+Status: planning and review only; no study, implementation, or historical verdict changed.
+
+RECOMMENDATION
+
+Keep the research direction, but repair the inference chain before adding a more
+complex estimator. The strongest next question is: under which conditions does
+measured probe information improve a recalibration decision over a clock, after
+accounting for uncertainty and acquisition cost?
+
+There are concrete issues in the current Study B follow-up and C2 design. These
+are more urgent than another broad literature search. The proposed changes below
+are prospective work packages for Claude, not instructions to silently rewrite
+preregistered studies or their outputs.
+
+REVIEW BASIS AND LIMITS
+
+Question: What changes to the project's sensing assumptions, identifiability
+analysis, cross-unit evaluation, and recalibration objective are justified by the
+retrieved literature and the current implementation?
+
+Reviewed local branch research/dispersion-audit-20260923 at
+b2cc7c04acf570da5003d69baeb0b4d2f8c4cdad. GitHub main was e8a79f4 at the read-only
+remote check. Thus this review includes the two September 23 follow-ups, which
+were present on the working branch but not yet on the checked main revision.
+No data/sim/studyC2 directory exists in this checkout. That does not prove nobody
+has run C2 in another checkout. Establish that fact before any prospective amendment.
+
+Read the observability specifications, current runners, relevant feature and
+fatigue code, committed Study B profile results, September 23 evidence, and the
+new literature synthesis. Independently retrieved primary papers or author/
+publisher records for the sources below. No research simulations were executed.
+A small read-only JSON inspection checked the stored profile/convergence values.
+
+Eligibility: methods addressing the actual inference problem, or experiments on
+actuator durability/sensing, are relevant. Battery and crack-growth work is used
+only for methodological analogy. Citation counts and venue prestige did not
+determine relevance. This is a targeted critique, not a systematic review or a
+proof of novelty. Search coverage and inaccessible full texts remain limitations.
+
+WHAT HAS ALREADY IMPROVED
+
+- Identity-level splitting, training-only hyperparameter selection, and reporting
+  failed results should stay.
+- The dispersion audit already tested CV 0.05, 0.15, and 0.30. Its recorded outcome
+  is informative: at low dispersion the estimator is accurate but often loses to
+  the clock; at high dispersion it more often beats the clock but loses accuracy.
+  Do not reassign that completed sensitivity task as if it were missing.
+- Moving beyond Fisher curvature to a likelihood profile was the right methodological
+  direction. However, the implementation and conclusion need the repair in item 1.
+- C2 already calls itself a diagnostic follow-up and disallows a new transfer claim.
+  Preserve that restriction. Study C's recorded C-FAIL remains the historical result.
+
+1. REOPEN THE STUDY B FOLLOW-UP'S RESOLUTION CLAIM — PRIORITY P0
+
+Evidence from the repository:
+- scripts/run_studyB_structural.py:76-82 stacks the young baseline and current
+  snapshot for the collinearity calculation.
+- Its likelihood section at lines 106-118 instead constructs one five-feature
+  observation and one covariance, then calls profile_likelihood_u.
+- pipeline/identifiability.py:172-203 evaluates that single snapshot. It does not
+  include a young-baseline residual. The output metadata nevertheless describes
+  the design as B2, snapshot plus young baseline.
+- U_GRID ends at 0.90, which is also the post-onset truth. Stored points 0.80,
+  0.85, and 0.90 have almost identical likelihood values. There is no tested point
+  above 0.90 to locate the upper confidence crossing.
+- profile_verdict classifies any profile staying below a statistical threshold
+  across the grid as structural. A shallow noisy profile over a finite interval
+  does not establish an exact structural symmetry.
+
+Literature basis: Raue et al. [S1] define profiling by nuisance re-optimization
+and distinguish a flat structural direction from limited statistical information.
+Wieland et al. [S2] explain why Fisher-based uncertainty alone is inadequate.
+Neither licenses turning an arbitrary grid edge into a confidence bound.
+
+Assessment: high confidence in the code/report mismatch and the missing upper
+crossing. The correct structural-versus-practical conclusion remains unresolved
+by this review. The earlier Fisher evidence still supports a difficult estimation
+region under its assumptions; it does not establish the new +/-0.05 resolution.
+
+Proposed repair:
+1. Explicitly separate B1 snapshot and B2 baseline-plus-snapshot likelihoods.
+   For B2, share the nuisance parameters between both observations and use the
+   appropriate joint covariance. Retain B1 as a labeled comparison.
+2. Match B2's declared known baseline coordinate for the diagnostic replication.
+   Separately disclose that u_base=0.05 requires total-life knowledge. A practical
+   successor must use the known baseline cycle and treat lifetime as unknown.
+3. Scale positive nuisance parameters, use multiple starts and continuation, and
+   store fitted nuisance values, bound hits, objective values, and convergence.
+   The current result has one nonconverged pre-onset grid point; the classifier
+   does not inspect convergence. Do not interpret unresolved solver failures.
+4. Extend the grid on both sides within the declared physical domain and refine
+   near crossings. Report a domain-limited/open bound when no crossing is found.
+   Derive the reference minimum from a verified joint fit, not just a coarse grid.
+5. Use a noiseless symmetry/identifiability analysis to investigate structural
+   ambiguity. Use noisy profiles for practical uncertainty. A noise sweep is
+   informative but is not by itself a global structural proof.
+6. Treat chi-square thresholds as an approximation whose adequacy needs checking
+   for this nonlinear, bounded, finite-data problem. Use predeclared parametric
+   coverage checks if confidence-interval claims are retained.
+
+Acceptance: a dimension check proves B2 uses all ten observations; a baseline
+perturbation changes the likelihood; failed optimization produces unresolved
+status; an open interval is never printed as +/-0.05; a weak but identifiable toy
+model cannot be called structurally non-identifiable merely for staying below a
+threshold. Preserve the original output and issue a separately versioned correction.
+
+2. STATE THE ACTUAL SENSING REQUIREMENTS — PRIORITY P0
+
+Evidence: pipeline/identifiability.py:18-64 computes two P-V loop areas, a secant
+stiffness with volume in its denominator, and two pressure-decay features. It
+explicitly measures noisy volume. C2's pressure_only arm removes the cycle column;
+it retains all the volume-dependent features and their lags.
+
+Assessment: this establishes an arm without an explicit clock, not sensing from
+pressure alone. This is distinct from the repository's legitimate separation
+between pressure-only pose estimation and intermittent P-V health probes.
+
+Proposed change:
+- Describe the existing arm as "probe features without cycle count" in reporting,
+  with an explicit mapping to the legacy pressure_only identifier.
+- Add a channel contract: measured pressure, measured/estimated volume, commanded
+  excitation, baseline data, elapsed time, and unavailable generator truth.
+- If the intended system has no volume sensor, specify and validate the volume
+  proxy. Pump stroke is not automatically chamber volume in a pneumatic system.
+- A genuinely pressure-measurement-only decay arm is a separately preregistered
+  comparison; it answers a different question from deleting the clock column.
+- Account for all acquisitions. unit_records measures a normalization baseline
+  and another observation at cycle 100; the current row count is not automatically
+  the total acquisition count or cost.
+
+Literature boundary: Wall et al. [S7] concern acoustic sensing; Bui [S5] measures
+trajectory hysteresis; Torzini [S6] monitors bending during fatigue. Those results
+cannot establish a pressure-only fatigue estimator or a P-V sensing budget.
+
+Acceptance: every feature has an observable input and acquisition route; public
+claim wording matches that contract; no volume-derived quantity is silently
+classified as requiring only pressure. Apply this contract to future CAD/rig work
+using CAD_PLANNING_ADDENDUM_2026-09-21.txt, without starting hardware now.
+
+3. MAKE SCHEDULE COMPARISONS MEASURE THE SAME OUTCOME — PRIORITY P0
+
+Evidence: run_studyC2.py:evaluate_cell evaluates each schedule on that schedule's
+own probe rows. The oracle moves most observations into post-onset life, so it
+also moves most scored targets there. Matched probe count does not match the
+evaluation distribution. Changes in score mix estimator changes with changes in
+which states are being scored.
+
+The oracle also uses actual onset, rupture time, and a lifetime-derived probe
+count. It is a privileged-information schedule, not a proven upper bound on
+achievable performance. Ridge fitting need not improve monotonically when data
+are moved. An oracle failure cannot demonstrate that every feasible schedule fails.
+
+Assessment: high confidence in the mismatch; unknown magnitude or direction until
+a separately specified comparison is run. This is a design inference from the
+code. The model-evaluation caution in [S3] and the experimental-design reasoning
+in [S1] motivate keeping the target question explicit.
+
+Proposed successor protocol:
+1. Freeze a common evaluation clock before generating outcomes, such as an
+   absolute-cycle grid at a declared spacing from baseline until failure. Use
+   identical evaluation times for every schedule on each unit. Report which
+   units survive each time and aggregate within unit before across units.
+2. At each time, use only observations already acquired. Choose the between-probe
+   prediction rule in advance: hold-last-state or a trained causal propagation
+   rule. A prediction at an unprobed time cannot consume a hidden new probe.
+3. Keep probe-time RMSE as a secondary endpoint. Make time-weighted whole-life
+   error and a declared early-operation window explicit. Normalized-life bins
+   are acceptable for offline analysis, never for choosing online actions.
+4. Report acquisition count, probe duration, and time without a new measurement.
+   The existing dense arm changes both count and timing; describe it as a budget
+   comparison. Add a feasible placement comparison at a predeclared common budget
+   and horizon only if placement itself is the causal question.
+5. Use the same baseline observation across schedules in a paired comparison.
+   Current seeds give the same baseline state but different baseline noise.
+   Predeclare shared-time noise pairing or independent measurement replicates;
+   never search seeds for an attractive outcome.
+6. Keep the historical reference cell intact. A new primary estimand requires a
+   versioned protocol, not silently replacing the old plotted number.
+
+Two secondary controls are worth recording. The lag refers to different elapsed
+times at different cadences. Also, ridge_fit uses an unnormalized summed loss,
+so the same lambda has a different effective penalty as the number of rows changes.
+Long-lived units supply more training rows. For a successor, choose unit weighting
+and mean-loss regularization explicitly and report elapsed time since last probe.
+These are controlled design changes, not evidence that a particular remedy works.
+
+Acceptance: every schedule is scored on the same per-unit timestamps; causal
+replay cannot read future observations, rupture, or onset; baseline pairing is
+verified; there is no claim that the oracle supplies a mathematical performance bound.
+
+4. REPLACE OVERSTRONG INTERPRETATION LABELS — PRIORITY P0
+
+Evidence: C2 defines "indistinguishable" by whether the clock-only mean lies in
+full's leave-one-unit-out range. The runner implements that condition directly.
+This range is a sensitivity diagnostic, not a confidence interval for a paired
+model difference and not an equivalence test. The final fallback label is
+signal-limited even when other explanations remain untested.
+
+Literature basis: equivalence requires a justified margin and an appropriate test
+or interval procedure, rather than failure to see a difference [S4]. An estimator
+failure is not an identifiability theorem [S1, S2].
+
+Proposed change:
+- Preserve per-unit paired differences d_i = error(full)_i - error(clock)_i.
+  Report their distribution and a whole-unit paired uncertainty interval.
+- For an equivalence claim, preregister a smallest meaningful difference and a
+  paired equivalence procedure with its assumptions. At ten units, "inconclusive"
+  may be the correct result. Do not invent the margin after viewing the interval.
+- Name the two baselines separately: median-life clock and learned clock-only
+  ridge. Beating the former does not establish a gain over the latter.
+- Replace causal conclusions with descriptive outcomes such as "full arm improves
+  under schedule X" and "no tested arm met the historical criterion."
+- Require additional evidence before saying clock-prior-limited, schedule-limited,
+  or signal-limited. Report competing explanations: feature construction, model
+  misspecification, training weights, noise, representation, and sample uncertainty.
+
+Acceptance: an unresolved comparison stays unresolved; an always-failing ridge
+grid cannot emit "features cannot carry life"; a practical schedule's performance
+is displayed even when the reference clock comparison meets another label rule.
+
+5. SEPARATE DIAGNOSIS FROM CONFIRMATION — PRIORITY P1
+
+Evidence: C2 reuses the ten Study C test identities after their failures informed
+the study design. The frozen subset happens to be the previously identified three
+short-lived failures. A generator-defined subset rule improves transparency, but
+it does not make this a fresh independent test.
+
+Literature basis: evaluation-informed selection can overfit a finite sample even
+when coefficient fitting itself is clean [S3]. Wall's transfer experiment [S7]
+supports retaining identity-level separation, but does not quantify this project's
+generalization error or prescribe its pass threshold.
+
+Proposed evaluation layers:
+A. Historical reproduction: preserve Study C and the original C2 diagnostic grid.
+B. Development: use training-only unit folds to choose the prospective arm,
+   schedule, regularization, weights, and any rejection threshold.
+C. Confirmation: freeze those decisions, then generate fresh independent cohorts
+   under an explicit new study identifier. No best-seed selection or retuning on C.
+
+Distinguish repeated splits of the same 30 units from fresh cohorts: the former
+measures split sensitivity, not uncertainty over new populations. If training
+randomness is part of the claim, replicate the whole train/select/test procedure.
+Do not count folds, time rows, or overlapping resplits as independent actuators.
+
+Choose replication count from precision and measured runtime. As a planning
+reference only, a Bernoulli rate near 0.8 needs roughly 246 independent outcomes
+for a normal-approximation 95% half-width of 0.05; the worst-case reference is
+385. These are not a hardware sample-size mandate, an exact interval calculation,
+or a substitute for accounting for shared training and cohort dependence.
+
+Keep the historical 8/10 rule. Also show the two continuous objectives separately:
+absolute accuracy and paired incremental value over the chosen clock. Do not
+lower the pass bar to rescue a result. Three tested CV values do not prove no
+dispersion value or no estimator could ever satisfy both conditions.
+
+Acceptance: each new result identifies the population, split, selection procedure,
+seed manifest, and uncertainty level; no confirmatory claim rests on selecting the
+best of the 15 original cells using the same ten known units.
+
+6. TEST GENERATOR MISMATCH, WITHOUT REPLACING ONE UNSUPPORTED DEFAULT WITH ANOTHER
+   — PRIORITY P1
+
+The dispersion audit is useful, but its "measured-realistic" wording should remain
+conditional on the particular published designs. Small cohorts from specific
+materials, geometry, and loading protocols do not establish a universal lifetime
+CV. Keep 0.30 labeled as an assumed stress case; retain lower-dispersion scenarios
+without claiming either is the measured distribution of our future apparatus [S6].
+
+Bui reports an early break-in region and later less systematic trajectory changes;
+its endpoint is not P-V area and its endurance test does not identify this project's
+full fatigue-to-failure law [S5]. The current model's Mullins time constant is three
+cycles and the baseline occurs at cycle 100. A slower transient could contaminate
+that baseline. This is a plausible confound to test, not proof the generator is wrong.
+
+Proposed small challenge suite, one change at a time before combinations:
+- Existing generator, unchanged, as the reproduction case.
+- Slower saturating break-in, with a predeclared range and distinct latent break-in
+  and irreversible-damage states. Never impose a universal 160-cycle constant.
+- Variable rest and within-unit thermal/rate changes at a fixed damage state.
+- An alternative failure definition with an observable endpoint, alongside the
+  existing imposed rupture-life model; keep their inference claims separate.
+
+For the probe-rate question, vary frequency, amplitude, rest, and temperature while
+holding damage fixed, then vary damage with those conditions fixed. Compare feature
+and decision changes. Existing 1 and 4 Hz features are a starting point, not enough
+to establish a quasi-static limit. A dynamic dissipation signal can still be useful;
+rate dependence does not automatically invalidate it [S8].
+
+Avoid an overstrong literature rebuttal: Severson's early-life battery prediction
+shows that informative precursors can exist before capacity fade [S9]. It does not
+disprove a scheduling mechanism in this soft-actuator generator. Its value is as a
+reason to test early features rather than assume late probes must be better.
+
+Acceptance: scenarios have declared assumptions and supported ranges where available;
+every feature is challenged against nondamage perturbations; same-family validation
+and new-mechanism validation are reported separately; no synthetic result is called
+a physical calibration.
+
+7. CONNECT THE TARGET TO RECALIBRATION — PRIORITY P1, AFTER THE EVALUATION REPAIR
+
+The current u = cycles/rupture_cycles is a retrospective life coordinate, not a
+directly measured material state. The September 23 audit confirms that the model
+allows different leak states at rupture. Equal u need not mean equal pose error,
+equal remaining usable performance, or equal benefit from recalibration.
+
+Proposed decision study:
+- Define a task-space pose-error budget in physical units and a future decision
+  horizon. Distinguish terminal rupture, functional failure, and recalibration.
+- Predict either current calibration error or the risk of exceeding the budget
+  within that horizon. Retain u prediction as a secondary mechanistic endpoint.
+- Compare fixed schedules, the frozen state-based policy, and a declared reference
+  with extra sensing on the same units and operating trajectories.
+- Report time over the error budget, missed crossings, calibration count, probe
+  count, and unavailable operating time. Use a Pareto plot until acquisition and
+  downtime costs have defensible values; do not manufacture cost savings.
+- Calibrating the pose map may reduce mapping error, but must not reset simulated
+  material damage or lifetime. Explicitly model what information recalibration buys.
+
+de Jonge et al. [S10] show in maintenance simulations why measurement quality,
+failure uncertainty, and operational costs can change the value of condition-based
+decisions. Application to recalibration here is our proposed adaptation, not an
+established result for soft robots.
+
+Future pilot requirement: obtain synchronized pressure, a justified volume measure,
+and a camera/reference pose, with rest, temperature, specimen identity, loading, and
+acquisition time logged. One reused specimen can establish feasibility and challenge
+confounds; it cannot establish unseen-unit transfer. Any few-shot calibration must
+use labels obtainable during operation. The current per-unit u-label oracle needs
+future rupture knowledge and cannot serve as a deployable calibration procedure.
+
+Acceptance: the primary score answers whether the robot should recalibrate, the
+clock baseline has the same operational constraints, and sensing/downtime costs
+are visible even when only reported parametrically.
+
+8. BEST NEXT MODEL IDEA: LET MEASUREMENTS EARN THEIR CORRECTION — PRIORITY P2
+
+This is a proposed hypothesis, not a literature-certified fix. The dispersion audit
+suggests pressure-derived information helps on some units while degrading a good
+clock estimate on others. Start with a cheap nested correction before a large model:
+
+  prediction = clock_prediction + alpha * residual_model(probe_history)
+
+Fit the residual model on training units; select alpha, including alpha=0, using
+unit-level validation. Compute baseline parameters separately inside each training
+fold so that validation labels do not enter the baseline. Use mean loss and explicit
+unit weights. Compare this to both named clock baselines and the current full ridge.
+
+Begin with one global alpha. A per-unit gate is justified only after held-out
+development evidence shows it predicts harmful corrections from currently available
+information. True lifetime, retrospective error, and the oracle onset cannot drive
+that gate. Evaluate risk versus retained coverage and report the fallback policy's
+error/cost on every rejected case; discarding difficult units is not improvement.
+
+If this simple model is inadequate, preregister a hierarchical population model
+with updates from each unit's observed trajectory. Empirical-Bayes degradation work
+provides a precedent [S11], not a guarantee that pressure contains enough information.
+More flexible models cannot recover an unobservable state by architecture alone.
+
+Novelty boundary: selective prediction already exists [S12]. Do not describe an
+abstain mechanism as new in general. A potentially distinct contribution is its
+validated use to choose pressure-informed recalibration versus a specified fallback
+under actuator variability and acquisition cost. That novelty still needs checking.
+
+Acceptance: alpha=0 reproduces the chosen clock; all thresholds are fitted without
+confirmation labels; effects are reported on fresh cohorts; improvement is measured
+including fallback cases and across the declared dispersion scenarios.
+
+EXECUTION ORDER FOR CLAUDE TO REVIEW
+
+W0 — Inventory and correction note (before implementation).
+  Read this critique against the actual current HEAD. Record which concerns remain.
+  Establish whether C2 has run elsewhere. Preserve source/output hashes. Draft the
+  wording correction for B2, sensing requirements, and interpretation labels.
+  Deliverable: a short claim-to-evidence correction list with exact file references.
+
+W1 — Repair and verify the identifiability diagnostic.
+  Targets: pipeline/identifiability.py, scripts/run_studyB_structural.py, associated
+  tests and a new evidence record. Follow item 1's acceptance conditions. Stop at an
+  unresolved result if numerical or structural ambiguity persists; no forced verdict.
+
+W2 — Freeze a versioned evaluation protocol.
+  Targets: a new observability specification plus proposed changes to the C2 runner
+  and schedule contract. Define the common scoring timeline, causal replay, baseline
+  acquisition, paired effects, uncertainty, and neutral labels before running it.
+  If earlier C2 output exists, keep it as historical diagnostic output. Document
+  changed methods and use a distinct result location.
+
+W3 — Run a bounded prospective comparison after the protocol is accepted.
+  Start with the frozen ridge/clock/probe arms. Estimate runtime, then fix cohort and
+  noise replication counts from a precision target. Report all cells, all failures,
+  and resource use. Broaden to new generator mechanisms only after the evaluator
+  passes its causal and comparison checks.
+
+W4 — Choose the next research extension from evidence.
+  If incremental sensing value is unstable, test item 8's simple shrinkage model.
+  If noise or confounds dominate, prioritize the challenge suite and pilot design.
+  If state estimation improves, test the decision outcome in item 7 rather than
+  immediately claiming successful recalibration. Keep CAD/hardware gated separately.
+
+These packages are ordered dependencies, not a promise that they all fit into the
+remaining September 24-25 workweek. The useful immediate milestone is a corrected
+claim set and a reviewable protocol for W1/W2. This document does not authorize runs.
+
+EVIDENCE REGISTER
+
+Aboutness: 3 = core method/problem; 2 = relevant domain or transferable method;
+1 = background only. Evidence grades apply to the supporting claim, not author
+prestige: B = rigorous method or controlled validation; C = simulation/small cohort;
+D = review/argument. No independently replicated soft-actuator validation is claimed.
+
+ID   Source                         Aboutness  Evidence  Access in this review
+S1   Raue et al., 2009               3          B         Full-text methods read
+S2   Wieland et al., 2021            3          D         Author abstract/method excerpts
+S3   Cawley & Talbot, 2010           3          B         Publisher abstract; paper excerpt
+S4   Lakens, 2017                    3          B         Primary abstract/method text
+S5   Bui et al., 2023                3          C         Full-text relevant results
+S6   Torzini et al., 2024            3          C         Publisher methods/results text
+S7   Wall et al., 2023               2          C         Author paper, transfer section
+S8   de la Morena et al., 2025       2          B         Publisher abstract/introduction only
+S9   Severson et al., 2019           2          B         Author paper, relevant sections
+S10  de Jonge et al., 2017           2          C         Author paper, abstract/method scope
+S11  Zhou, Serban & Gebraeel, 2011   2          B         Author abstract; validation not re-audited
+S12  Geifman & El-Yaniv, 2019        2          B         Proceedings abstract
+
+S8 includes experiments despite its review title; only its rate-versus-hysteresis
+distinction is used here, not an unexamined numerical model ranking. The full page
+was intermittently inaccessible. S11/S12 justify candidate methods, not an adoption
+decision. Multiple specimens within one experiment do not constitute independent
+replication across laboratories. Repository entries labeled A need that distinction.
+
+PRIMARY SOURCE LINKS AND NARROW CLAIMS
+
+[S1] Structural and practical identifiability analysis of partially observed
+dynamical models by exploiting the profile likelihood.
+https://doi.org/10.1093/bioinformatics/btp358
+https://academic.oup.com/bioinformatics/article/25/15/1923/213246
+Supports likelihood profiling and interpretation of confidence crossings.
+
+[S2] On structural and practical identifiability.
+https://doi.org/10.1016/j.coisb.2021.03.005
+https://arxiv.org/abs/2102.05100
+Supports the limitations of Fisher-based practical-identifiability assessment.
+
+[S3] On Over-fitting in Model Selection and Subsequent Selection Bias in
+Performance Evaluation.
+https://jmlr.org/papers/v11/cawley10a.html
+Supports separating model/development selection from final performance estimation.
+
+[S4] Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses.
+https://doi.org/10.1177/1948550617697177
+https://pmc.ncbi.nlm.nih.gov/articles/PMC5502906/
+Supports prespecified equivalence margins and tests; not the repo's deletion range.
+
+[S5] Endurance tests for a fabric-reinforced inflatable soft actuator.
+https://doi.org/10.3389/fmats.2023.1112540
+https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2023.1112540/full
+Supports operational-history and early-trajectory variation on ten actuators.
+Does not measure full-life P-V features or this project's lifetime distribution.
+
+[S6] Characterization of fatigue behavior of 3D printed pneumatic fluidic
+elastomer actuators.
+https://doi.org/10.1007/s00170-024-14216-0
+https://link.springer.com/article/10.1007/s00170-024-14216-0
+Supports design-specific fatigue measurements and bending monitoring, not a
+universal distribution for all soft actuators. The precise CV calculations used
+in the September 23 audit were read from that audit, not recalculated here.
+
+[S7] Passive and active acoustic sensing for soft pneumatic actuators.
+https://doi.org/10.1177/02783649231168954
+https://arxiv.org/pdf/2208.10299
+Section on model transfer reports approximately 97% same-actuator classification,
+35% single-actuator transfer, and 47% multi-actuator transfer. These are acoustic
+classification results, not P-V fatigue regression or evidence that transfer fails
+for every sensor/model.
+
+[S8] Hysteresis Modeling of Soft Pneumatic Actuators: An Experimental Review.
+https://doi.org/10.3390/act14070321
+https://www.mdpi.com/2076-0825/14/7/321
+Distinguishes dynamic phase-lag loops from hysteresis persisting in the static limit.
+
+[S9] Data-driven prediction of battery cycle life before capacity degradation.
+https://doi.org/10.1038/s41560-019-0356-8
+https://web.mit.edu/braatzgroup/Severson_NatureEnergy_2019.pdf
+Early discharge-curve features predicted battery life before visible capacity fade.
+The paper reports 124 cells and 9.1% test error using the first 100 cycles. This
+motivates checking precursors; it does not establish soft-actuator observability.
+
+[S10] The influence of practical factors on the benefits of condition-based
+maintenance over time-based maintenance.
+https://ris.utwente.nl/ws/files/6439949/2017_DeJonge_RESS.pdf
+Numerical policy comparisons show dependence on measurement accuracy, failure
+uncertainty, and operational factors. Recalibration is a different intervention.
+
+[S11] Degradation modeling applied to residual lifetime prediction using
+functional data analysis.
+https://doi.org/10.1214/10-AOAS448
+https://arxiv.org/abs/1107.5712
+Empirical-Bayes updates from sparse degradation observations; reported validation
+uses crack growth and simulation, not pneumatic soft actuators.
+
+[S12] SelectiveNet: A Deep Neural Network with an Integrated Reject Option.
+https://proceedings.mlr.press/v97/geifman19a.html
+Establishes selective prediction and risk-coverage evaluation as prior art. It does
+not establish validity of a rejection score under this project's mechanism shifts.
+
+CLAIM LEDGER FOR THIS CRITIQUE
+
+C1: The reported B2 profile does not implement the declared B2 observation model.
+Support: direct code inspection; S1/S2 define the methodological consequence.
+Gap: corrected computation not run. Confidence: high on mismatch, unresolved on
+the final identifiability classification.
+
+C2: Current C2 schedule scores do not isolate schedule effects on a common target.
+Support: evaluate_cell and schedule construction; S3 supports evaluation discipline.
+Gap: effect size unknown. Confidence: high on differing targets; no claimed bias sign.
+
+C3: The current clock-indistinguishability rule does not establish equivalence.
+Support: run_studyC2 comparison and S4. Confidence: high.
+
+C4: Existing feature arms require more information than pressure measurements alone.
+Support: raw_signals, measured_features, and features_from_signals.
+Gap: a validated commanded-volume proxy could change hardware requirements.
+Confidence: high for the current implementation, conditional for future hardware.
+
+C5: Break-in and rate/history variation merit explicit robustness tests.
+Support: S5/S8 plus sim/fatigue.py. Gap: different geometry, observables, and loading;
+no measured calibration for this project. Confidence: moderate on material relevance.
+
+C6: Final confirmation needs independence from development choices.
+Support: S3 and the documented history of Study C/C2. Gap: chosen replication budget
+not yet known. Confidence: high on principle; protocol-specific on sample count.
+
+C7: A decision-level comparison is necessary to support a recalibration advantage.
+Support: mismatch between present u-RMSE and the stated task; S10 is a policy analogy.
+Gap: physical costs and the operational pose-error budget are unspecified.
+Confidence: high on the need; unknown whether the proposed policy will win.
+
+C8: Shrinkage/personalization/rejection are candidates, not guaranteed solutions.
+Support: existing dispersion results motivate the proposal; S11/S12 supply precedents.
+Gap: no candidate has been tested here under the repaired protocol.
+Confidence: moderate as a research direction, low on its eventual improvement.
+
+LITERATURE HOUSEKEEPING TO INCLUDE IN W0
+
+- literature/README.md currently conflates fetched abstracts with full text. Record
+  abstract-only, full-text-section, full-text, and search-snippet access separately.
+- Narrow claim-ledger claim 1: trajectory hysteresis or bending drift is not direct
+  proof of a P-V fatigue indicator. Cite the endpoint actually measured.
+- Replace broad claims that "the literature supplies the fix" with candidate methods
+  and their assumptions. Likewise, no retrieved counterexample is not proof of novelty.
+- Qualify the broad "no abstain test" assertion in gaps.md using selective-prediction
+  prior art; the narrower soft-actuator deployment question can remain open.
+- Treat the Study B gap as partially reopened. The resolved dispersion sensitivity
+  remains resolved, but physical calibration of its parameters remains outstanding.
+
+EVIDENCE-STRENGTH SUMMARY
+
+The strongest recommendations concern methods and directly inspectable mismatches:
+observation models, common evaluation targets, equivalence, and development/test
+separation. Physical recommendations are less certain because the relevant actuator
+studies use different designs, small cohorts, or different measured endpoints.
+Cross-domain prognostics and selective-prediction papers justify experiments, not
+claims of success. No located source validates this project's generator, proves
+global novelty, or shows that a more complex model will resolve Study C.

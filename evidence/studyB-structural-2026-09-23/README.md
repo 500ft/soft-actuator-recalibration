@@ -1,3 +1,12 @@
+> **SUPERSEDED 2026-09-25.** The resolution claim below — "practically aliased ... resolvable to about
+> ±0.05 life" — is **withdrawn**. The run behind it described a stacked baseline-plus-snapshot likelihood
+> but computed the snapshot alone, ended its grid at the post-onset truth so no upper bound could exist,
+> and ignored a non-converged point. Corrected result: under the stacked design the post-onset coordinate
+> is **identifiable**, resolvable to about **±0.21 life**, with the minimum biased low by 0.12. The
+> collinearity finding in this record is unaffected and still stands.
+> See [`evidence/studyB-structural-correction-2026-09-25/`](../studyB-structural-correction-2026-09-25/README.md).
+> This record is left otherwise unedited on purpose.
+
 # Study B follow-up — is the post-onset aliasing structural? — 2026-09-23
 
 Task: [`literature/gaps.md`](../../literature/gaps.md) item 3. Branch `research/studyB-structural-test-20260923`

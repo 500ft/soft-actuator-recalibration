@@ -66,6 +66,12 @@ prescribes, which this study's Fisher-only analysis could not supply.
 - Pre-onset, the onset fraction, leak and exponent are **exactly inert** (zero sensitivity), so their
   collinearity there is undefined rather than infinite. They are irrelevant before onset, not confounded.
 
-Supported wording: *practically aliased at this noise level, resolvable to about ±0.05 life within the
-post-onset region*. Generator `scripts/run_studyB_structural.py`;
-[evidence](../../../evidence/studyB-structural-2026-09-23/README.md).
+Supported wording (corrected 2026-09-25): *identifiable after onset from a baseline-plus-snapshot probe,
+but only to about ±0.21 life, with the point estimate biased low by about 0.12*. A single aged snapshot,
+without the young baseline, is only *practically* identifiable — its upper bound never closes inside the
+physical domain. The earlier "practically aliased ... ±0.05 life" is **withdrawn**: that calculation used
+the snapshot alone while describing the stacked design, and its grid ended at the post-onset truth, so the
+half-width was a grid edge rather than a confidence bound.
+Generator `scripts/run_studyB_structural.py`;
+[evidence](../../../evidence/studyB-structural-correction-2026-09-25/README.md), superseding
+[the 2026-09-23 record](../../../evidence/studyB-structural-2026-09-23/README.md).

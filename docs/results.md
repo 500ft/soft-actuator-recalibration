@@ -75,10 +75,13 @@ Question: is the fatigue state observable from pressure alone across dispersed u
   noise/amplitude) and only **practically** aliased after it, with the unit's onset fraction and leak.
   Verdict **B-PASS** by its rule; the regime boundary is the result. A follow-up on 2026-09-23 ran the
   two diagnostics the literature prescribes and corrected the wording: Brun's collinearity index puts the
-  {life, onset, leak} *triple* at 6.3e5 against 57 and 8.3 for the pairs, confirming a joint dependency no
-  pairwise measure shows; but the profile likelihood rises on one side only, so the limit is practical at
-  this noise level — post-onset life is resolvable to about ±0.05 life, not finer — rather than structural.
-  [Evidence](../evidence/studyB-structural-2026-09-23/README.md).
+  {life, onset, leak} *triple* at 1.25e6 against 60.8 and 5.83 for the pairs, confirming a joint dependency
+  no pairwise measure shows. The profile-likelihood half of that follow-up was wrong and was redone on
+  2026-09-25: under the baseline-plus-snapshot design the post-onset coordinate is **identifiable**, not
+  structurally or practically aliased, but only to about **±0.21 life**, with the point estimate biased low
+  by 0.12. A single aged snapshot without the young baseline is only practical — its upper bound never
+  closes. The earlier "±0.05 life" is withdrawn: it was read off a grid edge.
+  [Evidence](../evidence/studyB-structural-correction-2026-09-25/README.md).
 
 - **Study C** (one ridge estimator on baseline-normalised pressure features plus the clock, transferred to 10
   held-out units; run after the owner withdrew Study A's timing criterion): mean held-out u-RMSE 0.093 vs 0.123 for

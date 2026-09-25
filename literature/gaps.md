@@ -70,15 +70,23 @@ angles. Wieland et al. 2021 argue the Fisher approach is "insensitive to practic
 Chis et al. 2016 show sloppiness is not equivalent to non-identifiability. The current evidence does not
 license the word *structurally*.
 
-**RESOLVED 2026-09-23.** Both diagnostics were run
+**RESOLVED 2026-09-23, CORRECTED 2026-09-25.** Both diagnostics were run
 ([evidence](../evidence/studyB-structural-2026-09-23/README.md)). Brun's subset index confirms the aliasing
 group and shows it is a *triple* — {u, onset, leak} at 6.3 × 10⁵ against 57 for {u, onset} and 8.3 for
-{u, leak} — a joint dependency no pairwise measure reveals. The profile likelihood rises on one side only at
-u = 0.90 and on both sides at u = 0.50, which by Raue et al. 2009 is **practical**, not structural,
-non-identifiability. The wording was downgraded to "practically aliased at this noise level, resolvable to
-about ±0.05 life" across `docs/results.md`, the Study B preregistration, the 2026-09-16 evidence record and
-the claim ledger. A side finding: pre-onset the onset fraction, leak and exponent are exactly inert, so they
+{u, leak} — a joint dependency no pairwise measure reveals. A side finding: pre-onset the onset fraction, leak and exponent are exactly inert, so they
 are irrelevant there rather than confounded.
+
+The profile-likelihood half of that run was **wrong and has been redone**
+([correction](../evidence/studyB-structural-correction-2026-09-25/README.md)). It described a stacked
+baseline-plus-snapshot likelihood but computed the snapshot alone, and its grid ended at u = 0.90, which is
+the post-onset truth, so the upper bound was unreachable and the reported "±0.05 life" was a grid edge.
+Repairing it also exposed a covariance inverted at condition number 1.7 × 10²⁶, an optimiser searching
+across eleven orders of magnitude, and a feature that is undefined on much of the parameter box.
+
+Corrected: under the stacked design the post-onset coordinate is **identifiable**, not practically aliased,
+resolvable to about **±0.21 life** with the point estimate biased low by 0.12. The snapshot alone is only
+practical, and at the pre-onset truth it puts its minimum at 0.95 when the truth is 0.50 — so the young
+baseline is what buys identifiability. The collinearity result above is unchanged to six figures.
 
 ### 4. The probe may be measuring a rate artefact rather than a hysteretic state
 

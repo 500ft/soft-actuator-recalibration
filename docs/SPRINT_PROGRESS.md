@@ -9,7 +9,31 @@ trigger-timing criterion; both verdicts are recorded and Study C ran under a tra
 being short-lived units whose probes fall mostly pre-onset. Portfolio-wide research artifacts were removed.
 [Evidence](../evidence/next-five-2026-09-16/README.md). PV-08 unchanged.
 
-## 2026-09-23 — Study B's aliasing shown to be practical, not structural
+## 2026-09-25 — the Study B resolution claim was wrong, and is corrected
+
+The owner's 2026-09-24 critique found that the previous entry's resolution figure is unsupported, and it was
+right on every count. The follow-up described a stacked baseline-plus-snapshot likelihood but computed the
+snapshot alone; its grid ended at u = 0.90, which is exactly the post-onset truth, so no upper crossing could
+exist and "±0.05 life" was a grid edge; and one non-converged point was classified as though it were a shape.
+
+Repairing those exposed three more defects nobody had noticed. The covariance was being inverted at condition
+number 1.7e26 — the feature vector mixes loop areas near 1e-2 with a stiffness near 1e11, and almost all of
+that spread is scale, so whitening now divides by the standard deviations before applying the correlation
+factor. The nuisance optimiser was searching raw variables across eleven orders of magnitude and stalling;
+positive parameters are now fitted in log space with continuation between grid points. And the half-life
+feature is undefined wherever the decay never halves inside the 2 s window, which is 54 of 192 bound-box
+corners; those points are now infeasible and counted rather than silently producing nan.
+
+Corrected result: under the design the write-up actually describes, the post-onset coordinate is
+**identifiable**, resolvable to about **±0.21 life**, with the minimum at 0.775 against a truth of 0.90. The
+most useful finding is the contrast the old code could not show — the young baseline is what buys
+identifiability. Without it the post-onset profile is only practical, and at the pre-onset truth it puts its
+minimum at 0.95 when the truth is 0.50. The collinearity result is unchanged to six figures.
+
+The original artifact is kept at `data/sim/studyB/studyB_structural_superseded_2026-09-23.json` and the
+2026-09-23 evidence record carries a superseded banner rather than edits.
+
+## 2026-09-23 — Study B's aliasing shown to be practical, not structural (SUPERSEDED, see above)
 
 The literature review flagged that Study B's "structurally aliased" wording rested on a rank-deficient Fisher
 matrix, which Wieland et al. 2021 argue cannot certify practical identifiability. Both prescribed diagnostics
@@ -17,7 +41,8 @@ were run. Brun's subset collinearity index **confirms and sharpens** the aliasin
 triple sits at 6.3e5 against 57 and 8.3 for the pairs, a joint dependency no pairwise angle reveals. But the
 profile likelihood, with every nuisance parameter re-optimised, rises on one side only at u = 0.90 and on
 both sides at u = 0.50 — **practical**, not structural, non-identifiability. Post-onset life is resolvable to
-about ±0.05 life, not finer. Wording corrected in `results.md`, the Study B and Study C preregistrations, the
+about ±0.05 life, not finer. *(Both of those profile-likelihood claims were withdrawn on 2026-09-25; the
+collinearity result stands.)* Wording corrected in `results.md`, the Study B and Study C preregistrations, the
 claim ledger and the literature folder; the 2026-09-16 evidence record was annotated rather than edited so
 the original reading stays auditable. A side finding: pre-onset the onset fraction, leak and exponent are
 exactly inert, so they are irrelevant there rather than confounded. Study B's B-PASS verdict and its bounds
