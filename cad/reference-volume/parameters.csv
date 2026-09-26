@@ -1,0 +1,11 @@
+name,value,unit,provenance,source,status,note
+target_cavity_volume,5.0e-6,m^3,sourced,SLSParams.V0 (sim/plant.py),selected model value,The volume the simulator assumes. This is the whole point of the part: it is the acceptance criterion.
+design_pressure,80000,Pa,sourced,NetworkParams.P_s (sim/plant.py),selected model value,Regulated supply gauge pressure. Worst credible internal pressure.
+probe_hold_pressure,40000,Pa,sourced,P_HOLD_PA (pipeline/identifiability.py),selected model value,Operating point of the decay probe. Lower than design pressure.
+bore_diameter,16.0,mm,provisional,none,PROVISIONAL,Chosen for machinability and a sensible aspect ratio. Any value is admissible provided the derived length keeps the cavity at target_cavity_volume.
+cavity_length,derived,mm,derived,target_cavity_volume / bore area,derived result,Solved so the cavity equals the target volume exactly. Not a free choice.
+wall_thickness,3.0,mm,provisional,none,PROVISIONAL,Manufacturing minimum for a sealed printed pressure part. NOT stress-governed - see the hoop-stress check in DESIGN_NOTES.md which shows ~35x margin.
+end_cap_thickness,4.0,mm,provisional,none,PROVISIONAL,Flat closure carries bending rather than hoop stress; thicker than the wall by inspection. TODO check as a flat circular plate if the part is ever pressurised above design_pressure.
+port_thread,M5x0.8,-,provisional,none,UNRESOLVED,TODO measure the fitting on the existing volumetric drive. M5 is the common pneumatic barb boss but nothing in this repository specifies it.
+material_allowable_stress,30,MPa,provisional,none,UNRESOLVED,TODO obtain from the print material datasheet AND derate for layer adhesion and print orientation. 30 MPa is a placeholder order of magnitude for PLA and must not be used as a design allowable.
+safety_factor,4,-,imposed,this design,imposed criterion,Against material allowable. Justified in DESIGN_NOTES.md by property scatter in printed parts plus an unverified allowable.
