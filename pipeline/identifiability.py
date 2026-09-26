@@ -53,8 +53,13 @@ def features(theta, base_fp, base_sls, amp_frac=0.1):
 
 def measured_features(theta, base_fp, base_sls, seed, noise_scale=1.0, amp_frac=0.1):
     """One noisy realisation: sensor noise/quantisation on every pressure and volume signal."""
-    sp = SensorParams(pressure_sigma_pa=50.0 * noise_scale, pressure_lsb_pa=10.0,
-                      volume_sigma_m3=1.0e-9 * noise_scale)
+    # Take the sensor model's own defaults rather than restating them. They were hard-coded here as
+    # 50.0 / 10.0 / 1.0e-9, so editing SensorParams would silently have left this copy behind.
+    # Quantisation is a property of the instrument and is NOT scaled by noise_scale.
+    d = SensorParams()
+    sp = SensorParams(pressure_sigma_pa=d.pressure_sigma_pa * noise_scale,
+                      pressure_lsb_pa=d.pressure_lsb_pa,
+                      volume_sigma_m3=d.volume_sigma_m3 * noise_scale)
     (V1, P1), (V4, P4), pd = raw_signals(theta, base_fp, base_sls, amp_frac)
     m1 = SensorModel(sp, seed).measure(pressure=P1, volume=V1)
     m4 = SensorModel(sp, seed + 1).measure(pressure=P4, volume=V4)

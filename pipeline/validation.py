@@ -23,6 +23,9 @@ def make_null_params(base=None):
     )
 
 
+# 80 kPa here is a pressure-SENSOR full scale. It equals NetworkParams.P_s today, but a transducer's
+# range and a regulated supply are independent quantities; binding them would couple an instrument
+# specification to a plant setting. Kept separate on purpose. See docs/PARAMETER_PROVENANCE.md.
 def add_pressure_noise(pressure, sigma_percent_fs, rng, full_scale_pa=80_000.0):
     pressure = np.asarray(pressure, dtype=float)
     if np.any(~np.isfinite(pressure)):
@@ -45,13 +48,23 @@ def _weibull_shape_for_cv(target_cv):
     return float(brentq(residual, 0.2, 100.0))
 
 
+VALIDATION_COHORT_CV = 0.30
+"""Dispersion of the *validation fixture* cohort.
+
+Numerically equal to ``pipeline.dispersion.RUPTURE_CV`` today, and deliberately a separate constant.
+They are different quantities: this one sizes a fixture used to verify the pipeline, that one is Study A's
+assumed physical dispersion and is swept in sensitivity studies. Binding them would let a sweep silently
+re-draw the validation cohort and change committed validation outputs. See docs/PARAMETER_PROVENANCE.md.
+"""
+
+
 def sample_validation_cohort(n=20, seed=20260623):
     """Canonical parameters with Weibull-distributed rupture life (mean 3500 cycles, CV 0.30)."""
     if not isinstance(n, (int, np.integer)) or n <= 0:
         raise ValueError("n must be a positive integer")
     rng = np.random.default_rng(seed)
-    shape = _weibull_shape_for_cv(0.30)
-    scale = 3500.0 / gamma(1 + 1 / shape)
+    shape = _weibull_shape_for_cv(VALIDATION_COHORT_CV)
+    scale = FatigueParams().rupture_cycles / gamma(1 + 1 / shape)
     return [replace(FatigueParams(), rupture_cycles=float(r)) for r in rng.weibull(shape, n) * scale]
 
 

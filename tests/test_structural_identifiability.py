@@ -334,3 +334,29 @@ def test_a_bound_pinned_or_bound_movable_crossing_cannot_yield_a_resolution():
     flat = profile_interval([{"u": u, "nll": n, "delta_nll": n, "at_bound": [False]} for u, n in
                              [(0.5, 9.0), (0.7, 0.0), (0.8, 4e-10), (0.9, 6e-10), (0.98, 9.0)]])
     assert disqualified(flat, None), "a plateau nine orders below the cut is ignorance, not precision"
+
+
+def test_no_consequential_constant_is_restated_away_from_its_canonical_source():
+    """PV-PROV-01. A literal copied beside its source silently survives an edit to the source.
+
+    Guards the two genuine duplications the 2026-09-25 audit found. It does NOT bind the two pairs that
+    merely share a value today -- a validation fixture's dispersion and Study A's swept assumption, and a
+    transducer's full scale and the regulated supply -- because coupling those would be the bug.
+    """
+    from sim.sensors import SensorParams
+    from sim.fatigue import FatigueParams
+    from pipeline.dispersion import CANONICAL_RUPTURE_CYCLES, RUPTURE_CV
+    from pipeline.validation import VALIDATION_COHORT_CV
+    import inspect, pipeline.identifiability as ident
+
+    assert CANONICAL_RUPTURE_CYCLES == FatigueParams().rupture_cycles
+    # strip comments: the explanation of what was removed naturally names the old literals
+    src = "\n".join(l.split("#")[0] for l in inspect.getsource(ident.measured_features).splitlines())
+    for literal in ("50.0", "10.0", "1.0e-9"):
+        assert literal not in src, f"{literal} is restated in code instead of read from SensorParams"
+    assert "SensorParams()" in src, "the sensor model's own defaults must be the source"
+
+    # deliberately independent, and the test says so rather than asserting they stay equal forever
+    assert RUPTURE_CV == VALIDATION_COHORT_CV, (
+        "they coincide today; if a sweep changes one, update this to assert they are DECOUPLED, "
+        "do not bind them together")

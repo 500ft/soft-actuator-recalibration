@@ -49,6 +49,11 @@ def _truncnorm(rng, mean, sd, low, high):
 # provenance: docs/PARAMETER_PROVENANCE.md
 RUPTURE_CV = 0.30
 
+# The canonical rupture life, taken from the fatigue law rather than restated. It was hard-coded as
+# 3500.0 in three files; this is the one that matters, because a cohort drawn around a different mean
+# than the generator's own default would be quietly inconsistent with every unit it produces.
+CANONICAL_RUPTURE_CYCLES = FatigueParams().rupture_cycles
+
 
 def sample_unit(rng: np.random.Generator, axes=AXES, rupture_cv: float = RUPTURE_CV) -> Unit:
     """One unit: draws every axis in a fixed order, applies only those in ``axes``.
@@ -59,7 +64,7 @@ def sample_unit(rng: np.random.Generator, axes=AXES, rupture_cv: float = RUPTURE
     fp, sls = FatigueParams(), SLSParams()
     shape = _weibull_shape_for_cv(rupture_cv)
     d = {
-        "rupture": float(rng.weibull(shape) * 3500.0 / gamma(1 + 1 / shape)),
+        "rupture": float(rng.weibull(shape) * CANONICAL_RUPTURE_CYCLES / gamma(1 + 1 / shape)),
         "mullins_amplitude": _lognormal(rng, fp.mullins_amplitude, 0.25),
         "mullins_permanent_fraction": _truncnorm(rng, 0.30, 0.08, 0.05, 0.70),
         "mullins_cycles_tau": _lognormal(rng, fp.mullins_cycles_tau, 0.30),
