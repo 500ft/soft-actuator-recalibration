@@ -196,6 +196,57 @@ def collinearity_index(J, sigma, subset):
     return float("inf") if lam <= 0 else float(1.0 / np.sqrt(lam))
 
 
+def collinearity_report(J, sigma, subset, params=None):
+    """``(value, status)`` for a subset, where ``value`` is ``None`` unless the index is meaningful.
+
+    Brun's index is ``1/sqrt(lambda_min)``, so as ``lambda_min`` approaches machine precision the value
+    stops carrying information and starts reporting rounding. The ``all_seven`` subset is exactly that
+    case: it moved from 6.5e7 to 8.3e7 under a numerically *better* whitening, which is the signature of
+    a quantity at the float64 noise floor. Reporting it as a number invites a comparison that means
+    nothing, so a singular subset reports its status instead.
+
+    Statuses: ``"finite"`` (value usable), ``"undefined_inert_parameter"`` (a member has no sensitivity
+    here, so it cannot be confounded with anything -- irrelevant, not aliased), ``"numerically_singular"``
+    (``lambda_min`` is at or below the rank tolerance; the direction is dependent to the limit of what
+    float64 can see, and no magnitude may be quoted).
+    """
+    S, norms = normalised_sensitivities(J, sigma)
+    idx = list(subset)
+    if np.any(norms[idx] == 0):
+        inert = [(params[i] if params else i) for i in idx if norms[i] == 0]
+        return None, "undefined_inert_parameter", inert
+    M = S[:, idx].T @ S[:, idx]
+    lam = float(np.linalg.eigvalsh(M).min())
+    # the standard rank tolerance: below it, lambda_min is indistinguishable from zero in float64
+    if lam <= len(idx) * np.finfo(float).eps * max(1.0, float(np.linalg.norm(M, 2))):
+        return None, "numerically_singular", []
+    return float(1.0 / np.sqrt(lam)), "finite", []
+
+
+def json_safe(obj):
+    """Recursively replace non-finite floats with ``None`` so the result is RFC 8259 JSON.
+
+    ``json.dump`` emits bare ``Infinity`` and ``NaN`` by default. Both are Python extensions that strict
+    parsers reject, which would make the committed evidence unreadable to anything but Python. Passing
+    ``default=`` does not help: it is only consulted for types json cannot serialise, and float is not
+    one of them. The reason for each missing value is carried in a sibling ``*_status`` field, never in
+    a sentinel magnitude.
+    """
+    if isinstance(obj, dict):
+        return {k: json_safe(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [json_safe(v) for v in obj]
+    if isinstance(obj, float) and not np.isfinite(obj):
+        return None
+    if isinstance(obj, np.floating):
+        return None if not np.isfinite(obj) else float(obj)
+    if isinstance(obj, np.integer):
+        return int(obj)
+    if isinstance(obj, np.bool_):
+        return bool(obj)
+    return obj
+
+
 def neg_log_likelihood(theta, y_obs, sigma, base_fp, base_sls, amp_frac=0.1, u_base=None):
     """Gaussian negative log-likelihood of an observation under the feature model.
 
@@ -357,25 +408,50 @@ def profile_interval(profile, threshold=1.92):
     extends past the tested domain and no half-width may be quoted from it. Turning a grid edge into a
     confidence bound is the specific error this function exists to prevent.
     """
-    d = np.array([p["delta_nll"] for p in profile], float)
-    u = np.array([p["u"] for p in profile], float)
-    order = np.argsort(u)
-    d, u = d[order], u[order]
+    ordered = sorted(profile, key=lambda q: q["u"])
+    d = np.array([q["delta_nll"] for q in ordered], float)
+    u = np.array([q["u"] for q in ordered], float)
+    at_bound = [bool(any(q.get("at_bound", []))) for q in ordered]
     i = int(np.argmin(d))
     left = np.where(d[:i] > threshold)[0]
     right = np.where(d[i + 1:] > threshold)[0]
     lower_open, upper_open = left.size == 0, right.size == 0
+    li = None if lower_open else int(left[-1])
+    ri = None if upper_open else int(i + 1 + right[0])
+    # A crossing where the nuisance fit is pinned to its box may be the box talking, not the data: the
+    # optimiser simply ran out of freedom to compensate. Flagging it is what stops such a crossing being
+    # read as a measured precision.
     return {
-        "lower": None if lower_open else float(u[left[-1]]),
-        "upper": None if upper_open else float(u[i + 1 + right[0]]),
+        "lower": None if li is None else float(u[li]),
+        "upper": None if ri is None else float(u[ri]),
         "lower_open": bool(lower_open), "upper_open": bool(upper_open),
+        "lower_at_nuisance_bound": None if li is None else at_bound[li],
+        "upper_at_nuisance_bound": None if ri is None else at_bound[ri],
         "grid_min": float(u.min()), "grid_max": float(u.max()),
         "u_at_minimum": float(u[i]),
+        "plateau_nll_spread": _plateau_spread(ordered, threshold),
     }
+
+
+def _plateau_spread(ordered, threshold):
+    """Total nll variation across the points inside the threshold: how flat the "interval" really is.
+
+    A spread orders of magnitude below the threshold means the interval is a plateau the profile never
+    resolves within, so its width is a bound on ignorance rather than a precision.
+    """
+    inside = [q["nll"] for q in ordered if q["delta_nll"] <= threshold]
+    return None if len(inside) < 2 else float(max(inside) - min(inside))
 
 
 def profile_verdict(profile, threshold=1.92, require_converged=True, domain=None, atol=1e-9):
     """Classify a profile. ``threshold`` 1.92 is the 95% chi-square(1) cut on delta(-log L).
+
+    **The cut is a diagnostic scale here, not a calibrated confidence interval.** 1.92 is an asymptotic
+    likelihood-ratio approximation, and this problem violates several of its comforts: a nonlinear feature
+    map, bounded nuisance parameters, infeasible regions where a feature is undefined, an estimated and
+    strongly correlated covariance, and near-zero information across the post-onset plateau. Whether it
+    achieves nominal coverage here is untested (PV-CRIT-09). If a coverage study finds it does not, the
+    threshold must NOT be tuned to make it nominal. Provenance: docs/PARAMETER_PROVENANCE.md.
 
     ``domain`` is the ``(lo, hi)`` physical range of the profiled parameter. It is what separates a
     profile that stopped because the *parameter* ran out from one that stopped because the *grid* did,

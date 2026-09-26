@@ -1,0 +1,177 @@
+PR #36 CLOSEOUT CRITIQUE — STUDY B RESOLUTION CORRECTION
+Prepared 2026-09-25 for the owner and Claude
+Scope: review and planning only. No code, data, or PR state changed here.
+
+DECISION
+
+PR #36 fixes the three original defects and three important numerical defects.
+Its tests and provenance preservation are strong. It should not, however, be
+described as establishing a precise post-onset life estimate yet. The corrected
+record supports this narrower statement:
+
+  Under the stated B2 synthetic observation model, one noisy canonical-unit
+  realization produced a likelihood minimum at u = 0.775 and a threshold region
+  spanning approximately 0.75–0.98. The profile is nearly flat over most of that
+  region, and the upper rise coincides with nuisance-parameter bounds. The result
+  is therefore a broad, asymmetric, bound-sensitive identification result, not a
+  demonstrated +/-0.21 resolution or an unbiased estimate of u.
+
+WHAT PR #36 CORRECTLY FIXES
+
+- B2 now actually stacks the young baseline and aged snapshot, with shared nuisance
+  parameters; B1 remains the snapshot-only comparison.
+- The profile grid reaches the declared u domain rather than ending at the truth.
+- Solver failures make a profile unresolved rather than silently shaping it.
+- Whitening removes the thirteen-order feature-scale problem without forming Sigma^-1.
+- Positive nuisance parameters are optimized in log coordinates with continuation.
+- Undefined half-life features are infeasible and receive a finite search wall.
+- The pre-2026-09-23 artifact is retained and the correction is separately recorded.
+- CI is green and the new tests cover the principal regression risks.
+
+P0 — DO NOT CALL THE B2 RESULT “RESOLVABLE TO +/-0.21 LIFE”
+
+The stored post-onset B2 profile has delta(-log L) approximately zero at
+u = 0.775, 0.80, 0.85, 0.90, 0.95, 0.965, and 0.9725. The total nll variation
+across that plateau is about 6e-10. It rises at u = 0.98, where fitted nuisance
+parameters are at bounds. The lower threshold crossing is near 0.75; the upper
+threshold crossing is therefore a boundary-sensitive departure from an otherwise
+flat region, not evidence that the state is estimated with 0.21-life precision.
+
+The report's own honest-limits paragraph says the bound is one noise realization,
+one operating point, one canonical unit, and uses a profiler domain that is not
+independently justified. Those limits conflict with the headline resolution claim.
+Use one of these labels instead:
+
+  “broadly identified over the tested domain, with a flat interval approximately
+   [0.75, 0.98] and bound-sensitive upper termination”; or
+
+  “not precisely localized; the B2 profile has a broad likelihood plateau and
+   requires a replication/coverage study before a resolution claim.”
+
+Do not promote `profile_verdict == identifiable` into “well resolved.” In this
+implementation, “identifiable” means that the profile crosses a chosen threshold
+on both sides. It does not mean a unique interior minimum, a symmetric interval,
+or stable resolution under nuisance-bound changes.
+
+Required follow-up before a resolution claim:
+
+1. Record every fitted nuisance parameter and bound-hit flag at the interval edges.
+2. Re-run with expanded scientifically justified nuisance bounds. If the upper
+   crossing moves with the bound, report it as bound-limited.
+3. Run multiple independent sensor-noise realizations and summarize coverage,
+   interval width, minimum bias, and the fraction of unresolved profiles.
+4. Run the same profile on the dispersed units already used in the B2 map, then
+   on fresh units for confirmation. A canonical-unit profile cannot support a
+   cross-unit observability statement.
+5. Add a profile plot with the nuisance-bound locations and the threshold marked.
+   The JSON alone makes the plateau easy to miss.
+
+P0 — “DOWNWARD BIAS” IS NOT ESTABLISHED BY ONE REALIZATION
+
+The minimum 0.775 versus truth 0.90 is an observed estimation error in one noisy
+profile. Call it “an observed downward error of 0.125 in this realization,” not
+“bias.” Bias is an expectation over a declared noise/unit sampling distribution.
+To use the word bias, preregister repeated seeds, define the estimator (including
+tie-breaking across a flat minimum), and report mean error with uncertainty.
+
+P1 — THE CHI-SQUARE(1) PROFILE CUT NEEDS A COVERAGE CHECK
+
+The 1.92 threshold is an asymptotic likelihood-ratio approximation. The problem
+here has a nonlinear feature map, bounded nuisance parameters, infeasible regions,
+correlated estimated covariance, and very small effective information in the
+plateau. The correction record correctly leaves this open. Keep the verdict
+descriptive until a parametric coverage simulation checks whether nominal 95%
+intervals cover known u values under the exact B2 generator.
+
+The coverage simulation should:
+
+- hold the data-generation truth fixed for each scenario;
+- draw many independent sensor seeds, not reuse the profile's one realization;
+- fit each profile with the same convergence and infeasibility rules;
+- record coverage, interval endpoints, open intervals, boundary hits, and failures;
+- include u values pre-onset, near onset, and post-onset;
+- report results separately for B1 and B2.
+
+If coverage is poor, do not tune the threshold to make it nominal. Either report
+an empirical interval rule or state that the profile threshold is a diagnostic
+scale, not a calibrated confidence interval.
+
+P1 — THE “B2 BASELINE BUYS IDENTIFIABILITY” CLAIM NEEDS CAREFUL WORDING
+
+The B2/B1 contrast is useful, but the baseline is simulated at u=0.05 and the
+profiler assumes that coordinate is known. That is a strong calibration oracle in
+the current design. The result demonstrates the value of that specified reference
+observation, not that a fielded system can always acquire a known young state.
+
+Use “the modeled young-baseline observation improves localization under this
+design.” Reserve “buys identifiability” for a preregistered comparison that also
+states how a deployed actuator obtains and verifies that baseline. In particular,
+separate:
+
+- a baseline observed on the same unit at a known cycle;
+- a baseline assumed to have normalized life 0.05;
+- a baseline acquired after unknown prior use;
+- a baseline whose rest, temperature, and loading history differ from the aged
+  observation.
+
+P1 — REPLACE NON-STANDARD JSON NUMBERS
+
+The generated `studyB_structural.json` contains `Infinity` values for undefined or
+singular collinearity cases. Python's JSON writer emits these by default, but
+`Infinity` is not valid JSON under RFC 8259 and fails strict parsers. This matters
+for evidence consumers and long-term reproducibility.
+
+Use `null` plus an explicit status field, for example:
+
+  {"value": null, "status": "undefined_inert_parameter"}
+  {"value": null, "status": "numerically_singular"}
+
+or sanitize all non-finite values to null and preserve the reason in a parallel
+field. Add a strict JSON parse test. Do not use a giant finite sentinel for the
+reported index; that would recreate the all_seven problem in another form.
+
+P1 — KEEP THE ALL_SEVEN INDEX OUT OF NUMERIC CLAIMS
+
+The correction record is right that the all_seven subset is at the float64 noise
+floor. Tests should assert only its status/category, not a magnitude threshold such
+as “greater than 1e6.” The existing analytic test that accepts a huge finite value
+is useful for demonstrating a singular direction, but production evidence should
+report `numerically_singular` or `undefined`, not compare 6.5e7 with 8.3e7.
+
+P2 — PRESERVE THE HISTORICAL AUDIT TRAIL EXACTLY
+
+The archived JSON preserves the old fields with an additive `SUPERSEDED` annotation,
+which is the right intent. Record explicitly that byte identity is not expected after
+annotation. Include both source commit and correction commit hashes in the evidence
+README so a reviewer can reproduce the exact before/after files without guessing.
+
+P2 — UPDATE STALE PROGRESS LANGUAGE BEFORE MERGE
+
+Search the complete documentation tree for the withdrawn claims. The current branch
+still contains historical “structurally aliased” and “+/-0.05 life” text in older
+progress entries. Historical text may remain, but it must carry a visible
+superseded/withdrawn marker and link to the 2026-09-25 correction. The active claim
+spine, results summary, literature ledger, and sprint status must use the new narrow
+wording consistently.
+
+MERGE GATE FOR PR #36
+
+For a squash merge today, require the PR description and evidence record to change
+the headline wording to broad/bound-sensitive identification, remove “bias” or
+qualify it as one-realization error, and either fix strict JSON serialization or
+record it as a blocking follow-up. The numerical repair itself is mergeable with
+those documentation corrections. Items 1.5 and 1.6 remain prospective work, as do
+PV-CRIT-02..08.
+
+Suggested final PR wording:
+
+  “The repaired B2 profile is compatible with a broad post-onset life region in
+   this synthetic canonical-unit realization. The profile minimum is 0.775, but
+   the likelihood is effectively flat through most of [0.75, 0.98] and the upper
+   termination is sensitive to nuisance bounds. We withdraw both ‘structural
+   aliasing’ and ‘+/-0.05 resolution’; repeated-seed coverage and bound sensitivity
+   are required before making a precision claim. The B1/B2 contrast is descriptive
+   evidence that the modeled young baseline adds information.”
+
+No new Study B verdict, C2 run, physical claim, or transfer claim should be added
+as part of the squash.

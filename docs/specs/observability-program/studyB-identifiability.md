@@ -66,12 +66,20 @@ prescribes, which this study's Fisher-only analysis could not supply.
 - Pre-onset, the onset fraction, leak and exponent are **exactly inert** (zero sensitivity), so their
   collinearity there is undefined rather than infinite. They are irrelevant before onset, not confounded.
 
-Supported wording (corrected 2026-09-25): *identifiable after onset from a baseline-plus-snapshot probe,
-but only to about ±0.21 life, with the point estimate biased low by about 0.12*. A single aged snapshot,
-without the young baseline, is only *practically* identifiable — its upper bound never closes inside the
-physical domain. The earlier "practically aliased ... ±0.05 life" is **withdrawn**: that calculation used
-the snapshot alone while describing the stacked design, and its grid ended at the post-onset truth, so the
-half-width was a grid edge rather than a confidence bound.
+Supported wording (corrected 2026-09-25): *under the B2 synthetic design and one noise realisation, the
+data support a broad, asymmetric region of approximately [0.75, 0.98] after onset; precision is not
+established.* The likelihood is effectively flat across most of that span (total variation 6e-10 against a
+threshold of 1.92) and both terminations coincide with nuisance-parameter bounds, so the width is a bound
+on ignorance rather than a measured precision. Re-profiling with a widened but still physical nuisance box
+(onset 0.30–0.98, exponent 1.0–5.0) removes the upper crossing **entirely** — Δ(−log L) at u = 0.98 falls
+from 36.5 to 6 × 10⁻¹⁰ — so the crossing is a property of the box, the `identifiable` verdict is
+bound-dependent, and **whether the post-onset coordinate is identifiable at all is an open question**. A single aged snapshot, without the modelled young baseline,
+localises less well still — its upper bound never closes inside the physical domain.
+
+**Two resolution figures are withdrawn.** "±0.05 life" was read off a grid edge, from a calculation that
+used the snapshot alone while describing the stacked design. "±0.21 life" was read off a plateau whose
+upper termination is the parameter box. Do not replace them with a third number before the coverage and
+bound-sensitivity study (`PV-CRIT-09`) has run.
 Generator `scripts/run_studyB_structural.py`;
 [evidence](../../../evidence/studyB-structural-correction-2026-09-25/README.md), superseding
 [the 2026-09-23 record](../../../evidence/studyB-structural-2026-09-23/README.md).

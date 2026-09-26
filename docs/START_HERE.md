@@ -121,6 +121,14 @@ Prior work and the evidence for and against each current claim are in the
 [literature folder](../literature/README.md); its [claim ledger](../literature/claim-ledger.md) lists
 counter-evidence alongside support, and [gaps.md](../literature/gaps.md) records what no paper settles.
 
+Where the *numbers* come from is a separate question from where the *claims* come from.
+[Parameter provenance](PARAMETER_PROVENANCE.md) classifies every consequential value by what kind of
+number it is and how well supported it is, and carries the traceability index linking each major decision
+to its analysis and evidence. The [2026-09-25 engineering audit](ENGINEERING_AUDIT_2026-09-25.md) records
+what that sweep found — in short, strong preregistration discipline over a synthetic world whose
+parameters are largely unsourced. **No result in this repository is validated against physical
+hardware.**
+
 The next bounded owner action is the [author review](AUTHOR_REVIEW_DAY3.md).
 There is no DOI, corrected-PDF approval, independent hardware validation, or
 prospective v2 result implied by a completed code review. The

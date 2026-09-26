@@ -24,10 +24,10 @@ import os
 import numpy as np
 
 from pipeline.dispersion import SEED, sample_units
-from pipeline.identifiability import (COLLINEARITY_POOR, PARAMS, collinearity_index, crossing_brackets,
-                                      features, jacobian, merge_profiles, noise_covariance,
-                                      profile_interval, profile_likelihood_u, profile_verdict,
-                                      measured_features)
+from pipeline.identifiability import (COLLINEARITY_POOR, PARAMS, collinearity_index,
+                                      collinearity_report, crossing_brackets, features, jacobian,
+                                      json_safe, merge_profiles, noise_covariance, profile_interval,
+                                      profile_likelihood_u, profile_verdict, measured_features)
 from scripts import figstyle
 from scripts.run_studyB import DATA, U_BASE, theta_of
 from sim.fatigue import FatigueParams
@@ -45,6 +45,12 @@ NOISE = 1.0
 CHI2_95 = 1.92                         # 95% chi-square(1) cut on delta(-log L)
 N_REFINE = 2                           # bisection passes at each threshold crossing
 
+# Widened nuisance box for the bound-sensitivity check. The default box uses the dispersion support for
+# the onset fraction and the fatigue exponent; these are the wider ranges that are still physically
+# admissible (an onset must lie strictly inside life; an exponent must stay positive and finite). If a
+# threshold crossing moves when the box is widened, the crossing was the box talking, not the data.
+WIDE_BOUNDS = {"acceleration_onset_fraction": (0.30, 0.98), "fatigue_exponent": (1.0, 5.0)}
+
 # the subsets the Study B finding names, plus controls
 SUBSETS = {
     "u_alone": ("u",),
@@ -58,14 +64,14 @@ SUBSETS = {
 }
 
 
-def bounds_for(theta):
+def bounds_for(theta, wide=False):
     """Physically admissible ranges for the profile's nuisance optimisation."""
     b = [(0.02, 0.98)]                                        # u
     for v in theta[1:4]:                                      # k1, k2, tau: order of magnitude either way
         b.append((v * 0.1, v * 10.0))
     b.append((1.0, 200.0))                                    # terminal_leak_multiplier
-    b.append((0.45, 0.90))                                    # acceleration_onset_fraction (dispersion support)
-    b.append((1.2, 3.0))                                      # fatigue_exponent (dispersion support)
+    b.append(WIDE_BOUNDS["acceleration_onset_fraction"] if wide else (0.45, 0.90))
+    b.append(WIDE_BOUNDS["fatigue_exponent"] if wide else (1.2, 3.0))
     return b
 
 
@@ -99,15 +105,21 @@ def main():
                    "inert_parameters": inert}
             for label, names in SUBSETS.items():
                 idx = [PARAMS.index(p) for p in names]
-                g = collinearity_index(J2, sigma2, idx)
-                row[label] = g
-                # mark the infinities that are inertness rather than collinearity
-                row[label + "_is_inert"] = bool(any(PARAMS[i] in inert for i in idx))
+                value, status, _ = collinearity_report(J2, sigma2, idx, PARAMS)
+                # value is None unless the index is numerically meaningful; the status says why. A
+                # singular subset is never written as a magnitude -- all_seven moved 6.5e7 -> 8.3e7 under
+                # a numerically better whitening, which is what a float64-noise-floor quantity does.
+                row[label] = value
+                row[label + "_status"] = status
+                row[label + "_is_inert"] = bool(status == "undefined_inert_parameter")
             collinearity.append(row)
+            def fmt(lab):
+                v, st = row[lab], row[lab + "_status"]
+                return f"{v:9.3g}" if v is not None else f"{st[:9]:>9s}"
             tag = "  [onset/leak inert here]" if row["u+onset+leak_is_inert"] else ""
             print(f"{name:12s} u={u:.2f} {'post' if row['post_onset'] else 'pre ':4s} "
-                  f"u+onset {row['u+onset']:9.3g}  u+leak {row['u+leak']:9.3g}  "
-                  f"u+onset+leak {row['u+onset+leak']:9.3g}  all7 {row['all_seven']:9.3g}{tag}")
+                  f"u+onset {fmt('u+onset')}  u+leak {fmt('u+leak')}  "
+                  f"u+onset+leak {fmt('u+onset+leak')}  all7 {fmt('all_seven')}{tag}")
 
     # Profile likelihood on the canonical unit, one pre-onset and one post-onset truth.
     # Both designs are run: B1 is one aged snapshot, B2 stacks a young baseline of the same unit under
@@ -164,26 +176,84 @@ def main():
                   (f", {n_bad} point(s) failed to converge" if n_bad else ""))
 
     post = [r for r in collinearity if r["post_onset"] and not r["u+onset+leak_is_inert"]]
+    def med(label):
+        vals = [r[label] for r in post if r[label] is not None]
+        return float(np.median(vals)) if vals else None
     summary = {
         "note": ("Pre-onset the onset fraction, leak multiplier and exponent are exactly inert, so their "
                  "collinearity is undefined rather than infinite-because-aliased. Only post-onset points "
                  "where every subset member responds are aggregated below."),
         "n_post_onset_points": len(post),
-        "median_u_onset_post_onset": float(np.median([r["u+onset"] for r in post])) if post else None,
-        "median_u_leak_post_onset": float(np.median([r["u+leak"] for r in post])) if post else None,
-        "median_u_onset_leak_post_onset": float(np.median([r["u+onset+leak"] for r in post])) if post else None,
-        "median_u_tau_post_onset": float(np.median([r["u+tau"] for r in post])) if post else None,
+        "median_u_onset_post_onset": med("u+onset"),
+        "median_u_leak_post_onset": med("u+leak"),
+        "median_u_onset_leak_post_onset": med("u+onset+leak"),
+        "median_u_tau_post_onset": med("u+tau"),
         "poor_flag": COLLINEARITY_POOR,
         "reading": ("the triple is orders of magnitude above either pair, so the dependency is joint: "
                     "no pairwise angle reveals it, which is why a subset index was required"),
     }
+    # --- bound sensitivity -------------------------------------------------------------------------
+    # The post-onset B2 interval terminates at points where the nuisance fit is pinned to its box. That
+    # makes the interval width a property of the box until proven otherwise, so re-profile the upper
+    # region with the widened box and see whether the crossing moves.
+    sens = None
+    base = next((q for q in profiles if q["design"] == "B2" and q["u_true"] == 0.90), None)
+    if base is not None:
+        th_true = theta_of(canonical, 0.90)
+        th_base = theta_of(canonical, U_BASE)
+        sigma2 = block_diag(noise_covariance(th_base, canonical.fatigue, canonical.sls, 7, N_REP, NOISE, AMP),
+                            noise_covariance(th_true, canonical.fatigue, canonical.sls, 11, N_REP, NOISE, AMP))
+        y2 = np.concatenate([measured_features(th_base, canonical.fatigue, canonical.sls, 4243, NOISE, AMP),
+                             measured_features(th_true, canonical.fatigue, canonical.sls, 4242, NOISE, AMP)])
+        upper_grid = [0.90, 0.95, 0.965, 0.9725, 0.98]
+        wide = profile_likelihood_u(upper_grid, th_true, y2, sigma2, canonical.fatigue, canonical.sls,
+                                    free, bounds_for(th_true, wide=True), AMP, u_base=U_BASE)
+        # re-reference to the same minimum as the committed profile so the two are comparable
+        ref_min = min(q["nll"] for q in base["profile"])
+        for q in wide:
+            q["delta_nll"] = q["nll"] - ref_min
+        narrow = {q["u"]: q for q in base["profile"]}
+        rows = [{"u": q["u"],
+                 "delta_nll_default_box": narrow[q["u"]]["delta_nll"] if q["u"] in narrow else None,
+                 "delta_nll_wide_box": q["delta_nll"],
+                 "at_bound_default": narrow[q["u"]]["at_bound"] if q["u"] in narrow else None,
+                 "at_bound_wide": q["at_bound"], "converged_wide": q["converged"]} for q in wide]
+        crossed_default = [r["u"] for r in rows if r["delta_nll_default_box"] is not None
+                           and r["delta_nll_default_box"] > CHI2_95]
+        crossed_wide = [r["u"] for r in rows if r["delta_nll_wide_box"] > CHI2_95]
+        moved = crossed_default != crossed_wide
+        sens = {
+            "question": ("does the post-onset B2 upper crossing survive a widened but still physical "
+                         "nuisance box, or is it the box terminating the interval?"),
+            "widened": {k: list(v) for k, v in WIDE_BOUNDS.items()},
+            "upper_grid": upper_grid, "rows": rows,
+            "crossing_points_default_box": crossed_default,
+            "crossing_points_wide_box": crossed_wide,
+            "crossing_moved": bool(moved),
+            "reading": ("BOUND-LIMITED: the crossing is a property of the nuisance box, not of the data, "
+                        "so the interval width is not a measured precision"
+                        if moved else
+                        "the crossing survives the widened box, so it is not an artefact of these bounds "
+                        "alone; that still does not make the plateau width a precision"),
+        }
+        print(f"\nbound sensitivity: crossings at {crossed_default} (default box) vs {crossed_wide} "
+              f"(widened box) -> {'MOVED' if moved else 'unchanged'}")
+
     # Study B's write-up describes the stacked design, so the stacked design is what its wording is
     # scored on. The post-onset truth is the case the "structurally aliased" claim was about.
     post_profile = next(p for p in profiles if p["u_true"] == 0.90 and p["design"] == "B2")
     conclusion = post_profile["verdict"]
     iv = post_profile["interval"]
     open_side = iv["lower_open"] or iv["upper_open"]
-    if conclusion in ("domain-limited", "unresolved") or open_side:
+    # A crossing that sits on a nuisance bound, or that moves when the bound is widened, is the box
+    # terminating the interval rather than the data. A plateau far below the threshold is an interval the
+    # profile never resolves within. Any of those disqualifies a half-width just as an open bound does.
+    bound_terminated = bool(iv.get("lower_at_nuisance_bound") or iv.get("upper_at_nuisance_bound"))
+    crossing_moved = bool(sens and sens.get("crossing_moved"))
+    spread = iv.get("plateau_nll_spread")
+    is_plateau = spread is not None and spread < 0.1 * CHI2_95
+    if (conclusion in ("domain-limited", "unresolved") or open_side
+            or bound_terminated or crossing_moved or is_plateau):
         # A half-width may only be quoted from a closed interval on a trustworthy profile. Quoting one
         # anyway was the original error, so each disqualifying reason is named rather than glossed.
         resolution = None
@@ -198,6 +268,21 @@ def main():
                            f"[{U_DOMAIN[0]}, {U_DOMAIN[1]}], so it extends past what was tested")
         if conclusion == "domain-limited" and not open_side:
             reasons.append("the grid stopped short of the physical bound on the non-crossing side")
+        if bound_terminated:
+            sides = [w for w, k in (("lower", "lower_at_nuisance_bound"), ("upper", "upper_at_nuisance_bound"))
+                     if iv.get(k)]
+            reasons.append(f"the {' and '.join(sides)} termination(s) sit on a nuisance-parameter bound, so "
+                           "the interval closes where the optimiser runs out of freedom to compensate, not "
+                           "where the data run out")
+        if crossing_moved:
+            reasons.append("widening the nuisance box to a still-physical range removes the crossing "
+                           f"entirely ({sens['crossing_points_default_box']} -> "
+                           f"{sens['crossing_points_wide_box']}), so the interval width is a property of "
+                           "the box and NOT a measured precision")
+        if is_plateau:
+            reasons.append(f"the likelihood varies by only {spread:.3g} across the points inside the cut "
+                           f"(threshold {CHI2_95}), so the interval is a plateau the profile never resolves "
+                           "within rather than a bound on an estimate")
         resolution_note = "No resolution is quoted: " + "; and ".join(reasons) + "."
     else:
         resolution = float(max(iv["upper"] - iv["u_at_minimum"], iv["u_at_minimum"] - iv["lower"]))
@@ -225,13 +310,18 @@ def main():
         "collinearity_by_point": collinearity,
         "collinearity_summary": summary,
         "profiles": profiles,
+        "bound_sensitivity": sens,
         "conclusion": conclusion,
+        "verdict_is_bound_dependent": bool(bound_terminated or crossing_moved),
         "resolution_life_fraction": resolution,
         "resolution_note": resolution_note,
         "wording_supported": {
             "structural": "structurally aliased",
             "practical": "practically aliased at this noise level",
-            "identifiable": "identifiable under this design",
+            "identifiable": ("the profile crosses the cut on both sides under this design -- which is all "
+                             "this label means. It is NOT a precision claim, and where the terminations are "
+                             "bound-dependent (see verdict_is_bound_dependent) the crossing itself is a "
+                             "property of the nuisance box"),
             "domain-limited": ("not determined by this calculation: the profile does not cross the "
                                "95% cut within the physical domain, so the data bound u on one side "
                                "only and the aliasing question stays open"),
@@ -242,7 +332,10 @@ def main():
     out = os.path.join(DATA, "studyB_structural.json")
     tmp = out + ".tmp"
     with open(tmp, "w") as fh:
-        json.dump(results, fh, indent=2, default=lambda x: None if isinstance(x, float) and not np.isfinite(x) else x)
+        # json_safe, not default=: json.dump only consults default= for types it cannot serialise, and
+        # float is not one of them, so bare Infinity/NaN would otherwise reach the file and break every
+        # strict parser. Reasons live in the sibling *_status fields.
+        json.dump(json_safe(results), fh, indent=2, allow_nan=False)
     os.replace(tmp, out)
     print(f"\nconclusion ({post_profile['design']}, true u=0.90): {conclusion}")
     print(f"  supported wording: \"{results['wording_supported']}\"")
@@ -258,7 +351,7 @@ def plot(results):
         return
     fig, (a, b) = plt.subplots(1, 2, figsize=(10.0, 3.8))
     for label, marker in (("u+onset", "o"), ("u+leak", "s"), ("u+onset+leak", "^"), ("u+tau", "x")):
-        pts = [r for r in collinearity if r["unit"] == "canonical" and not r.get(label + "_is_inert")]
+        pts = [r for r in collinearity if r["unit"] == "canonical" and r.get(label) is not None]
         if pts:
             a.semilogy([r["u"] for r in pts], [r[label] for r in pts], marker=marker, ls="-", label=label)
     a.text(0.31, 3e3, "onset fraction and leak are\ninert before onset:\ncollinearity undefined, not infinite",
@@ -268,16 +361,33 @@ def plot(results):
     a.set_xlabel("normalized life u"); a.set_ylabel("Brun collinearity index $\\gamma_K$")
     a.set_title("subset collinearity (dashed = poor flag, dotted = onset)", fontsize=9)
     a.legend(fontsize=7)
+    FLOOR = 1e-11
     for p in profiles:
         # a linear axis is useless here: the pre-onset misfit is ~1e6 while the region of interest is ~1
-        ys = [max(q["delta_nll"], 1e-3) for q in p["profile"]]
+        pts = sorted(p["profile"], key=lambda q: q["u"])
+        ys = [max(q["delta_nll"], FLOOR) for q in pts]
         style = "o-" if p["design"] == "B2" else "s--"
-        b.semilogy([q["u"] for q in p["profile"]], ys, style, ms=3, lw=1.0,
-                   label=f"{p['design']}, true u = {p['u_true']:.2f} ({p['verdict']})")
+        line, = b.semilogy([q["u"] for q in pts], ys, style, ms=3, lw=1.0,
+                           label=f"{p['design']}, true u = {p['u_true']:.2f} ({p['verdict']})")
+        # every point whose nuisance fit is pinned to the box, so a reader can see that the crossings
+        # coincide with the bounds rather than with a rise the data produced
+        pin = [(q["u"], max(q["delta_nll"], FLOOR)) for q in pts if any(q.get("at_bound", []))]
+        if pin:
+            b.plot([x for x, _ in pin], [y for _, y in pin], "x", ms=7, mew=1.3,
+                   color=line.get_color(), ls="none")
         b.axvline(p["u_true"], ls=":", lw=0.8, color="grey")
+    # shade the post-onset B2 plateau: the "interval" the profile never resolves within
+    pp = next((q for q in profiles if q["design"] == "B2" and q["u_true"] == 0.90), None)
+    if pp:
+        flat = [q["u"] for q in pp["profile"] if q["delta_nll"] <= CHI2_95 and q["u"] >= pp["interval"]["u_at_minimum"]]
+        if flat:
+            b.axvspan(min(flat), max(flat), color="grey", alpha=0.15, lw=0)
+            b.text(min(flat), 3e-10, " B2 plateau: nll varies by 6e-10\n across this whole span",
+                   fontsize=6, color="dimgrey", va="bottom")
     b.axhline(CHI2_95, ls="--", color="k", lw=0.8)
     b.set_xlabel("normalized life u"); b.set_ylabel(r"$\Delta(-\log L)$  (log scale)")
-    b.set_title("profile likelihood, nuisance re-optimised (solid B2, dashed B1)", fontsize=9)
+    b.set_title("profile likelihood, nuisance re-optimised (solid B2, dashed B1; x = at a nuisance bound)",
+                fontsize=8)
     b.legend(fontsize=6)
     fig.tight_layout()
     figstyle.save(fig, os.path.join(DATA, "studyB_fig_structural"))

@@ -25,8 +25,12 @@ N_INPUTS = CLOCK_COLUMN + 1
 ARMS = ("full", "pressure_only", "clock_only")
 
 BASELINE_CYCLE = 100.0          # every condition normalises against the same young state
-PASS_RMSE = 0.10                # unchanged from Study C
-PASS_COUNT = 8                  # unchanged from Study C: >= 8/10 within target and >= 8/10 beating clock
+PASS_RMSE = 0.10                # unchanged from Study C; derived as "two Study A grid steps"
+# Unchanged from Study C: >= 8/10 within target and >= 8/10 beating clock. This bar has NO PRECEDENT in
+# the literature -- it is a defensible preregistered choice, not a field standard, and at ten units the
+# 6-vs-8 distinction may sit inside sampling variance (literature/gaps.md items 2 and 8).
+# Do not relax it to rescue a result; provenance: docs/PARAMETER_PROVENANCE.md
+PASS_COUNT = 8
 MATERIAL_REDUCTION_LIFE = 0.05  # on the pre-specified below-median subset
 
 SCHEDULES = {

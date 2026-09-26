@@ -236,3 +236,101 @@ def test_an_undefined_prediction_is_infeasible_rather_than_a_crash_or_a_silent_n
     assert v == float("inf"), "an undefined prediction must be infinitely bad, not nan and not a number"
     good = neg_log_likelihood(th, np.zeros(5), np.eye(5), unit.fatigue, unit.sls)
     assert np.isfinite(good)
+
+
+# --- strict JSON, subset status, bound-flagged intervals (2026-09-25 closeout) ---------------------
+
+def test_json_safe_makes_the_output_rfc8259_valid():
+    """json.dump emits bare Infinity/NaN, which strict parsers reject. default= never fires for floats."""
+    import json
+    from pipeline.identifiability import json_safe
+    raw = {"a": float("inf"), "b": [float("nan"), 1.5], "c": {"d": np.float64("-inf")},
+           "e": np.int64(3), "f": np.bool_(True)}
+    with pytest.raises(ValueError):
+        json.dumps(raw, allow_nan=False)                 # the bug this guards against
+    safe = json_safe(raw)
+    text = json.dumps(safe, allow_nan=False)             # must not raise
+    assert "Infinity" not in text and "NaN" not in text
+    # and a strict reader round-trips it
+    back = json.loads(text, parse_constant=lambda c: pytest.fail(f"non-standard token {c}"))
+    assert back == {"a": None, "b": [None, 1.5], "c": {"d": None}, "e": 3, "f": True}
+
+
+def test_the_committed_study_b_artifact_parses_strictly():
+    import json, pathlib
+    p = pathlib.Path("data/sim/studyB/studyB_structural.json")
+    if not p.exists():                                   # pragma: no cover
+        pytest.skip("artifact not generated in this checkout")
+    raw = p.read_text()
+    assert "Infinity" not in raw and "NaN" not in raw, "evidence must be readable outside Python"
+    json.loads(raw, parse_constant=lambda c: pytest.fail(f"non-standard token {c}"))
+
+
+def test_a_singular_subset_reports_its_status_instead_of_a_magnitude():
+    """all_seven moved 6.5e7 -> 8.3e7 under a numerically BETTER whitening: it is float64 noise."""
+    from pipeline.identifiability import collinearity_report
+    J = np.array([[1.0, 0.0], [0.0, 1.0], [0.0, 0.0]])
+    assert collinearity_report(J, np.eye(3), [0, 1])[:2] == (1.0, "finite")
+    # a member with no sensitivity is irrelevant here, not confounded
+    inert = np.array([[1.0, 0.0], [2.0, 0.0], [3.0, 0.0]])
+    v, st, who = collinearity_report(inert, np.eye(3), [0, 1], ("u", "dead"))
+    assert v is None and st == "undefined_inert_parameter" and who == ["dead"]
+    # an exactly dependent subset yields no number at all, rather than a huge one
+    dep = np.array([[1.0, 0.0, 1.0], [0.0, 1.0, 1.0], [0.0, 0.0, 0.0]])
+    v, st, _ = collinearity_report(dep, np.eye(3), [0, 1, 2])
+    assert v is None and st == "numerically_singular"
+
+
+def test_the_interval_flags_a_crossing_that_sits_on_a_nuisance_bound():
+    """A crossing where the nuisance fit is pinned may be the box talking, not the data."""
+    from pipeline.identifiability import profile_interval
+    prof = [{"u": u, "nll": n, "delta_nll": n, "at_bound": ab} for u, n, ab in
+            [(0.5, 9.0, [False]), (0.6, 4.0, [False]), (0.7, 0.0, [False]),
+             (0.8, 0.0, [False]), (0.9, 5.0, [True])]]
+    iv = profile_interval(prof)
+    assert iv["lower"] == 0.6 and iv["upper"] == 0.9
+    assert iv["lower_at_nuisance_bound"] is False
+    assert iv["upper_at_nuisance_bound"] is True, "a pinned crossing must be visible in the record"
+
+
+def test_the_plateau_spread_exposes_an_interval_the_profile_never_resolves_within():
+    """A spread far below the threshold means the interval is ignorance, not precision."""
+    from pipeline.identifiability import profile_interval
+    flat = [{"u": u, "nll": n, "delta_nll": n, "at_bound": []} for u, n in
+            [(0.5, 9.0), (0.7, 0.0), (0.8, 5e-10), (0.9, 3e-10), (0.98, 9.0)]]
+    assert profile_interval(flat)["plateau_nll_spread"] < 1e-8
+    real = [{"u": u, "nll": n, "delta_nll": n, "at_bound": []} for u, n in
+            [(0.5, 9.0), (0.7, 0.0), (0.8, 0.9), (0.9, 1.5), (0.98, 9.0)]]
+    assert profile_interval(real)["plateau_nll_spread"] > 1.0
+
+
+def test_a_bound_pinned_or_bound_movable_crossing_cannot_yield_a_resolution():
+    """The closeout finding: the post-onset upper crossing vanished when the nuisance box was widened.
+
+    Guards the rule, not the number: a half-width may only be quoted from an interval whose terminations
+    are the data's, so a pinned termination, a crossing that moves with the box, or a plateau far below
+    the threshold each disqualify it. This is the third bounding artefact in the same region, after a
+    rank test and a grid edge.
+    """
+    from pipeline.identifiability import profile_interval
+    CUT = 1.92
+    def disqualified(iv, sens):
+        spread = iv.get("plateau_nll_spread")
+        return bool(iv["lower_open"] or iv["upper_open"]
+                    or iv.get("lower_at_nuisance_bound") or iv.get("upper_at_nuisance_bound")
+                    or (sens and sens.get("crossing_moved"))
+                    or (spread is not None and spread < 0.1 * CUT))
+
+    pinned = profile_interval([{"u": u, "nll": n, "delta_nll": n, "at_bound": ab} for u, n, ab in
+                               [(0.5, 9.0, [True]), (0.7, 0.0, [False]), (0.9, 9.0, [True])]])
+    assert disqualified(pinned, None), "a crossing sitting on a bound must block a half-width"
+
+    clean = [{"u": u, "nll": n, "delta_nll": n, "at_bound": [False]} for u, n in
+             [(0.5, 9.0), (0.6, 0.9), (0.7, 0.0), (0.8, 0.9), (0.9, 9.0)]]
+    iv = profile_interval(clean)
+    assert not disqualified(iv, {"crossing_moved": False}), "a clean, curved interval must be usable"
+    assert disqualified(iv, {"crossing_moved": True}), "a crossing that moves with the box must block it"
+
+    flat = profile_interval([{"u": u, "nll": n, "delta_nll": n, "at_bound": [False]} for u, n in
+                             [(0.5, 9.0), (0.7, 0.0), (0.8, 4e-10), (0.9, 6e-10), (0.98, 9.0)]])
+    assert disqualified(flat, None), "a plateau nine orders below the cut is ignorance, not precision"

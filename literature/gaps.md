@@ -83,10 +83,17 @@ the post-onset truth, so the upper bound was unreachable and the reported "±0.0
 Repairing it also exposed a covariance inverted at condition number 1.7 × 10²⁶, an optimiser searching
 across eleven orders of magnitude, and a feature that is undefined on much of the parameter box.
 
-Corrected: under the stacked design the post-onset coordinate is **identifiable**, not practically aliased,
-resolvable to about **±0.21 life** with the point estimate biased low by 0.12. The snapshot alone is only
-practical, and at the pre-onset truth it puts its minimum at 0.95 when the truth is 0.50 — so the young
-baseline is what buys identifiability. The collinearity result above is unchanged to six figures.
+Corrected: under the stacked design the post-onset profile crosses the threshold on both sides, so it is
+neither structurally nor practically aliased — but it is **not precisely localized**. The likelihood is flat
+across most of [0.75, 0.98] (total variation 6 × 10⁻¹⁰ against a 1.92 cut) and both terminations sit on
+nuisance bounds. Widening those bounds to a still-physical range removes the upper crossing **entirely**,
+so the crossing was the box talking: **no resolution figure is supported**, the interim "±0.21 life" is
+withdrawn alongside "±0.05 life", and whether the post-onset coordinate is identifiable at all is once more
+an open question rather than a finding. The modelled young-baseline observation clearly improves localization — the snapshot alone
+puts its minimum at 0.95 when the pre-onset truth is 0.50 — but that baseline is simulated at a life
+coordinate the profiler treats as known, so it is an oracle, not a fielded capability. The collinearity
+result above is unchanged to six figures. Coverage of the chi-square cut and sensitivity to the nuisance
+bounds are both open (`PV-CRIT-09`, `PV-CRIT-10`).
 
 ### 4. The probe may be measuring a rate artefact rather than a hysteretic state
 
