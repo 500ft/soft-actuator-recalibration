@@ -4,7 +4,12 @@
   "method": {
     "collinearity": "Brun et al. 2001 gamma_K on unit-length whitened sensitivity columns; gamma above 10.0 flags a poorly identifiable subset",
     "profile": "negative log-likelihood profiled over u with all six nuisance parameters re-optimised at each point; 1.92 is the 95% chi-square(1) cut",
-    "design": "B2 stacked design (snapshot + young baseline), noise scale 1, amplitude 0.1"
+    "design": "both designs are computed and stored: B2 stacks the young baseline at u=0.05 with the aged snapshot under shared nuisance parameters (ten features); B1 is the snapshot alone (five). The verdict is taken from B2, which is the design Study B's write-up describes. Noise scale 1, amplitude 0.1",
+    "domain": [
+      0.02,
+      0.98
+    ],
+    "grid": "spans the full physical domain so that a non-crossing side is a real result rather than an artefact of where the grid stopped"
   },
   "does_not_change": "Study B's B-PASS verdict and its reported bounds are unchanged",
   "subsets": {
@@ -56,21 +61,29 @@
         "acceleration_onset_fraction",
         "fatigue_exponent"
       ],
-      "u_alone": 1.0,
+      "u_alone": 1.0000000000000002,
+      "u_alone_status": "finite",
       "u_alone_is_inert": false,
-      "u+onset": Infinity,
+      "u+onset": null,
+      "u+onset_status": "undefined_inert_parameter",
       "u+onset_is_inert": true,
-      "u+leak": Infinity,
+      "u+leak": null,
+      "u+leak_status": "undefined_inert_parameter",
       "u+leak_is_inert": true,
-      "u+onset+leak": Infinity,
+      "u+onset+leak": null,
+      "u+onset+leak_status": "undefined_inert_parameter",
       "u+onset+leak_is_inert": true,
       "u+k1": 1.1652141052426896,
+      "u+k1_status": "finite",
       "u+k1_is_inert": false,
       "u+k2": 2.0127795131489394,
+      "u+k2_status": "finite",
       "u+k2_is_inert": false,
       "u+tau": 1.0940939589277476,
+      "u+tau_status": "finite",
       "u+tau_is_inert": false,
-      "all_seven": Infinity,
+      "all_seven": null,
+      "all_seven_status": "undefined_inert_parameter",
       "all_seven_is_inert": true
     },
     {
@@ -83,20 +96,28 @@
         "fatigue_exponent"
       ],
       "u_alone": 1.0,
+      "u_alone_status": "finite",
       "u_alone_is_inert": false,
-      "u+onset": Infinity,
+      "u+onset": null,
+      "u+onset_status": "undefined_inert_parameter",
       "u+onset_is_inert": true,
-      "u+leak": Infinity,
+      "u+leak": null,
+      "u+leak_status": "undefined_inert_parameter",
       "u+leak_is_inert": true,
-      "u+onset+leak": Infinity,
+      "u+onset+leak": null,
+      "u+onset+leak_status": "undefined_inert_parameter",
       "u+onset+leak_is_inert": true,
-      "u+k1": 1.1007330185725959,
+      "u+k1": 1.1007330185725956,
+      "u+k1_status": "finite",
       "u+k1_is_inert": false,
-      "u+k2": 2.0803928645413983,
+      "u+k2": 2.0803928645413974,
+      "u+k2_status": "finite",
       "u+k2_is_inert": false,
       "u+tau": 1.1076805200515307,
+      "u+tau_status": "finite",
       "u+tau_is_inert": false,
-      "all_seven": Infinity,
+      "all_seven": null,
+      "all_seven_status": "undefined_inert_parameter",
       "all_seven_is_inert": true
     },
     {
@@ -104,25 +125,131 @@
       "u": 0.9,
       "post_onset": true,
       "inert_parameters": [],
-      "u_alone": 1.0,
+      "u_alone": 1.0000000000000002,
+      "u_alone_status": "finite",
       "u_alone_is_inert": false,
       "u+onset": 60.83466930483901,
+      "u+onset_status": "finite",
       "u+onset_is_inert": false,
-      "u+leak": 5.834741635722212,
+      "u+leak": 5.834741635722223,
+      "u+leak_status": "finite",
       "u+leak_is_inert": false,
-      "u+onset+leak": 1245902.415775129,
+      "u+onset+leak": 1245627.4033103646,
+      "u+onset+leak_status": "finite",
       "u+onset+leak_is_inert": false,
       "u+k1": 1.2219483359319985,
+      "u+k1_status": "finite",
       "u+k1_is_inert": false,
       "u+k2": 1.2219638286668735,
+      "u+k2_status": "finite",
       "u+k2_is_inert": false,
-      "u+tau": 1.0655554859950507,
+      "u+tau": 1.065555485995051,
+      "u+tau_status": "finite",
       "u+tau_is_inert": false,
-      "all_seven": 59455243.463233545,
+      "all_seven": null,
+      "all_seven_status": "numerically_singular",
       "all_seven_is_inert": false
     },
     {
       "unit": "dispersed_0",
+      "u": 0.3,
+      "post_onset": false,
+      "inert_parameters": [
+        "terminal_leak_multiplier",
+        "acceleration_onset_fraction",
+        "fatigue_exponent"
+      ],
+      "u_alone": 1.0,
+      "u_alone_status": "finite",
+      "u_alone_is_inert": false,
+      "u+onset": null,
+      "u+onset_status": "undefined_inert_parameter",
+      "u+onset_is_inert": true,
+      "u+leak": null,
+      "u+leak_status": "undefined_inert_parameter",
+      "u+leak_is_inert": true,
+      "u+onset+leak": null,
+      "u+onset+leak_status": "undefined_inert_parameter",
+      "u+onset+leak_is_inert": true,
+      "u+k1": 1.096209636824523,
+      "u+k1_status": "finite",
+      "u+k1_is_inert": false,
+      "u+k2": 2.0612589833933757,
+      "u+k2_status": "finite",
+      "u+k2_is_inert": false,
+      "u+tau": 1.0989269314490695,
+      "u+tau_status": "finite",
+      "u+tau_is_inert": false,
+      "all_seven": null,
+      "all_seven_status": "undefined_inert_parameter",
+      "all_seven_is_inert": true
+    },
+    {
+      "unit": "dispersed_0",
+      "u": 0.5,
+      "post_onset": false,
+      "inert_parameters": [
+        "terminal_leak_multiplier",
+        "acceleration_onset_fraction",
+        "fatigue_exponent"
+      ],
+      "u_alone": 1.0000000000000002,
+      "u_alone_status": "finite",
+      "u_alone_is_inert": false,
+      "u+onset": null,
+      "u+onset_status": "undefined_inert_parameter",
+      "u+onset_is_inert": true,
+      "u+leak": null,
+      "u+leak_status": "undefined_inert_parameter",
+      "u+leak_is_inert": true,
+      "u+onset+leak": null,
+      "u+onset+leak_status": "undefined_inert_parameter",
+      "u+onset+leak_is_inert": true,
+      "u+k1": 1.0365205392171188,
+      "u+k1_status": "finite",
+      "u+k1_is_inert": false,
+      "u+k2": 2.391440767114558,
+      "u+k2_status": "finite",
+      "u+k2_is_inert": false,
+      "u+tau": 1.1595002996471908,
+      "u+tau_status": "finite",
+      "u+tau_is_inert": false,
+      "all_seven": null,
+      "all_seven_status": "undefined_inert_parameter",
+      "all_seven_is_inert": true
+    },
+    {
+      "unit": "dispersed_0",
+      "u": 0.9,
+      "post_onset": true,
+      "inert_parameters": [],
+      "u_alone": 1.0,
+      "u_alone_status": "finite",
+      "u_alone_is_inert": false,
+      "u+onset": 51.65437883000252,
+      "u+onset_status": "finite",
+      "u+onset_is_inert": false,
+      "u+leak": 7.55954113581988,
+      "u+leak_status": "finite",
+      "u+leak_is_inert": false,
+      "u+onset+leak": 8832.027221220314,
+      "u+onset+leak_status": "finite",
+      "u+onset+leak_is_inert": false,
+      "u+k1": 1.0723569181019597,
+      "u+k1_status": "finite",
+      "u+k1_is_inert": false,
+      "u+k2": 1.2058692819564976,
+      "u+k2_status": "finite",
+      "u+k2_is_inert": false,
+      "u+tau": 1.0323619350331243,
+      "u+tau_status": "finite",
+      "u+tau_is_inert": false,
+      "all_seven": null,
+      "all_seven_status": "numerically_singular",
+      "all_seven_is_inert": false
+    },
+    {
+      "unit": "dispersed_1",
       "u": 0.3,
       "post_onset": false,
       "inert_parameters": [
@@ -131,94 +258,28 @@
         "fatigue_exponent"
       ],
       "u_alone": 1.0000000000000002,
+      "u_alone_status": "finite",
       "u_alone_is_inert": false,
-      "u+onset": Infinity,
+      "u+onset": null,
+      "u+onset_status": "undefined_inert_parameter",
       "u+onset_is_inert": true,
-      "u+leak": Infinity,
+      "u+leak": null,
+      "u+leak_status": "undefined_inert_parameter",
       "u+leak_is_inert": true,
-      "u+onset+leak": Infinity,
+      "u+onset+leak": null,
+      "u+onset+leak_status": "undefined_inert_parameter",
       "u+onset+leak_is_inert": true,
-      "u+k1": 1.0962096368245233,
-      "u+k1_is_inert": false,
-      "u+k2": 2.0612589833933765,
-      "u+k2_is_inert": false,
-      "u+tau": 1.0989269314490695,
-      "u+tau_is_inert": false,
-      "all_seven": Infinity,
-      "all_seven_is_inert": true
-    },
-    {
-      "unit": "dispersed_0",
-      "u": 0.5,
-      "post_onset": false,
-      "inert_parameters": [
-        "terminal_leak_multiplier",
-        "acceleration_onset_fraction",
-        "fatigue_exponent"
-      ],
-      "u_alone": 1.0,
-      "u_alone_is_inert": false,
-      "u+onset": Infinity,
-      "u+onset_is_inert": true,
-      "u+leak": Infinity,
-      "u+leak_is_inert": true,
-      "u+onset+leak": Infinity,
-      "u+onset+leak_is_inert": true,
-      "u+k1": 1.0365205392171188,
-      "u+k1_is_inert": false,
-      "u+k2": 2.3914407671145574,
-      "u+k2_is_inert": false,
-      "u+tau": 1.1595002996471904,
-      "u+tau_is_inert": false,
-      "all_seven": Infinity,
-      "all_seven_is_inert": true
-    },
-    {
-      "unit": "dispersed_0",
-      "u": 0.9,
-      "post_onset": true,
-      "inert_parameters": [],
-      "u_alone": 1.0,
-      "u_alone_is_inert": false,
-      "u+onset": 51.654378830006344,
-      "u+onset_is_inert": false,
-      "u+leak": 7.559541135819856,
-      "u+leak_is_inert": false,
-      "u+onset+leak": 8832.027236756872,
-      "u+onset+leak_is_inert": false,
-      "u+k1": 1.0723569181019594,
-      "u+k1_is_inert": false,
-      "u+k2": 1.205869281956497,
-      "u+k2_is_inert": false,
-      "u+tau": 1.0323619350331246,
-      "u+tau_is_inert": false,
-      "all_seven": 86261161.75751913,
-      "all_seven_is_inert": false
-    },
-    {
-      "unit": "dispersed_1",
-      "u": 0.3,
-      "post_onset": false,
-      "inert_parameters": [
-        "terminal_leak_multiplier",
-        "acceleration_onset_fraction",
-        "fatigue_exponent"
-      ],
-      "u_alone": 1.0,
-      "u_alone_is_inert": false,
-      "u+onset": Infinity,
-      "u+onset_is_inert": true,
-      "u+leak": Infinity,
-      "u+leak_is_inert": true,
-      "u+onset+leak": Infinity,
-      "u+onset+leak_is_inert": true,
-      "u+k1": 1.2799332562759982,
+      "u+k1": 1.279933256275998,
+      "u+k1_status": "finite",
       "u+k1_is_inert": false,
       "u+k2": 2.076994304025454,
+      "u+k2_status": "finite",
       "u+k2_is_inert": false,
-      "u+tau": 1.073960606856683,
+      "u+tau": 1.0739606068566832,
+      "u+tau_status": "finite",
       "u+tau_is_inert": false,
-      "all_seven": Infinity,
+      "all_seven": null,
+      "all_seven_status": "undefined_inert_parameter",
       "all_seven_is_inert": true
     },
     {
@@ -231,20 +292,28 @@
         "fatigue_exponent"
       ],
       "u_alone": 1.0,
+      "u_alone_status": "finite",
       "u_alone_is_inert": false,
-      "u+onset": Infinity,
+      "u+onset": null,
+      "u+onset_status": "undefined_inert_parameter",
       "u+onset_is_inert": true,
-      "u+leak": Infinity,
+      "u+leak": null,
+      "u+leak_status": "undefined_inert_parameter",
       "u+leak_is_inert": true,
-      "u+onset+leak": Infinity,
+      "u+onset+leak": null,
+      "u+onset+leak_status": "undefined_inert_parameter",
       "u+onset+leak_is_inert": true,
-      "u+k1": 1.2302659765657873,
+      "u+k1": 1.2302659765657875,
+      "u+k1_status": "finite",
       "u+k1_is_inert": false,
-      "u+k2": 2.1856800588062697,
+      "u+k2": 2.185680058806271,
+      "u+k2_status": "finite",
       "u+k2_is_inert": false,
-      "u+tau": 1.0905093117155957,
+      "u+tau": 1.0905093117155962,
+      "u+tau_status": "finite",
       "u+tau_is_inert": false,
-      "all_seven": Infinity,
+      "all_seven": null,
+      "all_seven_status": "undefined_inert_parameter",
       "all_seven_is_inert": true
     },
     {
@@ -252,21 +321,29 @@
       "u": 0.9,
       "post_onset": true,
       "inert_parameters": [],
-      "u_alone": 1.0,
+      "u_alone": 1.0000000000000002,
+      "u_alone_status": "finite",
       "u_alone_is_inert": false,
-      "u+onset": 53.08539793506171,
+      "u+onset": 53.08539793504925,
+      "u+onset_status": "finite",
       "u+onset_is_inert": false,
-      "u+leak": 8.987308117083701,
+      "u+leak": 8.98730811708366,
+      "u+leak_status": "finite",
       "u+leak_is_inert": false,
-      "u+onset+leak": 6961.924829787649,
+      "u+onset+leak": 6961.924837982598,
+      "u+onset+leak_status": "finite",
       "u+onset+leak_is_inert": false,
-      "u+k1": 1.1636479373408297,
+      "u+k1": 1.1636479373408302,
+      "u+k1_status": "finite",
       "u+k1_is_inert": false,
       "u+k2": 1.09736056214348,
+      "u+k2_status": "finite",
       "u+k2_is_inert": false,
       "u+tau": 1.137757708628571,
+      "u+tau_status": "finite",
       "u+tau_is_inert": false,
-      "all_seven": 64453398.001666635,
+      "all_seven": null,
+      "all_seven_status": "numerically_singular",
       "all_seven_is_inert": false
     },
     {
@@ -279,20 +356,28 @@
         "fatigue_exponent"
       ],
       "u_alone": 1.0,
+      "u_alone_status": "finite",
       "u_alone_is_inert": false,
-      "u+onset": Infinity,
+      "u+onset": null,
+      "u+onset_status": "undefined_inert_parameter",
       "u+onset_is_inert": true,
-      "u+leak": Infinity,
+      "u+leak": null,
+      "u+leak_status": "undefined_inert_parameter",
       "u+leak_is_inert": true,
-      "u+onset+leak": Infinity,
+      "u+onset+leak": null,
+      "u+onset+leak_status": "undefined_inert_parameter",
       "u+onset+leak_is_inert": true,
-      "u+k1": 1.2754919662733375,
+      "u+k1": 1.2754919662733362,
+      "u+k1_status": "finite",
       "u+k1_is_inert": false,
-      "u+k2": 1.8772801688143093,
+      "u+k2": 1.8772801688143088,
+      "u+k2_status": "finite",
       "u+k2_is_inert": false,
       "u+tau": 1.1165539714255304,
+      "u+tau_status": "finite",
       "u+tau_is_inert": false,
-      "all_seven": Infinity,
+      "all_seven": null,
+      "all_seven_status": "undefined_inert_parameter",
       "all_seven_is_inert": true
     },
     {
@@ -304,21 +389,29 @@
         "acceleration_onset_fraction",
         "fatigue_exponent"
       ],
-      "u_alone": 1.0,
+      "u_alone": 1.0000000000000002,
+      "u_alone_status": "finite",
       "u_alone_is_inert": false,
-      "u+onset": Infinity,
+      "u+onset": null,
+      "u+onset_status": "undefined_inert_parameter",
       "u+onset_is_inert": true,
-      "u+leak": Infinity,
+      "u+leak": null,
+      "u+leak_status": "undefined_inert_parameter",
       "u+leak_is_inert": true,
-      "u+onset+leak": Infinity,
+      "u+onset+leak": null,
+      "u+onset+leak_status": "undefined_inert_parameter",
       "u+onset+leak_is_inert": true,
-      "u+k1": 1.332441272735252,
+      "u+k1": 1.332441272735251,
+      "u+k1_status": "finite",
       "u+k1_is_inert": false,
-      "u+k2": 1.9004351849500214,
+      "u+k2": 1.9004351849500216,
+      "u+k2_status": "finite",
       "u+k2_is_inert": false,
       "u+tau": 1.1138481542783294,
+      "u+tau_status": "finite",
       "u+tau_is_inert": false,
-      "all_seven": Infinity,
+      "all_seven": null,
+      "all_seven_status": "undefined_inert_parameter",
       "all_seven_is_inert": true
     },
     {
@@ -327,255 +420,2732 @@
       "post_onset": true,
       "inert_parameters": [],
       "u_alone": 1.0,
+      "u_alone_status": "finite",
       "u_alone_is_inert": false,
       "u+onset": 65.35916325128605,
+      "u+onset_status": "finite",
       "u+onset_is_inert": false,
-      "u+leak": 9.27280007058374,
+      "u+leak": 9.272800070583695,
+      "u+leak_status": "finite",
       "u+leak_is_inert": false,
-      "u+onset+leak": 4891791.817922263,
+      "u+onset+leak": 4883689.410049455,
+      "u+onset+leak_status": "finite",
       "u+onset+leak_is_inert": false,
-      "u+k1": 1.1850236454844132,
+      "u+k1": 1.1850236454844127,
+      "u+k1_status": "finite",
       "u+k1_is_inert": false,
       "u+k2": 1.0061710810801643,
+      "u+k2_status": "finite",
       "u+k2_is_inert": false,
       "u+tau": 1.0047716656265113,
+      "u+tau_status": "finite",
       "u+tau_is_inert": false,
-      "all_seven": 139753674.65673742,
+      "all_seven": null,
+      "all_seven_status": "numerically_singular",
       "all_seven_is_inert": false
     }
   ],
   "collinearity_summary": {
     "note": "Pre-onset the onset fraction, leak multiplier and exponent are exactly inert, so their collinearity is undefined rather than infinite-because-aliased. Only post-onset points where every subset member responds are aggregated below.",
     "n_post_onset_points": 4,
-    "median_u_onset_post_onset": 56.96003361995036,
-    "median_u_leak_post_onset": 8.273424626451778,
-    "median_u_onset_leak_post_onset": 627367.221505943,
+    "median_u_onset_post_onset": 56.96003361994413,
+    "median_u_leak_post_onset": 8.27342462645177,
+    "median_u_onset_leak_post_onset": 627229.7152657924,
     "median_u_tau_post_onset": 1.0489587105140876,
     "poor_flag": 10.0,
     "reading": "the triple is orders of magnitude above either pair, so the dependency is joint: no pairwise angle reveals it, which is why a subset index was required"
   },
   "profiles": [
     {
+      "design": "B2",
+      "design_note": "young baseline at u=0.05 stacked with the aged snapshot, nuisance shared",
       "u_true": 0.5,
-      "verdict": "identifiable",
-      "flat_fraction": 0.058823529411764705,
-      "u_at_minimum": 0.5,
+      "verdict": "unresolved",
+      "flat_fraction": null,
+      "interval": {
+        "lower": 0.45,
+        "upper": 0.5625,
+        "lower_open": false,
+        "upper_open": false,
+        "lower_at_nuisance_bound": false,
+        "upper_at_nuisance_bound": false,
+        "grid_min": 0.02,
+        "grid_max": 0.98,
+        "u_at_minimum": 0.475,
+        "plateau_nll_spread": 1.3275512250741484
+      },
+      "n_features": 10,
+      "n_grid_points": 25,
+      "n_refinement_passes": 2,
+      "n_not_converged": 1,
+      "u_at_minimum": 0.475,
       "profile": [
         {
-          "u": 0.1,
-          "nll": 392.4884268878719,
+          "u": 0.02,
+          "nll": 254.34403336128855,
           "converged": true,
-          "delta_nll": 391.7661477991977
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 9,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19895096276.6428,
+            20225083995.233276,
+            0.09997452743644139,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 253.8461557198508
+        },
+        {
+          "u": 0.05,
+          "nll": 224.16470984436017,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 9,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19905147321.507835,
+            20210965937.231937,
+            0.09997757999844863,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 223.66683220292242
+        },
+        {
+          "u": 0.1,
+          "nll": 178.18887445895808,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19921839592.508156,
+            20187450218.199,
+            0.09998266761435255,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 177.69099681752033
         },
         {
           "u": 0.15,
-          "nll": 301.00922003283756,
+          "nll": 137.58513728731637,
           "converged": true,
-          "delta_nll": 300.28694094416335
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19938454456.100983,
+            20163952986.409847,
+            0.09998775115809272,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 137.08725964587862
         },
         {
           "u": 0.2,
-          "nll": 221.7038376962127,
+          "nll": 102.31691928377555,
           "converged": true,
-          "delta_nll": 220.98155860753852
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19955031611.340008,
+            20140475795.147396,
+            0.09999283353507954,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 101.8190416423378
         },
         {
           "u": 0.25,
-          "nll": 154.55855612474477,
+          "nll": 72.34829259133764,
           "converged": true,
-          "delta_nll": 153.83627703607058
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19971500258.11481,
+            20117016259.15953,
+            0.09999790452200205,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 71.85041494989989
         },
         {
           "u": 0.3,
-          "nll": 99.55917790293522,
+          "nll": 47.64308357017552,
           "converged": true,
-          "delta_nll": 98.83689881426103
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 9,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19987873404.282864,
+            20093575073.092953,
+            0.10000297448461724,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 47.145205928737774
         },
         {
           "u": 0.35,
-          "nll": 56.68983783962917,
+          "nll": 28.165611408471424,
           "converged": true,
-          "delta_nll": 55.96755875095498
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20004209800.36428,
+            20070153910.221462,
+            0.10000805577471843,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 27.667733767033674
         },
         {
           "u": 0.4,
-          "nll": 25.93698499710888,
+          "nll": 13.88044248453844,
           "converged": true,
-          "delta_nll": 25.21470590843469
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 9,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20020473013.44952,
+            20046751981.270542,
+            0.10001313811213033,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 13.382564843100692
         },
         {
           "u": 0.45,
-          "nll": 7.28584485093638,
+          "nll": 4.752148420738928,
           "converged": true,
-          "delta_nll": 6.563565762262192
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20036663804.134956,
+            20023369451.044563,
+            0.10001822067576184,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 4.25427077930118
         },
         {
-          "u": 0.5,
-          "nll": 0.7222790886741883,
+          "u": 0.4625,
+          "nll": 1.483369966154456,
           "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 44,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20047575622.144993,
+            20007562351.460106,
+            0.10002165885443545,
+            1.0,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            true
+          ],
+          "delta_nll": 0.9854923247167076
+        },
+        {
+          "u": 0.475,
+          "nll": 0.4978776414377484,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 42,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20053792472.84833,
+            19992978500.244358,
+            0.10002447032099417,
+            1.427622358234063,
+            0.4536348751102588,
+            1.2000000113472427
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
           "delta_nll": 0.0
         },
         {
-          "u": 0.55,
-          "nll": 6.231610647449725,
+          "u": 0.5,
+          "nll": 0.49787764175992055,
           "converged": true,
-          "delta_nll": 5.5093315587755365
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 55,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20053792580.377277,
+            19992978341.869625,
+            0.10002447038482003,
+            3.0652180042256005,
+            0.4909422452582907,
+            1.200000061245724
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 3.2217217782459784e-10
+        },
+        {
+          "u": 0.55,
+          "nll": 1.8254288665118967,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 18,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20068828522.516987,
+            19976663353.62917,
+            0.10002838602691211,
+            3.0217313546437388,
+            0.5510670989913128,
+            1.2128450957639652
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 1.3275512250741484
+        },
+        {
+          "u": 0.5625,
+          "nll": 2.8861212872813984,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 18,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20072836791.56115,
+            19970830869.913174,
+            0.10002966078909181,
+            5.675868502078209,
+            0.5642364478725159,
+            1.2025473516391676
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 2.38824364584365
+        },
+        {
+          "u": 0.575,
+          "nll": 4.2620140945754255,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 17,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20076836249.735424,
+            19964999494.901928,
+            0.10003093457231288,
+            5.8154867966958665,
+            0.5788514088765747,
+            1.2035462551088576
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 3.7641364531376773
         },
         {
           "u": 0.6,
-          "nll": 23.799431602534973,
+          "nll": 7.95723143576944,
           "converged": true,
-          "delta_nll": 23.077152513860785
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 16,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20084821693.406494,
+            19953340533.283062,
+            0.10003348224465536,
+            2.996855476330663,
+            0.6065935204887155,
+            1.2242442066349413
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 7.459353794331692
         },
         {
           "u": 0.65,
-          "nll": 53.41230619784052,
+          "nll": 19.106263801888236,
           "converged": true,
-          "delta_nll": 52.69002710916634
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 12,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20100740273.965485,
+            19930037733.404728,
+            0.10003857755452764,
+            5.585542239287489,
+            0.6505294516434738,
+            1.200047887247299
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 18.608386160450486
         },
         {
           "u": 0.7,
-          "nll": 95.05680784212326,
-          "converged": false,
-          "delta_nll": 94.33452875344908
+          "nll": 35.238210029672494,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 15,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20116539214.070805,
+            19906754112.210297,
+            0.10004365272079392,
+            5.553125710174131,
+            0.7009527563261521,
+            1.203558988831857
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 34.74033238823475
         },
         {
           "u": 0.75,
-          "nll": 148.72047509285045,
+          "nll": 52.26147116502096,
           "converged": true,
-          "delta_nll": 147.99819600417626
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 35,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20091381815.51119,
+            19887395338.44058,
+            0.1000441176841287,
+            21.625132747671096,
+            0.7454791599755778,
+            3.0000000000000004
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ],
+          "delta_nll": 51.76359352358321
         },
         {
           "u": 0.8,
-          "nll": 214.3892113593849,
+          "nll": 82.31397099895429,
           "converged": true,
-          "delta_nll": 213.6669322707107
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 11,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20148018738.581142,
+            19860251490.291897,
+            0.10005382280528816,
+            18.821783112927868,
+            0.9,
+            1.986745534119203
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false
+          ],
+          "delta_nll": 81.81609335751654
         },
         {
           "u": 0.85,
-          "nll": 292.04750351963173,
-          "converged": true,
-          "delta_nll": 291.3252244309575
+          "nll": 113.19008512041312,
+          "converged": false,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 12,
+          "solver_message": "ABNORMAL: ",
+          "fitted_nuisance": [
+            20163743039.74927,
+            19837030024.158466,
+            0.10005892024172204,
+            17.96216526504727,
+            0.9,
+            1.9794125768975288
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false
+          ],
+          "delta_nll": 112.69220747897536
         },
         {
           "u": 0.9,
-          "nll": 336.7176985033209,
+          "nll": 138.86317186832534,
           "converged": true,
-          "delta_nll": 335.9954194146467
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 85,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20113988810.680843,
+            19819949610.225437,
+            0.10005648642741038,
+            183.16861757601822,
+            0.8992430089105568,
+            2.9999993436724806
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 138.36529422688758
+        },
+        {
+          "u": 0.95,
+          "nll": 433.4753360947757,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 31,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20156783413.908524,
+            19685603401.586742,
+            0.10008108347759147,
+            1.0710992099573884,
+            0.9,
+            3.0000000000000004
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 432.97745845333793
+        },
+        {
+          "u": 0.98,
+          "nll": 1976.6703290567468,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 51,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20261711253.496735,
+            19328805848.906376,
+            0.10014490778201515,
+            1.0586001827541556,
+            0.9,
+            3.0000000000000004
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 1976.172451415309
         }
       ]
     },
     {
-      "u_true": 0.9,
-      "verdict": "practical",
-      "flat_fraction": 0.17647058823529413,
-      "u_at_minimum": 0.8,
+      "design": "B1",
+      "design_note": "the aged snapshot alone",
+      "u_true": 0.5,
+      "verdict": "unresolved",
+      "flat_fraction": null,
+      "interval": {
+        "lower": null,
+        "upper": null,
+        "lower_open": true,
+        "upper_open": true,
+        "lower_at_nuisance_bound": null,
+        "upper_at_nuisance_bound": null,
+        "grid_min": 0.02,
+        "grid_max": 0.98,
+        "u_at_minimum": 0.95,
+        "plateau_nll_spread": 0.020000612122937966
+      },
+      "n_features": 5,
+      "n_grid_points": 21,
+      "n_refinement_passes": 2,
+      "n_not_converged": 1,
+      "u_at_minimum": 0.95,
       "profile": [
         {
-          "u": 0.1,
-          "nll": 3864381.2407043213,
+          "u": 0.02,
+          "nll": 0.07795497463966687,
           "converged": true,
-          "delta_nll": 3864380.680702546
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 8,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19692990674.36712,
+            20374222607.205616,
+            0.10000072790157769,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.020000612120825656
+        },
+        {
+          "u": 0.05,
+          "nll": 0.07795497461023006,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 8,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19715695843.62164,
+            20350759067.435986,
+            0.10000072795487276,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.020000612091388842
+        },
+        {
+          "u": 0.1,
+          "nll": 0.0779549746086342,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 8,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19753537841.467964,
+            20311772966.264374,
+            0.1000007279456475,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.02000061208979298
         },
         {
           "u": 0.15,
-          "nll": 3863357.5352685093,
+          "nll": 0.07795497460855835,
           "converged": true,
-          "delta_nll": 3863356.975266734
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 8,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19791379861.93694,
+            20272935924.207508,
+            0.10000072795243665,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.020000612089717137
         },
         {
           "u": 0.2,
-          "nll": 3862301.9719390497,
+          "nll": 0.07795497460813096,
           "converged": true,
-          "delta_nll": 3862301.4119372745
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 8,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19829221891.089413,
+            20234247114.84883,
+            0.10000072794342162,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.020000612089289743
         },
         {
           "u": 0.25,
-          "nll": 3861214.738760608,
+          "nll": 0.07795497460878939,
           "converged": true,
-          "delta_nll": 3861214.1787588326
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 8,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19867063915.71621,
+            20195705690.097218,
+            0.10000072796383518,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.020000612089948175
         },
         {
           "u": 0.3,
-          "nll": 3860096.023318845,
+          "nll": 0.07795497460854277,
           "converged": true,
-          "delta_nll": 3860095.4633170697
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 8,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19904905942.475563,
+            20157310808.620693,
+            0.10000072797947332,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.020000612089701553
         },
         {
           "u": 0.35,
-          "nll": 3858946.012747314,
+          "nll": 0.07795497460707737,
           "converged": true,
-          "delta_nll": 3858945.4527455387
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 8,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19942747977.524532,
+            20119061637.365746,
+            0.10000072801094081,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.020000612088236155
         },
         {
           "u": 0.4,
-          "nll": 3857764.893703993,
-          "converged": true,
-          "delta_nll": 3857764.333702218
+          "nll": 0.07795497460868869,
+          "converged": false,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 6,
+          "solver_message": "ABNORMAL: ",
+          "fitted_nuisance": [
+            19980590023.402664,
+            20080957326.524734,
+            0.10000072837389326,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.020000612089847478
         },
         {
           "u": 0.45,
-          "nll": 3856552.85238161,
+          "nll": 0.07795497460730207,
           "converged": true,
-          "delta_nll": 3856552.2923798347
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 8,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20018432038.284134,
+            20042997125.786823,
+            0.10000072804125043,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.02000061208846085
         },
         {
           "u": 0.5,
-          "nll": 3855310.0744991717,
+          "nll": 0.057954363014494574,
           "converged": true,
-          "delta_nll": 3855309.5144973965
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 18,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20052463889.59459,
+            20002958021.294716,
+            0.10000113838424468,
+            19.99894787245702,
+            0.49740890318323794,
+            1.2003019705812805
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 4.956533586342182e-10
         },
         {
           "u": 0.55,
-          "nll": 3854036.745291258,
+          "nll": 0.057954362565492,
           "converged": true,
-          "delta_nll": 3854036.185289483
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 19,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20090307249.50998,
+            19965277452.40053,
+            0.10000113949792969,
+            19.76521314641409,
+            0.5476534165549868,
+            1.2006425612846299
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 4.6650787399737936e-11
         },
         {
           "u": 0.6,
-          "nll": 3852733.049503046,
+          "nll": 0.05795436256329822,
           "converged": true,
-          "delta_nll": 3852732.489501271
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 19,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20128147915.01142,
+            19927742870.197968,
+            0.10000113965872112,
+            19.582461011786993,
+            0.5979038608950787,
+            1.2009909062422948
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 4.445700751976034e-11
         },
         {
           "u": 0.65,
-          "nll": 3851399.171396791,
+          "nll": 0.0579543625721306,
           "converged": true,
-          "delta_nll": 3851398.611395016
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 19,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20165986051.91945,
+            19890351651.426773,
+            0.10000113972903225,
+            19.429986810457127,
+            0.6481582656023236,
+            1.2013417079708095
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 5.328938679216577e-11
         },
         {
           "u": 0.7,
-          "nll": 3850035.2947362764,
+          "nll": 0.05795436266110919,
           "converged": true,
-          "delta_nll": 3850034.734734501
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 18,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20203823088.158413,
+            19853101290.560802,
+            0.10000114056097524,
+            19.30527978451313,
+            0.6984159599924623,
+            1.2015889667120225
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 1.422679751783562e-10
         },
         {
           "u": 0.75,
-          "nll": 13.108422077615927,
+          "nll": 0.05795436266934167,
           "converged": true,
-          "delta_nll": 12.54842030236261
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 26,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20244666426.217728,
+            19813048014.021397,
+            0.10000114119934993,
+            5.439252725134645,
+            0.7473048062316443,
+            1.2264398168835735
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 1.5050045237829934e-10
         },
         {
           "u": 0.8,
-          "nll": 0.5600017752533177,
+          "nll": 0.05795436262275979,
           "converged": true,
-          "delta_nll": 0.0
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 18,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20282514986.168365,
+            19776075539.40189,
+            0.10000113933923303,
+            5.41948712235112,
+            0.7978389775161332,
+            1.2263236578604542
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 1.0391857513392111e-10
         },
         {
           "u": 0.85,
-          "nll": 0.5600017755233332,
+          "nll": 0.07795497464177918,
           "converged": true,
-          "delta_nll": 2.7001545443994246e-10
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 13,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20321168335.26359,
+            19744404915.996586,
+            0.10000072806240518,
+            18.58033241151799,
+            0.8681535532444443,
+            1.985903466004703
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.020000612122937966
         },
         {
           "u": 0.9,
-          "nll": 0.5600017759239544,
+          "nll": 0.05795436257180142,
           "converged": true,
-          "delta_nll": 6.706366573183686e-10
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 28,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20352435114.20452,
+            19708135866.886772,
+            0.10000113963209771,
+            18.537466409801148,
+            0.899460494832532,
+            1.9685055643800375
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 5.296020566536441e-11
+        },
+        {
+          "u": 0.95,
+          "nll": 0.057954362518841215,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 19,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20941902525.83712,
+            19153396584.13241,
+            0.10000113956486592,
+            1.0017058369762282,
+            0.8903325950065782,
+            1.657706699806697
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.0
+        },
+        {
+          "u": 0.98,
+          "nll": 0.05795436254099309,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 11,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            21470395982.784576,
+            18681935820.18969,
+            0.10000113959997087,
+            1.0007773687795347,
+            0.8969218800761541,
+            1.6611791680846355
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 2.2151877554499322e-11
+        }
+      ]
+    },
+    {
+      "design": "B2",
+      "design_note": "young baseline at u=0.05 stacked with the aged snapshot, nuisance shared",
+      "u_true": 0.9,
+      "verdict": "identifiable",
+      "flat_fraction": 0.32,
+      "interval": {
+        "lower": 0.75,
+        "upper": 0.98,
+        "lower_open": false,
+        "upper_open": false,
+        "lower_at_nuisance_bound": true,
+        "upper_at_nuisance_bound": true,
+        "grid_min": 0.02,
+        "grid_max": 0.98,
+        "u_at_minimum": 0.775,
+        "plateau_nll_spread": 0.5067291437959243
+      },
+      "n_features": 10,
+      "n_grid_points": 25,
+      "n_refinement_passes": 2,
+      "n_not_converged": 0,
+      "u_at_minimum": 0.775,
+      "profile": [
+        {
+          "u": 0.02,
+          "nll": 1028686.379859579,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 14,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            60182954938.561806,
+            22660688053.047867,
+            0.0971104781977563,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 1028685.5491906513
+        },
+        {
+          "u": 0.05,
+          "nll": 1029285.2135006571,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 15,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            60220897240.54292,
+            22647174288.48329,
+            0.09711922279766237,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 1029284.3828317294
+        },
+        {
+          "u": 0.1,
+          "nll": 1030289.7745296393,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 4,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            60284057271.93326,
+            22624665580.083797,
+            0.09713391045051803,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 1030288.9438607115
+        },
+        {
+          "u": 0.15,
+          "nll": 1031302.4261274212,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 14,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            60347097010.90063,
+            22602170991.97153,
+            0.09714822041547057,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 1031301.5954584935
+        },
+        {
+          "u": 0.2,
+          "nll": 1032323.1206465805,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 4,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            60409992838.68416,
+            22579683416.453606,
+            0.09716300671661066,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 1032322.2899776527
+        },
+        {
+          "u": 0.25,
+          "nll": 1033351.8103400478,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 4,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            60472730472.13188,
+            22557209191.250126,
+            0.09717782721338752,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 1033350.9796711201
+        },
+        {
+          "u": 0.3,
+          "nll": 1034388.44825068,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 15,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            60535324016.9015,
+            22534730723.862106,
+            0.09719273828095264,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 1034387.6175817522
+        },
+        {
+          "u": 0.35,
+          "nll": 1035432.9876365527,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 14,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            60597751109.48913,
+            22512276176.945156,
+            0.09720760694865725,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 1035432.1569676249
+        },
+        {
+          "u": 0.4,
+          "nll": 1036485.3819640309,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 13,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            60660084553.32387,
+            22489825950.90667,
+            0.09722244251756647,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 1036484.5512951032
+        },
+        {
+          "u": 0.45,
+          "nll": 1037545.5848853426,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 14,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            60722290010.37277,
+            22467401166.70543,
+            0.0972375170568111,
+            19.999999999999996,
+            0.7,
+            2.0
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 1037544.7542164149
+        },
+        {
+          "u": 0.5,
+          "nll": 170879.17465467076,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 41,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            34743329670.075584,
+            21325765101.86506,
+            0.09920718402222906,
+            199.99999999999991,
+            0.45,
+            3.0000000000000004
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            true
+          ],
+          "delta_nll": 170878.343985743
+        },
+        {
+          "u": 0.55,
+          "nll": 3183.5399527938807,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 28,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20993473376.657646,
+            20515919649.991512,
+            0.09996596206034682,
+            199.99999999999991,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            true
+          ],
+          "delta_nll": 3182.709283866129
+        },
+        {
+          "u": 0.6,
+          "nll": 566.6446256362299,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 26,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19981629740.627274,
+            20349152380.159237,
+            0.09992065533341092,
+            114.50560871311858,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 565.8139567084785
+        },
+        {
+          "u": 0.65,
+          "nll": 286.1161474011576,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 30,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20001193535.677666,
+            20246566154.035614,
+            0.09994854238804125,
+            64.88484972847056,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 285.28547847340616
+        },
+        {
+          "u": 0.7,
+          "nll": 96.70937765842436,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 27,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20020883900.49408,
+            20140241857.972157,
+            0.09997728541257782,
+            41.91380532666783,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 95.87870873067294
+        },
+        {
+          "u": 0.75,
+          "nll": 7.2975677714147995,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 32,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20039726955.172108,
+            20030963586.621067,
+            0.10000677810289045,
+            29.434452622648962,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 6.466898843663378
+        },
+        {
+          "u": 0.7625,
+          "nll": 1.3373980715473464,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 34,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20044384600.611683,
+            20003244876.948414,
+            0.10001425370081315,
+            27.21064011060541,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 0.5067291437959243
+        },
+        {
+          "u": 0.775,
+          "nll": 0.8306689277514221,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 36,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20046184253.427242,
+            19992457001.36003,
+            0.10001716236897715,
+            25.235202732214933,
+            0.45000004483811445,
+            1.2684767921855378
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.0
+        },
+        {
+          "u": 0.8,
+          "nll": 0.830668928032759,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 30,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20046184418.86135,
+            19992456843.45906,
+            0.1000171620190753,
+            22.440989018042014,
+            0.46202691851303085,
+            1.4886801135129846
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 2.813369537335575e-10
+        },
+        {
+          "u": 0.85,
+          "nll": 0.8306689280485431,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 28,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20046184018.020535,
+            19992456819.807552,
+            0.10001716216139488,
+            20.57776432451937,
+            0.5621083005186894,
+            1.7721911650336017
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 2.9712099447465334e-10
+        },
+        {
+          "u": 0.9,
+          "nll": 0.8306689282653482,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 27,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20046184053.83845,
+            19992456737.286766,
+            0.10001716225035132,
+            19.693575743872366,
+            0.6943594431220693,
+            2.011795902751679
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 5.139261238795712e-10
+        },
+        {
+          "u": 0.95,
+          "nll": 0.8306689283302904,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 14,
+          "n_iterations": 41,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20046184018.91767,
+            19992456717.845623,
+            0.10001716214060194,
+            17.092707337907687,
+            0.8180808514092531,
+            2.6583367052547717
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 5.788682866381123e-10
+        },
+        {
+          "u": 0.965,
+          "nll": 0.8306689280911601,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 14,
+          "n_iterations": 42,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20046183201.143272,
+            19992457224.562878,
+            0.10001716407230364,
+            16.763713440239922,
+            0.869070461718255,
+            2.803768980555084
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 3.397380154979146e-10
+        },
+        {
+          "u": 0.9725,
+          "nll": 0.8306689279212769,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 14,
+          "n_iterations": 40,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20046183945.03625,
+            19992456881.113213,
+            0.10001716224372516,
+            17.099483558557946,
+            0.9,
+            2.7399063014339937
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false
+          ],
+          "delta_nll": 1.698547968942421e-10
+        },
+        {
+          "u": 0.98,
+          "nll": 37.37207101952697,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 14,
+          "n_iterations": 29,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20061212123.34295,
+            19900573009.315243,
+            0.10004192489301902,
+            14.231928635106275,
+            0.9,
+            3.0000000000000004
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 36.541402091775545
+        }
+      ]
+    },
+    {
+      "design": "B1",
+      "design_note": "the aged snapshot alone",
+      "u_true": 0.9,
+      "verdict": "practical",
+      "flat_fraction": 0.43478260869565216,
+      "interval": {
+        "lower": 0.5625,
+        "upper": null,
+        "lower_open": false,
+        "upper_open": true,
+        "lower_at_nuisance_bound": true,
+        "upper_at_nuisance_bound": null,
+        "grid_min": 0.02,
+        "grid_max": 0.98,
+        "u_at_minimum": 0.65,
+        "plateau_nll_spread": 5.1140647272518436e-11
+      },
+      "n_features": 5,
+      "n_grid_points": 23,
+      "n_refinement_passes": 2,
+      "n_not_converged": 0,
+      "u_at_minimum": 0.65,
+      "profile": [
+        {
+          "u": 0.02,
+          "nll": 800602.542665868,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 18,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            67943536615.47076,
+            21999171164.77546,
+            0.09898880689319253,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 800602.156923439
+        },
+        {
+          "u": 0.05,
+          "nll": 800602.5426658266,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            68021892448.61251,
+            21973835433.496216,
+            0.09898878408834048,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 800602.1569233977
+        },
+        {
+          "u": 0.1,
+          "nll": 800602.5426658964,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            68152446183.136475,
+            21931740124.80309,
+            0.09898885952494653,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 800602.1569234674
+        },
+        {
+          "u": 0.15,
+          "nll": 800602.5426659684,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            68282995490.0354,
+            21889806211.423782,
+            0.09898887496976806,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 800602.1569235395
+        },
+        {
+          "u": 0.2,
+          "nll": 800602.5426659288,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            68413586465.54169,
+            21848026925.23945,
+            0.09898879306635769,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 800602.1569234999
+        },
+        {
+          "u": 0.25,
+          "nll": 800602.5426659203,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            68544143314.90222,
+            21806408841.513706,
+            0.09898881568459264,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 800602.1569234914
+        },
+        {
+          "u": 0.3,
+          "nll": 800602.5426662129,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            68674696370.1559,
+            21764955164.146782,
+            0.09898890534983282,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 800602.156923784
+        },
+        {
+          "u": 0.35,
+          "nll": 800602.542666446,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            68805233099.17534,
+            21723662497.451305,
+            0.0989889175194207,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 800602.156924017
+        },
+        {
+          "u": 0.4,
+          "nll": 800602.5426659564,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            68935821858.07892,
+            21682517151.330616,
+            0.09898877392119423,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 800602.1569235275
+        },
+        {
+          "u": 0.45,
+          "nll": 800602.5426666962,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 7,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            69066342920.72423,
+            21641536591.582188,
+            0.09898889215844241,
+            10.000000000000002,
+            0.45,
+            1.2
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "delta_nll": 800602.1569242673
+        },
+        {
+          "u": 0.5,
+          "nll": 135420.33705162202,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 17,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            38734819273.60318,
+            21294842401.849434,
+            0.09812491736047678,
+            199.99999999999991,
+            0.45,
+            1.2236293076386695
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            false
+          ],
+          "delta_nll": 135419.951309193
+        },
+        {
+          "u": 0.55,
+          "nll": 1978.5730957424362,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 13,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            21301262324.977398,
+            20792344232.392403,
+            0.09971205437298747,
+            199.99999999999991,
+            0.45,
+            1.2096960692202694
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            false
+          ],
+          "delta_nll": 1978.187353313436
+        },
+        {
+          "u": 0.5625,
+          "nll": 7.750950930064006,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 24,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19347149902.560974,
+            20837105699.842003,
+            0.09997714667552873,
+            199.99999999999991,
+            0.45,
+            1.7897208321649933
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            false
+          ],
+          "delta_nll": 7.365208501063758
+        },
+        {
+          "u": 0.575,
+          "nll": 0.38574242901820394,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 0,
+          "n_iterations": 23,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19268966716.904438,
+            20797913228.723675,
+            0.09999240241933632,
+            164.84617935965656,
+            0.45000085139389623,
+            1.747225969044543
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 1.79553594215065e-11
+        },
+        {
+          "u": 0.6,
+          "nll": 0.3857424290513892,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 22,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19325084246.704216,
+            20737519511.59386,
+            0.0999924022233545,
+            123.4193055811505,
+            0.45731155058063805,
+            1.7122696257069383
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 5.1140647272518436e-11
+        },
+        {
+          "u": 0.65,
+          "nll": 0.3857424290002486,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 20,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19488775276.704258,
+            20563339672.273922,
+            0.09999240136489039,
+            66.21120493113334,
+            0.452912646156177,
+            1.6263804235393122
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 0.0
+        },
+        {
+          "u": 0.7,
+          "nll": 0.3857424290464864,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 24,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19665937133.447826,
+            20378093586.362907,
+            0.09999240121714367,
+            42.348287302170675,
+            0.45214252059514487,
+            1.569815790622672
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 4.6237846884622513e-11
+        },
+        {
+          "u": 0.75,
+          "nll": 0.38574242902465694,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 20,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            19858919502.8358,
+            20180065905.9402,
+            0.09999240136021,
+            29.44522272532307,
+            0.4500000587615037,
+            1.5252075788330575
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 2.440836421868653e-11
+        },
+        {
+          "u": 0.8,
+          "nll": 0.385742429032403,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 20,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20026944625.76423,
+            20010755952.29835,
+            0.0999924012733972,
+            23.009262010067882,
+            0.47354818995413694,
+            1.5001973971852298
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 3.215444577264748e-11
+        },
+        {
+          "u": 0.85,
+          "nll": 0.3857424290270303,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 15,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20168648485.86177,
+            19870161483.396423,
+            0.09999240127078135,
+            19.017812609940414,
+            0.5232804378822671,
+            1.5274099038974598
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 2.6781743489578957e-11
+        },
+        {
+          "u": 0.9,
+          "nll": 0.38574242902859013,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 7,
+          "n_iterations": 12,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20346086661.50657,
+            19696873874.308453,
+            0.09999240131201972,
+            15.449809613947478,
+            0.5739228104858627,
+            1.555807251050032
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 2.834155132802607e-11
+        },
+        {
+          "u": 0.95,
+          "nll": 0.3857424290032082,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 14,
+          "n_iterations": 12,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20587022034.59122,
+            19466356037.27313,
+            0.09999240149540824,
+            12.183532295096084,
+            0.6156544098018583,
+            1.5862474557427029
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 2.9596325390457423e-12
+        },
+        {
+          "u": 0.98,
+          "nll": 0.3857424290272695,
+          "converged": true,
+          "ended_on_infeasible_penalty": false,
+          "n_infeasible_evaluations": 14,
+          "n_iterations": 21,
+          "solver_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "fitted_nuisance": [
+            20830298435.60297,
+            19239009234.352448,
+            0.09999240132755763,
+            10.131937683201555,
+            0.46410143424572875,
+            1.2004740247060932
+          ],
+          "at_bound": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "delta_nll": 2.7020941040234447e-11
         }
       ]
     }
   ],
-  "conclusion": "practical",
-  "wording_supported": "practically aliased at this noise level"
+  "bound_sensitivity": {
+    "question": "does the post-onset B2 upper crossing survive a widened but still physical nuisance box, or is it the box terminating the interval?",
+    "widened": {
+      "acceleration_onset_fraction": [
+        0.3,
+        0.98
+      ],
+      "fatigue_exponent": [
+        1.0,
+        5.0
+      ]
+    },
+    "upper_grid": [
+      0.9,
+      0.95,
+      0.965,
+      0.9725,
+      0.98
+    ],
+    "rows": [
+      {
+        "u": 0.9,
+        "delta_nll_default_box": 5.139261238795712e-10,
+        "delta_nll_wide_box": 2.8925994932649246e-10,
+        "at_bound_default": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "at_bound_wide": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "converged_wide": true
+      },
+      {
+        "u": 0.95,
+        "delta_nll_default_box": 5.788682866381123e-10,
+        "delta_nll_wide_box": 5.122351431907646e-10,
+        "at_bound_default": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "at_bound_wide": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "converged_wide": true
+      },
+      {
+        "u": 0.965,
+        "delta_nll_default_box": 3.397380154979146e-10,
+        "delta_nll_wide_box": 2.2414381461999255e-10,
+        "at_bound_default": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "at_bound_wide": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "converged_wide": true
+      },
+      {
+        "u": 0.9725,
+        "delta_nll_default_box": 1.698547968942421e-10,
+        "delta_nll_wide_box": 3.582962815329438e-10,
+        "at_bound_default": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          false
+        ],
+        "at_bound_wide": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "converged_wide": true
+      },
+      {
+        "u": 0.98,
+        "delta_nll_default_box": 36.541402091775545,
+        "delta_nll_wide_box": 5.721364493282977e-10,
+        "at_bound_default": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          true
+        ],
+        "at_bound_wide": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ],
+        "converged_wide": true
+      }
+    ],
+    "crossing_points_default_box": [
+      0.98
+    ],
+    "crossing_points_wide_box": [],
+    "crossing_moved": true,
+    "reading": "BOUND-LIMITED: the crossing is a property of the nuisance box, not of the data, so the interval width is not a measured precision"
+  },
+  "conclusion": "identifiable",
+  "verdict_is_bound_dependent": true,
+  "resolution_life_fraction": null,
+  "resolution_note": "No resolution is quoted: the lower and upper termination(s) sit on a nuisance-parameter bound, so the interval closes where the optimiser runs out of freedom to compensate, not where the data run out; and widening the nuisance box to a still-physical range removes the crossing entirely ([0.98] -> []), so the interval width is a property of the box and NOT a measured precision.",
+  "wording_supported": "the profile crosses the cut on both sides under this design -- which is all this label means. It is NOT a precision claim, and where the terminations are bound-dependent (see verdict_is_bound_dependent) the crossing itself is a property of the nuisance box"
 }

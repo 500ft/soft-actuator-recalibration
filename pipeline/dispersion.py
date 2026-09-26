@@ -41,7 +41,13 @@ def _truncnorm(rng, mean, sd, low, high):
     return float(truncnorm.rvs((low - mean) / sd, (high - mean) / sd, loc=mean, scale=sd, random_state=rng))
 
 
-RUPTURE_CV = 0.30      # Study A's assumed rupture-life dispersion; see literature/gaps.md item 1
+# Study A's assumed rupture-life dispersion. KNOWN-UNREPRESENTATIVE and deliberately so: it is above
+# every measured value located (Torzini 2024 gives 0.039 and 0.061; the highest found is Du 2025's 0.175),
+# so treat it as a stress case, never as a best estimate. It decides WHICH of Study C's two criteria fails
+# -- see the dispersion audit, where C-FAIL survives 0.05/0.15/0.30 for opposite reasons.
+# literature/gaps.md item 1; docs/specs/observability-program/studyA-preregistration.md:102-105;
+# provenance: docs/PARAMETER_PROVENANCE.md
+RUPTURE_CV = 0.30
 
 
 def sample_unit(rng: np.random.Generator, axes=AXES, rupture_cv: float = RUPTURE_CV) -> Unit:

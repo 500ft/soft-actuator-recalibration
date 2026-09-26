@@ -75,10 +75,18 @@ Question: is the fatigue state observable from pressure alone across dispersed u
   noise/amplitude) and only **practically** aliased after it, with the unit's onset fraction and leak.
   Verdict **B-PASS** by its rule; the regime boundary is the result. A follow-up on 2026-09-23 ran the
   two diagnostics the literature prescribes and corrected the wording: Brun's collinearity index puts the
-  {life, onset, leak} *triple* at 6.3e5 against 57 and 8.3 for the pairs, confirming a joint dependency no
-  pairwise measure shows; but the profile likelihood rises on one side only, so the limit is practical at
-  this noise level — post-onset life is resolvable to about ±0.05 life, not finer — rather than structural.
-  [Evidence](../evidence/studyB-structural-2026-09-23/README.md).
+  {life, onset, leak} *triple* at 1.25e6 against 60.8 and 5.83 for the pairs, confirming a joint dependency
+  no pairwise measure shows. The profile-likelihood half of that follow-up was wrong and was redone on
+  2026-09-25. Under the baseline-plus-snapshot design the post-onset coordinate is neither structurally
+  nor practically aliased, but it is **not precisely localized either**: the data support a broad,
+  asymmetric region of roughly [0.75, 0.98] in one noise realisation, the likelihood varies by 6e-10
+  across most of that span, and both terminations sit on nuisance-parameter bounds. Widening those bounds
+  to a still-physical range removes the upper termination **entirely**, so the crossing was the box talking
+  and the verdict is bound-dependent. **No resolution figure is claimed** — both the earlier "±0.05 life" and the interim "±0.21 life" are withdrawn, the first read
+  off a grid edge and the second off a plateau ending at the parameter box. The minimum sits at 0.775
+  against a truth of 0.90, an observed error in this one realisation, not a measured bias. A single aged
+  snapshot without the modelled young baseline localises less well still.
+  [Evidence](../evidence/studyB-structural-correction-2026-09-25/README.md).
 
 - **Study C** (one ridge estimator on baseline-normalised pressure features plus the clock, transferred to 10
   held-out units; run after the owner withdrew Study A's timing criterion): mean held-out u-RMSE 0.093 vs 0.123 for

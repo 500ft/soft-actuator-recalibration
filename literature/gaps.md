@@ -70,15 +70,30 @@ angles. Wieland et al. 2021 argue the Fisher approach is "insensitive to practic
 Chis et al. 2016 show sloppiness is not equivalent to non-identifiability. The current evidence does not
 license the word *structurally*.
 
-**RESOLVED 2026-09-23.** Both diagnostics were run
+**RESOLVED 2026-09-23, CORRECTED 2026-09-25.** Both diagnostics were run
 ([evidence](../evidence/studyB-structural-2026-09-23/README.md)). Brun's subset index confirms the aliasing
 group and shows it is a *triple* — {u, onset, leak} at 6.3 × 10⁵ against 57 for {u, onset} and 8.3 for
-{u, leak} — a joint dependency no pairwise measure reveals. The profile likelihood rises on one side only at
-u = 0.90 and on both sides at u = 0.50, which by Raue et al. 2009 is **practical**, not structural,
-non-identifiability. The wording was downgraded to "practically aliased at this noise level, resolvable to
-about ±0.05 life" across `docs/results.md`, the Study B preregistration, the 2026-09-16 evidence record and
-the claim ledger. A side finding: pre-onset the onset fraction, leak and exponent are exactly inert, so they
+{u, leak} — a joint dependency no pairwise measure reveals. A side finding: pre-onset the onset fraction, leak and exponent are exactly inert, so they
 are irrelevant there rather than confounded.
+
+The profile-likelihood half of that run was **wrong and has been redone**
+([correction](../evidence/studyB-structural-correction-2026-09-25/README.md)). It described a stacked
+baseline-plus-snapshot likelihood but computed the snapshot alone, and its grid ended at u = 0.90, which is
+the post-onset truth, so the upper bound was unreachable and the reported "±0.05 life" was a grid edge.
+Repairing it also exposed a covariance inverted at condition number 1.7 × 10²⁶, an optimiser searching
+across eleven orders of magnitude, and a feature that is undefined on much of the parameter box.
+
+Corrected: under the stacked design the post-onset profile crosses the threshold on both sides, so it is
+neither structurally nor practically aliased — but it is **not precisely localized**. The likelihood is flat
+across most of [0.75, 0.98] (total variation 6 × 10⁻¹⁰ against a 1.92 cut) and both terminations sit on
+nuisance bounds. Widening those bounds to a still-physical range removes the upper crossing **entirely**,
+so the crossing was the box talking: **no resolution figure is supported**, the interim "±0.21 life" is
+withdrawn alongside "±0.05 life", and whether the post-onset coordinate is identifiable at all is once more
+an open question rather than a finding. The modelled young-baseline observation clearly improves localization — the snapshot alone
+puts its minimum at 0.95 when the pre-onset truth is 0.50 — but that baseline is simulated at a life
+coordinate the profiler treats as known, so it is an oracle, not a fielded capability. The collinearity
+result above is unchanged to six figures. Coverage of the chi-square cut and sensitivity to the nuisance
+bounds are both open (`PV-CRIT-09`, `PV-CRIT-10`).
 
 ### 4. The probe may be measuring a rate artefact rather than a hysteretic state
 

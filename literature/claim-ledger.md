@@ -66,8 +66,9 @@ Confidence: MODERATE-HIGH, up from moderate. Still distinctiveness within retrie
 ```
 
 ```
-Claim 6 (Study B): The latent life coordinate is identifiable before the acceleration onset and
-practically aliased with onset fraction and leak after it (wording corrected 2026-09-23).
+Claim 6 (Study B): The latent life coordinate is identifiable before the acceleration onset. After onset
+a baseline-plus-snapshot probe still constrains it, but only to a broad region whose width is not an
+established precision (corrected 2026-09-25).
 Support (method): Kay 1993 (A), Hermann & Krener 1977 (A), Powel & Morgansen 2015 (B) for empirical
          Gramian rank tests, Acuna 2018 (B) for a Bayesian CRLB used as a prognostic design criterion
 Support (precedent for regime-dependent identifiability): Lin & Khoo 2024 (B) -- batteries, four regimes
@@ -77,10 +78,19 @@ Counter -- and this is the important one: Wieland 2021 (D) argues the FIM approa
          recommending profile likelihood; Chis 2016 (B) shows sloppiness is NOT equivalent to
          non-identifiability, so an ill-conditioned FIM does not license the word "structurally"
 Confidence: MODERATE for the regime boundary as an observation about this generator.
-            RESOLVED 2026-09-23 for the wording: the test was run. Brun's subset index confirms the
-            {u, onset, leak} triple aliases jointly (6.3e5 vs 57 and 8.3 for the pairs), but the profile
-            likelihood rises on one side only, so the limit is PRACTICAL, not structural. Wording
-            corrected repo-wide. See evidence/studyB-structural-2026-09-23/.
+            RESOLVED 2026-09-23, CORRECTED 2026-09-25. Brun's subset index confirms the {u, onset, leak}
+            triple aliases jointly (1.25e6 vs 60.8 and 5.83 for the pairs) and that result is unchanged.
+            The profile likelihood was recomputed after the 2026-09-24 critique found it used the snapshot
+            alone while claiming a stacked design, and stopped its grid at the post-onset truth. Under the
+            stacked design the post-onset profile crosses the threshold on both sides, but the likelihood
+            is flat across most of [0.75, 0.98] (total variation 6e-10 vs a 1.92 cut) and BOTH terminations
+            sit on nuisance bounds. Widening the box to a still-physical range removes the upper crossing
+            ENTIRELY (36.5 -> 6e-10), so the verdict is bound-dependent and NO resolution figure is
+            supported. Both +/-0.05 and the interim +/-0.21 are withdrawn, and whether the post-onset
+            coordinate is identifiable at all is open. The 0.775 minimum vs a 0.90 truth is a one-realization error, not a
+            measured bias. Do not quote the all_seven index as a number: it is numerically singular and the
+            artifact now reports its status instead.
+            See evidence/studyB-structural-correction-2026-09-25/.
 ```
 
 ```
@@ -148,9 +158,20 @@ Confidence: LOW-MODERATE, and conditional. Every comparison found assumes a CORR
 - That the pressure–volume indicator is validated on hardware. No study tracks P–V features over a full
   fatigue life on multiple specimens; the closest tracks tip-trajectory hysteresis and stops before failure.
 - That transfer failure is *caused* by observation timing. Severson 2019 is an unrebutted counterexample.
-- That the life coordinate is *structurally* non-identifiable. Tested on 2026-09-23 and the answer is no:
-  the profile likelihood rises on one side, so the limit is practical at this noise level. Say "practically
-  aliased, resolvable to about ±0.05 life within the post-onset region".
+- That the life coordinate is *structurally* non-identifiable. Tested and the answer is no.
+- **Any numeric resolution for post-onset life.** Both "±0.05 life" and "±0.21 life" are withdrawn. Say
+  "a broad, asymmetric region of approximately [0.75, 0.98] under this synthetic design and one noise
+  realisation; precision is not established".
+- **That the post-onset coordinate is identifiable.** The threshold crossing that produced that label
+  disappears when the nuisance box is widened to a still-physical range, so the verdict is a property of
+  the bounds. Three successive readings of this same region — "structurally aliased", "practically aliased
+  ±0.05", "identifiable ±0.21" — were each an artefact of how the calculation was bounded.
+- That the 0.775 minimum shows a downward *bias*. One realisation gives an observed error, not a bias.
+- That the young baseline "buys identifiability". It is simulated at a life coordinate the profiler treats
+  as known, which is a calibration oracle. Say "the modelled young-baseline observation improves
+  localisation under this design".
+- That a single aged snapshot can locate life. It cannot: without the modelled baseline the post-onset
+  profile never closes on its upper side, and pre-onset it puts its minimum at the wrong end of the domain.
 - That the assumed CV of 0.30 is realistic for soft actuators. Every measured value found is lower.
 - That a state-triggered policy beats a clock in general. The literature says it depends on measurement
   accuracy and life dispersion, and can reverse under a variance-aware objective.
