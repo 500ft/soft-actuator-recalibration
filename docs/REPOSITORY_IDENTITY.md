@@ -35,13 +35,12 @@ does not replace the authoritative protocol or task ledger.
 
 ## Visual provenance
 
-The README leads with the committed
-[Study 3 recalibration plot](../data/sim/phaseD/study3_fig4_recal_tradeoff.png).
-This is an owner-requested trial of an evidence-first README for this repository;
-it shows the policy comparison that motivates the project. Its generator,
-inputs, numeric source and limits are recorded in the
-[figure guide](data-and-figures.md#study-3-recalibration-policy) and
-[manifest](figure-manifest.json). It is a synthetic result, not hardware data.
+The owner chose the committed
+[Study 3 recalibration plot](../data/sim/phaseD/study3_fig4_recal_tradeoff.png)
+for the README because it shows the project's main comparison. The figure comes
+from simulation, not hardware. The [figure guide](data-and-figures.md#study-3-recalibration-policy)
+and [manifest](figure-manifest.json) record how it was made and which results
+support it.
 
 [`media/project-overview.svg`](media/project-overview.svg) is an original,
 editable conceptual diagram created for the repository presentation. It contains
