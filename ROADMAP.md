@@ -30,13 +30,15 @@ and a theoretical figure. The [successor record](docs/decisions/0002-successor-s
 pins that result and locates the separate local repository. Its `ROADMAP.md`
 is the full dependency plan for the successor; it does not reopen this study.
 The owner adopted the dependency plan and this cleanup, without approving
-physical work, a public name or publication.
+physical work, a public name or publication. The owner then chose the
+successor's specimen and endpoint, in-house McKibben muscles and blocked force
+at fixed length; see [decision 0003](docs/decisions/0003-successor-specimen-and-endpoint.md).
 
 ## Dependencies and remaining evidence
 
 | Stage | State and prerequisite | Evidence required to complete |
 |---|---|---|
-| Setup, endpoint and parts | Current; owner decisions needed after software preparation | Confirmed access/inventory, specimen rights/geometry, endpoint and compatible parts |
+| Setup, endpoint and parts | Current; specimen and endpoint chosen, remaining owner decisions pending | Confirmed access/inventory, bladder/sleeve/fitting definition with a batch rule, a registered loss criterion and compatible parts for 500 kPa |
 | Single-channel apparatus | Future; setup and physical authorization | Documented control/acquisition, calibrated units and independent functional measurement |
 | Blank, known-leak, thermal and compliance qualification | Future; usable apparatus | Resolvable retention change with uncertainty above nuisance effects |
 | Development pilot | Future; qualified probe and approved endpoint | Unit/batch variation, probe effects and precursor ordering relative to functional loss |
@@ -49,5 +51,6 @@ endpoint pending owner selection and specimen/application feasibility. Horizon N
 false-alarm unit and lead-time definition must be registered before evaluation.
 Naming approval is independent of physical readiness; no public successor exists.
 
-Owner action: confirm physical start, location, budget, available equipment and
-specimen, functional endpoint, and public successor name.
+Owner action: confirm physical start, location, budget, available equipment,
+the loss criterion for the blocked-force endpoint, purchases for the 500 kPa
+supply and sensors, and the public successor name.
