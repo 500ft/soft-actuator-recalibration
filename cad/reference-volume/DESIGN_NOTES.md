@@ -58,8 +58,10 @@ volume minus the port bore — and asserts it against `V0`. Measured 5000.0 mm³
 - Internal radius `r` = 8.0 mm — from the bore above
 
 **Assumptions**
-- Thin-wall hoop stress applies. Valid while `r/t ≳ 10`; here `r/t = 2.7`, so the thin-wall form is
-  *conservative* — it overestimates hoop stress for a thick wall. Acceptable given the margin below.
+- Thin-wall hoop stress is the first estimate. It is valid while `r/t ≳ 10`; here `r/t = 2.7`, and for
+  a thick wall the thin-wall form *underestimates* the inner-surface hoop stress. The thick-cylinder
+  value is given below. An earlier version of this note called the thin-wall form conservative; that
+  was wrong and was corrected on 2026-10-11.
 - Material allowable `σ_allow` = 30 MPa — **UNRESOLVED**. A placeholder order of magnitude for PLA. A real
   allowable must come from the print material datasheet *and* be derated for layer adhesion and print
   orientation, which for a pressure-containing printed part is the governing weakness.
@@ -72,10 +74,15 @@ volume minus the port bore — and asserts it against `V0`. Measured 5000.0 mm³
 
 **Dimensional check.** MPa × mm / mm = MPa. ✓
 
-**Result.** Hoop stress **0.213 MPa** against a derated allowable of 30/4 = 7.5 MPa. **Margin ≈ 35×.**
+**Result.** Thin-wall hoop stress **0.213 MPa** against a derated allowable of 30/4 = 7.5 MPa.
 
-**Sensitivity.** Even if the true allowable were ten times worse than the placeholder — 3 MPa, which would
-be a very poor print — the margin is still 3.5×. The conclusion is insensitive to the unresolved input.
+**Thick-cylinder check.** Inner-surface hoop stress `σ = P (r_o² + r_i²) / (r_o² − r_i²)` with
+`r_i = 8.0 mm` and `r_o = 11.0 mm`: `0.080 × (121 + 64) / (121 − 64) = 0.260 MPa`. Against the same
+derated allowable the **margin ≈ 29×**. This is the governing number; the thin-wall value is not.
+
+**Sensitivity.** Even if the true allowable were ten times worse than the placeholder (3 MPa, a very poor
+print), the margin on the thick-cylinder value is still about 2.9×. The conclusion is insensitive to the
+unresolved input.
 
 **Decision.** Wall thickness **3.0 mm**, and the governing constraint is **manufacturing, not stress**. At
 80 kPa this part is nowhere near structurally limited; 3 mm is the practical minimum for a sealed printed
@@ -94,6 +101,7 @@ is a leak test, not a strength test. **Status: predicted only.**
 | `port_thread` | The part cannot connect to anything without matching the drive's fitting | Measure the fitting on the existing volumetric drive. M5×0.8 is a common pneumatic boss but **nothing in this repository specifies it** |
 | `material_allowable_stress` | Sets the real margin | Material datasheet, derated for layer adhesion and print orientation |
 | end-cap thickness | Carries bending, not hoop stress; currently by inspection | Check as a flat circular plate if the part is ever used above the design pressure |
+| design pressure of any successor blank | The McKibben successor operates at 200 to 500 kPa gauge; this 80 kPa part is not its blank | A successor blank needs its own justified design pressure (upper operating pressure with a declared allowance for supply excursions and the protection arrangement) and preferably a rated commercial vessel; see the successor record in `docs/decisions/0003-successor-specimen-and-endpoint.md` |
 
 ## What this part does not establish
 
