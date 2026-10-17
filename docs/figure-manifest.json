@@ -150,11 +150,11 @@
       "evidence_type": "simulation",
       "generator": "scripts/run_study4.py",
       "command": "python -m scripts.run_study4",
-      "redraw": "python -m scripts.run_study4",
+      "redraw": "python -m scripts.run_study4 --replot",
       "inputs": [
         "sim/network.py",
         "sim/fatigue.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/phaseD/study4_fig_crosstalk_sensitivity.png",

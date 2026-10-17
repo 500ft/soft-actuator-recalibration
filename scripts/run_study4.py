@@ -46,7 +46,6 @@ from sim.fatigue import FatigueParams, degraded_sls, fatigue_state
 from sim.kinematics import curvature_from_pressure
 from sim.network import _conductances, probe_coupling, simulate_network
 from sim.plant import NetworkParams, SLSParams, first_crossing
-from scripts import figstyle
 from scripts.phased import DATA
 from scripts.phaseD_dataset import all_commands, build_actuators, make_drive
 
@@ -224,43 +223,89 @@ def main():
               f"static kRMSE={g['static_kappa_rmse']:.4f}  dynamic={g['dynamic_kappa_rmse']:.4f}  "
               f"dyn_improvement={100*g['dynamic_improvement']:+.1f}%")
 
-    # --- figure: coupling vs supply softness ---------------------------------
-    plt = figstyle.setup()
-    if plt is None:  # pragma: no cover
-        print("(matplotlib unavailable, skipped figure)")
-        print(f"results -> {DATA}/study4_results.json")
-        return
-    C, S = figstyle.COLOR, figstyle.SIZE
+    plot(results)
+    print(f"figure + results -> {DATA}/")
 
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.8))
-    for th in THRESHOLDS:
-        m = crossings["R_s"][f"{th:.2f}"]
-        ax.axhline(th * 100.0, color=C["ref"], lw=0.7, ls=":")
-        note = f"{th:.0%}: R_s ×{m:.1f}" if m is not None else f"{th:.0%} not reached"
-        ax.text(SWEEP_MULT[-1], th * 100.0 + 0.6, note, fontsize=S["note"], color=C["ref"], va="bottom", ha="right")
-    ax.plot(SWEEP_MULT, np.asarray(c_Rs) * 100.0, "o-", color=C["supply"], ms=3, markevery=2)
-    ax.plot(SWEEP_MULT, np.asarray(c_Cm) * 100.0, "s--", color=C["compliance"], ms=3, markevery=2)
-    ax.plot([1.0], [default_coupling * 100.0], "D", color="#222222", ms=5, zorder=5)
-    ax.annotate(f"default network\n{default_coupling * 100:.1f} %", (1.0, default_coupling * 100.0),
-                xytext=(0.27, default_coupling * 100.0 + 7.0), fontsize=S["note"], ha="left", va="bottom",
-                arrowprops=dict(arrowstyle="-", lw=0.6, color="#222222", shrinkB=3))
-    figstyle.end_label(ax, SWEEP_MULT[-1], c_Rs[-1] * 100.0, "supply\nresistance R_s", C["supply"])
-    figstyle.end_label(ax, SWEEP_MULT[-1], c_Cm[-1] * 100.0, "manifold\ncompliance C_m", C["compliance"])
+
+FIG = "study4_fig_crosstalk_sensitivity"
+# Swept knob, legend label, marker, line style.
+KNOBS = (("R_s", "Supply resistance $R_s$", "o", "-"), ("C_m", "Manifold compliance $C_m$", "s", "--"))
+REFERENCE_LEVEL = {"color": "black", "lw": .7, "ls": ":"}
+
+
+def crosstalk_caption(results):
+    x, curves = results["sweep_multiplier"], results["coupling_vs_multiplier"]
+    crossings = results["softness_multiplier_at_threshold"]
+    levels = " and ".join(f"{th * 100:.0f} %" for th in results["thresholds"])
+
+    def reach(key):
+        hits = [crossings[key][f"{th:.2f}"] for th in results["thresholds"]]
+        if all(h is None for h in hits):
+            c = np.asarray(curves[key]) * 100
+            return f"{key} reaches neither (its cross-talk stays between {c.min():.1f} % and {c.max():.1f} %)"
+        return f"{key} reaches them at " + " and ".join(
+            "no point on the grid" if h is None else f"{h:.1f}" for h in hits) + " times its default"
+
+    return (
+        "Shared-manifold cross-talk, the neighbour-to-driven pressure amplitude ratio at the "
+        f"{results['probe']['freq_hz']:g} Hz valve probe, as one network parameter is varied from {x[0]:g} to "
+        f"{x[-1]:g} times its default with every other parameter at default: supply resistance R_s (filled "
+        "circles, solid line) and manifold compliance C_m (filled squares, dashed line). Lumped "
+        f"{results['default_params']['n_chambers']}-chamber network; logarithmic parameter axis. The open "
+        f"diamond marks the default network, {results['default_coupling'] * 100:.1f} %. Dotted lines are the "
+        f"{levels} reference levels, where cross-talk would become first-order: {reach('R_s')}; "
+        f"{reach('C_m')}. Supply resistance drives cross-talk; manifold compliance barely moves it. Markers "
+        f"sit on every second of the {len(x)} sweep points; lines join saved deterministic outputs, with no "
+        "uncertainty band. Simulation only; no physical gripper was tested. Source: study4_results.json."
+    )
+
+
+def crosstalk_figure(results):
+    from matplotlib.lines import Line2D
+    import matplotlib.pyplot as plt
+    from scripts import figure_style as style
+
+    style.apply()
+    x = np.asarray(results["sweep_multiplier"])
+    fig, ax = plt.subplots(figsize=(style.SINGLE, 3.2))
+    fig.subplots_adjust(left=.17, right=.96, top=.83, bottom=.14)
+    for th in results["thresholds"]:
+        ax.axhline(th * 100.0, zorder=1, **REFERENCE_LEVEL)
+    handles = []
+    for key, label, marker, ls in KNOBS:
+        kw = dict(color=style.INK, ls=ls, marker=marker, ms=3.5, mfc=style.FILL[True], mew=.8)
+        ax.plot(x, np.asarray(results["coupling_vs_multiplier"][key]) * 100.0, markevery=2, zorder=2, **kw)
+        handles.append(Line2D([], [], label=label, **kw))
+    default = dict(marker="D", ms=6, mfc=style.FILL[False], mew=1.0, color=style.INK, ls="none")
+    ax.plot(1.0, results["default_coupling"] * 100.0, zorder=4, **default)
+    handles += [Line2D([], [], label="Default network", **default),
+                Line2D([], [], label="Reference level", **REFERENCE_LEVEL)]
     ax.set_xscale("log", base=2)
     ticks = [0.25, 0.5, 1, 2, 4, 8, 16, 32]
     ax.set_xticks(ticks, [f"{v:g}" for v in ticks])
     ax.minorticks_off()
-    ax.set_xlim(SWEEP_MULT[0] / 1.15, SWEEP_MULT[-1] * 1.15)
+    ax.set_xlim(x[0] / 1.15, x[-1] * 1.15)
     ax.set_ylim(0, None)
-    ax.set_xlabel("Parameter / default value (log scale)")
+    ax.set_xlabel("Parameter / default value")
     ax.set_ylabel("Cross-talk, neighbour / driven\npressure amplitude (%)")
-    ax.set_title("Supply resistance drives cross-talk;\nmanifold compliance barely moves it")
-    figstyle.footnote(fig, f"Simulation: lumped three-chamber network, one parameter varied at a time with the "
-                      f"others at default, {results['probe']['freq_hz']:g} Hz probe. No physical gripper tested.")
-    figstyle.save(fig, os.path.join(DATA, "study4_fig_crosstalk_sensitivity"))
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(.5, .995), ncol=2,
+               columnspacing=1.0, handletextpad=.5, borderaxespad=0)
+    return fig
+
+
+def plot(results):
+    import matplotlib.pyplot as plt
+    from scripts import figure_style as style
+
+    fig = crosstalk_figure(results)
+    style.save(fig, os.path.join(DATA, FIG), caption=crosstalk_caption(results))
     plt.close(fig)
-    print(f"figure + results -> {DATA}/")
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    if "--replot" in sys.argv:                      # redraw from the saved result, no simulation
+        plot(json.load(open(os.path.join(DATA, "study4_results.json"))))
+        print("replotted from the saved result")
+    else:
+        main()
