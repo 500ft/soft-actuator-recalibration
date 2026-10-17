@@ -36,9 +36,11 @@ import json
 import os
 
 import numpy as np
+from matplotlib.lines import Line2D
 
 from pipeline.dispersion import RUPTURE_CV, SEED, sample_units
-from scripts import figstyle
+from scripts import figure_style
+from scripts.figure_style import plt
 from scripts.run_studyC import (LAMBDAS, N_TRAIN, N_UNITS, PASS_RMSE, choose_lambda, evaluate,
                                 ridge_fit, rmse, stack, unit_records)
 from sim.fatigue import fatigue_state
@@ -175,54 +177,102 @@ def main():
     print(f"results + figure -> {DATA}/")
 
 
-def plot(results):
-    plt = figstyle.setup()
-    if plt is None:  # pragma: no cover
-        return
-    C, S = figstyle.COLOR, figstyle.SIZE
-    t = results["B_transfer_sensitivity"]["results"]
-    refs = results["B_transfer_sensitivity"]["measured_reference_values"]
-    fig, (a, b) = plt.subplots(1, 2, figsize=(figstyle.FULL, 2.7), gridspec_kw={"wspace": 0.42})
+STEM = os.path.join(DATA, "dispersion_audit_fig")
+PASS_COUNT = 8                 # the Study C rule: 8 of 10 on both counts (see the verdict in transfer_at_cv)
+NEAR_RMSE = 0.005              # caption names the CVs where the two markers in (a) overlap
+PUBLISHED = {"color": figure_style.INK, "lw": 0.35, "ls": "-"}
+SERIES = (("a", "mean_rmse", "o", "-", "Estimator RMSE"), ("a", "mean_rmse_clock", "s", ":", "Clock RMSE"),
+          ("b", "n_within_target", "^", "-", "Units within target"),
+          ("b", "n_beats_clock", "D", ":", "Units beating clock"))
+
+
+def _and(items):
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " and " + items[-1]
+
+
+def _meets(panel, value):
+    return value <= PASS_RMSE if panel == "a" else value >= PASS_COUNT
+
+
+def caption(results):
+    sweep = results["B_transfer_sensitivity"]
+    t, refs = sweep["results"], sweep["measured_reference_values"]
+    n = {len(x["per_unit"]) for x in t}
+    assert len(n) == 1, n
+    n = n.pop()
+    for x in t:
+        rule = "C-PASS" if x["n_within_target"] >= PASS_COUNT and x["n_beats_clock"] >= PASS_COUNT else "C-FAIL"
+        assert rule == x["verdict"], (rule, x["verdict"])
+    clock_ok = [x["rupture_cv"] for x in t if x["mean_rmse_clock"] <= x["mean_rmse"]]
+    per_cv = "; ".join(f"CV {x['rupture_cv']:.2f}: {x['n_within_target']} within target, {x['n_beats_clock']} "
+                       f"beat the clock, {x['verdict']}" for x in t)
+    overlap = "".join(f" At CV {x['rupture_cv']:.2f} the two markers in (a) overlap ({x['mean_rmse']:.3f} and "
+                      f"{x['mean_rmse_clock']:.3f})." for x in t if abs(x["mean_rmse"] - x["mean_rmse_clock"]) < NEAR_RMSE)
+    passed = [x for x in t if x["verdict"] == "C-PASS"]
+    outcome = ("No dispersion level passes both counts" if not passed else
+               "The rule passes at CV " + _and([f"{x['rupture_cv']:.2f}" for x in passed]))
+    return (
+        f"Dispersion audit, simulation only. The Study C evaluation is repeated on cohorts drawn at each assumed "
+        f"rupture-life coefficient of variation (CV), {n} held-out units each; CV {sweep['study_a_assumption']:.2f} "
+        f"is Study A's assumption. (a) Mean held-out life-estimate RMSE of the transferred estimator (circles, solid "
+        f"line) and of the clock alone (squares, dotted line); the dashed horizontal line is the {PASS_RMSE:.2f} life "
+        f"target. (b) Held-out units within the target (triangles, solid line) and units where the estimator beats "
+        f"the clock (diamonds, dotted line); the dashed horizontal line is the rule of {PASS_COUNT} of {n} on both "
+        f"counts. A filled marker meets the target in (a) or the rule count in (b); a hollow marker does not. The "
+        f"clock is as good as or better than the estimator at CV "
+        + _and([f"{c:.2f}" for c in clock_ok])
+        + f".{overlap} {outcome}: {per_cv}. Thin vertical lines mark coefficients of variation measured in published cohorts ("
+        + "; ".join(f"{k} {v:g}" for k, v in refs.items())
+        + "); they are specific materials and designs, not this apparatus. "
+        "Source: data/sim/dispersion_audit/dispersion_audit.json."
+    )
+
+
+def figure(results):
+    figure_style.apply()
+    sweep = results["B_transfer_sensitivity"]
+    t, refs = sweep["results"], sweep["measured_reference_values"]
     cvs = [x["rupture_cv"] for x in t]
-    for ax in (a, b):
-        for name, v in refs.items():
-            ax.axvline(v, ls="-", lw=0.7, color="#C8C8C8", zorder=0)
-            if ax is a:                                 # name the published cohorts once
-                ax.text(v, 1.0, name.split(" ", 2)[-1], transform=ax.get_xaxis_transform(), rotation=90,
-                        ha="right", va="top", fontsize=S["tick"], color=C["muted"])
+    fig, axes = plt.subplots(1, 2, figsize=(figure_style.FULL, 3.0))
+    fig.subplots_adjust(left=.09, right=.985, top=.78, bottom=.15, wspace=.3)
+    panels = dict(zip("ab", axes))
+    for ax in axes:
+        for v in refs.values():
+            ax.axvline(v, zorder=0, **PUBLISHED)
         ax.set_xticks(cvs)
         ax.set_xlim(0, 0.33)
         ax.set_xlabel("Assumed rupture-life CV")
-    est = [x["mean_rmse"] for x in t]
-    clk = [x["mean_rmse_clock"] for x in t]
-    a.plot(cvs, est, "o-", color=C["pv"])
-    a.plot(cvs, clk, "s--", color=C["clock"])
-    figstyle.end_label(a, cvs[-1], est[-1], "transferred\nestimator", C["pv"], dy=-8)
-    figstyle.end_label(a, cvs[-1], clk[-1], "clock only", C["clock"], dy=4)
-    a.axhline(PASS_RMSE, ls=":", color=C["ref"], lw=0.8)
-    a.text(0.005, PASS_RMSE + 0.003, f"target {PASS_RMSE:.2f}", fontsize=S["note"], color=C["ref"], va="bottom")
-    a.set_ylim(0, 0.14)
-    a.set_ylabel("Mean held-out life-estimate\nRMSE (life)")
-    a.set_title("The clock is as good or better until CV 0.30")
-    within = [x["n_within_target"] for x in t]
-    beats = [x["n_beats_clock"] for x in t]
-    b.plot(cvs, within, "o-", color=C["always"])
-    b.plot(cvs, beats, "s--", color=C["fixed"])
-    figstyle.end_label(b, cvs[-1], within[-1], "within 0.10 life", C["always"], dy=-7)
-    figstyle.end_label(b, cvs[-1], beats[-1], "beats the clock", C["fixed"], dy=7)
-    b.axhline(8, ls=":", color=C["ref"], lw=0.8)
-    b.text(0.005, 7.8, "rule: 8 of 10 on both", fontsize=S["note"], color=C["ref"], va="top")
-    b.set_ylim(0, 10.5)
-    b.set_yticks(range(0, 11, 2))
-    b.set_ylabel("Held-out units (of 10)")
-    passed = [w >= 8 and c >= 8 for w, c in zip(within, beats)]
-    b.set_title("No dispersion level passes both counts" if not any(passed) else "Rule outcome by dispersion level")
-    figstyle.panel_letter(a, "a", dx=-44)
-    figstyle.panel_letter(b, "b", dx=-30)
-    figstyle.footnote(fig, "Simulation: the Study C evaluation repeated on cohorts drawn at each assumed CV, 10 "
-                      "held-out units each. Gray lines: coefficients of variation measured in published cohorts ("
-                      + "; ".join(f"{k} {v:g}" for k, v in refs.items()) + ").")
-    figstyle.save(fig, os.path.join(DATA, "dispersion_audit_fig"))
+    for panel, key, marker, ls, _ in SERIES:
+        ax, ys = panels[panel], [x[key] for x in t]
+        ax.plot(cvs, ys, color=figure_style.INK, ls=ls, lw=1.0, zorder=2)
+        for cv, y in zip(cvs, ys):
+            ax.plot(cv, y, marker=marker, mfc=figure_style.FILL[bool(_meets(panel, y))], zorder=3,
+                    **figure_style.MARKER)
+    panels["a"].axhline(PASS_RMSE, zorder=1, **figure_style.REFERENCE)
+    panels["a"].set_ylim(0, 0.14)
+    panels["a"].set_ylabel("Mean held-out life-estimate\nRMSE (life)")
+    n = len(t[0]["per_unit"])
+    panels["b"].axhline(PASS_COUNT, zorder=1, **figure_style.REFERENCE)
+    panels["b"].set_ylim(0, n + 0.5)
+    panels["b"].set_yticks(range(0, n + 1, 2))
+    panels["b"].set_ylabel(f"Held-out units (of {n})")
+    for i, ax in enumerate(axes):
+        figure_style.letter(ax, i)
+    handles = [Line2D([], [], marker=m, ls=ls, mfc=figure_style.FILL[True], label=label,
+                      **{k: v for k, v in figure_style.MARKER.items() if k != "ls"})
+               for _, _, m, ls, label in SERIES]
+    handles.append(Line2D([], [], marker="o", mfc=figure_style.FILL[False], label="Hollow: misses target or rule",
+                          **figure_style.MARKER))
+    handles.append(Line2D([], [], label="Target or rule", **figure_style.REFERENCE))
+    handles.append(Line2D([], [], label="Published CV", **PUBLISHED))
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(.5, .995), ncol=4, columnspacing=1.2,
+               handletextpad=.5, borderaxespad=0)
+    return fig
+
+
+def plot(results):
+    fig = figure(results)
+    figure_style.save(fig, STEM, caption=caption(results))
     plt.close(fig)
 
 
