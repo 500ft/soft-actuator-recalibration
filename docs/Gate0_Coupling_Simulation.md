@@ -59,7 +59,11 @@ real operating band of Dragon Skin grippers.
 Source: [gate0_results.json](../data/gate0/gate0_results.json).
 
 ![Relative cross-talk and neighbour pressure against drive frequency for five chamber-1 compliance steps](../data/gate0/fig_crosstalk_vs_freq.png)
-![Cross-talk at 3 Hz rising steadily as chamber-1 compliance doubles](../data/gate0/fig_crosstalk_vs_compliance.png)
+
+![Cross-talk at 3 Hz against chamber-1 compliance, one marker per compliance step](../data/gate0/fig_crosstalk_vs_compliance.png)
+
+Relative cross-talk |H21/H11| at the 3 Hz actuation frequency against chamber-1 compliance, 11 steps from 1× to 2× healthy. Cross-talk rises steadily from 11.8 % to 23.4 %, a rise of 99 % over the sweep (Spearman ρ = 1.000). Simulation: lumped R-C model, 3 chambers on one manifold; chamber-1 compliance is scaled and all other parameters are fixed. No physical measurement. Source: gate0_results.json. [Caption file](../data/gate0/fig_crosstalk_vs_compliance.caption.md).
+
 ![Identical static gain matrices at 1× and 2× chamber-1 compliance](../data/gate0/fig_dc_independence.png)
 
 ## What the sim taught us (this changes the experiment)

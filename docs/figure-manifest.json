@@ -10,7 +10,8 @@
       "redraw": "python -m scripts.gate0_lumped_rc",
       "inputs": [
         "sim/plant.py",
-        "scripts/figstyle.py"
+        "scripts/figstyle.py",
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/gate0/fig_crosstalk_vs_compliance.png",
@@ -47,7 +48,8 @@
       "inputs": [
         "sim/fatigue.py",
         "sim/plant.py",
-        "scripts/figstyle.py"
+        "scripts/figstyle.py",
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/phaseB/fig_fatigue_trajectory.png",
