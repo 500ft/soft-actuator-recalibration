@@ -172,7 +172,8 @@
         "sim/plant.py",
         "sim/sensors.py",
         "pipeline/dispersion.py",
-        "scripts/figstyle.py"
+        "scripts/figstyle.py",
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/studyA/studyA_fig_indicator_spread.png",

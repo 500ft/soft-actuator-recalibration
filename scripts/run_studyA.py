@@ -15,6 +15,7 @@ from sim.fatigue import degraded_sls, fatigue_state
 from sim.plant import first_crossing, loop_area, pv_loop
 from sim.sensors import SensorModel, SensorParams
 from scripts import figstyle
+from scripts import figure_style as style
 
 DATA = "data/sim/studyA"
 N_UNITS = 30
@@ -163,28 +164,68 @@ def main():
                       f"timing criterion: trigger-life SD {trigger_sd:.3f} life.")
     figstyle.save(fig, os.path.join(DATA, "studyA_fig_indicator_spread")); plt.close(fig)
 
-    names = {"none": "none (all canonical)", "rupture": "rupture life", "mullins": "Mullins softening",
-             "fatigue_law": "degradation law", "leak": "leak", "tau": "time constant τ", "stiffness": "stiffness",
-             "thickness": "wall thickness", "temperature": "temperature"}
-    rows = sorted(ablation, key=lambda k: -ablation[k]["ideal_sd_between_u090"])
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.8))
-    for y, k in enumerate(rows):
-        val = ablation[k]["ideal_sd_between_u090"]
-        ax.plot([0, val], [y, y], color="#BDBDBD", lw=1.0, zorder=1)
-        ax.plot(val, y, "o", color=C["pv"] if val > 1e-9 else C["fixed"], ms=5, zorder=2)
-        ax.annotate(f"{val:.2g}" if val > 1e-9 else "≈ 0", (val, y), xytext=(6, 0), textcoords="offset points",
-                    va="center", fontsize=S["note"], color="#222222")
-    ax.set_yticks(range(len(rows)), [names.get(k, k) for k in rows])
-    ax.set_ylim(len(rows) - 0.5, -0.5)
-    ax.tick_params(axis="y", length=0)
-    ax.set_xlim(-0.0004, max(ablation[k]["ideal_sd_between_u090"] for k in rows) * 1.3)
-    ax.set_xlabel("Noise-free SD between units at u = 0.9")
-    ax.set_title("The degradation law drives the spread;\nplant parameters add nothing")
-    figstyle.footnote(fig, f"Simulation: {N_UNITS} units, one dispersion axis switched on at a time, all others "
-                      "canonical; values below 10⁻⁹ shown as ≈ 0.")
-    figstyle.save(fig, os.path.join(DATA, "studyA_fig_ablation")); plt.close(fig)
+    plot_ablation(results)
     print(f"results + figures -> {DATA}/")
 
 
+ABLATION_NAMES = {"none": "none (all canonical)", "rupture": "rupture life", "mullins": "Mullins softening",
+                  "fatigue_law": "degradation law", "leak": "leak", "tau": r"time constant $\tau$",
+                  "stiffness": "stiffness", "thickness": "wall thickness", "temperature": "temperature"}
+ZERO = 1e-9   # spreads below this are numerically zero
+
+
+def ablation_rows(results):
+    """(axis, SD between units at u = 0.9) in descending order, from the saved result."""
+    ab = results["ablation_one_axis"]
+    return sorted(((k, v["ideal_sd_between_u090"]) for k, v in ab.items()), key=lambda kv: -kv[1])
+
+
+def ablation_caption(results):
+    rows = ablation_rows(results)
+    word = lambda k: ABLATION_NAMES[k].replace(r"$\tau$", "τ")
+    lead, second = rows[0], rows[1]
+    assert lead[0] == "fatigue_law" and second[1] > ZERO and all(v <= ZERO for _, v in rows[2:]), rows
+    zero = [word(k) for k, _ in rows[2:] if k != "none"]
+    return (f"Simulation: {results['n_units']} synthetic units with one dispersion axis switched on at a time and "
+            "all others canonical. Each row is the noise-free standard deviation between units of the normalised "
+            "P-V loop-area indicator at normalised life u = 0.9, drawn on a line from zero. A filled circle marks "
+            "a spread above 10⁻⁹; a hollow circle marks a spread below 10⁻⁹, which is numerically zero. "
+            f"The degradation law drives the spread ({lead[1]:.3g}); {word(second[0])} adds {second[1]:.2g}. "
+            f"{', '.join(zero[:-1]).capitalize()} and {zero[-1]} stay below 10⁻⁹, as does the all-canonical "
+            "control; plant-level dispersion adds nothing. Source: studyA_results.json (ablation_one_axis).")
+
+
+def ablation_figure(results):
+    from matplotlib.lines import Line2D
+    style.apply()
+    rows = ablation_rows(results)
+    fig, ax = style.plt.subplots(figsize=(style.SINGLE, 2.8))
+    fig.subplots_adjust(left=0.36, right=0.94, top=0.97, bottom=0.16)
+    for y, (_, val) in enumerate(rows):
+        ax.plot([0, val], [y, y], color=style.INK, lw=0.6, zorder=1)
+        ax.plot(val, y, marker="o", mfc=style.FILL[val > ZERO], zorder=2, **style.MARKER)
+    ax.set_yticks(range(len(rows)), [ABLATION_NAMES[k] for k, _ in rows])
+    ax.set_ylim(len(rows) - 0.5, -0.5)
+    ax.tick_params(axis="y", length=0)
+    ax.set_xlim(-0.0006, rows[0][1] * 1.1)
+    ax.xaxis.set_major_locator(style.plt.MaxNLocator(3))
+    ax.set_xlabel(r"Noise-free SD between units at $u = 0.9$")
+    ax.legend(handles=[Line2D([], [], marker="o", mfc=style.FILL[True], label=rf"Above $10^{{-9}}$", **style.MARKER),
+                       Line2D([], [], marker="o", mfc=style.FILL[False], label=rf"Below $10^{{-9}}$", **style.MARKER)],
+              loc="lower right", handletextpad=0.4)
+    return fig
+
+
+def plot_ablation(results):
+    fig = ablation_figure(results)
+    style.save(fig, os.path.join(DATA, "studyA_fig_ablation"), caption=ablation_caption(results))
+    style.plt.close(fig)
+
+
 if __name__ == "__main__":
-    main()
+    import sys
+    if "--replot" in sys.argv:      # redraw the ablation figure from the saved result; no simulation
+        plot_ablation(json.load(open(os.path.join(DATA, "studyA_results.json"))))
+        print("replotted the ablation figure from the saved result")
+    else:
+        main()
