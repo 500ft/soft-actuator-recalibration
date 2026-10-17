@@ -71,7 +71,7 @@
       "inputs": [
         "sim/fatigue.py",
         "pipeline/validation.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/study1/fig_detector_comparison.png",
