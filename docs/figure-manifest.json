@@ -92,7 +92,7 @@
       "inputs": [
         "data/sim/phaseD/dataset.npz",
         "data/sim/phaseD/manifest.json",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/phaseD/study2_fig1_drift.png",
