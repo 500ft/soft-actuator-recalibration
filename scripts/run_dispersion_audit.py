@@ -233,8 +233,8 @@ def figure(results):
     sweep = results["B_transfer_sensitivity"]
     t, refs = sweep["results"], sweep["measured_reference_values"]
     cvs = [x["rupture_cv"] for x in t]
-    fig, axes = plt.subplots(1, 2, figsize=(figure_style.FULL, 3.0))
-    fig.subplots_adjust(left=.09, right=.985, top=.78, bottom=.15, wspace=.3)
+    fig, axes = plt.subplots(1, 2, figsize=(figure_style.FULL, 3.2))
+    fig.subplots_adjust(left=.09, right=.985, top=.77, bottom=.14, wspace=.3)
     panels = dict(zip("ab", axes))
     for ax in axes:
         for v in refs.values():
