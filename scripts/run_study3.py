@@ -398,41 +398,109 @@ def plot(results, curves):
     figstyle.save(fig, os.path.join(DATA, "study3_fig3_leading_indicator"))
     plt.close(fig)
 
-    # Fig 4: the trade-off, pose error vs recalibration count per policy
-    pol = results["policies_on_heldout"]
-    budget = results["accuracy_budget_mm"]
-    names = {"fixed": ("initial calibration only", C["fixed"], "o"),
-             "scheduled": (f"clock, {results['period_selected_cycles']:,.0f} cycles", C["clock"], "^"),
-             "triggered": (f"P-V trigger, τ = {results['tau_selected']:g}", C["pv"], "D"),
-             "always": ("every life stage", C["always"], "X")}
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.6))
-    ax.axhline(budget, ls="--", lw=0.8, color=C["ref"])
-    ax.text(5.6, budget + 0.008, f"error budget {budget:.3f} mm", ha="right", va="bottom", fontsize=S["note"],
-            color=C["ref"])
-    for key, (label, color, marker) in names.items():
+    # Fig 3 keeps the old style and is drawn first, before figure_style.apply() changes rcParams.
+    plot_tradeoff(results)
+
+
+FIG4 = "study3_fig4_recal_tradeoff"
+# Policy key, label (None: built from the result), marker. Shared with run_study3_cluster_ci.
+POLICIES = (("fixed", "Initial calibration only", "o"), ("scheduled", None, "^"),
+            ("triggered", None, "D"), ("always", "Every life stage", "X"))
+POLICY_WORDS = {"o": "circle", "^": "triangle", "D": "diamond", "X": "cross"}
+
+
+def policy_labels(period, tau):
+    """Legend label per policy key; mathtext tau because cmr10 has no Greek glyphs."""
+    names = {"scheduled": f"Clock, {period:,.0f} cycles", "triggered": f"P-V trigger, $\\tau$ = {tau:g}"}
+    return {key: label or names[key] for key, label, _ in POLICIES}
+
+
+SHORT = {"fixed": "initial calibration only", "scheduled": "the clock", "triggered": "the P-V trigger",
+         "always": "calibration at every stage"}
+
+
+def policy_sentence(period, tau):
+    """Plain-text policy list with marker names, for captions."""
+    words = {"fixed": "initial calibration only", "scheduled": f"a cycle-count clock every {period:,.0f} cycles "
+             "selected on the training actuators", "triggered": f"the P-V trigger at τ = {tau:g}",
+             "always": "calibration at every life stage"}
+    return ", ".join(f"{words[key]} ({POLICY_WORDS[marker]})" for key, _, marker in POLICIES)
+
+
+def tradeoff_caption(results, audit):
+    pol, budget = results["policies_on_heldout"], results["accuracy_budget_mm"]
+    meets = [SHORT[k] for k, _, _ in POLICIES if pol[k]["mean_pose_rmse_mm"] <= budget]
+    values = "; ".join(f"{SHORT[k]} {pol[k]['mean_pose_rmse_mm']:.3f} mm with {pol[k]['recal_per_actuator']:.1f}"
+                       for k, _, _ in POLICIES)
+    return (
+        "Mean pose RMSE against calibrations per actuator over life on the "
+        f"{len(results['test_actuators'])} held-out actuators of the Phase D cohort for four policies: "
+        f"{policy_sentence(results['period_selected_cycles'], results['tau_selected'])}. Counts include the "
+        "initial calibration; error averages life stages, then actuators. The dashed line is the train-derived "
+        f"error budget, {budget:.3f} mm. A filled marker meets the budget; a hollow marker exceeds it. Values: "
+        f"{values}. Only {' and '.join(meets)} meet the budget. This saved run has no matched-cost clock; at "
+        f"{audit['clock_periods_matching_trigger_schedule_on_all_actuators'][0]:,.0f} cycles a clock ties the "
+        "trigger (data/sim/summary/policy_comparison.png, matched_clock_audit.json). Simulation only. "
+        "Source: study3_results.json."
+    )
+
+
+def policy_legend(fig, period, tau, extra, ncol, y=.995):
+    """One framed legend above the panels: policy shapes, then the reference and state entries."""
+    from matplotlib.lines import Line2D
+    from scripts import figure_style as style
+
+    labels = policy_labels(period, tau)
+    handles = [Line2D([], [], marker=m, mfc=style.FILL[True], label=labels[k], **style.MARKER)
+               for k, _, m in POLICIES]
+    fig.legend(handles=handles + extra, loc="upper center", bbox_to_anchor=(.5, y), ncol=ncol,
+               columnspacing=1.0, handletextpad=.5, borderaxespad=0)
+
+
+def tradeoff_figure(results):
+    from matplotlib.lines import Line2D
+    import matplotlib.pyplot as plt
+    from scripts import figure_style as style
+
+    style.apply()
+    pol, budget = results["policies_on_heldout"], results["accuracy_budget_mm"]
+    fig, ax = plt.subplots(figsize=(style.SINGLE, 3.3))
+    fig.subplots_adjust(left=.17, right=.96, top=.79, bottom=.14)
+    ax.axhline(budget, zorder=1, **style.REFERENCE)
+    for key, _, marker in POLICIES:
         p = pol[key]
-        ax.plot(p["recal_per_actuator"], p["mean_pose_rmse_mm"], marker, color=color, ms=7, ls="none")
-        figstyle.end_label(ax, p["recal_per_actuator"], p["mean_pose_rmse_mm"], label, color,
-                           dx=-9 if key == "always" else 8, ha="right" if key == "always" else "left")
+        ax.plot(p["recal_per_actuator"], p["mean_pose_rmse_mm"], marker=marker, zorder=3,
+                mfc=style.FILL[p["mean_pose_rmse_mm"] <= budget], **style.MARKER)
     ax.set_xlim(0.5, 5.7)
     ax.set_ylim(0, max(p["mean_pose_rmse_mm"] for p in pol.values()) * 1.12)
     ax.set_xlabel("Calibrations per actuator over life")
     ax.set_ylabel("Mean pose RMSE (mm)")
-    within = [names[k][0] for k in names if pol[k]["mean_pose_rmse_mm"] <= budget]
-    ax.set_title("More calibrations lower the error; the trigger\nand every-stage policies meet the budget"
-                 if set(within) == {names["triggered"][0], names["always"][0]} else "Recalibration trade-off")
-    figstyle.footnote(fig, f"Simulation: {n} held-out actuators; counts include the initial calibration. This saved "
-                      "run has no matched-cost clock; at 2,400 cycles a clock ties the trigger "
-                      "(data/sim/summary/policy_comparison.png).")
-    figstyle.save(fig, os.path.join(DATA, "study3_fig4_recal_tradeoff"))
+    extra = [Line2D([], [], label="Error budget", **style.REFERENCE),
+             Line2D([], [], marker="s", mfc=style.FILL[False], label="Hollow: above budget", **style.MARKER)]
+    policy_legend(fig, results["period_selected_cycles"], results["tau_selected"], extra, ncol=2)
+    return fig
+
+
+def plot_tradeoff(results):
+    """Fig 4 from the saved result alone; the matched-cost audit supplies one caption number."""
+    import matplotlib.pyplot as plt
+    from scripts import figure_style as style
+
+    audit = json.load(open(os.path.join(DATA, "matched_clock_audit.json")))
+    fig = tradeoff_figure(results)
+    style.save(fig, os.path.join(DATA, FIG4), caption=tradeoff_caption(results, audit))
     plt.close(fig)
 
 def replot():
-    """Redraw from the saved result; only the two mean curves of Fig 3 are recomputed from the dataset."""
+    """Redraw from the saved result. Fig 4 needs only the JSON; Fig 3 is redrawn only when the
+    regenerated dataset is present, because its two mean curves come from it."""
     results = json.load(open(os.path.join(DATA, "study3_results.json")))
-    d, m = load()
-    _, test_ids, _, err, hn, _ = prepare(d, m)
-    plot(results, mean_curves(test_ids, err, hn))
+    if os.path.exists(os.path.join(DATA, "dataset.npz")):
+        d, m = load()
+        _, test_ids, _, err, hn, _ = prepare(d, m)
+        plot(results, mean_curves(test_ids, err, hn))
+    else:
+        plot_tradeoff(results)
     print("replotted from the saved result")
 
 
