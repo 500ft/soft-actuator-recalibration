@@ -217,7 +217,7 @@
         "pipeline/dispersion.py",
         "pipeline/identifiability.py",
         "scripts/run_studyB.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/studyC/studyC_fig_transfer.png",
@@ -237,7 +237,7 @@
         "scripts/run_studyC.py",
         "pipeline/dispersion.py",
         "pipeline/identifiability.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/studyC/studyC_fig_failure_map.png",
@@ -278,7 +278,7 @@
         "scripts/run_studyC.py",
         "pipeline/identifiability.py",
         "sim/fatigue.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/dispersion_audit/dispersion_audit_fig.png",
