@@ -1,0 +1,1 @@
+Doubling the terminal leak halves the hold half-life. Closed-valve pressure half-life at rupture against the leak conductance at rupture, as a multiple of healthy: 10× gives 14.4 ms; 20× gives 7.0 ms; 40× gives 3.5 ms. Initial hold pressure 60 kPa. Simulation: deterministic fatigue laws (sim/fatigue.py), rupture at 3,500 cycles. Source: phaseB_results.json.

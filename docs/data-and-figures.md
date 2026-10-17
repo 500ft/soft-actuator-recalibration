@@ -9,12 +9,23 @@ The machine-readable companion is [`figure-manifest.json`](figure-manifest.json)
 
 ## Active summaries and retained history
 
-Every figure under `data/gate0/` and `data/sim/` uses the shared style in
-[`scripts/figstyle.py`](../scripts/figstyle.py): three font sizes, one colour per
-entity in every figure, a simulation footnote with n and the fixed conditions,
-300-dpi PNG and dateless PDF or SVG. Vermillion marks the P-V signal and methods
-built on it, blue the cycle-count clock, and grays the reference policies. The
-owner asked for this pass on 2026-10-09. Redrawing changed no result; the
+Figures redrawn from committed JSON use [`scripts/figure_style.py`](../scripts/figure_style.py),
+the rule set approved on [evidence-sufficiency-benchmark PR #26](https://github.com/500ft/evidence-sufficiency-benchmark/pull/26).
+The canvas holds only data, axes, tick and axis labels, panel letters and one
+framed legend. Marker shape and line style carry the condition, filled or hollow
+markers carry the state, and colour appears only in the Study B heatmap field,
+with a colourbar. Type is Computer Modern (cmr10), sizes 9/9/7, 600-dpi PNG and
+dateless PDF or SVG. Every word that left the canvas is in a `<stem>.caption.md`
+file next to the image, written by the generator from the result JSON. The
+generator refuses to save when printed items touch.
+
+Eleven figures whose plotted curves are not stored in a committed file keep the
+2026-10-09 style from [`scripts/figstyle.py`](../scripts/figstyle.py): the Gate 0
+frequency and DC-gain figures, all three Phase A figures, four Phase B figures
+(P-V loops, fatigue trajectory, pressure decay, onset sensitivity), Study 3
+figures 3 and 3b (their curves come from the uncommitted dataset) and the Study A
+indicator spread (its per-unit trajectories are not saved). Redrawing them would
+need a model or dataset rerun. Redrawing changed no result; the
 [redraw commands](#redraw-every-figure) read saved JSON or rerun a deterministic
 script whose JSON output is byte-identical.
 
@@ -33,16 +44,17 @@ record the bytes used. Original JSON remains the numeric source of truth.
 
 | Current visual or table | Source and display choice | Historical material retained |
 |:---|:---|:---|
-| [Policy comparison](../data/sim/summary/policy_comparison.png), [SVG](../data/sim/summary/policy_comparison.svg), [CSV](../data/sim/summary/policy_comparison.csv) | Matched-cost audit plus saved Study 3 context policies. Aligned error/count panels; linear axes start at zero. Separate rows show the exact tie without covering either marker. | Original trade-off figure omits the matched-cost clock; retained for manuscript reproduction. |
-| [Trigger timing](../data/sim/summary/trigger_timing.png), [SVG](../data/sim/summary/trigger_timing.svg), [CSV](../data/sim/summary/trigger_timing.csv) | Saved per-actuator crossing estimates, unchanged order and exclusions. Paired crossings and signed lead use separate axes; connectors are not intervals. | Original dual-axis association figure and generator are retained. Recreating its source trajectories would require dataset regeneration, which this visual task does not perform. |
-| [Cross-talk](../data/sim/summary/cross_talk.png), [SVG](../data/sim/summary/cross_talk.svg), [CSV](../data/sim/summary/cross_talk.csv) | Saved resistance/compliance curves, default point and reference thresholds. Same curve selection as the original; log parameter ratio with explicit units. No inferred uncertainty. | Original Study 4 figure remains byte-preserved. |
+| [Policy comparison](../data/sim/summary/policy_comparison.png), [SVG](../data/sim/summary/policy_comparison.svg), [CSV](../data/sim/summary/policy_comparison.csv), [caption](../data/sim/summary/policy_comparison.caption.md) | Matched-cost audit plus saved Study 3 context policies. Aligned error/count panels; linear axes start at zero. Separate rows show the exact tie without covering either marker. | Original trade-off figure omits the matched-cost clock; retained for manuscript reproduction. |
+| [Trigger timing](../data/sim/summary/trigger_timing.png), [SVG](../data/sim/summary/trigger_timing.svg), [CSV](../data/sim/summary/trigger_timing.csv), [caption](../data/sim/summary/trigger_timing.caption.md) | Saved per-actuator crossing estimates, unchanged order and exclusions. Paired crossings and signed lead use separate axes; connectors are not intervals. | Original dual-axis association figure and generator are retained. Recreating its source trajectories would require dataset regeneration, which this visual task does not perform. |
+| [Cross-talk](../data/sim/summary/cross_talk.png), [SVG](../data/sim/summary/cross_talk.svg), [CSV](../data/sim/summary/cross_talk.csv), [caption](../data/sim/summary/cross_talk.caption.md) | Saved resistance/compliance curves, default point and reference thresholds. Same curve selection as the original; log parameter ratio with explicit units. No inferred uncertainty. | The Study 4 manuscript figure shows the same sweep from the same JSON. |
 | README and result policy tables | Generated from the same rows used by the figure. Errors rounded to millimetre thousandths for display; event counts retain fractional cohort means. Full precision remains in JSON and exported CSV. | Manuscript tables and original reported values are unchanged. |
-| Study figures under `data/gate0/` and `data/sim/` | Redrawn with the shared style from saved results; same paths, formats and plotted values. | The archived v1.3 PDF and the Preprints.org package in `docs/preprints_submission/` keep the original figures. |
+| Study figures under `data/gate0/` and `data/sim/` | Redrawn from saved results; same paths, formats and plotted values. Each rebuilt figure has a caption file beside it. | The archived v1.3 PDF and the Preprints.org package in `docs/preprints_submission/` keep the original figures. |
 
-Marker shapes and line styles supplement colour. There are no new error bars or
-confidence intervals; intervals appear only where a saved result contains them.
-Displayed values were checked against source JSON. `provenance.json` still names
-the enclosure commit that set the first layout of these three summaries.
+There are no new error bars or confidence intervals; intervals appear only
+where a saved result contains them. Tests in `tests/test_figures_*.py` check
+plotted values against the source JSON or CSV, the canvas text, the overlap
+audit and each caption against its file and the docs. `provenance.json` records
+the input, generator and style hashes.
 
 The [separate local metrology figure](decisions/0002-successor-software-preparation.md)
 is theoretical and outside this simulation registry. Its local source inputs
@@ -56,6 +68,7 @@ file.
 
 ```sh
 python -m scripts.gate0_lumped_rc                 # 2 s; rewrites the same gate0_results.json
+python -m scripts.gate0_lumped_rc --replot        # compliance figure only, from the saved JSON
 python -m scripts.phaseA_plant_demo               # 2 s; rewrites the same phaseA_results.json
 python -m scripts.phaseB_fatigue_demo --replot
 python -m scripts.run_study1 --replot
@@ -63,8 +76,9 @@ python -m scripts.run_study2 --replot
 python -m scripts.phaseD_dataset                  # 51 s; the next two read the dataset
 python -m scripts.run_study3 --replot
 python -m scripts.run_study3_cluster_ci --replot
-python -m scripts.run_study4                      # 10 s; rewrites the same study4_results.json
+python -m scripts.run_study4 --replot             # from the saved study4_results.json
 python -m scripts.run_studyA                      # 38 s; rewrites the same studyA_results.json
+python -m scripts.run_studyA --replot             # ablation figure only, from the saved JSON
 python -m scripts.run_studyB --replot
 python -m scripts.run_studyB_structural --replot
 python -m scripts.run_studyC --replot
@@ -74,9 +88,11 @@ python -m scripts.plot_result_summaries
 ```
 
 `--replot` redraws figures and writes no result files. Most scripts draw from
-the saved result. The Study 3 and cluster-interval redraws recompute their
-per-actuator curves from the regenerated dataset, and Phase B recomputes its
-deterministic curves. A full Phase B run would add a `fatigue_exponent` entry to
+the saved result. The Study 3 and cluster-interval redraws draw figures 4 and 4b
+from the saved JSON, and redraw figures 3 and 3b only when the regenerated
+dataset is present, since those curves come from it. Phase B draws its recovery
+and leak figures from the saved JSON and recomputes the deterministic curves for
+the other four. A full Phase B run would add a `fatigue_exponent` entry to
 `phaseB_results.json`. Full runs of Studies 1, 2 and 3 do not reproduce
 their committed JSON byte for byte (see the reproduction caveat in the
 [observability program](specs/observability-program/program.md)), so the redraw
@@ -187,7 +203,7 @@ python -m scripts.phaseD_dataset
 
 The policy plot uses the train-selected clock and omits the matched-cost clock
 that coincides with the trigger; see [matched_clock_audit.json](../data/sim/phaseD/matched_clock_audit.json).
-Its redrawn footnote points to the matched-cost summary.
+Its caption file points to the matched-cost summary.
 
 ## Study 4: network sensitivity
 

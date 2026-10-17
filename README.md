@@ -40,10 +40,22 @@ produced.
 
 ![Saved simulation policy comparison: the matched-cost clock and P-V trigger have equal pose error and calibration count](data/sim/summary/policy_comparison.png)
 
-Held-out point summaries from the [audit](data/sim/phaseD/matched_clock_audit.json)
-and [Study 3](data/sim/phaseD/study3_results.json). Counts include initial
-calibration; pose error averages life stages, then actuators. The dashed line is
-the train-derived error budget. [Download values](data/sim/summary/policy_comparison.csv).
+Saved simulation point summaries for 6 held-out actuators; no uncertainty bars.
+Panel (a) shows mean pose RMSE [mm] and panel (b) calibrations per actuator for
+five policies, marked by shape: initial calibration only (circle), the
+train-selected clock at 2,700 cycles (triangle), the matched-cost clock at
+2,400 cycles (square), the P-V trigger at τ = 0.05 (diamond), calibration at every
+stage (cross). Left is better in both panels. The dashed line in (a) is the
+train-derived error budget, 0.159 mm. A filled marker means the policy is within
+the budget; a hollow marker means it exceeds it: initial calibration only and
+the train-selected clock at 2,700 cycles. At matched cost the clock ties the P-V
+trigger: both reach 0.058 mm with 2.0 calibrations per actuator. Counts include
+the initial calibration; error averages life stages, then actuators. Values: the
+policy table and policy_comparison.csv. Sources: matched_clock_audit.json and
+study3_results.json; no physical measurements.
+
+[Caption file](data/sim/summary/policy_comparison.caption.md) · [audit](data/sim/phaseD/matched_clock_audit.json) ·
+[Study 3](data/sim/phaseD/study3_results.json) · [download values](data/sim/summary/policy_comparison.csv).
 
 <!-- policy-summary:start -->
 | Policy | Mean pose error, RMSE (mm) | Calibrations per actuator |

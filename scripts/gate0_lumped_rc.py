@@ -53,18 +53,20 @@ Outputs
 and a printed PASS / FAIL / WEAK verdict.
 
 Run:  python -m scripts.gate0_lumped_rc
+      python -m scripts.gate0_lumped_rc --replot   (redraws fig_crosstalk_vs_compliance from the JSON)
 """
 
 from __future__ import annotations
 
 import json
+import sys
 from dataclasses import dataclass, asdict
 from pathlib import Path
 
 import numpy as np
 from scipy.stats import spearmanr
 
-from scripts import figstyle
+from scripts import figstyle, figure_style
 
 # matplotlib is optional at run time; degrade gracefully if headless/missing.
 plt = figstyle.setup(style=False)
@@ -401,24 +403,6 @@ def make_plots(results: dict, outdir: Path):
     f1 = outdir / "fig_crosstalk_vs_freq"
     figstyle.save(fig, f1, formats=("png",)); plt.close(fig); saved.append(f1.with_suffix(".png"))
 
-    # 2) headline: cross-talk at the actuation frequency vs compliance
-    ct = np.asarray(pl["ct_at_act"]) * 100
-    rho = results["headline_metric"]["spearman_rho"]
-    dr = results["headline_metric"]["relative_drift"] * 100
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.6))
-    ax.plot(fat, ct, "o-", color=C["compliance"], ms=4)
-    for x, y, ha, dx in ((fat[0], ct[0], "left", 6), (fat[-1], ct[-1], "right", -6)):
-        ax.annotate(f"{y:.1f} %", (x, y), xytext=(dx, 0), textcoords="offset points", ha=ha, va="center",
-                    fontsize=figstyle.SIZE["note"], color=figstyle.ink(C["compliance"]))
-    ax.set_xlabel("Chamber-1 compliance (× healthy)")
-    ax.set_ylabel(f"Cross-talk at {f_act:.0f} Hz (%)")
-    ax.set_title(f"Cross-talk at {f_act:.0f} Hz rises steadily with compliance")
-    ax.margins(0.06)
-    figstyle.footnote(fig, f"Simulation, lumped R-C model; {len(fat)} compliance steps.\n"
-                      f"Spearman ρ = {rho:.3f}; rise over the sweep {dr:.0f} %.")
-    f2 = outdir / "fig_crosstalk_vs_compliance"
-    figstyle.save(fig, f2, formats=("png",)); plt.close(fig); saved.append(f2.with_suffix(".png"))
-
     # 3) DC independence: healthy vs fatigued static gain matrices (signed, diverging about zero)
     G = [np.asarray(pl["G_healthy"]), np.asarray(pl["G_fatigued"])]
     scale = 1e12
@@ -451,13 +435,55 @@ def make_plots(results: dict, outdir: Path):
                       f"{dci['relative_change'] * 100:.4f} %.")
     f3 = outdir / "fig_dc_independence"
     figstyle.save(fig, f3, formats=("png",)); plt.close(fig); saved.append(f3.with_suffix(".png"))
+    saved.append(plot_compliance(results, outdir))
     return saved
+
+
+def compliance_caption(results: dict) -> str:
+    """Words that left the canvas of fig_crosstalk_vs_compliance; every number comes from the result."""
+    hm, p = results["headline_metric"], results["params"]
+    ct = hm["crosstalk_vs_fatigue"]
+    return (
+        f"Relative cross-talk |H21/H11| at the {hm['actuation_freq_hz']:g} Hz actuation frequency against "
+        f"chamber-1 compliance, {len(hm['fatigue_levels'])} steps from {hm['fatigue_levels'][0]:g}× to "
+        f"{hm['fatigue_levels'][-1]:g}× healthy. Cross-talk rises steadily from {ct[0] * 100:.1f} % to "
+        f"{ct[-1] * 100:.1f} %, a rise of {hm['relative_drift'] * 100:.0f} % over the sweep (Spearman ρ = "
+        f"{hm['spearman_rho']:.3f}). Simulation: lumped R-C model, {p['n_chambers']} chambers on one manifold; "
+        "chamber-1 compliance is scaled and all other parameters are fixed. No physical measurement. "
+        "Source: gate0_results.json."
+    )
+
+
+def compliance_figure(results: dict):
+    """Cross-talk at the actuation frequency against compliance, from the saved headline metric only."""
+    hm = results["headline_metric"]
+    fig, ax = plt.subplots(figsize=(figure_style.SINGLE, 2.6))
+    fig.subplots_adjust(left=.19, right=.95, top=.95, bottom=.19)
+    ax.plot(hm["fatigue_levels"], [v * 100 for v in hm["crosstalk_vs_fatigue"]], marker="o", ms=4,
+            color=figure_style.INK, mfc=figure_style.INK, lw=1.0)
+    ax.set_xlabel(r"Chamber-1 compliance ($\times$ healthy)")
+    ax.set_ylabel(f"Cross-talk at {hm['actuation_freq_hz']:g} Hz (%)")
+    ax.margins(0.06)
+    return fig
+
+
+def plot_compliance(results: dict, outdir: Path) -> Path:
+    stem = outdir / "fig_crosstalk_vs_compliance"
+    with plt.rc_context():
+        figure_style.apply()
+        fig = compliance_figure(results)
+        figure_style.save(fig, stem, formats=("png",), caption=compliance_caption(results))
+        plt.close(fig)
+    return stem.with_suffix(".png")
 
 
 # --------------------------------------------------------------------------- #
 def main():
     repo = Path(__file__).resolve().parents[1]
     outdir = repo / "data" / "gate0"
+    if "--replot" in sys.argv:  # redraw the one figure the saved result holds; no model run
+        print(f"Wrote: {plot_compliance(json.loads((outdir / 'gate0_results.json').read_text()), outdir)}")
+        return
     outdir.mkdir(parents=True, exist_ok=True)
 
     p = Params()

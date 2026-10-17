@@ -502,77 +502,132 @@ def _figures(results, per_act_xy, test_ids):
     figstyle.save(fig, os.path.join(DATA, "study3_fig3b_correlation_cluster_ci"))
     plt.close(fig)
 
-    # ---------- Fig 4b: recalibration trade-off + lead frontier ----------
-    fig2, (axA, axB) = plt.subplots(1, 2, figsize=(figstyle.FULL, 2.9), gridspec_kw={"wspace": 0.38})
-    order = [("fixed", "initial calibration only", COL["fixed"], "o"),
-             ("scheduled", f"clock, {results['provenance']['period_selected_cycles']:,.0f} cycles", COL["clock"], "^"),
-             ("triggered", f"P-V trigger, τ = {tau_star:g}", COL["pv"], "D"),
-             ("always", "every life stage", COL["always"], "X")]
-    for key, lab, col, mk in order:
+    # Fig 4b keeps nothing of the old style; it is drawn after Fig 3b so figure_style.apply()
+    # cannot change Fig 3b's rcParams.
+    plot_cluster_tradeoff(results)
+
+
+FIG4B = "study3_fig4b_recal_cluster_ci"
+
+
+def cluster_tradeoff_caption(results):
+    P, FR = results["policies_on_heldout_with_cluster_ci"], results["lead_frontier_with_cluster_ci"]
+    prov = results["provenance"]
+    budget, tau_star, n = prov["accuracy_budget_mm"], prov["tau_selected"], results["correlation"]["n_clusters"]
+    level = f"{prov['confidence_level'] * 100:.0f} %"
+    keys = [k for k, _, _ in S3.POLICIES]
+    varies = [S3.SHORT[k] for k in keys if not P[k]["recal_identical_across_actuators"]]
+    values = "; ".join(f"{S3.SHORT[k]} {P[k]['mean_pose_rmse_mm']:.3f} mm [{P[k]['rmse_ci_low']:.3f}, "
+                       f"{P[k]['rmse_ci_high']:.3f}] with {P[k]['recal_per_actuator']:.1f} "
+                       f"[{P[k]['recal_ci_low']:.2f}, {P[k]['recal_ci_high']:.2f}] calibrations" for k in keys)
+    late = [p["tau"] for p in FR if p["mean_lead_life"] <= 0]
+    last = FR[-1]
+    return (
+        f"Recalibration policies and the lead frontier on the {n} held-out actuators of the Phase D cohort, "
+        f"with {level} actuator-cluster bootstrap intervals. (a) Mean pose RMSE against calibrations per actuator "
+        f"over life, with intervals on both axes, for "
+        f"{S3.policy_sentence(prov['period_selected_cycles'], tau_star)}. Counts include the initial calibration; "
+        "an interval of zero width is not drawn. "
+        f"The dashed line is the train-derived error budget, {budget:.3f} mm; a filled marker meets it and a "
+        f"hollow marker exceeds it. Values with intervals: {values}. Only {' and '.join(varies)} varies in "
+        "calibration count across actuators. (b) Lead of the trigger over the error-budget crossing, in life "
+        "fraction, against the trigger threshold τ (loop-area growth). Circles and the solid line are the mean "
+        f"over actuators, the grey band is its {level} interval and the thin grey lines are the individual "
+        "actuators. A filled circle warns early (positive mean lead); a hollow circle warns late. The solid "
+        "horizontal line is zero lead and the dash-dot line is the deployed threshold τ = "
+        f"{tau_star:g}. Mean lead turns negative from τ = {min(late):g}; at the deployed threshold it is "
+        f"{last['mean_lead_life']:.3f} [{last['lead_ci_low']:.3f}, {last['lead_ci_high']:.3f}] life, with "
+        f"{last['n_nonpositive_lead']} of {n} actuators late. Simulation only. Source: "
+        "study3_cluster_ci_results.json."
+    )
+
+
+def cluster_tradeoff_figure(results):
+    from matplotlib.lines import Line2D
+    from matplotlib.patches import Patch
+    import matplotlib.pyplot as plt
+    from scripts import figure_style as style
+
+    style.apply()
+    P, FR = results["policies_on_heldout_with_cluster_ci"], results["lead_frontier_with_cluster_ci"]
+    prov = results["provenance"]
+    budget, tau_star = prov["accuracy_budget_mm"], prov["tau_selected"]
+    fig, (axA, axB) = plt.subplots(1, 2, figsize=(style.FULL, 3.6))
+    fig.subplots_adjust(left=.085, right=.985, top=.735, bottom=.13, wspace=.32)
+    axA.axhline(budget, zorder=1, **style.REFERENCE)
+    for key, _, marker in S3.POLICIES:
         v = P[key]
-        axA.errorbar(v["recal_per_actuator"], v["mean_pose_rmse_mm"],
-                     xerr=[[v["recal_per_actuator"] - v["recal_ci_low"]], [v["recal_ci_high"] - v["recal_per_actuator"]]],
-                     yerr=[[v["mean_pose_rmse_mm"] - v["rmse_ci_low"]], [v["rmse_ci_high"] - v["mean_pose_rmse_mm"]]],
-                     fmt=mk, color=col, ms=6, mec="white", mew=0.6, elinewidth=1.3, capsize=2.5, zorder=3)
-        dx = {"always": -9, "scheduled": 24}.get(key, 9)
-        figstyle.end_label(axA, v["recal_per_actuator"], v["mean_pose_rmse_mm"], lab, col, dx=dx,
-                           ha="right" if key == "always" else "left")
-    axA.axhline(budget, color=COL["ref"], lw=0.8, ls="--")
-    axA.text(5.6, budget - 0.012, f"error budget {budget:.3f} mm", fontsize=S["note"], color=COL["ref"],
-             ha="right", va="top")
-    axA.set_xlabel("Calibrations per actuator over life")
-    axA.set_ylabel("Mean pose RMSE (mm)")
-    varies = [lab for key, lab, _, _ in order if not P[key]["recal_identical_across_actuators"]]
-    axA.set_title("Only the clock's calibration count\nvaries across actuators" if varies == [order[1][1]]
-                  else "Policy error and calibration count")
-    axA.text(0.98, 0.98, "lower and further left is better", transform=axA.transAxes, ha="right", va="top",
-             fontsize=S["note"], color=COL["muted"])
+        x, y = v["recal_per_actuator"], v["mean_pose_rmse_mm"]
+        # Intervals as plain capped lines (errorbar's LineCollection has no window extent for the
+        # overlap audit); an interval of zero width is not drawn.
+        for xs, ys, cap in (([v["recal_ci_low"], v["recal_ci_high"]], [y, y], "|"),
+                            ([x, x], [v["rmse_ci_low"], v["rmse_ci_high"]], "_")):
+            if xs[0] != xs[1] or ys[0] != ys[1]:
+                axA.plot(xs, ys, color=style.INK, lw=.8, marker=cap, ms=5, mew=.8, zorder=2)
+        axA.plot(x, y, marker=marker, mfc=style.FILL[y <= budget], zorder=3, **style.MARKER)
     axA.set_xlim(0.5, 5.7)
     axA.set_ylim(0, 0.62)
+    axA.set_xlabel("Calibrations per actuator over life")
+    axA.set_ylabel("Mean pose RMSE (mm)")
 
     taus = np.array([p["tau"] for p in FR])
-    lead = np.array([p["mean_lead_life"] for p in FR])
     per = np.array([p["lead_per_actuator"] for p in FR])
     for j in range(per.shape[1]):
-        axB.plot(taus, per[:, j], "-", color=COL["unit"], lw=0.7, zorder=1)
-    axB.fill_between(taus, [p["lead_ci_low"] for p in FR], [p["lead_ci_high"] for p in FR], color=COL["pv"],
-                     alpha=0.18, lw=0, zorder=2)
-    axB.plot(taus, lead, "-o", color=COL["pv"], lw=1.4, ms=4, mec="white", mew=0.5, zorder=3)
-    axB.axhline(0, color=COL["ref"], lw=0.8)
-    axB.axvline(tau_star, color=COL["ref"], lw=0.8, ls="--")
-    axB.text(taus.max() * 1.07, 0.015, "warns early", fontsize=S["note"], color=COL["muted"], ha="right",
-             va="bottom")
-    axB.text(taus.max() * 1.07, -0.015, "warns late", fontsize=S["note"], color=COL["muted"], ha="right", va="top")
-    last = FR[-1]
-    lead_txt = f"{last['mean_lead_life']:+.3f}".replace("-", "\u2212")
-    axB.text(tau_star - 0.001, 0.53, f"deployed τ = {tau_star:g}:\nmean lead {lead_txt},\n"
-             f"{last['n_nonpositive_lead']} of {n} actuators negative", ha="right", va="top", fontsize=S["note"],
-             color=figstyle.ink(COL["pv"]))
-    axB.set_xlabel("Trigger threshold τ (loop-area growth)")
-    axB.set_ylabel("Lead over the budget crossing\n(life fraction)")
-    axB.set_title("The deployed threshold fires after the\nerror budget is already crossed")
+        axB.plot(taus, per[:, j], color=SINGLE_GREY, lw=.6, zorder=1)
+    axB.fill_between(taus, [p["lead_ci_low"] for p in FR], [p["lead_ci_high"] for p in FR],
+                     color=BAND_GREY, lw=0, zorder=0)
+    axB.plot(taus, [p["mean_lead_life"] for p in FR], color=style.INK, lw=1.0, zorder=3)
+    for p in FR:
+        axB.plot(p["tau"], p["mean_lead_life"], marker="o", mfc=style.FILL[p["mean_lead_life"] > 0], zorder=4,
+                 **style.MARKER)
+    axB.axhline(0, color=style.INK, lw=.6, zorder=2)
+    axB.axvline(tau_star, zorder=2, **DEPLOYED)
+    axB.set_xlabel(r"Trigger threshold $\tau$ (loop-area growth)")
+    axB.set_ylabel("Lead over the budget crossing (life)")
     axB.set_xlim(0, taus.max() * 1.08)
     axB.set_ylim(-0.36, 0.56)
     axB.set_xticks([0.01, 0.02, 0.03, 0.04, 0.05])
-    figstyle.panel_letter(axA, "a", dx=-40)
-    figstyle.panel_letter(axB, "b", dx=-48)
-    figstyle.footnote(fig2, f"Simulation: {n} held-out actuators. Bars and band: 95 % actuator-cluster bootstrap "
-                      "intervals; thin gray lines in b: individual actuators. Counts include the initial "
-                      "calibration.")
-    figstyle.save(fig2, os.path.join(DATA, "study3_fig4b_recal_cluster_ci"))
-    plt.close(fig2)
-    print(f"wrote {DATA}/study3_fig3b_correlation_cluster_ci.(png|pdf) and "
-          f"{DATA}/study3_fig4b_recal_cluster_ci.(png|pdf)")
+    for i, ax in enumerate((axA, axB)):
+        style.letter(ax, i, x=-.14)
+    level = f"{prov['confidence_level'] * 100:.0f} %"
+    extra = [Line2D([], [], label="Error budget", **style.REFERENCE),
+             Line2D([], [], color=style.INK, marker="o", ms=5, mew=.9, mfc=style.FILL[True], label="Mean lead"),
+             Line2D([], [], color=SINGLE_GREY, lw=.6, label="Single actuator"),
+             Patch(color=BAND_GREY, lw=0, label=f"{level} cluster interval"),
+             Line2D([], [], label=r"Deployed $\tau$", **DEPLOYED),
+             Line2D([], [], marker="s", mfc=style.FILL[False], label="Hollow: above budget (a), late (b)",
+                    **style.MARKER)]
+    S3.policy_legend(fig, prov["period_selected_cycles"], tau_star, extra, ncol=4)
+    return fig
+
+
+# Achromatic greys for context only: individual actuators and the interval band.
+SINGLE_GREY, BAND_GREY = "0.6", "0.85"
+DEPLOYED = {"color": "black", "lw": .8, "ls": "-."}
+
+
+def plot_cluster_tradeoff(results):
+    import matplotlib.pyplot as plt
+    from scripts import figure_style as style
+
+    fig = cluster_tradeoff_figure(results)
+    style.save(fig, os.path.join(DATA, FIG4B), caption=cluster_tradeoff_caption(results))
+    plt.close(fig)
+    print(f"wrote {DATA}/{FIG4B}.(png|pdf)")
 
 
 def replot():
-    """Redraw from the saved result; only the per-actuator points of Fig 3b are recomputed from the dataset."""
+    """Redraw from the saved result. Fig 4b needs only the JSON; Fig 3b is redrawn only when the
+    regenerated dataset is present, because its per-actuator points come from it."""
     results = json.load(open(os.path.join(DATA, "study3_cluster_ci_results.json")))
-    d, m = S3.load()
-    _, test_ids, _, err, hn, _ = S3.prepare(d, m)
-    per_act_xy = {a: (np.array([hn[a][i] - 1.0 for i in range(len(LIFE))]),
-                      np.array([err[a][i][0] for i in range(len(LIFE))])) for a in test_ids}
-    _figures(results, per_act_xy, test_ids)
+    if os.path.exists(os.path.join(DATA, "dataset.npz")):
+        d, m = S3.load()
+        _, test_ids, _, err, hn, _ = S3.prepare(d, m)
+        per_act_xy = {a: (np.array([hn[a][i] - 1.0 for i in range(len(LIFE))]),
+                          np.array([err[a][i][0] for i in range(len(LIFE))])) for a in test_ids}
+        _figures(results, per_act_xy, test_ids)
+    else:
+        plot_cluster_tradeoff(results)
     print("replotted from the saved result")
 
 

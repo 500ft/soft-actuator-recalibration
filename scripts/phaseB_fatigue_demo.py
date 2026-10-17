@@ -25,7 +25,7 @@ from sim.plant import (
     sls_loss_energy_analytic,
 )
 
-from scripts import figstyle
+from scripts import figstyle, figure_style
 
 plt = figstyle.setup(style=False)
 
@@ -192,6 +192,9 @@ def main(write_results=True):
     }
     if write_results:
         (outdir / "phaseB_results.json").write_text(json.dumps(results, indent=2))
+    # The two figures the saved result holds are drawn from the JSON bytes, so a
+    # rerun and a --replot draw the same values.
+    saved = json.loads((outdir / "phaseB_results.json").read_text())
 
     if plt is not None:
         _plots(
@@ -209,6 +212,7 @@ def main(write_results=True):
             leak_sensitivity,
             base_area,
         )
+        plot_saved(saved, outdir)
 
     print("=" * 72)
     print("PHASE B — synthetic fatigue + partial recovery + leak observability")
@@ -294,29 +298,6 @@ def _plots(
     figstyle.footnote(fig, model + " Initial pressure 60 kPa.")
     figstyle.save(fig, outdir / "fig_pressure_decay_over_life", formats=("png",)); plt.close(fig)
 
-    # partial Mullins recovery during rest
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.6))
-    hours = [r["rest_hours"] for r in recovery_records]
-    permanent = np.array([r["mullins_permanent"] * 100 for r in recovery_records])
-    recoverable = np.array([r["mullins_recoverable"] * 100 for r in recovery_records])
-    green = figstyle.ramp(C["compliance"], 5)
-    ax.stackplot(hours, permanent, recoverable, colors=[green[3], green[1]], lw=0)
-    ax.plot(hours, permanent + recoverable, "o", color=green[3], ms=3.5)
-    ax.set_xscale("symlog", linthresh=1)
-    ax.set_xticks([0, 1, 10, 100], ["0", "1", "10", "100"])
-    ax.text(1.5, permanent[0] / 2, "permanent", fontsize=S["note"], color="white", va="center")
-    ax.text(1.5, permanent[0] + recoverable[1] / 2, "recoverable", fontsize=S["note"],
-            color=figstyle.ink(C["compliance"]), va="center")
-    ax.set_xlabel("Rest time (h)")
-    ax.set_ylabel("Mullins compliance rise (%)")
-    ax.set_title("Rest recovers Mullins softening down to its floor")
-    ax.set_ylim(0, None)
-    ax.margins(x=0.02)
-    figstyle.footnote(fig, f"Simulation: state after 2,000 cycles; recovery τ = {params.recovery_tau_s / 3600:.0f} h, "
-                      f"permanent fraction\n{params.mullins_permanent_fraction:.0%}. Dots mark the {len(hours)} "
-                      "sampled rest times.")
-    figstyle.save(fig, outdir / "fig_rest_recovery", formats=("png",)); plt.close(fig)
-
     # injected acceleration-onset sensitivity
     fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.6))
     blues = figstyle.ramp(C["onset"], len(onset_sensitivity) + 2)[2:]
@@ -332,22 +313,95 @@ def _plots(
                       "parameter; the curves are not detected lead times.")
     figstyle.save(fig, outdir / "fig_onset_sensitivity", formats=("png",)); plt.close(fig)
 
-    # leak-magnitude sensitivity
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.4))
-    multipliers = [r["terminal_multiplier"] for r in leak_sensitivity]
-    half_lives = [r["rupture_half_life_s"] * 1e3 for r in leak_sensitivity]
-    ax.plot(multipliers, half_lives, "o-", color=C["leak"])
-    for x, y in zip(multipliers, half_lives):
-        ax.annotate(f"{y:.1f} ms", (x, y), xytext=(6, 4), textcoords="offset points",
-                    fontsize=S["note"], color=figstyle.ink(C["leak"]))
-    ax.set_xticks(multipliers, [f"{m:g}×" for m in multipliers])
-    ax.set_xlabel("Leak conductance at rupture (× healthy)")
+
+
+def recovery_cycles(result: dict) -> float:
+    """Cycle count of the recovery runs: the no-rest life stage whose state equals the zero-rest recovery record."""
+    first = result["recovery"][0]
+    assert first["rest_hours"] == 0, first
+    match = [s["cycles"] for s in result["life_stages"]
+             if s["rest_s"] == 0 and s["compliance_multiplier"] == first["compliance_multiplier"]
+             and s["mullins_permanent"] == first["mullins_permanent"]
+             and s["mullins_recoverable"] == first["mullins_recoverable"]]
+    assert len(match) == 1, match
+    return match[0]
+
+
+def recovery_caption(result: dict) -> str:
+    p, rec = result["canonical_parameters"], result["recovery"]
+    total = [(r["mullins_permanent"] + r["mullins_recoverable"]) * 100 for r in rec]
+    hours = ", ".join(f"{r['rest_hours']:g}" for r in rec[:-1]) + f" and {rec[-1]['rest_hours']:g}"
+    return (
+        f"Rest recovers Mullins softening down to its permanent floor. Mullins compliance rise against rest "
+        f"time after {recovery_cycles(result):,.0f} cycles, split into the permanent part (grey) and the "
+        f"recoverable part (hatched); markers are the {len(rec)} sampled rest times ({hours} h) and give the "
+        f"total. The total falls from {total[0]:.2f} % with no rest to {total[-1]:.2f} % after "
+        f"{rec[-1]['rest_hours']:g} h, close to the permanent floor of {rec[0]['mullins_permanent'] * 100:.2f} % "
+        f"({p['mullins_permanent_fraction'] * 100:.0f} % of the Mullins amplitude). Recovery time constant "
+        f"{p['recovery_tau_s'] / 3600:.0f} h. The horizontal axis is linear below 1 h and logarithmic above. "
+        f"Simulation: deterministic fatigue laws (sim/fatigue.py), rupture at {p['rupture_cycles']:,.0f} cycles. "
+        "Source: phaseB_results.json."
+    )
+
+
+def recovery_figure(result: dict):
+    rec = result["recovery"]
+    hours = [r["rest_hours"] for r in rec]
+    permanent = np.array([r["mullins_permanent"] * 100 for r in rec])
+    recoverable = np.array([r["mullins_recoverable"] * 100 for r in rec])
+    fig, ax = plt.subplots(figsize=(figure_style.SINGLE, 2.6))
+    fig.subplots_adjust(left=.15, right=.96, top=.86, bottom=.19)
+    ax.stackplot(hours, permanent, recoverable, colors=["#BDBDBD", "white"], edgecolor=figure_style.INK,
+                 lw=0.6, hatch=["", "////"], labels=["Permanent", "Recoverable"])
+    ax.plot(hours, permanent + recoverable, marker="o", label="Total, sampled", clip_on=False, zorder=3,
+            **figure_style.MARKER)
+    ax.set_xscale("symlog", linthresh=1)
+    ax.set_xticks([0, 1, 10, 100], ["0", "1", "10", "100"])
+    ax.set_xlim(0, max(hours) * 1.4)
+    ax.set_ylim(0, (permanent + recoverable).max() * 1.12)
+    ax.set_xlabel("Rest time (h)")
+    ax.set_ylabel("Mullins compliance rise (%)")
+    fig.legend(loc="upper center", bbox_to_anchor=(.53, .995), ncol=3, columnspacing=.8, handletextpad=.4,
+               handlelength=1.3, borderaxespad=0)
+    return fig
+
+
+def leak_caption(result: dict) -> str:
+    p, probe = result["canonical_parameters"], result["probe"]
+    rows = result["sensitivity"]["terminal_leak_multipliers"]
+    pairs = "; ".join(f"{r['terminal_multiplier']:g}× gives {r['rupture_half_life_s'] * 1e3:.1f} ms" for r in rows)
+    return (
+        "Doubling the terminal leak halves the hold half-life. Closed-valve pressure half-life at rupture "
+        f"against the leak conductance at rupture, as a multiple of healthy: {pairs}. Initial hold pressure "
+        f"{probe['pressure_decay_initial_pa'] / 1e3:g} kPa. Simulation: deterministic fatigue laws "
+        f"(sim/fatigue.py), rupture at {p['rupture_cycles']:,.0f} cycles. Source: phaseB_results.json."
+    )
+
+
+def leak_figure(result: dict):
+    rows = result["sensitivity"]["terminal_leak_multipliers"]
+    multipliers = [r["terminal_multiplier"] for r in rows]
+    half_lives = [r["rupture_half_life_s"] * 1e3 for r in rows]
+    fig, ax = plt.subplots(figsize=(figure_style.SINGLE, 2.4))
+    fig.subplots_adjust(left=.17, right=.95, top=.95, bottom=.2)
+    ax.plot(multipliers, half_lives, marker="o", ms=4, color=figure_style.INK, mfc=figure_style.INK, lw=1.0)
+    ax.set_xticks(multipliers, [f"{m:g}" for m in multipliers])
+    ax.set_xlabel(r"Leak conductance at rupture ($\times$ healthy)")
     ax.set_ylabel("Hold half-life at rupture (ms)")
-    ax.set_title("Doubling the terminal leak halves the half-life")
     ax.set_ylim(0, max(half_lives) * 1.2)
     ax.margins(x=0.08)
-    figstyle.footnote(fig, model.split(",\n")[0] + ".\nInitial hold pressure 60 kPa.")
-    figstyle.save(fig, outdir / "fig_leak_sensitivity", formats=("png",)); plt.close(fig)
+    return fig
+
+
+def plot_saved(result: dict, outdir: Path) -> None:
+    """Draw the two Phase B figures whose values the saved result holds."""
+    with plt.rc_context():
+        figure_style.apply()
+        for stem, figure, caption in (("fig_rest_recovery", recovery_figure, recovery_caption),
+                                      ("fig_leak_sensitivity", leak_figure, leak_caption)):
+            fig = figure(result)
+            figure_style.save(fig, outdir / stem, formats=("png",), caption=caption(result))
+            plt.close(fig)
 
 
 if __name__ == "__main__":

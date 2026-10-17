@@ -16,7 +16,7 @@ from pipeline.identifiability import (FEATURES, PARAMS, bound_u, fim, jacobian, 
                                       whitened_angles_deg)
 from sim.fatigue import FatigueParams
 from sim.plant import SLSParams
-from scripts import figstyle
+from scripts import figure_style as style
 
 DATA = "data/sim/studyB"
 U_GRID = [round(x, 2) for x in np.arange(0.1, 0.91, 0.1)]
@@ -97,86 +97,130 @@ def main():
 
 
 
-def plot(out):
-    """Identifiability map from a saved or fresh result dict; infinite bounds are drawn as 'not identifiable'."""
-    plt = figstyle.setup()
-    if plt is None:  # pragma: no cover
-        return
+CRAMER_RAO = r"Cram$\acute{\rm e}$r-Rao"
+# design key -> (legend label, marker, line style, marker size); the shape names the design
+DESIGNS = {"B1_sigma_u": ("B1 single snapshot", "s", "none", 6.5),
+           "B2_sigma_u": ("B2 with young baseline", "o", "-", 5),
+           "B3_sigma_u": ("B3 nuisance known", "^", (0, (5, 1.5, 1, 1.5)), 5)}
+KILL_STYLE = {"color": "black", "lw": 0.8, "ls": ":"}
+TOP = 1.0     # infinite bounds are drawn at the top of panel (a)
+
+
+def _default(p):
+    return p["noise_scale"] == 1.0 and p["amp_frac"] == 0.1 and p["unit"] == "canonical"
+
+
+def design_curves(out):
+    """design key -> sigma_u along u_grid for the canonical unit at default noise and amplitude."""
+    pts = out["points"]
+    return {key: np.array([next(p[key] for p in pts if _default(p) and p["u"] == u) for u in out["u_grid"]],
+                          dtype=float) for key in DESIGNS}
+
+
+def amplitude_grid(out):
+    """[amplitude, u] array of the B2 bound for the canonical unit at default noise."""
+    pts = out["points"]
+    return np.array([[next(p["B2_sigma_u"] for p in pts if p["unit"] == "canonical" and p["noise_scale"] == 1.0
+                           and p["amp_frac"] == amp and p["u"] == u) for u in out["u_grid"]]
+                     for amp in out["amplitude_fracs"]], dtype=float)
+
+
+def map_caption(out):
+    curves, grid, u = design_curves(out), amplitude_grid(out), np.array(out["u_grid"])
+    onset = FatigueParams().acceleration_onset_fraction
+    b2 = curves["B2_sigma_u"]
+    pre = np.isfinite(b2)
+    inf_u = u[~np.isfinite(grid).any(axis=0)]
+    assert np.isinf(curves["B1_sigma_u"]).all() and np.isclose(u[pre].max(), onset) and (inf_u > onset).all()
+    finite = np.isfinite(grid).all(axis=0)
+    halving = [float(np.mean(grid[i, finite] / grid[i + 1, finite])) for i in range(len(grid) - 1)]
+    amps = out["amplitude_fracs"]
+    steps = " and ".join(f"{h:.2f} from {a:g} to {b:g} V0" for h, a, b in zip(halving, amps, amps[1:]))
+    return (f"Simulation: local Cramér-Rao bounds σ_u on normalised life from pressure-only features of the "
+            f"canonical synthetic unit, {out['n_rep']} sensor repeats per point, noise ×1. Panel (a): the three "
+            "designs at 0.1 V0 probe amplitude; squares are B1 (single snapshot), circles on a solid line B2 "
+            "(with young baseline), triangles on a dash-dot line B3 (nuisance known). Filled markers are finite "
+            "bounds; hollow markers at the top tick are infinite bounds. The dashed line is the "
+            f"{out['sigma_target']:g} life target and the dotted line the {out['sigma_kill']:g} life kill "
+            f"criterion. B1 is infinite at every life. With a young baseline σ_u stays between "
+            f"{b2[pre].min():.3f} and {b2[pre].max():.3f} life up to the onset at u = {onset:.2f}. Panel (b): the B2 bound for three probe amplitudes, colour and cell number σ_u × 100; "
+            f"grey cells marked ∞ are infinite. On average σ_u falls by a factor of {steps}, so doubling the "
+            f"amplitude roughly halves it; after onset (u = {', '.join(f'{x:.1f}' for x in inf_u)}) no amplitude "
+            f"bounds it. Study B verdict {out['verdict']} (preregistered rule). Source: studyB_results.json.")
+
+
+def map_figure(out):
     import matplotlib.colors as mcolors
-    C, S = figstyle.COLOR, figstyle.SIZE
-    points, u_grid, amps = out["points"], out["u_grid"], out["amplitude_fracs"]
-    target, kill, v = out["sigma_target"], out["sigma_kill"], out["verdict"]
-    default = lambda p: p["noise_scale"] == 1.0 and p["amp_frac"] == 0.1
-    fig, (a, b) = plt.subplots(1, 2, figsize=(figstyle.FULL, 2.8), gridspec_kw={"width_ratios": [1, 1.15],
-                                                                                 "wspace": 0.45})
-    top = 1.0
-    designs = (("B1_sigma_u", "B1 single snapshot", C["supply"], "s"),
-               ("B2_sigma_u", "B2 with young baseline", C["pv"], "o"),
-               ("B3_sigma_u", "B3 nuisance known", C["ref"], "^"))
-    for key, lab, col, mk in designs:
-        ys = np.array([next(p[key] for p in points if default(p) and p["unit"] == "canonical" and p["u"] == u)
-                       for u in u_grid], dtype=float)
+    from matplotlib.lines import Line2D
+    plt = style.plt
+    style.apply()
+    u_grid, amps = out["u_grid"], out["amplitude_fracs"]
+    u = np.array(u_grid)
+    fig, (a, b) = plt.subplots(1, 2, figsize=(style.FULL, 3.3), gridspec_kw={"width_ratios": [1, 1.15]})
+    fig.subplots_adjust(left=0.105, right=0.9, top=0.78, bottom=0.14, wspace=0.42)
+    for key, ys in design_curves(out).items():
+        _, mk, ls, ms = DESIGNS[key]
         fin = np.isfinite(ys)
         if fin.any():
-            a.plot(np.array(u_grid)[fin], ys[fin], mk + "-", color=col, ms=3.5)
+            a.plot(u[fin], ys[fin], marker=mk, ls=ls, color=style.INK, ms=ms, mew=0.9, mfc=style.FILL[True])
         if (~fin).any():
-            a.plot(np.array(u_grid)[~fin], np.full((~fin).sum(), top), mk, color=col, mfc="white", ms=4.5,
-                   clip_on=False)
+            a.plot(u[~fin], np.full((~fin).sum(), TOP), marker=mk, ls="none", color=style.INK, ms=ms, mew=0.9,
+                   mfc=style.FILL[False], clip_on=False)
+    a.axhline(out["sigma_target"], **style.REFERENCE)
+    a.axhline(out["sigma_kill"], **KILL_STYLE)
     a.set_yscale("log")
-    a.set_ylim(1e-4, top)
-    a.set_yticks([1e-4, 1e-3, 1e-2, 1e-1, 1], ["0.0001", "0.001", "0.01", "0.1", "∞"])
+    a.set_ylim(1e-4, TOP)
+    a.set_yticks([1e-4, 1e-3, 1e-2, 1e-1, 1], [r"$10^{-4}$", r"$10^{-3}$", r"$10^{-2}$", r"$10^{-1}$", r"$\infty$"])
     a.yaxis.set_minor_formatter(plt.NullFormatter())
-    for y, lab in ((target, f"target {target:g}"), (kill, f"kill {kill:g}")):
-        a.axhline(y, ls="--" if y == target else ":", lw=0.8, color=C["ref"])
-        a.text(u_grid[0], y * 1.12, lab, fontsize=S["note"], color=C["ref"], va="bottom")
-    a.text(0.03, 0.04, "open marks: bound infinite", transform=a.transAxes, ha="left",
-           va="bottom", fontsize=S["note"], color=C["muted"])
-    a.text(u_grid[0], 0.035, "B2 with young baseline", fontsize=S["note"], color=figstyle.ink(C["pv"]), va="bottom")
-    a.text(u_grid[0], 0.009, "B3 nuisance known", fontsize=S["note"], color=C["ref"], va="top")
-    a.text(u_grid[-1], 0.55, "B1 single snapshot", fontsize=S["note"], color=figstyle.ink(C["supply"]),
-           ha="right", va="top")
-    a.set_xlabel("Normalized life u")
-    a.set_ylabel("Cramér–Rao bound σ_u (life)")
-    a.set_title("With a young baseline σ_u stays\nnear 0.02–0.03 until onset")
-    a.margins(x=0.04)
+    a.set_xlabel(r"Normalized life $u$")
+    a.set_ylabel(CRAMER_RAO + r" bound $\sigma_u$ (life)")
+    a.margins(x=0.05)
 
-    grid = np.array([[next(p["B2_sigma_u"] for p in points if p["unit"] == "canonical" and p["noise_scale"] == 1.0
-                           and p["amp_frac"] == amp and p["u"] == u) for u in u_grid] for amp in amps], dtype=float)
-    shown = np.where(np.isfinite(grid), grid, np.nan)
-    norm = mcolors.LogNorm(vmin=np.nanmin(shown), vmax=np.nanmax(shown))
-    im = b.imshow(shown, aspect="auto", origin="lower", cmap="cividis", norm=norm,
+    grid = amplitude_grid(out)
+    shown = np.ma.masked_invalid(grid)
+    norm = mcolors.LogNorm(vmin=shown.min(), vmax=shown.max())
+    cmap = plt.get_cmap("cividis").with_extremes(bad="#E3E3E3")
+    im = b.imshow(shown, aspect="auto", origin="lower", cmap=cmap, norm=norm,
                   extent=[u_grid[0] - 0.05, u_grid[-1] + 0.05, -0.5, len(amps) - 0.5])
-    for i, amp in enumerate(amps):
-        for j, u in enumerate(u_grid):
+    for i in range(len(amps)):
+        for j, uj in enumerate(u_grid):
             val = grid[i, j]
-            if np.isfinite(val):
-                light = norm(val) > 0.6
-                b.text(u, i, f"{val * 100:.2g}", ha="center", va="center", fontsize=S["tick"],
-                       color="#222222" if light else "white")
+            if np.isfinite(val):   # heatmap cell numbers: the one text allowed inside the data area
+                b.text(uj, i, f"{val * 100:.2g}", ha="center", va="center", size=style.TICK_SIZE,
+                       color="black" if norm(val) > 0.55 else "white")
             else:
-                b.add_patch(plt.Rectangle((u - 0.05, i - 0.5), 0.1, 1, facecolor="#F0F0F0", edgecolor="#BDBDBD",
-                                          hatch="///", lw=0.4))
-                b.text(u, i, "∞", ha="center", va="center", fontsize=S["note"], color="#222222")
-    b.set_yticks(range(len(amps)), [f"{a_:g} V0" for a_ in amps])
-    b.set_xticks(u_grid, [f"{u:.1f}" for u in u_grid])
+                b.text(uj, i, r"$\infty$", ha="center", va="center", size=style.TICK_SIZE, color="black")
+    b.set_yticks(range(len(amps)), [rf"${a_:g}\,V_0$" for a_ in amps])
+    b.set_xticks(u_grid, [f"{x:.1f}" for x in u_grid])
     b.tick_params(length=0)
     for s in b.spines.values():
         s.set_visible(False)
-    b.set_xlabel("Normalized life u")
+    b.set_xlabel(r"Normalized life $u$")
     b.set_ylabel("Probe amplitude")
-    b.set_title("Doubling the probe amplitude halves σ_u;\nafter onset no amplitude bounds it")
     cb = fig.colorbar(im, ax=b, fraction=0.05, pad=0.03)
-    cticks = [t for t in (0.015, 0.02, 0.03, 0.04, 0.06) if norm.vmin <= t <= norm.vmax]
-    cb.set_ticks(cticks, labels=[f"{t * 100:g}" for t in cticks])
+    cticks = [x for x in (0.015, 0.02, 0.03, 0.04, 0.06) if norm.vmin <= x <= norm.vmax]
+    cb.set_ticks(cticks, labels=[f"{x * 100:g}" for x in cticks])
     cb.ax.yaxis.set_minor_formatter(plt.NullFormatter())
-    cb.set_label("B2 bound σ_u (10⁻² life)", fontsize=S["note"])
-    cb.ax.tick_params(labelsize=S["tick"])
-    figstyle.panel_letter(a, "a", dx=-40)
-    figstyle.panel_letter(b, "b", dx=-46)
-    figstyle.footnote(fig, f"Simulation: local Cramér–Rao bounds from pressure-only features of the canonical "
-                      f"synthetic unit, {out['n_rep']} sensor repeats per point, noise ×1; panel a at 0.1 V0 "
-                      f"amplitude; cells in b show σ_u × 100. Hatched ∞: bound infinite. Study B verdict {v} (preregistered rule).")
-    figstyle.save(fig, os.path.join(DATA, "studyB_fig_identifiability_map")); plt.close(fig)
+    cb.set_label(r"B2 bound $\sigma_u$ ($10^{-2}$ life)")
+    cb.ax.tick_params(labelsize=style.TICK_SIZE)
+    style.letter(a, 0)
+    style.letter(b, 1)
+    handles = [Line2D([], [], marker=mk, ls=ls, color=style.INK, ms=ms, mew=0.9, mfc=style.FILL[True], label=lab)
+               for lab, mk, ls, ms in DESIGNS.values()]
+    handles += [Line2D([], [], marker="o", ls="none", color=style.INK, ms=5, mew=0.9, mfc=style.FILL[False],
+                       label="Hollow: bound infinite"),
+                Line2D([], [], label="Target", **style.REFERENCE), Line2D([], [], label="Kill", **KILL_STYLE)]
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 0.995), ncol=3, columnspacing=1.4,
+               handletextpad=0.5, handlelength=2.6, borderaxespad=0)
+    return fig
+
+
+def plot(out):
+    """Identifiability map from a saved or fresh result dict; infinite bounds are drawn as 'not identifiable'."""
+    fig = map_figure(out)
+    style.save(fig, os.path.join(DATA, "studyB_fig_identifiability_map"), caption=map_caption(out))
+    style.plt.close(fig)
+
 
 if __name__ == "__main__":
     import sys

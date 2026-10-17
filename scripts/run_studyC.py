@@ -9,10 +9,12 @@ import json
 import os
 
 import numpy as np
+from matplotlib.lines import Line2D
 
 from pipeline.dispersion import SEED, sample_units
 from pipeline.identifiability import measured_features
-from scripts import figstyle
+from scripts import figure_style
+from scripts.figure_style import plt
 from scripts.run_studyB import theta_of
 
 DATA = "data/sim/studyC"
@@ -156,42 +158,70 @@ def main():
 
 
 
-def plot(results):
-    """Per-unit transfer figure from a saved or fresh result dict."""
-    plt = figstyle.setup()
-    if plt is None:  # pragma: no cover
-        return
-    C, S = figstyle.COLOR, figstyle.SIZE
+PASS_COUNT = 8                 # the preregistered rule: 8 of 10 on both counts (see the verdict line in main)
+STEM = os.path.join(DATA, "studyC_fig_transfer")
+TRANSFER_LABEL, CLOCK_LABEL = "Pressure features + clock", "Clock only"
+DODGE = 0.14                   # horizontal offset of each marker from its unit tick
+
+
+def caption(results):
+    heldout = results["heldout"]
+    n = len(heldout)
+    within, beats = results["n_within_target"], results["n_beats_clock"]
+    rule = "C-PASS" if within >= PASS_COUNT and beats >= PASS_COUNT else "C-FAIL"
+    assert rule == results["verdict"], (rule, results["verdict"])
+    assert within == sum(h["rmse"] <= PASS_RMSE for h in heldout)
+    assert beats == sum(h["rmse"] < h["rmse_clock"] for h in heldout)
+    return (
+        f"Study C transfer, simulation only. One ridge estimator on pressure features plus the cycle clock was "
+        f"trained on {len(results['train_units'])} dispersed synthetic units and applied unchanged to {n} unseen "
+        f"units. For each held-out unit, the circle is the transferred estimator's life-estimate RMSE and the "
+        f"square, drawn just right of it, is the clock-only estimate; the thin line joins the pair. A filled marker meets the "
+        f"{PASS_RMSE:.2f} life target (dashed line); a hollow marker misses it. Lower is better. The estimator "
+        f"meets the target on {within} of {n} units and beats the clock on {beats}; mean RMSE "
+        f"{results['heldout_mean_rmse']:.3f} life against {results['heldout_mean_rmse_clock']:.3f} for the clock. "
+        f"The preregistered rule needs {PASS_COUNT} of {n} on both counts, so the verdict is {results['verdict']}. "
+        "Source: data/sim/studyC/studyC_results.json."
+    )
+
+
+def figure(results):
+    figure_style.apply()
     heldout, test_idx = results["heldout"], results["test_units"]
     r = np.array([h["rmse"] for h in heldout]); rc = np.array([h["rmse_clock"] for h in heldout])
-    n = len(heldout)
-    fig, ax = plt.subplots(figsize=(figstyle.WIDE, 2.6))
-    ids = np.arange(n)
+    ids = np.arange(len(heldout))
+    fig, ax = plt.subplots(figsize=(5.4, 2.8))
+    fig.subplots_adjust(left=.12, right=.98, top=.83, bottom=.15)
+    # The pair sits either side of the unit's tick so equal errors do not hide each other.
     for i in ids:
-        ax.plot([i, i], [r[i], rc[i]], color="#BDBDBD", lw=1.2, zorder=1)
-    ax.plot(ids, rc, "s", color=C["clock"], ms=5, zorder=2)
-    ax.plot(ids, r, "o", color=C["pv"], ms=5.5, zorder=3)
-    ax.axhline(PASS_RMSE, ls="--", color=C["ref"], lw=0.8)
-    ax.text(-0.5, PASS_RMSE + 0.006, f"target {PASS_RMSE:.2f} life", ha="left", va="bottom",
-            fontsize=S["note"], color=C["ref"])
-    j = int(np.argmax(rc))
-    figstyle.end_label(ax, j, rc[j], "clock only", C["clock"], dx=7)
-    figstyle.end_label(ax, j, r[j], "pressure features + clock\n(transferred)", C["pv"], dx=7)
+        ax.plot([i - DODGE, i + DODGE], [r[i], rc[i]], color=figure_style.INK, lw=0.6, zorder=1)
+    for i in ids:
+        ax.plot(i + DODGE, rc[i], marker="s", mfc=figure_style.FILL[bool(rc[i] <= PASS_RMSE)], zorder=2,
+                **figure_style.MARKER)
+        ax.plot(i - DODGE, r[i], marker="o", mfc=figure_style.FILL[bool(r[i] <= PASS_RMSE)], zorder=3,
+                **figure_style.MARKER)
+    ax.axhline(PASS_RMSE, zorder=0, **figure_style.REFERENCE)
     ax.set_xticks(ids, [str(i) for i in test_idx])
-    ax.set_xlim(-0.6, n - 0.4)
-    ax.set_ylim(0, max(rc.max(), r.max()) * 1.12)
+    ax.set_xlim(-0.6, len(ids) - 0.4)
+    ax.set_ylim(0, max(rc.max(), r.max()) * 1.1)
     ax.set_xlabel("Held-out unit")
     ax.set_ylabel("Life-estimate RMSE (life)")
-    ax.set_title(f"The transferred estimator meets the target on {results['n_within_target']} of {n} units\n"
-                 f"and beats the clock on {results['n_beats_clock']}")
-    ax.text(1.0, 0.98, "lower is better", transform=ax.transAxes, ha="right", va="top", fontsize=S["note"],
-            color=C["muted"])
-    ax.grid(axis="y")
-    ax.set_axisbelow(True)
-    figstyle.footnote(fig, f"Simulation: one ridge estimator trained on {len(results['train_units'])} dispersed "
-                      f"synthetic units, applied unchanged to {n} unseen units. Verdict {results['verdict']}: the "
-                      "preregistered rule needs 8 of 10 on both counts.")
-    figstyle.save(fig, os.path.join(DATA, "studyC_fig_transfer")); plt.close(fig)
+    handles = [Line2D([], [], marker="o", mfc=figure_style.FILL[True], label=TRANSFER_LABEL, **figure_style.MARKER),
+               Line2D([], [], marker="s", mfc=figure_style.FILL[True], label=CLOCK_LABEL, **figure_style.MARKER),
+               Line2D([], [], marker="o", mfc=figure_style.FILL[False], label="Hollow: misses target",
+                      **figure_style.MARKER),
+               Line2D([], [], label="Target", **figure_style.REFERENCE)]
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(.55, .995), ncol=2, columnspacing=1.4,
+               handletextpad=.5, borderaxespad=0)
+    return fig
+
+
+def plot(results):
+    """Per-unit transfer figure and caption from a saved or fresh result dict."""
+    fig = figure(results)
+    figure_style.save(fig, STEM, caption=caption(results))
+    plt.close(fig)
+
 
 if __name__ == "__main__":
     import sys

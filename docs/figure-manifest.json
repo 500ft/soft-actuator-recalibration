@@ -10,7 +10,8 @@
       "redraw": "python -m scripts.gate0_lumped_rc",
       "inputs": [
         "sim/plant.py",
-        "scripts/figstyle.py"
+        "scripts/figstyle.py",
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/gate0/fig_crosstalk_vs_compliance.png",
@@ -47,7 +48,8 @@
       "inputs": [
         "sim/fatigue.py",
         "sim/plant.py",
-        "scripts/figstyle.py"
+        "scripts/figstyle.py",
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/phaseB/fig_fatigue_trajectory.png",
@@ -69,7 +71,7 @@
       "inputs": [
         "sim/fatigue.py",
         "pipeline/validation.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/study1/fig_detector_comparison.png",
@@ -90,7 +92,7 @@
       "inputs": [
         "data/sim/phaseD/dataset.npz",
         "data/sim/phaseD/manifest.json",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/phaseD/study2_fig1_drift.png",
@@ -110,7 +112,8 @@
       "inputs": [
         "data/sim/phaseD/dataset.npz",
         "data/sim/phaseD/manifest.json",
-        "scripts/figstyle.py"
+        "scripts/figstyle.py",
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/phaseD/study3_fig3_leading_indicator.png",
@@ -130,7 +133,8 @@
       "inputs": [
         "data/sim/phaseD/dataset.npz",
         "data/sim/phaseD/manifest.json",
-        "scripts/figstyle.py"
+        "scripts/figstyle.py",
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/phaseD/study3_fig3b_correlation_cluster_ci.png",
@@ -146,11 +150,11 @@
       "evidence_type": "simulation",
       "generator": "scripts/run_study4.py",
       "command": "python -m scripts.run_study4",
-      "redraw": "python -m scripts.run_study4",
+      "redraw": "python -m scripts.run_study4 --replot",
       "inputs": [
         "sim/network.py",
         "sim/fatigue.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/phaseD/study4_fig_crosstalk_sensitivity.png",
@@ -170,7 +174,8 @@
         "sim/plant.py",
         "sim/sensors.py",
         "pipeline/dispersion.py",
-        "scripts/figstyle.py"
+        "scripts/figstyle.py",
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/studyA/studyA_fig_indicator_spread.png",
@@ -193,7 +198,7 @@
         "sim/sensors.py",
         "pipeline/dispersion.py",
         "pipeline/identifiability.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/studyB/studyB_fig_identifiability_map.png",
@@ -215,7 +220,7 @@
         "pipeline/dispersion.py",
         "pipeline/identifiability.py",
         "scripts/run_studyB.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/studyC/studyC_fig_transfer.png",
@@ -235,7 +240,7 @@
         "scripts/run_studyC.py",
         "pipeline/dispersion.py",
         "pipeline/identifiability.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/studyC/studyC_fig_failure_map.png",
@@ -256,7 +261,7 @@
         "sim/fatigue.py",
         "sim/plant.py",
         "scripts/run_studyB.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/studyB/studyB_fig_structural.png",
@@ -276,7 +281,7 @@
         "scripts/run_studyC.py",
         "pipeline/identifiability.py",
         "sim/fatigue.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/dispersion_audit/dispersion_audit_fig.png",
@@ -295,7 +300,7 @@
         "data/sim/phaseD/matched_clock_audit.json",
         "data/sim/phaseD/study3_results.json",
         "data/sim/phaseD/study4_results.json",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/summary/policy_comparison.png",

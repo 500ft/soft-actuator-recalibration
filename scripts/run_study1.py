@@ -48,9 +48,11 @@ from pipeline.validation import (
 from sim.fatigue import FatigueParams, degraded_sls, fatigue_state
 from sim.plant import SLSParams, pv_loop
 
-from scripts import figstyle
+from scripts import figure_style as style
 
-plt = figstyle.setup(style=False)
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+from matplotlib.patches import Patch
 
 
 FEATURE_NAMES = ("loop_area", "inflation_compliance")
@@ -62,6 +64,7 @@ LOGISTIC_SHARPNESS = (8.0, 20.0, 50.0)
 REST_S = 300.0
 BASELINE_CYCLE = 20.0
 BASELINE_REPEATS = 20
+FUSION_NOISE = 0.25  # pressure noise, % of full scale, for the fusion comparison
 
 
 def _cycle_grid(rupture_cycles, cadence):
@@ -348,15 +351,15 @@ def _fusion_comparator(base_sls, frequency, amplitude):
              for n in cycles]
     rng = np.random.default_rng(441)
     baseline_loop = loops[0]
-    baseline_features = np.vstack([_feature_pair(baseline_loop, 0.25, rng)
+    baseline_features = np.vstack([_feature_pair(baseline_loop, FUSION_NOISE, rng)
                                    for _ in range(BASELINE_REPEATS)])
     baseline_vectors = np.vstack([
-        resample_loop(baseline_loop["V"], add_pressure_noise(baseline_loop["P"], 0.25, rng), 64)
+        resample_loop(baseline_loop["V"], add_pressure_noise(baseline_loop["P"], FUSION_NOISE, rng), 64)
         for _ in range(BASELINE_REPEATS)
     ])
-    feature_matrix = np.vstack([_feature_pair(loop, 0.25, rng) for loop in loops])
+    feature_matrix = np.vstack([_feature_pair(loop, FUSION_NOISE, rng) for loop in loops])
     vectors = np.vstack([
-        resample_loop(loop["V"], add_pressure_noise(loop["P"], 0.25, rng), 64)
+        resample_loop(loop["V"], add_pressure_noise(loop["P"], FUSION_NOISE, rng), 64)
         for loop in loops
     ])
     model = fit_baseline(baseline_features, FEATURE_NAMES, (1, 1))
@@ -520,8 +523,7 @@ def main(argv=None):
     result["verdict"] = "PASS" if all(checks.values()) else "CHECK"
     (outdir / "study1_results.json").write_text(json.dumps(_json_safe(result), indent=2))
 
-    if plt is not None:
-        _plots(outdir, result)
+    _plots(outdir, result)
 
     print("=" * 76)
     print("PHASE C / STUDY 1 — causal health indicators + onset identifiability")
@@ -534,130 +536,231 @@ def main(argv=None):
     return 0 if result["verdict"] == "PASS" else 1
 
 
-def _plots(outdir, result):
-    figstyle.apply()
-    C, S = figstyle.COLOR, figstyle.SIZE
-    proto = result["registered_protocol"]
-    trials = proto["evaluation_trials"]
+# Figures: a data-only canvas; every word, outcome and number lives in the caption written beside each PNG.
+SOURCE = "Simulation only; no physical measurement. Source: study1_results.json"
+DETECTORS = (("sustained_3sigma", r"Sustained 3$\sigma$", {"facecolor": style.INK}),
+             ("cusum", "CUSUM, matched false alarms", {"facecolor": "white", "hatch": "////"}))
+ONSET_MARKERS = "os^D"
 
+
+def _top_legend(fig, handles, ncol, y=0.995):
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, y), ncol=ncol,
+               handlelength=1.8, columnspacing=1.0, handletextpad=0.5, borderaxespad=0)
+
+
+def _line(label, **kw):
+    return Line2D([], [], color=style.INK, label=label, **kw)
+
+
+FUSION = (("area_hi", "Loop area", "-"), ("fused_hi", "Fused z-mean", "--"), ("compliance_hi", "Compliance", ":"))
+
+
+def fusion_figure(result):
     fusion = result["fusion_comparison"]
-    cycles = np.asarray(fusion["cycles"])
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.6))
-    for key, label, color in (("area_hi", "loop area", C["pv"]), ("fused_hi", "fused z-mean", C["fused"]),
-                              ("compliance_hi", "compliance", C["compliance"])):
-        y = np.asarray(fusion[key])
-        ax.plot(cycles, y, color=color)
-        figstyle.end_label(ax, cycles[-1], y[-1], label, color)
+    fig, ax = plt.subplots(figsize=(style.SINGLE, 2.8))
+    fig.subplots_adjust(left=0.2, right=0.97, top=0.89, bottom=0.16)
+    for key, label, ls in FUSION:
+        ax.plot(fusion["cycles"], fusion[key], color=style.INK, ls=ls, lw=1.1)
     ax.set_xlabel("Cycles")
     ax.set_ylabel("Health index above baseline\n(baseline noise SDs)")
-    ax.set_title("Loop area rises furthest above its baseline")
     ax.margins(x=0.02)
-    mono = fusion["monotonicity"]
-    figstyle.footnote(fig, "Simulation: one synthetic life at 0.25 % FS pressure noise. Monotonicity: loop area "
-                      f"{mono['area']:.2f}, fused {mono['fused']:.2f}, compliance {mono['compliance']:.2f}.")
-    figstyle.save(fig, outdir / "fig_hi_fusion_comparison", formats=("png",)); plt.close(fig)
+    _top_legend(fig, [_line(label, ls=ls, lw=1.1) for _, label, ls in FUSION], 3)
+    return fig
 
+
+def fusion_caption(result):
+    fusion = result["fusion_comparison"]
+    cycles, mono = fusion["cycles"], fusion["monotonicity"]
+    return (f"One synthetic actuator life at {FUSION_NOISE:g} % full-scale pressure noise, probed at {len(cycles)} "
+            f"points from {cycles[0]:,.0f} to {cycles[-1]:,.0f} cycles. Each line is a health index in baseline-noise "
+            "standard deviations above its causal baseline: loop area (solid), compliance (dotted) and their fused "
+            "z-mean (dashed). Loop area rises furthest above its baseline. Monotonicity: loop area "
+            f"{mono['area']:.2f}, fused {mono['fused']:.2f}, compliance {mono['compliance']:.2f}. "
+            f"{SOURCE} (fusion_comparison).")
+
+
+RECOVERY = (("loop_area", "Loop-area fit", {"marker": "o", "mfc": "white", "ms": 7}),
+            ("compliance", "Compliance fit", {"marker": "x", "ms": 5}))
+
+
+def recovery_figure(result):
     recovery = result["recovery"]
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.3))
     life = [r["cycles"] for r in recovery]
-    ax.axhline(24, ls="--", lw=0.8, color=C["ref"])
-    ax.text(life[0], 24.04, "injected 24 h", fontsize=S["note"], color=C["ref"], va="bottom")
-    for feature, label, color, marker in (("loop_area", "loop-area fit", C["pv"], "o"),
-                                          ("compliance", "compliance fit", C["compliance"], "x")):
-        ax.plot(life, [r["fits"][feature]["tau_s"] / 3600 for r in recovery], marker=marker, ls="none",
-                color=color, ms=6 if marker == "o" else 7, mew=1.4, label=label)
+    fig, ax = plt.subplots(figsize=(style.SINGLE, 2.6))
+    fig.subplots_adjust(left=0.2, right=0.97, top=0.8, bottom=0.18)
+    ax.axhline(FatigueParams().recovery_tau_s / 3600, zorder=1, **style.REFERENCE)
+    for feature, _, marker in RECOVERY:
+        ax.plot(life, [r["fits"][feature]["tau_s"] / 3600 for r in recovery], color=style.INK, ls="none",
+                mew=0.9, zorder=3, **marker)
     ax.set_xticks(life, [f"{c:,.0f}" for c in life])
     ax.set_ylim(23.5, 24.5)
-    ax.ticklabel_format(axis="y", style="plain", useOffset=False)
-    ax.set_xlabel("Life stage of the rest test (cycles)")
-    ax.set_ylabel("Recovered time constant τ (h)")
-    ax.set_title("The recovery fit returns the injected τ at every stage")
-    ax.legend(loc="lower right", ncol=2)
     ax.margins(x=0.12)
-    err = max(r["fits"][f]["tau_relative_error"] for r in recovery for f in ("loop_area", "compliance"))
-    figstyle.footnote(fig, f"Simulation: injected recovery τ = 24 h, recovered without noise, so the match holds by "
-                      f"construction. Largest relative error {err:.1e}.")
-    figstyle.save(fig, outdir / "fig_recovery_validation", formats=("png",)); plt.close(fig)
+    ax.set_xlabel("Life stage of the rest test (cycles)")
+    ax.set_ylabel(r"Recovered time constant $\tau$ (h)")
+    handles = [_line(label, ls="none", mew=0.9, **marker) for _, label, marker in RECOVERY]
+    handles.append(_line(r"Injected $\tau$", lw=style.REFERENCE["lw"], ls=style.REFERENCE["ls"]))
+    _top_legend(fig, handles, 2)
+    return fig
 
-    fixture = result["metric_fixtures"]
-    rows = [("Monotonicity", "clean trajectory", fixture["monotonicity_clean"]),
-            ("Monotonicity", "recovery dip", fixture["monotonicity_recovery_dip"]),
-            ("Trendability", "self-similar units", fixture["trendability_self_similar"]),
-            ("Trendability", "corrupted unit", fixture["trendability_corrupted"]),
-            ("Prognosability", "known end-of-life spread", fixture["prognosability_known_spread"]["value"])]
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.3))
-    for y, (metric, case, value) in enumerate(rows):
-        bad = case in ("recovery dip", "corrupted unit")
-        col = C["ref"] if bad else C["fused"]
-        ax.plot([0, value], [y, y], color="#BDBDBD", lw=1.0, zorder=1)
-        ax.plot(value, y, "o", color=col, mfc="white" if bad else col, mew=1.2, ms=5.5, zorder=2)
-        ax.annotate(f"{value:.2f}", (value, y), xytext=(6, 0), textcoords="offset points", va="center",
-                    fontsize=S["note"], color=col)
-    ax.set_yticks(range(len(rows)), [f"{m}: {c}" for m, c, _ in rows])
+
+def recovery_caption(result):
+    recovery = result["recovery"]
+    stages = ", ".join(f"{r['cycles']:,.0f}" for r in recovery)
+    err = max(r["fits"][f]["tau_relative_error"] for r in recovery for f in ("loop_area", "compliance"))
+    return (f"Recovery time constant τ fitted to rest tests at {stages} cycles, from the loop area (hollow "
+            "circles) and the inflation compliance (crosses). The dashed line is the injected recovery "
+            f"τ = {FatigueParams().recovery_tau_s / 3600:g} h. The fit returns the injected τ at every stage; the "
+            "rest tests are noise-free, so the match holds by construction. Largest relative error "
+            f"{err:.1e}. {SOURCE} (recovery).")
+
+
+def _fixture_rows(result):
+    f = result["metric_fixtures"]
+    return [("Monotonicity", "clean trajectory", f["monotonicity_clean"], True),
+            ("Monotonicity", "recovery dip", f["monotonicity_recovery_dip"], False),
+            ("Trendability", "self-similar units", f["trendability_self_similar"], True),
+            ("Trendability", "corrupted unit", f["trendability_corrupted"], False),
+            ("Prognosability", "known end-of-life spread", f["prognosability_known_spread"]["value"], True)]
+
+
+def fixtures_figure(result):
+    rows = _fixture_rows(result)
+    fig, ax = plt.subplots(figsize=(style.SINGLE, 2.5))
+    fig.subplots_adjust(left=0.54, right=0.96, top=0.84, bottom=0.18)
+    for y, (_, _, value, clean) in enumerate(rows):
+        ax.plot([0, value], [y, y], color=style.INK, lw=0.5, zorder=1)
+        ax.plot(value, y, marker="o", mfc=style.FILL[clean], zorder=3, **style.MARKER)
+    ax.set_yticks(range(len(rows)), [f"{m}: {c}" for m, c, _, _ in rows])
     ax.set_ylim(len(rows) - 0.5, -0.5)
-    ax.set_xlim(0, 1.18)
-    ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0])
+    ax.set_xlim(0, 1.05)
+    ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0], ["0", "0.25", "0.5", "0.75", "1"])
     ax.tick_params(axis="y", length=0)
     ax.set_xlabel("Metric value (1 = ideal)")
-    ax.set_title("Monotonicity and trendability drop\non their corrupted fixtures")
-    figstyle.footnote(fig, "Synthetic fixtures with known ground truth; open circles mark the deliberately "
-                      "corrupted cases.")
-    figstyle.save(fig, outdir / "fig_metric_fixtures", formats=("png",)); plt.close(fig)
+    _top_legend(fig, [_line("Clean fixture", marker="o", mfc=style.FILL[True], ls="none", ms=5, mew=0.9),
+                      _line("Corrupted fixture", marker="o", mfc=style.FILL[False], ls="none", ms=5, mew=0.9)], 2)
+    return fig
 
-    conditions = result["conditions"]
-    selected = [c for c in conditions if c["onset_fraction"] == 0.70 and c["cadence_cycles"] == 100]
+
+def fixtures_caption(result):
+    rows = _fixture_rows(result)
+    clean = "; ".join(f"{m.lower()}, {c} {v:.2f}" for m, c, v, ok in rows if ok)
+    bad = "; ".join(f"{m.lower()}, {c} {v:.2f}" for m, c, v, ok in rows if not ok)
+    return ("Health-indicator metrics on synthetic fixtures with known ground truth; 1 is ideal. Filled circles "
+            f"are the clean fixtures ({clean}). Hollow circles are the deliberately corrupted fixtures ({bad}). "
+            "Monotonicity and trendability drop on their corrupted fixtures. Synthetic fixtures, no physical "
+            "measurement. Source: study1_results.json (metric_fixtures).")
+
+
+def _onset_series(result):
+    """(generator, sharpness) -> condition rows sorted by noise, for onset 0.70 and a 100-cycle probe."""
+    selected = [c for c in result["conditions"] if c["onset_fraction"] == 0.70 and c["cadence_cycles"] == 100]
     gens = sorted({(c["generator"], c["logistic_sharpness"]) for c in selected},
                   key=lambda g: (g[0] != "quadratic", g[1] or 0))
-    blues = figstyle.ramp(C["onset"], len(gens) + 1)[2:]
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.6))
-    for generator in gens:
-        rows = sorted((c for c in selected if (c["generator"], c["logistic_sharpness"]) == generator),
-                      key=lambda c: c["noise_percent_fs_sigma"])
-        x = [r["noise_percent_fs_sigma"] for r in rows]
-        y = [r["models"]["segmented_quadratic"]["median_absolute_onset_error"] for r in rows]
-        if generator[0] == "quadratic":
-            ax.plot(x, y, "o-", color=C["fused"], ms=4)
-        else:
-            k = gens.index(generator) - 1
-            ax.plot(x, y, ["s", "^", "D"][k % 3] + "-", color=blues[k], ms=[6, 4.5, 3][k % 3], lw=1.0)
-    logistic = [g[1] for g in gens if g[0] == "logistic"]
-    ax.text(0.0, 0.37, "logistic data, k = " + ", ".join(f"{k:g}" for k in logistic) + " (lines overlap)",
-            fontsize=S["note"], color=figstyle.ink(C["onset"]), va="top")
-    ax.text(0.0, 0.035, "quadratic data, the estimator's own form", fontsize=S["note"],
-            color=C["fused"], va="bottom")
-    ax.set_xticks(proto["noise_percent_fs_sigma"])
-    ax.set_xlabel("Pressure noise σ (% of full scale)")
-    ax.set_ylabel("Median onset error\n(fraction of life)")
-    ax.set_title("The estimator finds the onset only in data\nshaped like its own model")
-    ax.set_ylim(-0.02, 0.45)
-    ax.margins(x=0.04)
-    figstyle.footnote(fig, f"Simulation: segmented-quadratic onset estimator; true onset 0.70 of life, probe every "
-                      f"100 cycles, {trials} trials per point.")
-    figstyle.save(fig, outdir / "fig_onset_generalization_gap", formats=("png",)); plt.close(fig)
+    return {g: sorted((c for c in selected if (c["generator"], c["logistic_sharpness"]) == g),
+                      key=lambda c: c["noise_percent_fs_sigma"]) for g in gens}
 
-    noisy = [c for c in conditions if c["detection"] is not None
-             and c["generator"] == "quadratic" and c["onset_fraction"] == 0.70
-             and c["cadence_cycles"] == 100]
-    rates = [c["detection"][d]["alarm_rate"] for c in noisy for d in ("sustained_3sigma", "cusum")]
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.5))
-    x = np.arange(len(noisy)); width = 0.36
-    for off, key, label, color in ((-width / 2, "sustained_3sigma", "sustained 3σ", C["always"]),
-                                   (width / 2, "cusum", "CUSUM, matched false alarms", C["fixed"])):
-        vals = [c["detection"][key]["median_alarm_cycle"] for c in noisy]
-        ax.bar(x + off, vals, width * 0.95, color=color, label=label)
-        for xi, v in zip(x + off, vals):
-            ax.text(xi, v + 12, f"{v:.0f}", ha="center", va="bottom", fontsize=S["note"], color="#222222")
-    ax.set_xticks(x, [f"{c['noise_percent_fs_sigma']:g} %" for c in noisy])
-    ax.set_xlabel("Pressure noise σ (% of full scale)")
+
+def _onset_label(generator):
+    return "Quadratic data" if generator[0] == "quadratic" else f"Logistic data, $k$ = {generator[1]:g}"
+
+
+def onset_figure(result):
+    series = _onset_series(result)
+    noise = result["registered_protocol"]["noise_percent_fs_sigma"]
+    fig, axes = plt.subplots(2, 2, figsize=(style.SINGLE, 3.6), sharex=True, sharey=True)
+    fig.subplots_adjust(left=0.2, right=0.97, top=0.8, bottom=0.14, wspace=0.18, hspace=0.32)
+    for i, (ax, (generator, rows), marker) in enumerate(zip(axes.flat, series.items(), ONSET_MARKERS)):
+        ax.plot([r["noise_percent_fs_sigma"] for r in rows],
+                [r["models"]["segmented_quadratic"]["median_absolute_onset_error"] for r in rows],
+                marker=marker, color=style.INK, ms=4, lw=1.0)
+        ax.set_ylim(-0.02, 0.45)
+        ax.set_yticks([0, 0.2, 0.4], ["0", "0.2", "0.4"])
+        ax.set_xticks(noise, [f"{n:g}" for n in noise])
+        ax.margins(x=0.06)
+        style.letter(ax, i)
+    fig.supxlabel(r"Pressure noise $\sigma$ (% of full scale)", y=0.01, size=style.LABEL_SIZE)
+    fig.supylabel("Median onset error (fraction of life)", x=0.01, size=style.LABEL_SIZE)
+    _top_legend(fig, [_line(_onset_label(g), marker=m, ms=4, lw=1.0) for g, m in zip(series, ONSET_MARKERS)], 2)
+    return fig
+
+
+def onset_caption(result):
+    series = _onset_series(result)
+    error = lambda rows: [r["models"]["segmented_quadratic"]["median_absolute_onset_error"] for r in rows]
+    quadratic = [rows for g, rows in series.items() if g[0] == "quadratic"]
+    logistic = {g: rows for g, rows in series.items() if g[0] == "logistic"}
+    assert len(quadratic) == 1 and len(logistic) == 3, list(series)
+    rows = [r for group in series.values() for r in group]
+    trials = {r["trials"] for r in rows if r["noise_percent_fs_sigma"] > 0}
+    assert len(trials) == 1 and all(r["trials"] == 1 for r in rows if r["noise_percent_fs_sigma"] == 0)
+    log_errors = {round(e, 12) for group in logistic.values() for e in error(group)}
+    assert len(log_errors) == 1, log_errors
+    sharp = ", ".join(f"{g[1]:g}" for g in logistic)
+    return ("Median absolute onset error of the segmented-quadratic onset estimator against pressure noise; true "
+            f"onset {rows[0]['onset_fraction']:.2f} of life, probe every {rows[0]['cadence_cycles']} cycles, "
+            f"{trials.pop()} trials per noisy point and one trial without noise. Panel (a): quadratic fatigue data, "
+            "the estimator's own form (circles). Panels (b) to (d): logistic fatigue data with sharpness "
+            f"k = {sharp} (squares, triangles, diamonds); their errors are identical, so they are drawn in separate "
+            "panels with the same axes rather than on top of each other. The estimator finds the onset only in "
+            f"data shaped like its own model: the quadratic error is at most {max(error(quadratic[0])):.4f} of "
+            f"life, the logistic error is {log_errors.pop():.2f} of life at every noise level. {SOURCE} (conditions).")
+
+
+def _detection_rows(result):
+    return [c for c in result["conditions"] if c["detection"] is not None
+            and c["generator"] == "quadratic" and c["onset_fraction"] == 0.70 and c["cadence_cycles"] == 100]
+
+
+def detector_figure(result):
+    rows = _detection_rows(result)
+    fig, ax = plt.subplots(figsize=(style.SINGLE, 2.6))
+    fig.subplots_adjust(left=0.2, right=0.97, top=0.8, bottom=0.18)
+    x = np.arange(len(rows))
+    width = 0.36
+    plt.rcParams["hatch.linewidth"] = 0.6
+    for off, (key, _, fill) in zip((-width / 2, width / 2), DETECTORS):
+        ax.bar(x + off, [c["detection"][key]["median_alarm_cycle"] for c in rows], width * 0.95,
+               edgecolor=style.INK, linewidth=0.8, **fill)
+    ax.set_xticks(x, [f"{c['noise_percent_fs_sigma']:g}" for c in rows])
+    ax.tick_params(axis="x", length=0)
+    ax.set_xlabel(r"Pressure noise $\sigma$ (% of full scale)")
     ax.set_ylabel("Median confirmed alarm (cycle)")
-    ax.set_title("Sustained 3σ alarms 100 cycles before CUSUM\nat every noise level" if all(
-        c["detection"]["cusum"]["median_alarm_cycle"] - c["detection"]["sustained_3sigma"]["median_alarm_cycle"] == 100
-        for c in noisy) else "Sustained 3σ and CUSUM alarm timing")
-    ax.legend(loc="upper left")
-    ax.set_ylim(0, max(c["detection"]["cusum"]["median_alarm_cycle"] for c in noisy) * 1.25)
-    figstyle.footnote(fig, f"Simulation: quadratic fatigue, onset 0.70 of life, probe every 100 cycles, {trials} "
-                      f"trials per bar. Alarm rate {min(rates):.0%} for both detectors at every noise level.")
-    figstyle.save(fig, outdir / "fig_detector_comparison", formats=("png",)); plt.close(fig)
+    ax.set_ylim(0, max(c["detection"]["cusum"]["median_alarm_cycle"] for c in rows) * 1.15)
+    _top_legend(fig, [Patch(edgecolor=style.INK, linewidth=0.8, label=label, **fill) for _, label, fill in DETECTORS], 1)
+    return fig
+
+
+def detector_caption(result):
+    rows = _detection_rows(result)
+    cycles = lambda key: [c["detection"][key]["median_alarm_cycle"] for c in rows]
+    gaps = {b - a for a, b in zip(cycles("sustained_3sigma"), cycles("cusum"))}
+    rates = {c["detection"][k]["alarm_rate"] for c in rows for k in ("sustained_3sigma", "cusum")}
+    trials = {c["trials"] for c in rows}
+    assert len(gaps) == 1 and len(rates) == 1 and len(trials) == 1, (gaps, rates, trials)
+    levels = ", ".join(f"{c['noise_percent_fs_sigma']:g}" for c in rows)
+    pairs = "; ".join(f"{c['noise_percent_fs_sigma']:g} %: {a:,.0f} and {b:,.0f}"
+                      for c, a, b in zip(rows, cycles("sustained_3sigma"), cycles("cusum")))
+    return ("Median confirmed alarm cycle of the sustained 3σ detector (filled bars) and of a CUSUM detector "
+            "calibrated to matched null false-alarm rates (hatched bars), at pressure noise σ of "
+            f"{levels} % of full scale. Quadratic fatigue, onset {rows[0]['onset_fraction']:.2f} of life, probe "
+            f"every {rows[0]['cadence_cycles']} cycles, {trials.pop()} trials per bar. Median alarm cycles, "
+            f"sustained 3σ and CUSUM: {pairs}. Sustained 3σ alarms {gaps.pop():,.0f} cycles before CUSUM at "
+            f"every noise level, and both detectors alarm in {rates.pop():.0%} of trials. {SOURCE} (conditions).")
+
+
+FIGURES = {"fig_hi_fusion_comparison": (fusion_figure, fusion_caption),
+           "fig_recovery_validation": (recovery_figure, recovery_caption),
+           "fig_metric_fixtures": (fixtures_figure, fixtures_caption),
+           "fig_onset_generalization_gap": (onset_figure, onset_caption),
+           "fig_detector_comparison": (detector_figure, detector_caption)}
+
+
+def _plots(outdir, result):
+    style.apply()
+    for stem, (figure, caption) in FIGURES.items():
+        fig = figure(result)
+        style.save(fig, outdir / stem, formats=("png",), caption=caption(result))
+        plt.close(fig)
 
 
 if __name__ == "__main__":

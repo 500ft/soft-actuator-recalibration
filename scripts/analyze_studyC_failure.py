@@ -18,9 +18,11 @@ import json
 import os
 
 import numpy as np
+from matplotlib.lines import Line2D
 
 from pipeline.dispersion import SEED, sample_units
-from scripts import figstyle
+from scripts import figure_style
+from scripts.figure_style import plt
 from scripts.run_studyC import (DATA, N_TRAIN, N_UNITS, PASS_RMSE, PROBE_START, PROBE_STEP,
                                 ridge_fit, ridge_predict, rmse, stack, unit_records)
 
@@ -311,68 +313,72 @@ def main():
 
 
 
-def plot(results):
-    """Diagnostic failure map from a saved or fresh analysis dict."""
-    plt = figstyle.setup()
-    if plt is None:  # pragma: no cover
-        return
-    C, S = figstyle.COLOR, figstyle.SIZE
+STEM = os.path.join(DATA, "studyC_fig_failure_map")
+NEAR_RMSE = 0.005              # caption names units whose markers coincide in (a): same count, error this close
+
+
+def _signed(x):
+    return f"{x:.2f}".replace("-", "−")
+
+
+def caption(results):
     rows, assoc = results["per_unit"], results["associations"]
-    fig, (a, b) = plt.subplots(1, 2, figsize=(figstyle.FULL, 2.8), sharey=True, gridspec_kw={"wspace": 0.12})
-
-    def mark(ax, x, row):
-        ok = row["within_target"]
-        ax.plot(x, row["rmse"], "o" if ok else "X", color=C["pv"], mfc=C["pv"] if ok else "white",
-                ms=6 if ok else 7, mew=1.2, zorder=3)
-
-    ordered = sorted(rows, key=lambda r: (r["n_post_onset"], r["rmse"]))
-    for i, row in enumerate(ordered):
-        mark(a, row["n_post_onset"], row)
-        # two units sharing a probe count and nearly the same error: label one above and one below
-        near = lambda q: q["n_post_onset"] == row["n_post_onset"] and abs(q["rmse"] - row["rmse"]) < 0.012
-        lower = i + 1 < len(ordered) and near(ordered[i + 1])
-        upper = i > 0 and near(ordered[i - 1])
-        if lower or upper:
-            xy, ha, va = (0, -9 if lower else 9), "center", "top" if lower else "bottom"
-        else:
-            # otherwise right of the point, or left when the next column has a point at similar error
-            crowded = any(q["n_post_onset"] == row["n_post_onset"] + 1 and abs(q["rmse"] - row["rmse"]) < 0.03
-                          for q in rows)
-            xy, ha, va = (-7 if crowded else 7, 8 if abs(row["rmse"] - PASS_RMSE) < 0.005 else 0), \
-                ("right" if crowded else "left"), "center"
-        a.annotate(f"{row['rupture_cycles']:,.0f}", (row["n_post_onset"], row["rmse"]), textcoords="offset points",
-                   xytext=xy, ha=ha, va=va, fontsize=S["tick"], color=C["muted"])
-    for row in rows:
-        mark(b, row["rupture_deviation_from_training_median"], row)
-        b.annotate(f"{row['n_post_onset']}", (row["rupture_deviation_from_training_median"], row["rmse"]),
-                   textcoords="offset points", xytext=(6, 3), fontsize=S["tick"], color=C["muted"])
-    for ax in (a, b):
-        ax.axhline(PASS_RMSE, ls="--", color=C["ref"], lw=0.8)
-        ax.margins(x=0.08, y=0.08)
-    a.set_ylim(0.015, None)
-    b.text(0.98, PASS_RMSE + 0.004, f"target {PASS_RMSE:.2f}", transform=b.get_yaxis_transform(), ha="right",
-           va="bottom", fontsize=S["note"], color=C["ref"])
     few = max(r["n_post_onset"] for r in rows if not r["within_target"] and
               all(not q["within_target"] for q in rows if q["n_post_onset"] <= r["n_post_onset"]))
+    coincide = [(p, q) for i, p in enumerate(rows) for q in rows[i + 1:]
+                if p["n_post_onset"] == q["n_post_onset"] and abs(p["rmse"] - q["rmse"]) < NEAR_RMSE]
+    overlap = "".join(f" Units {p['unit']} and {q['unit']} both have {p['n_post_onset']} post-onset probes and "
+                      f"nearly equal error ({p['rmse']:.3f} and {q['rmse']:.3f}), so their markers in (a) overlap."
+                      for p, q in coincide)
+    listing = "; ".join(f"unit {r['unit']}: {r['rupture_cycles']:,.0f}, {r['n_post_onset']}, {r['rmse']:.3f}"
+                        for r in sorted(rows, key=lambda r: r["rupture_cycles"]))
+    return (
+        f"Post-hoc diagnostic of the committed Study C run, simulation only; it is not a new held-out evaluation. "
+        f"Each marker is one of the {len(rows)} held-out synthetic units, plotted as its transferred life-estimate "
+        f"RMSE against (a) the number of probes after its acceleration onset and (b) the distance of its rupture "
+        f"life from the training median ({results['median_training_rupture_cycles']:,.0f} cycles), as the absolute "
+        f"difference divided by that median. The panels share the vertical axis. A filled marker meets the "
+        f"{PASS_RMSE:.2f} life target (dashed line); a hollow marker misses it. Every unit with {few} or fewer "
+        f"post-onset probes misses the target. Error rises with distance from the training-median life (Pearson "
+        f"r = {_signed(assoc['error_vs_rupture_deviation'])}). The two candidate causes are collinear "
+        f"(r = {_signed(assoc['collinearity_post_onset_count_vs_rupture_deviation'])}); the coefficients are "
+        f"descriptive, with no inference.{overlap} Per unit, in order of rupture life (rupture cycles, post-onset "
+        f"probes, RMSE): {listing}. Source: data/sim/studyC/studyC_failure_analysis.json."
+    )
+
+
+def figure(results):
+    figure_style.apply()
+    rows = results["per_unit"]
+    fig, (a, b) = plt.subplots(1, 2, figsize=(figure_style.FULL, 2.9), sharey=True)
+    fig.subplots_adjust(left=.085, right=.985, top=.83, bottom=.16, wspace=.12)
+    for ax, key in ((a, "n_post_onset"), (b, "rupture_deviation_from_training_median")):
+        for row in rows:
+            ax.plot(row[key], row["rmse"], marker="o", mfc=figure_style.FILL[row["within_target"]], zorder=3,
+                    **figure_style.MARKER)
+        ax.axhline(PASS_RMSE, zorder=1, **figure_style.REFERENCE)
+        ax.margins(x=0.08, y=0.08)
+    a.set_ylim(0.015, None)
     a.set_xlabel("Post-onset probes (count)")
     a.set_ylabel("Held-out life-estimate RMSE (life)")
-    a.set_title(f"Every unit with {few} or fewer post-onset\nprobes misses the target")
-    a.text(0.25, 0.80, "point labels:\nrupture cycles", transform=a.transAxes, va="top", fontsize=S["note"],
-           color=C["muted"])
-    b.set_xlabel("|rupture − training median| / median")
-    b.set_title(f"Error rises with distance from the training-\nmedian life (r = {assoc['error_vs_rupture_deviation']:.2f})")
-    b.text(0.98, 0.02, "point labels: post-onset probes", transform=b.transAxes, ha="right", fontsize=S["note"],
-           color=C["muted"])
-    a.plot([], [], "o", color=C["pv"], ms=6, label="within target")
-    a.plot([], [], "X", color=C["pv"], mfc="white", ms=7, mew=1.2, label="misses target")
-    a.legend(loc="upper right")
-    figstyle.panel_letter(a, "a", dx=-40)
-    figstyle.panel_letter(b, "b", dx=-14)
-    figstyle.footnote(fig, f"Post-hoc diagnostic of the committed Study C run, not a new held-out evaluation; "
-                      f"n = {len(rows)} held-out synthetic units, descriptive Pearson r only. The two candidate causes "
-                      f"are collinear (r = {assoc['collinearity_post_onset_count_vs_rupture_deviation']:.2f})."
-                      .replace("r = -", "r = \u2212"))
-    figstyle.save(fig, os.path.join(DATA, "studyC_fig_failure_map")); plt.close(fig)
+    b.set_xlabel("Rupture-life distance from training median (fraction)")
+    b.tick_params(axis="y", labelleft=False)
+    for i, ax in enumerate((a, b)):
+        figure_style.letter(ax, i)
+    handles = [Line2D([], [], marker="o", mfc=figure_style.FILL[True], label="Within target", **figure_style.MARKER),
+               Line2D([], [], marker="o", mfc=figure_style.FILL[False], label="Misses target", **figure_style.MARKER),
+               Line2D([], [], label="Target", **figure_style.REFERENCE)]
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(.5, .995), ncol=3, columnspacing=1.4,
+               handletextpad=.5, borderaxespad=0)
+    return fig
+
+
+def plot(results):
+    """Diagnostic failure map and caption from a saved or fresh analysis dict."""
+    fig = figure(results)
+    figure_style.save(fig, STEM, caption=caption(results))
+    plt.close(fig)
+
 
 if __name__ == "__main__":
     import sys
