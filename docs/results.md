@@ -42,11 +42,22 @@ static and dynamic correctors under shared and isolated supply topologies.
 | Calibration at every stage | 0.019 | 5.0 |
 <!-- policy-summary:end -->
 
-Source: [matched-cost audit](../data/sim/phaseD/matched_clock_audit.json) and
-[Study 3](../data/sim/phaseD/study3_results.json). [Download full-precision table](../data/sim/summary/policy_comparison.csv).
-These are point summaries of saved synthetic results. Counts include initial
-calibration; the plot's dashed reference is the train-derived error budget.
-No sampling interval is implied by the marker size.
+Saved simulation point summaries for 6 held-out actuators; no uncertainty bars.
+Panel (a) shows mean pose RMSE [mm] and panel (b) calibrations per actuator for
+five policies, marked by shape: initial calibration only (circle), the
+train-selected clock at 2,700 cycles (triangle), the matched-cost clock at
+2,400 cycles (square), the P-V trigger at τ = 0.05 (diamond), calibration at every
+stage (cross). Left is better in both panels. The dashed line in (a) is the
+train-derived error budget, 0.159 mm. A filled marker means the policy is within
+the budget; a hollow marker means it exceeds it: initial calibration only and
+the train-selected clock at 2,700 cycles. At matched cost the clock ties the P-V
+trigger: both reach 0.058 mm with 2.0 calibrations per actuator. Counts include
+the initial calibration; error averages life stages, then actuators. Values: the
+policy table and policy_comparison.csv. Sources: matched_clock_audit.json and
+study3_results.json; no physical measurements.
+
+[Caption file](../data/sim/summary/policy_comparison.caption.md) · [matched-cost audit](../data/sim/phaseD/matched_clock_audit.json) ·
+[Study 3](../data/sim/phaseD/study3_results.json) · [download full-precision table](../data/sim/summary/policy_comparison.csv).
 
 Pooled P-V association: `r = 0.885`, actuator-cluster bootstrap `[0.853, 0.950]`;
 leave-one-actuator-out `[0.576, 0.973]`. The point-level interval `[0.835, 0.958]`
@@ -69,11 +80,18 @@ recalibration downtime were not measured.
 
 ![All six saved actuator records show the P-V trigger after the budget crossing, with negative lead](../data/sim/summary/trigger_timing.png)
 
-Each row pairs one actuator's saved crossing estimates. Lead is budget-crossing
-life minus trigger life; the zero line separates advance warning from lateness.
-Connectors join paired values and are not intervals. The values are interpolated
-from the saved life-stage analysis, with no new trajectories or exclusions.
-[Download records](../data/sim/summary/trigger_timing.csv) · [Source](../data/sim/phaseD/study3_results.json).
+Saved Study 3 crossing estimates for the 6 held-out actuators at the deployed
+threshold τ = 0.05; 0 excluded. Panel (a) shows, per actuator, the normalized
+life at which pose error crosses the error budget (triangle) and at which the
+P-V trigger fires (diamond); the thin line joins each pair and is not an
+interval. Panel (b) shows the lead, budget-crossing life minus trigger life,
+with the dashed line at zero lead; a hollow diamond marks a late trigger
+(negative lead). The trigger fires after the budget crossing on every held-out
+actuator, with leads from -0.269 to -0.115 life. Crossings are interpolated from
+the saved life-stage analysis, with no new trajectories or exclusions. Values:
+trigger_timing.csv. Source: study3_results.json.
+
+[Caption file](../data/sim/summary/trigger_timing.caption.md) · [Download records](../data/sim/summary/trigger_timing.csv) · [Source](../data/sim/phaseD/study3_results.json).
 
 The manuscript [association figure](../data/sim/phaseD/study3_fig3_leading_indicator.png)
 and [unmatched-clock policy plot](../data/sim/phaseD/study3_fig4_recal_tradeoff.png)
@@ -90,10 +108,19 @@ physical gripper.
 
 ![Saved one-at-a-time sweep of supply resistance and manifold compliance with default-network marker](../data/sim/summary/cross_talk.png)
 
-The horizontal references retain the original sweep thresholds. Lines join saved
-deterministic model outputs, with no uncertainty band. The logarithmic horizontal
-axis shows the varied parameter divided by its default, with all other parameters
-fixed. [Download ratios](../data/sim/summary/cross_talk.csv) · [Source](../data/sim/phaseD/study4_results.json).
+Saved deterministic Study 4 sweep of the lumped three-chamber network at a 2 Hz
+probe. Cross-talk is the neighbour pressure amplitude divided by the driven
+amplitude. One parameter is varied at a time, as a ratio to its default on a
+logarithmic axis, with all others fixed. Solid line and circles: supply
+resistance R_s; dashed line and squares: manifold compliance C_m. The filled
+diamond is the default network, 6.3%. Dotted lines are the original sweep
+reference levels, 10% and 20%; they are not confidence limits. Cross-talk rises
+with supply resistance, reaching 10% at 1.7 times the default and 20% at 4.3
+times the default, and stays between 5.8% and 6.3% across the compliance sweep.
+No uncertainty band; no physical gripper tested. Values: cross_talk.csv. Source:
+study4_results.json.
+
+[Caption file](../data/sim/summary/cross_talk.caption.md) · [Download ratios](../data/sim/summary/cross_talk.csv) · [Source](../data/sim/phaseD/study4_results.json).
 The [manuscript figure](../data/sim/phaseD/study4_fig_crosstalk_sensitivity.png)
 shows the same sweep.
 

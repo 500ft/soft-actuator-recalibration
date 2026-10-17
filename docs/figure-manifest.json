@@ -295,7 +295,7 @@
         "data/sim/phaseD/matched_clock_audit.json",
         "data/sim/phaseD/study3_results.json",
         "data/sim/phaseD/study4_results.json",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/summary/policy_comparison.png",

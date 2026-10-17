@@ -5,11 +5,9 @@
     "data/sim/phaseD/study3_results.json": "128c17e9ad3b5c7e777f0b7d14e459e9af47567134453e1cc1fef3ea99b77341",
     "data/sim/phaseD/study4_results.json": "63179a65ac1d2454274f52460ab26ec59d7d41234c5939dc6e014533dd3c8f3e"
   },
-  "generator_sha256": "f71f3c478b797996f86c2c6ac519f0aedbe699535eb489d1311ee3e2340d79e4",
+  "generator_sha256": "37e87e99888c59dd35c152c881c695a124f838446277bb1bbcb1a0b1eb9f8957",
+  "style_sha256": "87f593195365413c6f46036d7e31e115f3a1e577d784e1e02df8395aab30dc5b",
   "matplotlib_version": "3.11.2",
-  "visual_reference": {
-    "repository": "500ft/sensor-enclosure-thermal-design",
-    "commit": "bad572fc0902437445a5446bb5bc43098cc6211f"
-  },
+  "style_reference": "https://github.com/500ft/evidence-sufficiency-benchmark/pull/26",
   "csv_note": "Generated views; original JSON remains the numeric source of truth."
 }
