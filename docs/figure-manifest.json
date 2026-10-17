@@ -196,7 +196,7 @@
         "sim/sensors.py",
         "pipeline/dispersion.py",
         "pipeline/identifiability.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/studyB/studyB_fig_identifiability_map.png",
