@@ -259,7 +259,7 @@
         "sim/fatigue.py",
         "sim/plant.py",
         "scripts/run_studyB.py",
-        "scripts/figstyle.py"
+        "scripts/figure_style.py"
       ],
       "outputs": [
         "data/sim/studyB/studyB_fig_structural.png",
