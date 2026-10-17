@@ -268,7 +268,7 @@ def crosstalk_figure(results):
     style.apply()
     x = np.asarray(results["sweep_multiplier"])
     fig, ax = plt.subplots(figsize=(style.SINGLE, 3.2))
-    fig.subplots_adjust(left=.17, right=.96, top=.83, bottom=.14)
+    fig.subplots_adjust(left=.15, right=.96, top=.83, bottom=.14)
     for th in results["thresholds"]:
         ax.axhline(th * 100.0, zorder=1, **REFERENCE_LEVEL)
     handles = []
@@ -287,7 +287,7 @@ def crosstalk_figure(results):
     ax.set_xlim(x[0] / 1.15, x[-1] * 1.15)
     ax.set_ylim(0, None)
     ax.set_xlabel("Parameter / default value")
-    ax.set_ylabel("Cross-talk, neighbour / driven\npressure amplitude (%)")
+    ax.set_ylabel("Neighbour / driven amplitude (%)")
     fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(.5, .995), ncol=2,
                columnspacing=1.0, handletextpad=.5, borderaxespad=0)
     return fig

@@ -23,6 +23,7 @@ import re
 import warnings
 
 import matplotlib
+import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.text import Text  # noqa: E402
@@ -123,6 +124,8 @@ def audit(fig) -> list[tuple[str, str]]:
     others = [(f"data in {ax.get_ylabel() or 'axes'}", artist.get_window_extent(renderer), None)
               for ax in fig.axes if ax.get_label() != "<colorbar>"
               for artist in list(ax.lines) + list(ax.patches) + list(ax.collections)]
+    # Some collections (errorbar caps, vlines) report an infinite box; they cannot be placed, so skip them.
+    others = [o for o in others if np.isfinite(o[1].get_points()).all()]
     others += [("legend frame", legend.get_window_extent(renderer), legend) for legend in legends]
     hits = []
     for i, (name_a, box_a, legend_a) in enumerate(texts):

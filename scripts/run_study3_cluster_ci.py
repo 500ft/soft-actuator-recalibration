@@ -552,8 +552,8 @@ def cluster_tradeoff_figure(results):
     P, FR = results["policies_on_heldout_with_cluster_ci"], results["lead_frontier_with_cluster_ci"]
     prov = results["provenance"]
     budget, tau_star = prov["accuracy_budget_mm"], prov["tau_selected"]
-    fig, (axA, axB) = plt.subplots(1, 2, figsize=(style.FULL, 3.4))
-    fig.subplots_adjust(left=.085, right=.985, top=.76, bottom=.14, wspace=.32)
+    fig, (axA, axB) = plt.subplots(1, 2, figsize=(style.FULL, 3.6))
+    fig.subplots_adjust(left=.085, right=.985, top=.735, bottom=.13, wspace=.32)
     axA.axhline(budget, zorder=1, **style.REFERENCE)
     for key, _, marker in S3.POLICIES:
         v = P[key]
