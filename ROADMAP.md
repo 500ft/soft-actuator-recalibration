@@ -46,8 +46,8 @@ at fixed length; see [decision 0003](docs/decisions/0003-successor-specimen-and-
 | Confirmatory evaluation | Future; frozen design and owner authorization | Loss-within-N-cycles predictions compared to registered baselines, with lead time and false alarms |
 | Write-up | Future; confirmation or a documented earlier stop | Reproducible results and a clear distinction between a null result, measurement limits and resource limits |
 
-Multichannel expansion is conditional. A fixed blocked-force drop is a proposed
-endpoint pending owner selection and specimen/application feasibility. Horizon N,
+Multichannel expansion is conditional. The blocked-force drop threshold that
+defines functional loss is still the owner's to register. Horizon N,
 false-alarm unit and lead-time definition must be registered before evaluation.
 Naming approval is independent of physical readiness; no public successor exists.
 
