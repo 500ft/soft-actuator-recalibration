@@ -1,19 +1,18 @@
 # Soft Actuator Recalibration
 
-**When should a soft robot recalibrate?** This closed simulation study models
-a pressure-based pose estimate that drifts with assumed fatigue. It simulates
-20 actuators and tests whether a
-pressure–volume (P-V) probe can say when to recalibrate. In this simulator it
-does no better than counting cycles: at the same number of recalibrations, a
-cycle-count clock matches the P-V trigger exactly. Everything here is
-simulation; no physical actuator has been measured.
+**When should a soft robot recalibrate?** This simulation study tests whether
+changes in a pressure–volume (P-V) loop can guide recalibration as an actuator
+ages. A P-V loop records pressure against volume during a probe cycle. The
+simulator models 20 actuators; it contains no physical measurements. At the
+same recalibration count, a cycle-count schedule matches the P-V trigger's
+pose error exactly.
 
-> **No paper.** The archived v1.3 manuscript overstated the method (see the
-> [correction](docs/corrections/v1.3-methods-2026-09-05.md)). The v1.4
-> candidate was withdrawn on 2026-10-02 because its main claim doesn't survive a
-> comparison at matched cost ([withdrawal note](docs/corrections/v1.4-withdrawn-2026-10-02.md)).
-> The code and the original results are kept. Maintenance theory predicts the
-> tie for units that share one degradation curve
+> **The v1.4 paper candidate is withdrawn.** The archived v1.3 manuscript overstated the
+> method; see its [correction](docs/corrections/v1.3-methods-2026-09-05.md).
+> The v1.4 candidate was withdrawn after the matched-cost comparison removed
+> its main claim ([withdrawal note](docs/corrections/v1.4-withdrawn-2026-10-02.md)).
+> The code and original results remain available. Maintenance theory also
+> predicts the tie for units that share one degradation curve
 > ([why the tie was expected](docs/corrections/v1.4-withdrawn-2026-10-02.md#why-the-tie-was-expected-2026-10-09)).
 
 [![CI](https://github.com/500ft/soft-actuator-recalibration/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/500ft/soft-actuator-recalibration/actions/workflows/ci.yml)
@@ -21,16 +20,15 @@ simulation; no physical actuator has been measured.
 [![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](.github/workflows/ci.yml)
 
 [Results](#results) · [Roadmap](ROADMAP.md) · [Quick start](#quick-start) ·
-[Review packet](docs/REVIEW_READY.md)
+[Review record](docs/REVIEW_READY.md)
 
 ## About
 
-Recalibrating often keeps pose error low but costs calibration events; waiting
-too long lets the error grow. The study simulates 20 actuators through five
-life stages (2,000 traces), splits them by actuator for training and testing,
-and compares four policies: never recalibrate, recalibrate on a cycle-count
-schedule, recalibrate when the P-V probe crosses a threshold, and recalibrate
-at every stage.
+Frequent recalibration reduces pose error but requires more calibration
+events. The study simulates 20 actuators through five life stages (2,000
+traces) and holds out entire actuators for testing. It compares an initial
+calibration only, cycle-count schedules, a P-V threshold trigger and
+recalibration at every stage.
 
 The repository holds the pneumatic simulator, the fatigue and sensing models,
 the pose estimators, the study scripts, and the results and figures they
@@ -93,8 +91,9 @@ python -m scripts.check_publication_fallback
 ```
 
 The number check covers the v1.3 and v1.4 manuscripts. The PDF check covers the
-archived v1.3 PDF only. The last command checks the archive; run it with
-`--for-publication` and it exits with code 2 (BLOCKED), which is now permanent.
+archived v1.3 PDF only. The last command checks the archive. With
+`--for-publication`, it exits with code 2 (BLOCKED) because the v1.4 release
+was withdrawn.
 To reproduce the matched-cost audit, regenerate the dataset with
 `python -m scripts.phaseD_dataset`, then run `python -m scripts.audit_matched_clock`.
 
@@ -104,21 +103,25 @@ scripts write under `data/`, so use a separate checkout.
 
 ## Separate successor preparation
 
-The owner authorized local software preparation for a new question: does
-qualified pressure retention predict independently measured functional loss
-within the next N cycles beyond cycle count and load history on unseen batches?
-Initial defect screening and advance warning remain separate questions.
+A separate local project asks whether pressure retention can predict
+functional loss within the next N cycles, beyond cycle count and load history
+on unseen manufacturing batches. Its pressure-retention method must first be
+tested against fixture leaks, temperature changes and actuator deformation.
+The chosen specimen is an in-house McKibben muscle. Functional loss will be
+defined using blocked force measured at fixed length and test pressure on a
+separate force sensor; the force-drop threshold remains undecided. Screening
+assembly defects and predicting later loss are separate questions.
 
-The executed work checks sensor resolution and ideal-gas pressure-decay
-calculations, with a theoretical metrology figure. It lives in a separate local
-repository while its public name is pending. The [decision and result location](docs/decisions/0002-successor-software-preparation.md)
-record what exists and how to reproduce it. The adopted dependency roadmap covers
-setup, qualification, pilot, frozen-batch confirmation and write-up. Physical start, equipment, location,
-budget and endpoint remain undecided. Blocked force is a proposed endpoint.
-
-This repository keeps the closed study and its audit. The [history index](docs/history/README.md)
-links the original results, figures, manuscript records and useful CAD. See the
-[roadmap](ROADMAP.md) for the remaining owner action.
+Local work so far consists of sensor-resolution and ideal-gas pressure-decay
+calculations and a theoretical metrology figure. The [successor record](docs/decisions/0002-successor-software-preparation.md)
+locates the separate repository, and the [specimen decision](docs/decisions/0003-successor-specimen-and-endpoint.md)
+records the selected endpoint. Physical start, equipment, location, budget,
+exact build and public repository name remain open. The [roadmap](ROADMAP.md)
+lists the required evidence. The [history index](docs/history/README.md)
+links this study's original results, figures and manuscript records. Its
+[reference-chamber CAD](cad/reference-volume/DESIGN_NOTES.md) has verified
+model geometry; manufacture, assembled-volume calibration and pressure
+suitability have not been verified.
 
 ## Limits
 
@@ -141,8 +144,8 @@ links the original results, figures, manuscript records and useful CAD. See the
 | [Reading guide](docs/START_HERE.md) | Short paths for readers, reviewers and contributors |
 | [Results and limits](docs/results.md) | Every study's findings in full |
 | [Data and figures](docs/data-and-figures.md) · [manifest](docs/figure-manifest.json) | Inputs and scripts behind each figure |
-| [Review packet](docs/REVIEW_READY.md) · [v1.4 withdrawal](docs/corrections/v1.4-withdrawn-2026-10-02.md) · [v1.3 correction](docs/corrections/v1.3-methods-2026-09-05.md) | Why v1.4 was withdrawn and what v1.3 overstated |
-| [Study history](docs/history/README.md) · [Observability studies](docs/specs/observability-program/program.md) | Closed simulation questions, original figures and retained CAD |
+| [Review record](docs/REVIEW_READY.md) · [v1.4 withdrawal](docs/corrections/v1.4-withdrawn-2026-10-02.md) · [v1.3 correction](docs/corrections/v1.3-methods-2026-09-05.md) | Why v1.4 was withdrawn and what v1.3 overstated |
+| [Study history](docs/history/README.md) · [Observability studies](docs/specs/observability-program/program.md) | Closed simulation questions, original figures and reference-chamber CAD |
 | [Literature](literature/README.md) · [claim ledger](literature/claim-ledger.md) | Sources for and against each claim |
 
 ```text

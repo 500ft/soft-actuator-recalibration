@@ -14,12 +14,12 @@ was measured. The [repository overview](../README.md) gives the short version.
    and its [source tables and reproduction command](data-and-figures.md#active-summaries-and-retained-history).
    Both tied policies are visible; counts include initial calibration.
 3. Read the [withdrawal decision](corrections/v1.4-withdrawn-2026-10-02.md).
-   The historical [author-review packet](AUTHOR_REVIEW_DAY3.md) is retained as
-   a record; its acceptance was withdrawn.
+   The earlier [author-review form](AUTHOR_REVIEW_DAY3.md) remains available;
+   its acceptance was withdrawn.
 
-The work demonstrates model construction, actuator-identity evaluation,
-policy comparison, and reproducible artifact checks. It does not establish
-physical sensor accuracy, early failure warning, or reduced operating cost.
+The repository shows how the model, actuator-level test split, policy comparison
+and result checks were built. It contains no physical sensor measurements,
+early failure warning result or measured operating cost.
 
 ## Reviewer: reproduce the checks
 
@@ -59,7 +59,7 @@ python -m scripts.check_publication_fallback --for-publication
 ```
 
 Expected after withdrawal: publication **BLOCKED**, exit **2**. No release is
-planned. The [readiness record](publication-readiness.json) retains that block;
+planned. The [readiness record](publication-readiness.json) records that block;
 the [withdrawal](corrections/v1.4-withdrawn-2026-10-02.md) supersedes the
 historical author-review and deposit instructions.
 
@@ -102,10 +102,10 @@ They are not part of the first-run checks. A code path in the current Study 3
 runner includes `tau_selection_alternatives`, absent from the committed Study 3
 JSON; current-code regeneration and exact historical-artifact reproduction are
 therefore different tasks. Preserve differences for review instead of copying
-new outputs over the frozen source state. See the [packet](AUTHOR_REVIEW_DAY3.md).
+new outputs over the committed results. See the [author-review form](AUTHOR_REVIEW_DAY3.md).
 
 Reproduction uses known synthetic inputs and does not create a new held-out
-evaluation. The [v2 claim spine](specs/robosoft-v2/claim-spine.md) is retained as
+evaluation. The [v2 claim outline](specs/robosoft-v2/claim-spine.md) remains as
 a historical proposal outside the closed scope in [ROADMAP.md](../ROADMAP.md).
 
 ## Contributor: maintain retained evidence
@@ -137,7 +137,7 @@ No manuscript-review or publication action remains in this scope. Any hardware
 study requires a separate owner decision. Local successor software preparation
 is recorded in the [decision](decisions/0002-successor-software-preparation.md);
 see [ROADMAP.md](../ROADMAP.md) and the [history index](history/README.md).
-The [review index](REVIEW_READY.md) links the historical execution records.
+The [review record](REVIEW_READY.md) links the historical execution records.
 
 ## September 11 completion correction
 

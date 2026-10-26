@@ -1,7 +1,8 @@
 # Results
 
 The simulation study is closed. The [matched-cost audit](../data/sim/phaseD/matched_clock_audit.json)
-found that a cycle-count clock ties the P-V trigger, prompting the
+shows that a cycle-count schedule ties the pressure–volume (P-V) trigger at the
+same recalibration count. That result led to the
 [v1.4 withdrawal](corrections/v1.4-withdrawn-2026-10-02.md). Maintenance theory
 predicts the tie for units that share one degradation curve
 ([why the tie was expected](corrections/v1.4-withdrawn-2026-10-02.md#why-the-tie-was-expected-2026-10-09)). The original results
@@ -10,23 +11,24 @@ below remain unchanged and synthetic. Archived v1.3 retains its
 [withdrawn candidate](preprint_v1_4_candidate.md) is kept as a record.
 
 The [successor preparation record](decisions/0002-successor-software-preparation.md)
-points to separate local metrology calculations and their theoretical figure.
-They contain no new actuator measurements. Historical extensions and assets are
-listed in the [history index](history/README.md). The unrun C2 implementation
-was removed with the obsolete plans; no executed result was removed. The
-[roadmap](../ROADMAP.md) records the adopted dependency order and pending inputs.
+locates separate local metrology calculations and a theoretical figure. They
+contain no actuator measurements. The [history index](history/README.md) links
+earlier proposals and figures. The unrun C2 implementation was removed; all
+executed results remain. The [roadmap](../ROADMAP.md) lists the successor's
+prerequisites and pending decisions.
 
 ## Study 1: health-indicator validation
 
-The study compares candidate health indicators against known synthetic fatigue
-state, recovery behavior, onset changes, measurement noise, and held-out
-actuator-life trajectories. Its figures are stored under `data/sim/study1/`.
+The study compares proposed fatigue indicators with the simulator's known
+fatigue state. It tests recovery, the onset of faster degradation, measurement
+noise and actuators held out from fitting. Its figures are under
+`data/sim/study1/`.
 
 ## Study 2: pressure-only proprioception drift
 
-The Phase D cohort shows increasing pose-estimation error when a young
-calibration is held fixed as the simulated actuator ages. The study compares
-static and dynamic correctors under shared and isolated supply topologies.
+Pose-estimation error grows when a calibration made on a young simulated
+actuator is used throughout its life. The study compares fixed and dynamic
+corrections with either a shared air supply or separate supplies.
 
 ## Study 3: recalibration policy
 
@@ -73,10 +75,10 @@ drives both endpoints, so correlation is structurally favored. The 2026-10-02 au
 favored: normalized loop area equals the normalized compliance multiplier to
 within 2.3 × 10⁻¹⁴ and is the same curve for every actuator.
 
-The policy endpoint averages stage-level pose RMSE over five sampled life stages
-and then actuators. A pass is not a maximum-error or continuous accuracy guarantee.
-The 60% event-count saving includes initial calibration; sensing overhead and
-recalibration downtime were not measured.
+The policy error averages pose RMSE across five sampled life stages and then
+across actuators. Passing the average-error budget does not guarantee an error
+limit at every moment. The 60% reduction in calibration events includes the
+initial calibration; probe time and recalibration downtime were not measured.
 
 ![All six saved actuator records show the P-V trigger after the budget crossing, with negative lead](../data/sim/summary/trigger_timing.png)
 
@@ -101,10 +103,10 @@ Neither supports a physical precursor claim.
 
 ## Study 4: shared-manifold sensitivity
 
-Shared-manifold cross-talk is second-order within the tested network envelope
-and increases as the simulated supply becomes softer. The result is conditional
-on the lumped pneumatic-network parameters and is not a measurement of a
-physical gripper.
+Within the tested network settings, pressure changes in one chamber produce a
+smaller response in its neighbours. That cross-talk grows as the simulated
+supply resistance rises. The result depends on the network model and is not a
+measurement of a physical gripper.
 
 ![Saved one-at-a-time sweep of supply resistance and manifold compliance with default-network marker](../data/sim/summary/cross_talk.png)
 
@@ -134,41 +136,52 @@ shows the same sweep.
 ## Observability program — Studies A and B (2026-09-16, synthetic, preregistered)
 
 [Program](specs/observability-program/program.md) · [evidence](../evidence/observability-2026-09-16/README.md).
-Question: is the fatigue state observable from pressure alone across dispersed units?
+The question is whether pressure measurements distinguish an actuator's
+simulated fatigue state across units with different degradation paths.
+*Identifiability* means that different model states can be distinguished from
+the available measurements.
 
-- **Study A** (30 units with assumed dispersion of the degradation law and plant): the normalised loop-area
-  indicator's between-unit spread is 5–17× its measurement noise from mid-life (ICC 0.98), so the value is no
-  longer unit-invariant; only degradation-law dispersion produces this, plant-level dispersion cancels under
-  young-normalisation. The trigger life at τ = 0.05 still spreads by only 0.044 life, so the preregistered
-  verdict is **A-FAIL** on its timing criterion and Study C stays blocked.
-- **Study B** (Cramér–Rao bounds on the latent life coordinate from five pressure-only features): with a young
-  baseline the coordinate is identifiable before the acceleration onset (σ_u ≈ 0.02–0.03 life, scaling with
-  noise/amplitude) and only **practically** aliased after it, with the unit's onset fraction and leak.
-  Verdict **B-PASS** by its rule; the regime boundary is the result. A follow-up on 2026-09-23 ran the
-  two diagnostics the literature prescribes and corrected the wording: Brun's collinearity index puts the
-  {life, onset, leak} *triple* at 1.25e6 against 60.8 and 5.83 for the pairs, confirming a joint dependency
-  no pairwise measure shows. The profile-likelihood half of that follow-up was wrong and was redone on
-  2026-09-25. Under the baseline-plus-snapshot design the post-onset coordinate is neither structurally
-  nor practically aliased, but it is **not precisely localized either**: the data support a broad,
-  asymmetric region of roughly [0.75, 0.98] in one noise realisation, the likelihood varies by 6e-10
-  across most of that span, and both terminations sit on nuisance-parameter bounds. Widening those bounds
-  to a still-physical range removes the upper termination **entirely**, so the crossing was the box talking
-  and the verdict is bound-dependent. **No resolution figure is claimed** — both the earlier "±0.05 life" and the interim "±0.21 life" are withdrawn, the first read
-  off a grid edge and the second off a plateau ending at the parameter box. The minimum sits at 0.775
-  against a truth of 0.90, an observed error in this one realisation, not a measured bias. A single aged
-  snapshot without the modelled young baseline localises less well still.
-  [Evidence](../evidence/studyB-structural-correction-2026-09-25/README.md).
+- **Study A:** In 30 simulated units, the normalized P-V loop-area indicator
+  varied between units by 5–17 times its measurement noise from mid-life
+  (ICC 0.98). Variation in the degradation law caused this spread; the modeled
+  plant differences canceled when each unit was normalized to its young state.
+  Trigger life at τ = 0.05 varied by only 0.044 life, so Study A failed its
+  original timing rule (**A-FAIL**). A later owner amendment removed that rule
+  before Study C ran.
+- **Study B:** Five pressure-only features and a modeled young baseline could
+  distinguish the life coordinate before degradation accelerated. The local
+  Cramér–Rao calculation gave σ_u ≈ 0.02–0.03 life, depending on signal noise
+  and amplitude. The original rule returned **B-PASS**. After onset, life,
+  onset timing and leakage become difficult to separate. Brun's collinearity
+  index for the three parameters together was 1.25e6, versus 60.8 and 5.83
+  for the parameter pairs. This is a joint dependency that pairwise checks
+  miss.
 
-- **Study C** (one ridge estimator on baseline-normalised pressure features plus the clock, transferred to 10
-  held-out units; run after the owner withdrew Study A's timing criterion): mean held-out u-RMSE 0.093 vs 0.123 for
-  the clock alone, but only 6 of 10 units within 0.10 and 7 of 10 below the clock, so the preregistered verdict is
-  **C-FAIL**. The estimator helps exactly where the clock's rupture prior is wrong (short-lived units) and adds
-  little where it is right; no transfer claim. A dispersion audit on 2026-09-23 re-ran this at rupture-life
-  CV 0.05 and 0.15, bracketing the values measured in the literature, and found **C-FAIL survives at every
-  level but for opposite reasons**: at CV 0.05 the estimator is accurate (10/10 within target) yet a bare
-  cycle counter beats it (2/10), while at CV 0.30 it beats the clock (7/10) but is no longer accurate (6/10).
-  The two criteria move in opposite directions, and the per-unit rule is the same throughout — pressure
-  features add value only where the clock prior is wrong for that unit.
-  [Evidence](../evidence/dispersion-audit-2026-09-23/README.md).
+  A corrected profile-likelihood analysis found that the post-onset life
+  coordinate is distinguishable in principle under the young-baseline-plus-
+  aged-snapshot design, but poorly localized. One noise realization supported
+  a broad region of roughly [0.75, 0.98]; the likelihood varied by 6e-10 over
+  most of it. Both apparent endpoints touched bounds on other fitted
+  parameters, and widening those bounds within a physically plausible range
+  removed the upper endpoint. Thus no post-onset resolution figure is
+  supported. The earlier ±0.05 claim came from a grid edge; the interim ±0.21
+  claim came from a plateau ending at a parameter bound. Both are withdrawn.
+  The fitted minimum was 0.775 for a truth of
+  0.90 in that realization; this is an observed error, not an estimated bias.
+  One aged snapshot without a modeled young baseline locates life even less
+  precisely. [Correction evidence](../evidence/studyB-structural-correction-2026-09-25/README.md).
+- **Study C:** One estimator combined baseline-normalized pressure features
+  with cycle count and was tested on 10 held-out units after the Study A
+  amendment. Its mean held-out life-coordinate RMSE was 0.093, versus 0.123
+  for the clock alone. Only 6 of 10 units met the 0.10 error target, and only
+  7 of 10 beat the clock, so the registered verdict is **C-FAIL**. Pressure
+  helped mainly on short-lived units, where the clock's assumed rupture life
+  was wrong. A further audit tested rupture-life coefficients of variation
+  (CV) of 0.05 and 0.15 alongside the original 0.30. At CV 0.05, all 10 units
+  met the error target but only 2
+  beat the clock. At CV 0.30, 7 beat the clock but only 6 met the target.
+  **C-FAIL** held across the tested levels for different reasons. There is no
+  cross-unit transfer claim. [Dispersion audit](../evidence/dispersion-audit-2026-09-23/README.md).
 
-Boundary: one synthetic generator, assumed dispersion magnitudes, local bounds; no physical claim.
+These findings use one synthetic generator, assumed unit variation and local
+parameter bounds. They do not establish performance on physical actuators.
