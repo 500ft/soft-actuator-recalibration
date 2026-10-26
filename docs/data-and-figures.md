@@ -29,8 +29,8 @@ need a model or dataset rerun. Redrawing changed no result; the
 [redraw commands](#redraw-every-figure) read saved JSON or rerun a deterministic
 script whose JSON output is byte-identical.
 
-The current README and result page use summaries of saved outputs. Regenerate
-only these views from the repository root:
+The README and result page show summaries of saved outputs. To regenerate
+these summaries, run this command from the repository root:
 
 ```sh
 python -m scripts.plot_result_summaries
@@ -56,10 +56,10 @@ plotted values against the source JSON or CSV, the canvas text, the overlap
 audit and each caption against its file and the docs. `provenance.json` records
 the input, generator and style hashes.
 
-The [separate local metrology figure](decisions/0002-successor-software-preparation.md)
-is theoretical and outside this simulation registry. Its local source inputs
-and calculation output remain unchanged; its generated sensor table separates
-resolution from BFSL accuracy and typical total error band.
+The [metrology figure in the separate local successor](decisions/0002-successor-software-preparation.md)
+is theoretical and outside this simulation registry. Its source inputs and
+calculation output remain unchanged. Its sensor table separates resolution,
+best-fit-straight-line (BFSL) accuracy and typical total error band.
 
 ## Redraw every figure
 
