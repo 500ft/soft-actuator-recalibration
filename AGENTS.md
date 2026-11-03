@@ -48,3 +48,8 @@ and edited text should read like an engineer wrote it for another engineer.
   section. Don't chain clauses with em dashes.
 - Keep dates and changelog entries out of README and roadmap prose unless the
   date matters to the reader. History belongs in git and the progress log.
+- In public documentation, describe the research question, observed result and
+  next requirement directly. Keep authorization details in decision records and
+  preserve approval restrictions where they govern an action.
+- Name what was checked. CAD geometry checks do not establish a manufactured
+  part's volume, pressure rating or calibration.
