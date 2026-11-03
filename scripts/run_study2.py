@@ -178,8 +178,8 @@ def corrector_caption(results):
     gains = " and ".join(f"{expB[key]['dynamic_improvement'] * 100:.3f} % ({label.lower()})"
                          for key, label, *_ in reversed(TOPOLOGY))
     return (
-        "Old-life curvature RMSE of the static ridge (hollow bars) and of the dynamic corrector with "
-        f"{results['n_lags']} lagged inputs (hatched bars) under each supply topology. Both correctors are "
+        "Old-life curvature RMSE of the static ridge (hollow orange bars) and of the dynamic corrector with "
+        f"{results['n_lags']} lagged inputs (filled blue bars) under each supply topology. Both correctors are "
         f"fitted per actuator on {YOUNG_MID[0]:g} to {YOUNG_MID[-1]:g} of life and tested at "
         f"{' and '.join(f'{x:g}' for x in OLD)}; mean over the {len(results['test_actuators'])} held-out "
         f"actuators of the Phase D cohort. Values: {values}. The lagged inputs lower the error by "

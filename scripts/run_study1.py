@@ -532,7 +532,7 @@ def main(argv=None):
     print(f"Fusion vs area/compliance monotonicity: {fusion['monotonicity']['fused']:.3f} / "
           f"{fusion['monotonicity']['area']:.3f} / {fusion['monotonicity']['compliance']:.3f}")
     print(f"VERDICT: {result['verdict']} (synthetic validation only)")
-    print(f"Wrote {outdir}/study1_results.json + figures")
+    print(f"Wrote {outdir}/study1_results.json + captions")
     return 0 if result["verdict"] == "PASS" else 1
 
 
@@ -740,8 +740,8 @@ def detector_caption(result):
     levels = ", ".join(f"{c['noise_percent_fs_sigma']:g}" for c in rows)
     pairs = "; ".join(f"{c['noise_percent_fs_sigma']:g} %: {a:,.0f} and {b:,.0f}"
                       for c, a, b in zip(rows, cycles("sustained_3sigma"), cycles("cusum")))
-    return ("Median confirmed alarm cycle of the sustained 3σ detector (filled bars) and of a CUSUM detector "
-            "calibrated to matched null false-alarm rates (hatched bars), at pressure noise σ of "
+    return ("Median confirmed alarm cycle of the sustained 3σ detector (filled blue bars) and of a CUSUM detector "
+            "calibrated to matched null false-alarm rates (hollow orange bars), at pressure noise σ of "
             f"{levels} % of full scale. Quadratic fatigue, onset {rows[0]['onset_fraction']:.2f} of life, probe "
             f"every {rows[0]['cadence_cycles']} cycles, {trials.pop()} trials per bar. Median alarm cycles, "
             f"sustained 3σ and CUSUM: {pairs}. Sustained 3σ alarms {gaps.pop():,.0f} cycles before CUSUM at "

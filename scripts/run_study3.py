@@ -47,7 +47,6 @@ from pipeline.coupling import (
     recalibration_schedule,
 )
 from sim.plant import SLSParams
-from scripts import figstyle
 from scripts.phased import DATA, feats, load, pose_rmse
 
 LIFE = [0.10, 0.30, 0.50, 0.70, 0.90]
@@ -371,34 +370,26 @@ def mean_curves(test_ids, err, hn):
             "fixed_error_mm": np.mean([[err[a][i][0] for i in range(len(LIFE))] for a in test_ids], axis=0)}
 
 
+FIG3 = "study3_fig3_leading_indicator"
+
+
 def plot(results, curves):
-    plt = figstyle.setup()
-    if plt is None:  # pragma: no cover
-        print("(matplotlib unavailable, skipped figures)")
-        return
-    C, S = figstyle.COLOR, figstyle.SIZE
+    """Fig 3 inputs (held-out mean curves) and caption, then Fig 4. MATLAB draws both images."""
+    from scripts import figure_data
+
     n = len(results["test_actuators"])
     life = results["life_fractions"]
-
-    # Fig 3: health signal and young-calibration error over life, two aligned panels
-    fig, (a, b) = plt.subplots(2, 1, figsize=(figstyle.SINGLE, 3.6), sharex=True, gridspec_kw={"hspace": 0.15})
-    a.plot(life, curves["loop_area"], "o-", color=C["pv"], ms=4)
-    a.set_ylabel("P-V loop area\n(× young)")
-    b.plot(life, curves["fixed_error_mm"], "s-", color=C["fixed"], ms=4)
-    b.set_ylabel("Pose RMSE, young\ncalibration (mm)")
-    b.set_xticks(life)
-    b.set_xlabel("Normalized life")
-    for ax in (a, b):
-        ax.margins(x=0.05, y=0.1)
-    a.set_title("P-V loop area and young-calibration pose\nerror both rise with life")
+    figure_data.write_csv(os.path.join(DATA, "figdata", FIG3 + ".csv"),
+                          ["life_fraction", "loop_area_over_young", "fixed_error_mm"],
+                          [[float(x), float(a), float(e)] for x, a, e in
+                           zip(life, curves["loop_area"], curves["fixed_error_mm"])])
     r = results["leading_indicator_corr"]
-    figstyle.footnote(fig, f"Simulation: Phase D cohort, mean of {n} held-out actuators. Pooled r = {r['r']:.3f} "
-                      "over actuator × stage points. One fatigue law drives both signals, so the association is "
-                      "built in (matched_clock_audit.json).")
-    figstyle.save(fig, os.path.join(DATA, "study3_fig3_leading_indicator"))
-    plt.close(fig)
-
-    # Fig 3 keeps the old style and is drawn first, before figure_style.apply() changes rcParams.
+    figure_data.write_caption(os.path.join(DATA, FIG3), (
+        "P-V loop area and young-calibration pose error both rise with life. (a) P-V loop area as a multiple of "
+        "its young value (blue circles) and (b) pose RMSE with the young calibration (orange squares), against "
+        f"normalized life; mean of the {n} held-out actuators of the Phase D cohort. Pooled r = {r['r']:.3f} over "
+        "actuator × stage points. One fatigue law drives both signals, so the association is built in "
+        f"(matched_clock_audit.json). Simulation only. Values: figdata/{FIG3}.csv."))
     plot_tradeoff(results)
 
 
@@ -492,8 +483,8 @@ def plot_tradeoff(results):
     plt.close(fig)
 
 def replot():
-    """Redraw from the saved result. Fig 4 needs only the JSON; Fig 3 is redrawn only when the
-    regenerated dataset is present, because its two mean curves come from it."""
+    """Rewrite figure inputs and captions from the saved result. Fig 4 needs only the JSON; the Fig 3
+    curves are rewritten only when the regenerated dataset is present, because they come from it."""
     results = json.load(open(os.path.join(DATA, "study3_results.json")))
     if os.path.exists(os.path.join(DATA, "dataset.npz")):
         d, m = load()

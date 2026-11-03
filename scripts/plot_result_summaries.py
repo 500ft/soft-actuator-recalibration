@@ -1,10 +1,12 @@
 """Render closed-study summaries from committed JSON only; no fitting or simulation.
 
 Run: python -m scripts.plot_result_summaries
-Figures follow scripts/figure_style.py: the canvas carries data only, and every
-word about it is in the <stem>.caption.md written beside the image and repeated
-under the image in README.md and docs/results.md. The CSV views and tables keep
-their values.
+This writes the captions, the full-precision CSV views and the README/results
+policy tables. MATLAB draws the PNG/PDF images from the same files
+(figures/matlab/figs_summary.m). Every word about a figure is in the
+<stem>.caption.md beside the image and repeated under it in README.md and
+docs/results.md. The matplotlib figures below remain as the value check run by
+tests/test_figures_summary.py.
 """
 from pathlib import Path
 import csv
@@ -81,15 +83,15 @@ def policy_caption(rows, audit, study):
              'clock_2400': f"the matched-cost clock at {audit['clock_periods_matching_trigger_schedule_on_all_actuators'][0]:,.0f} cycles",
              'trigger': f"the P-V trigger at τ = {audit['tau_star']:.2f}",
              'always': 'calibration at every stage'}
-    shapes = ', '.join(f"{names[r['policy']]} ({POLICY_SHAPES[POLICY_MARKERS[r['policy']]]})" for r in rows)
+    listed = ', '.join(names[r['policy']] for r in rows[:-1]) + ' and ' + names[rows[-1]['policy']]
     over = [names[r['policy']] for r in rows if r['mean_pose_rmse_mm'] > audit['budget_mm']]
     return (
         f"Saved simulation point summaries for {len(study['test_actuators'])} held-out actuators; "
-        "no uncertainty bars. Panel (a) shows mean pose RMSE [mm] and panel (b) calibrations per "
-        f"actuator for five policies, marked by shape: {shapes}. Left is better in both panels. "
-        "The dashed line in (a) is the train-derived error budget, "
-        f"{audit['budget_mm']:.3f} mm. A filled marker means the policy is within the budget; a hollow "
-        f"marker means it exceeds it: {' and '.join(over)}. At matched cost the "
+        "no uncertainty bars. Panel (a) shows mean pose RMSE [mm] as a dot on a line from zero and panel (b) "
+        f"calibrations per actuator as a bar from zero, for five policies in shared rows: {listed}. Left is "
+        "better in both panels. The dashed line in (a) is the train-derived error budget, "
+        f"{audit['budget_mm']:.3f} mm. Filled blue means the policy is within the budget; hollow orange means "
+        f"it exceeds it: {' and '.join(over)}. At matched cost the "
         f"clock ties the P-V trigger: both reach {tie['mean_pose_rmse_mm']:.3f} mm with "
         f"{tie['recalibrations_per_actuator']:.1f} calibrations per actuator. Counts include the initial "
         "calibration; error averages life stages, then actuators. Values: the policy table and "
@@ -185,10 +187,11 @@ def coupling_caption(study):
         "Saved deterministic Study 4 sweep of the lumped three-chamber network at a "
         f"{study['probe']['freq_hz']:g} Hz probe. Cross-talk is the neighbour pressure amplitude divided "
         "by the driven amplitude. One parameter is varied at a time, as a ratio to its default on a "
-        "logarithmic axis, with all others fixed. Solid line and circles: supply resistance R_s; dashed "
-        "line and squares: manifold compliance C_m. The filled diamond is the default network, "
+        "logarithmic axis, with all others fixed. Solid blue line and circles: supply resistance R_s; dashed "
+        "orange line and squares: manifold compliance C_m. The filled diamond is the default network, "
         f"{study['default_coupling'] * 100:.1f}%. Dotted lines are the original sweep reference levels, "
-        f"{refs}; they are not confidence limits. Cross-talk rises with supply resistance, reaching {rs}, "
+        f"{refs}; they are not confidence limits. Hollow circles mark where the supply-resistance curve crosses "
+        f"them. Cross-talk rises with supply resistance, reaching {rs}, "
         f"and stays between {cm.min():.1f}% and {cm.max():.1f}% across the compliance sweep. No uncertainty "
         "band; no physical gripper tested. Values: cross_talk.csv. Source: study4_results.json.")
 
@@ -246,6 +249,9 @@ def main():
                   'inputs_sha256': {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in INPUTS},
                   'generator_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   'style_sha256': hashlib.sha256((ROOT / 'scripts/figure_style.py').read_bytes()).hexdigest(),
+                  'renderer': 'MATLAB R2025b, figures/matlab/figs_summary.m',
+                  'renderer_sha256': {f'figures/matlab/{n}': hashlib.sha256((ROOT / 'figures/matlab' / n).read_bytes()).hexdigest()
+                                      for n in ('figs_summary.m', 'make_policy_graph.m', 'make_crosstalk_plot.m', 'fig_style.m')},
                   'matplotlib_version': matplotlib.__version__,
                   'style_reference': STYLE_REFERENCE,
                   'csv_note': 'Generated views; original JSON remains the numeric source of truth.'}

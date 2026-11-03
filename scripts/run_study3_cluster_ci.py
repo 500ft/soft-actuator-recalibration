@@ -42,7 +42,6 @@ from pipeline.hi_metrics import monotonicity, prognosability, trendability
 from sim.plant import SLSParams
 
 import scripts.run_study3 as S3
-from scripts import figstyle
 
 DATA = S3.DATA
 LIFE = S3.LIFE
@@ -435,75 +434,41 @@ def _spread(values, gap):
     return out
 
 
-def _figures(results, per_act_xy, test_ids):
-    plt = figstyle.setup()
-    if plt is None:  # pragma: no cover
-        print("(matplotlib unavailable, skipped figures)")
-        return
-    COL, S = figstyle.COLOR, figstyle.SIZE
-    C = results["correlation"]
-    P = results["policies_on_heldout_with_cluster_ci"]
-    FR = results["lead_frontier_with_cluster_ci"]
-    budget = results["provenance"]["accuracy_budget_mm"]
-    tau_star = results["provenance"]["tau_selected"]
-    n = C["n_clusters"]
+FIG3B = "study3_fig3b_correlation_cluster_ci"
 
-    # ---------- Fig 3b: correlation with cluster-aware intervals ----------
-    fig, (ax, ax2) = plt.subplots(1, 2, figsize=(figstyle.FULL, 2.9), gridspec_kw={"width_ratios": [1.1, 1],
-                                                                                    "wspace": 1.0})
-    for a in test_ids:
-        x, y = per_act_xy[a]
-        ax.plot(x, y, "-", color=COL["unit"], lw=1.0, zorder=2)
-        ax.plot(x, y, "o", color=COL["unit"], ms=3.5, mec="white", mew=0.5, zorder=3)
-    ends = [per_act_xy[a][1][-1] for a in test_ids]
-    ylo, yhi = min(min(per_act_xy[a][1]) for a in test_ids), max(ends)
-    for a, y_end, y_lab in zip(test_ids, ends, _spread(ends, (yhi - ylo) * 0.055)):
-        ax.annotate(f"#{a}", (per_act_xy[a][0][-1], y_end), xytext=(per_act_xy[a][0][-1] * 1.04, y_lab),
-                    textcoords="data", fontsize=S["tick"], color=COL["muted"], va="center")
+
+def _figures(results, per_act_xy, test_ids):
+    """Fig 3b inputs (per-actuator points and the pooled fit) and caption, then Fig 4b.
+
+    Panel (b) of Fig 3b is drawn from study3_cluster_ci_results.json directly. MATLAB draws the images.
+    """
+    from scripts import figure_data
+
+    C = results["correlation"]
+    n = C["n_clusters"]
+    rows = [[int(a), float(LIFE[i]), float(per_act_xy[a][0][i]), float(per_act_xy[a][1][i])]
+            for a in test_ids for i in range(len(LIFE))]
+    figure_data.write_csv(os.path.join(DATA, "figdata", FIG3B + ".csv"),
+                          ["actuator_id", "life_fraction", "loop_area_growth", "fixed_error_mm"], rows)
     X = np.concatenate([per_act_xy[a][0] for a in test_ids])
     Y = np.concatenate([per_act_xy[a][1] for a in test_ids])
     b1, b0 = np.polyfit(X, Y, 1)
-    xs = np.linspace(X.min(), X.max(), 50)
-    ax.plot(xs, b0 + b1 * xs, "--", color=COL["pv"], lw=1.2, zorder=1)
-    ax.text(X.max(), 0.25, f"pooled fit\nr = {C['r']:.3f}", fontsize=S["note"], color=figstyle.ink(COL["pv"]),
-            ha="right", va="center")
-    ax.set_xlabel("P-V loop-area growth from young")
-    ax.set_ylabel("Pose error, young calibration (mm)")
+    figure_data.write_csv(os.path.join(DATA, "figdata", FIG3B + "_fit.csv"),
+                          ["slope_mm", "intercept_mm", "x_min", "x_max"],
+                          [[float(b1), float(b0), float(X.min()), float(X.max())]])
     inv = results.get("indicator_invariance_check", {})
-    ax.set_title("Six actuators share one indicator\ntrajectory; only pose error differs"
-                 if inv.get("indicator_is_actuator_invariant") else "Pose error against indicator growth")
-    ax.margins(x=0.06, y=0.08)
-    ax.set_xlim(None, X.max() * 1.18)
-
-    rows = [("point-level bootstrap\n(superseded)", C["committed_point_level_bootstrap"], "#B0B0B0", C["r"], "o"),
-            (f"actuator-cluster bootstrap\n(exhaustive, {n}{str(n).translate(str.maketrans('0123456789', '⁰¹²³⁴⁵⁶⁷⁸⁹'))})",
-             C["actuator_cluster_bootstrap"], COL["always"],
-             C["r"], "o"),
-            ("leave-one-actuator-out\n(Fisher z)", C["leave_one_actuator_out_fisher_z"], COL["always"], C["r"], "o"),
-            ("within-actuator r\n(different estimand)", C["within_actuator"], COL["muted"],
-             C["within_actuator"]["r_within_actuator"], "s")]
-    for yp, (lab, v, col, point, mk) in enumerate(rows):
-        ax2.plot([v["ci_low"], v["ci_high"]], [yp, yp], "-", color=col, lw=2.2, solid_capstyle="butt")
-        ax2.plot(point, yp, mk, color=col, ms=5.5, mec="white", mew=0.8, zorder=4)
-        ax2.annotate(f"{v['ci_low']:.2f}–{v['ci_high']:.2f}", (v["ci_high"], yp), xytext=(5, 0),
-                     textcoords="offset points", va="center", fontsize=S["note"], color=col)
-    ax2.set_yticks(range(len(rows)), [r[0] for r in rows])
-    ax2.set_ylim(len(rows) - 0.5, -0.6)
-    ax2.tick_params(axis="y", length=0)
-    ax2.set_xlim(0.5, 1.12)
-    ax2.set_xticks([0.6, 0.7, 0.8, 0.9, 1.0])
-    ax2.set_xlabel("Pearson r, point and 95 % interval")
-    ax2.set_title("The interval depends on what is\nresampled; the estimate does not")
-    figstyle.panel_letter(ax, "a", dx=-40)
-    figstyle.panel_letter(ax2, "b", dx=-118)
-    figstyle.footnote(fig, f"Simulation: {n} held-out actuators × {C['points_per_cluster']} life stages, but only "
-                      f"{inv.get('distinct_x_values', '?')} distinct indicator values because the indicator is the "
-                      "same for every actuator. Labels: actuator id.")
-    figstyle.save(fig, os.path.join(DATA, "study3_fig3b_correlation_cluster_ci"))
-    plt.close(fig)
-
-    # Fig 4b keeps nothing of the old style; it is drawn after Fig 3b so figure_style.apply()
-    # cannot change Fig 3b's rcParams.
+    lead = ("Six actuators share one indicator trajectory; only pose error differs. "
+            if inv.get("indicator_is_actuator_invariant") else "")
+    figure_data.write_caption(os.path.join(DATA, FIG3B), (
+        f"{lead}The interval depends on what is resampled; the estimate does not. (a) Pose error with the young "
+        "calibration against P-V loop-area growth from young: one grey line per held-out actuator, labelled with "
+        f"its id; the dashed orange line is the pooled least-squares fit, r = {C['r']:.3f}. (b) Pearson r with its "
+        f"95 % interval from a point-level bootstrap (superseded, grey), an exhaustive actuator-cluster bootstrap "
+        f"({n}^{n} resamples), leave-one-actuator-out Fisher z, and the within-actuator r (a different estimand, "
+        f"square marker); the interval is printed beside each bar. Simulation: {n} held-out actuators × "
+        f"{C['points_per_cluster']} life stages, but only {inv.get('distinct_x_values', '?')} distinct indicator "
+        "values because the indicator is the same for every actuator. Values: figdata/"
+        f"{FIG3B}.csv; source study3_cluster_ci_results.json."))
     plot_cluster_tradeoff(results)
 
 
@@ -613,12 +578,12 @@ def plot_cluster_tradeoff(results):
     fig = cluster_tradeoff_figure(results)
     style.save(fig, os.path.join(DATA, FIG4B), caption=cluster_tradeoff_caption(results))
     plt.close(fig)
-    print(f"wrote {DATA}/{FIG4B}.(png|pdf)")
+    print(f"wrote {DATA}/{FIG4B}.caption.md")
 
 
 def replot():
-    """Redraw from the saved result. Fig 4b needs only the JSON; Fig 3b is redrawn only when the
-    regenerated dataset is present, because its per-actuator points come from it."""
+    """Rewrite figure inputs and captions from the saved result. Fig 4b needs only the JSON; the Fig 3b
+    points are rewritten only when the regenerated dataset is present, because they come from it."""
     results = json.load(open(os.path.join(DATA, "study3_cluster_ci_results.json")))
     if os.path.exists(os.path.join(DATA, "dataset.npz")):
         d, m = S3.load()

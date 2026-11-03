@@ -1,8 +1,10 @@
 """Shared figure rules: a data-only canvas with the words in a caption.
 
-Plots call ``apply()`` before drawing and ``save()`` to write every format;
-``save()`` refuses to write unless ``audit()`` finds nothing touching and no
-glyph is missing from the font. Only presentation lives here; no plotted value
+Plots call ``apply()`` before drawing and ``save()`` to write the caption;
+``save()`` refuses unless ``audit()`` finds nothing touching and no glyph is
+missing from the font. The committed images come from the MATLAB renderer in
+``figures/matlab/``; these matplotlib figures remain as the value check the
+tests run against the source JSON. Only presentation lives here; no plotted value
 is computed in this module.
 
 - The canvas carries data, axes, tick labels, axis labels, panel letters and
@@ -16,7 +18,6 @@ is computed in this module.
 
 Adapted from the owner-approved rule set in
 https://github.com/500ft/evidence-sufficiency-benchmark/pull/26.
-Figures not yet rebuilt to these rules still use ``scripts/figstyle.py``.
 """
 from pathlib import Path
 import re
@@ -138,20 +139,16 @@ def audit(fig) -> list[tuple[str, str]]:
 
 
 def save(fig, stem, formats=("png", "pdf"), caption: str | None = None) -> None:
-    """Write ``stem.<ext>`` for each format with no timestamps; refuse a touching canvas.
+    """Check the matplotlib canvas and write ``stem.caption.md``; write no image.
 
-    With ``caption``, also write ``stem.caption.md``.
+    The committed images are drawn by MATLAB (``figures/matlab/render_figures.m``)
+    from the same saved values, so this no longer writes ``stem.<ext>``. The
+    matplotlib figure still has to pass ``audit()``: the tests use it to check
+    that the plotted values match the source JSON. ``formats`` is kept so callers
+    need no change.
     """
     hits = audit(fig)
     if hits:
         raise ValueError(f"printed items touch: {hits}")
-    stem = Path(stem)
-    meta = {"pdf": {"CreationDate": None}, "svg": {"Date": None}}
-    for ext in formats:
-        path = stem.with_suffix(f".{ext}")
-        fig.savefig(path, dpi=DPI, metadata=meta.get(ext, {}))
-        if ext == "svg":
-            # Matplotlib path lines carry trailing spaces; normalize the text export.
-            path.write_text("\n".join(line.rstrip() for line in path.read_text().splitlines()) + "\n")
     if caption is not None:
-        stem.with_suffix(".caption.md").write_text(caption + "\n")
+        Path(stem).with_suffix(".caption.md").write_text(caption + "\n")

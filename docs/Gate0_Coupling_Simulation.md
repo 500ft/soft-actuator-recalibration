@@ -24,20 +24,27 @@ dollar.
 ## Model
 
 Lumped pneumatic network (Stanley et al. 2021 framework — pneumatic resistance
-*R* = d*P*/d*Q*, compliance *C* = d*V*/d*P*):
+$R = dP/dQ$, compliance $C = dV/dP$):
 
 ```
 regulated supply --R_s--> manifold node --R_v_i--> chamber_i --R_l_i--> atmosphere
                           (C_m)                    (C_i)
 ```
 
-- States: three chamber pressures *P₁…P₃* + one manifold node *Pₘ*.
-- Chamber *i*: `C_i·dP_i/dt = (P_m − P_i)/R_v_i − P_i/R_l_i`
-- Manifold: `C_m·dP_m/dt = (P_s − P_m)/R_s − Σ_i (P_m − P_i)/R_v_i`
+- States: three chamber pressures $P_1 \ldots P_3$ and one manifold node $P_m$.
+- Chamber $i$ and the manifold node:
+
+  ```math
+  \begin{aligned}
+  C_i \frac{dP_i}{dt} &= \frac{P_m - P_i}{R_{v,i}} - \frac{P_i}{R_{l,i}} \\
+  C_m \frac{dP_m}{dt} &= \frac{P_s - P_m}{R_s} - \sum_i \frac{P_m - P_i}{R_{v,i}}
+  \end{aligned}
+  ```
+
 - Actuation input *uᵢ* = valve-*i* conductance modulation, linearized about a realistic
   operating point (the standing bleed flow through `R_l` gives the valve authority).
 - Output = the three chamber pressures (exactly what a pressure-only pipeline sees).
-- **Fatigue** is modeled as chamber-1 compliance rising: *C₁* = *C₀* × multiplier,
+- **Fatigue** is modeled as chamber-1 compliance rising: $C_1 = C_0 \times$ multiplier,
   swept 1.0× → 2.0×.
 
 Nominal parameters are PneuNet-class soft pneumatics (R ≈ 10⁸–10⁹ Pa·s/m³,
@@ -45,6 +52,10 @@ C ≈ 5×10⁻¹¹ m³/Pa, *P_s* = 0.8 bar), giving a chamber RC corner near **4
 real operating band of Dragon Skin grippers.
 
 ## Results
+
+![Gate 0 results typeset with LaTeX: DC and 3 Hz cross-talk change, sensitive frequency, usable band and robustness](tables/gate0_table.png)
+
+<details><summary>Table as text</summary>
 
 | Result | Value | Unit |
 |:---|---:|:---|
@@ -56,7 +67,10 @@ real operating band of Dragon Skin grippers.
 | Randomized R/C/P sets with monotone cross-talk, all positive sign (n = 400) | 100 | % |
 | Randomized R/C/P sets with more than 10 % drift (n = 400) | 90 | % |
 
-Source: [gate0_results.json](../data/gate0/gate0_results.json).
+</details>
+
+Source: [gate0_results.json](../data/gate0/gate0_results.json). The typeset table is written by
+[`render_tables.m`](../figures/matlab/render_tables.m) from that file.
 
 ![Relative cross-talk and neighbour pressure against drive frequency for five chamber-1 compliance steps](../data/gate0/fig_crosstalk_vs_freq.png)
 
@@ -87,8 +101,8 @@ Relative cross-talk |H21/H11| at the 3 Hz actuation frequency against chamber-1 
      **miss** the coupling. We must probe dynamically.
 
 3. **There is a preferred actuation band (~1–5 Hz).** The *relative* cross-talk
-   |H₂₁/H₁₁| saturates with frequency (left figure), but the *measurable* cross-talk
-   |H₂₁| — the neighbor-pressure error a pose estimator actually fights — peaks in the
+   $|H_{21}/H_{11}|$ saturates with frequency (left figure), but the *measurable* cross-talk
+   $|H_{21}|$ — the neighbor-pressure error a pose estimator actually fights — peaks in the
    actuation band and dies off at high frequency (right figure). **Actuate and probe
    near the RC corner (~1–5 Hz for this geometry); do not characterize quasi-statically.**
    The 10 % of randomized configs that gave a weak signal were all ones actuated far
