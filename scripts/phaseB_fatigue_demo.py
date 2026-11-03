@@ -25,9 +25,8 @@ from sim.plant import (
     sls_loss_energy_analytic,
 )
 
-from scripts import figstyle, figure_style
-
-plt = figstyle.setup(style=False)
+from scripts import figure_data, figure_style
+from scripts.figure_style import plt
 
 
 LIFE_STAGES = [0, 5, 10, 250, 1000, 2000, 2450, 2800, 3200, 3500]
@@ -196,8 +195,8 @@ def main(write_results=True):
     # rerun and a --replot draw the same values.
     saved = json.loads((outdir / "phaseB_results.json").read_text())
 
-    if plt is not None:
-        _plots(
+    if True:  # figure inputs and captions; MATLAB draws the images
+        _figdata(
             outdir,
             params,
             cycles,
@@ -226,10 +225,10 @@ def main(write_results=True):
     print(f"Terminal leak conductance          : {rupture.leak_multiplier:.0f}x baseline")
     print("-" * 72)
     print(f"VERDICT: {verdict} (consistency only; no empirical validation)")
-    print(f"Wrote {outdir}/phaseB_results.json + figures")
+    print(f"Wrote {outdir}/phaseB_results.json + figure inputs" if write_results else f"Wrote {outdir}/figdata")
 
 
-def _plots(
+def _figdata(
     outdir,
     params,
     cycles,
@@ -244,75 +243,52 @@ def _plots(
     leak_sensitivity,
     base_area,
 ):
-    figstyle.apply()
-    C, S = figstyle.COLOR, figstyle.SIZE
+    """Plotted series of the four Phase B figures whose curves the result JSON does not hold."""
+    fd = outdir / "figdata"
     onset_cycle = params.rupture_cycles * params.acceleration_onset_fraction
     model = (f"Simulation: deterministic fatigue laws (sim/fatigue.py), rupture at {params.rupture_cycles:,.0f} "
-             f"cycles,\nacceleration onset at {params.acceleration_onset_fraction:.2f} of life, no rest unless stated.")
+             f"cycles, acceleration onset at {params.acceleration_onset_fraction:.2f} of life, no rest unless stated.")
 
-    # P-V loops over life (imposed volume): ordered life stages on one vermillion ramp
     shown = [0, 10, 2000, 2450, 3200, 3500]
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 3.0))
-    for n, col in zip(shown, figstyle.ramp(C["pv"], len(shown))):
-        loop = loops[n]
-        ax.plot(loop["V"] * 1e6, loop["P"] / 1e3, color=col, lw=1.0, label=f"{n:,}")
-    ax.set_xlabel("Chamber volume (mL)")
-    ax.set_ylabel("Chamber pressure (kPa)")
-    ax.set_title("At imposed volume the loop barely changes")
-    ax.legend(title="Cycles", loc="upper left", alignment="left", handlelength=1.2)
-    ax.margins(0.05)
-    figstyle.footnote(fig, model + "\nImposed-volume probing cannot see the leak; pressure decay measures it.")
-    figstyle.save(fig, outdir / "fig_pv_loops_over_life", formats=("png",)); plt.close(fig)
+    rows = [[n, float(v), float(p)] for n in shown for v, p in zip(loops[n]["V"], loops[n]["P"])]
+    figure_data.write_csv(fd / "fig_pv_loops_over_life.csv", ["cycles", "volume_m3", "pressure_pa"], rows)
+    figure_data.write_caption(outdir / "fig_pv_loops_over_life", (
+        "At imposed volume the loop barely changes. Chamber pressure against chamber volume over one probe cycle "
+        f"at {', '.join(f'{n:,}' for n in shown[:-1])} and {shown[-1]:,} cycles, light to dark blue. {model} "
+        "Imposed-volume probing cannot see the leak; pressure decay measures it. "
+        "Values: figdata/fig_pv_loops_over_life.csv."))
 
-    # life trajectory: three stacked panels sharing the cycle axis
-    fig, axes = plt.subplots(3, 1, figsize=(figstyle.SINGLE, 4.6), sharex=True,
-                             gridspec_kw={"hspace": 0.18})
-    series = [((compliance - 1) * 100, "Compliance\nrise (%)", C["compliance"]),
-              ((loop_area / base_area - 1) * 100, "Loop area\nrise (%)", C["pv"]),
-              (leak, "Leak conductance\n(× healthy)", C["leak"])]
-    for ax, (y, lab, col) in zip(axes, series):
-        ax.plot(cycles, y, color=col)
-        ax.axvline(onset_cycle, ls="--", lw=0.8, color=C["ref"])
-        ax.set_ylabel(lab)
-        ax.margins(x=0.02, y=0.08)
-    axes[0].annotate(f"onset {onset_cycle:,.0f} cycles", (onset_cycle, 1), xycoords=("data", "axes fraction"),
-                     xytext=(-4, -2), textcoords="offset points", ha="right", va="top",
-                     fontsize=S["note"], color=C["ref"])
-    axes[-1].set_xlabel("Cycles")
-    axes[0].set_title("Compliance and loop area rise together;\nthe leak grows only after onset")
-    figstyle.footnote(fig, model)
-    figstyle.save(fig, outdir / "fig_fatigue_trajectory", formats=("png",)); plt.close(fig)
+    figure_data.write_csv(fd / "fig_fatigue_trajectory.csv",
+                          ["cycles", "compliance_rise_pct", "loop_area_rise_pct", "leak_multiplier"],
+                          [[float(n), float(c), float(a), float(l)] for n, c, a, l in
+                           zip(cycles, (compliance - 1) * 100, (loop_area / base_area - 1) * 100, leak)])
+    figure_data.write_caption(outdir / "fig_fatigue_trajectory", (
+        "Compliance and loop area rise together; the leak grows only after onset. (a) Compliance rise, (b) P-V "
+        "loop-area rise, both in % of healthy, and (c) leak conductance as a multiple of healthy, against cycles. "
+        f"The dotted line marks the acceleration onset at {onset_cycle:,.0f} cycles. {model} "
+        "Values: figdata/fig_fatigue_trajectory.csv."))
 
-    # closed-valve pressure decay at four life stages
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.6))
-    shades = figstyle.ramp(C["leak"], len(decays) + 1)[1:]
-    for (n, decay), col in zip(decays.items(), shades):
-        ax.plot(decay["t"], decay["P"] / decay["P"][0], color=col, label=f"{n:,}")
-    ax.axhline(0.5, ls="--", lw=0.8, color=C["ref"])
-    ax.text(0.35, 0.52, "half pressure", ha="left", va="bottom", fontsize=S["note"], color=C["ref"])
-    ax.set_xlabel("Hold time with valve closed (s)")
-    ax.set_ylabel("Pressure / initial pressure")
-    ax.set_title("Hold pressure falls faster once the leak grows")
-    ax.legend(title="Cycles", loc="upper right", alignment="left", bbox_to_anchor=(1.0, 1.04))
-    ax.margins(x=0.02, y=0.04)
-    figstyle.footnote(fig, model + " Initial pressure 60 kPa.")
-    figstyle.save(fig, outdir / "fig_pressure_decay_over_life", formats=("png",)); plt.close(fig)
+    keys = list(decays)
+    t = decays[keys[0]]["t"]
+    figure_data.write_csv(fd / "fig_pressure_decay_over_life.csv", ["time_s"] + [f"p_over_p0_c{n}" for n in keys],
+                          [[float(t[i])] + [float(decays[n]["P"][i] / decays[n]["P"][0]) for n in keys]
+                           for i in range(len(t))])
+    figure_data.write_caption(outdir / "fig_pressure_decay_over_life", (
+        "Hold pressure falls faster once the leak grows. Pressure as a fraction of the initial pressure against "
+        f"hold time with the valve closed, at {', '.join(f'{n:,}' for n in keys[:-1])} and {keys[-1]:,} cycles, "
+        "light to dark blue. The dotted line is half pressure. "
+        f"{model} Initial pressure 60 kPa. Values: figdata/fig_pressure_decay_over_life.csv."))
 
-    # injected acceleration-onset sensitivity
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.6))
-    blues = figstyle.ramp(C["onset"], len(onset_sensitivity) + 2)[2:]
-    for (onset, trajectory), col in zip(onset_sensitivity.items(), blues):
-        y = np.asarray(trajectory) * 100
-        ax.plot(cycles, y, color=col, label=f"{float(onset):.2f}")
-    ax.set_xlabel("Cycles")
-    ax.set_ylabel("Accelerating compliance term (%)")
-    ax.set_title("A later onset packs the same rise into fewer cycles")
-    ax.legend(title="Onset (fraction of life)", loc="upper left", alignment="left")
-    ax.margins(x=0.02, y=0.05)
-    figstyle.footnote(fig, model.split(",\n")[0] + ". The onset is an injected model\n"
-                      "parameter; the curves are not detected lead times.")
-    figstyle.save(fig, outdir / "fig_onset_sensitivity", formats=("png",)); plt.close(fig)
-
+    onsets = list(onset_sensitivity)
+    figure_data.write_csv(fd / "fig_onset_sensitivity.csv", ["cycles"] + [f"accelerating_pct_onset{o}" for o in onsets],
+                          [[float(n)] + [float(onset_sensitivity[o][i]) * 100 for o in onsets]
+                           for i, n in enumerate(cycles)])
+    figure_data.write_caption(outdir / "fig_onset_sensitivity", (
+        "A later onset packs the same rise into fewer cycles. Accelerating compliance term against cycles for an "
+        f"acceleration onset at {', '.join(f'{float(o):.2f}' for o in onsets[:-1])} and {float(onsets[-1]):.2f} of "
+        "life, light to dark blue and labelled on each curve. Simulation: deterministic fatigue laws "
+        f"(sim/fatigue.py), rupture at {params.rupture_cycles:,.0f} cycles. The onset is an injected model "
+        "parameter; the curves are not detected lead times. Values: figdata/fig_onset_sensitivity.csv."))
 
 
 def recovery_cycles(result: dict) -> float:
@@ -334,7 +310,7 @@ def recovery_caption(result: dict) -> str:
     return (
         f"Rest recovers Mullins softening down to its permanent floor. Mullins compliance rise against rest "
         f"time after {recovery_cycles(result):,.0f} cycles, split into the permanent part (grey) and the "
-        f"recoverable part (hatched); markers are the {len(rec)} sampled rest times ({hours} h) and give the "
+        f"recoverable part (light blue); blue markers are the {len(rec)} sampled rest times ({hours} h) and give the "
         f"total. The total falls from {total[0]:.2f} % with no rest to {total[-1]:.2f} % after "
         f"{rec[-1]['rest_hours']:g} h, close to the permanent floor of {rec[0]['mullins_permanent'] * 100:.2f} % "
         f"({p['mullins_permanent_fraction'] * 100:.0f} % of the Mullins amplitude). Recovery time constant "
@@ -406,6 +382,6 @@ def plot_saved(result: dict, outdir: Path) -> None:
 
 if __name__ == "__main__":
     import sys
-    # --replot recomputes the deterministic curves and redraws the figures without
-    # rewriting phaseB_results.json (a full run would also record fatigue_exponent there).
+    # --replot recomputes the deterministic curves and rewrites the figure inputs and
+    # captions without rewriting phaseB_results.json (a full run would also record fatigue_exponent there).
     main(write_results="--replot" not in sys.argv)

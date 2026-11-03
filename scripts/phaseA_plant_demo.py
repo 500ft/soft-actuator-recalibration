@@ -3,10 +3,13 @@
 Phase A demo + validation for sim/plant.py.
 
 Produces:
-  data/sim/phaseA/fig_pv_loops.png            P-V loops below/at/above the loss peak
-  data/sim/phaseA/fig_loop_area_vs_freq.png   numerical vs analytical loop area
-  data/sim/phaseA/fig_gate0_consistency.png   SLS network cross-talk vs Gate 0
   data/sim/phaseA/phaseA_results.json
+  data/sim/phaseA/figdata/*.csv and *.caption.md, the inputs and captions of
+    fig_pv_loops (P-V loops below/at/above the loss peak),
+    fig_loop_area_vs_freq (numerical vs analytical loop area) and
+    fig_gate0_consistency (SLS network cross-talk vs Gate 0).
+  The figures are drawn by figures/matlab/render_figures.m.
+  --replot writes only the figure inputs and captions, not phaseA_results.json.
 
 Validation checks (printed):
   1. Numerical loop area matches the closed-form SLS dissipation across frequency.
@@ -26,12 +29,10 @@ from sim.plant import (SLSParams, NetworkParams, pv_loop,
                        sls_loss_energy_analytic, linear_network_crosstalk)
 from scripts import gate0_lumped_rc as g0  # Gate 0 model for the consistency check
 
-from scripts import figstyle
-
-plt = figstyle.setup(style=False)
+from scripts import figure_data
 
 
-def main():
+def main(write_results=True):
     outdir = REPO / "data" / "sim" / "phaseA"
     outdir.mkdir(parents=True, exist_ok=True)
     sls = SLSParams()
@@ -83,11 +84,11 @@ def main():
                    "reduces_to_gate0": pass_g0},
         "verdict": verdict,
     }
-    (outdir / "phaseA_results.json").write_text(json.dumps(results, indent=2))
+    if write_results:
+        (outdir / "phaseA_results.json").write_text(json.dumps(results, indent=2))
 
-    if plt is not None:
-        _plots(outdir, sls, A, fpk, freqs, area_num, area_ana,
-               test_freqs, ct_const, ct_g0, ct_sls)
+    _figdata(outdir, sls, A, fpk, freqs, area_num, area_ana,
+             test_freqs, ct_const, ct_g0, ct_sls)
 
     print("=" * 68)
     print("PHASE A — viscoelastic (SLS) plant + P-V loops")
@@ -102,81 +103,45 @@ def main():
     print("-" * 68)
     print(f"VERDICT: {verdict}  "
           f"[area:{pass_area} peak:{pass_peak} gate0:{pass_g0}]")
-    print(f"Wrote {outdir}/phaseA_results.json + figures")
+    print(f"Wrote {outdir}/phaseA_results.json + figure data" if write_results else f"Wrote {outdir}/figdata")
 
 
-def _plots(outdir, sls, A, fpk, freqs, area_num, area_ana,
-           tf, ct_const, ct_g0, ct_sls):
-    figstyle.apply()
-    C = figstyle.COLOR
-    note = (f"Simulation: standard-linear-solid wall, {A * 1e6:.0f} mL volume amplitude, "
-            f"τ = {sls.tau:g} s. No physical measurement.")
-
-    # P-V loops at 0.1x, 1x, 10x the loss peak
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 3.0))
-    shades = dict(zip((0.1, 10.0, 1.0), (figstyle.ramp(C["pv"], 5)[1], C["ref"], C["pv"])))
-    styles = {0.1: "--", 1.0: "-", 10.0: ":"}
-    for mult in (0.1, 10.0, 1.0):
+def _figdata(outdir, sls, A, fpk, freqs, area_num, area_ana, tf, ct_const, ct_g0, ct_sls):
+    """Plotted series of the three Phase A figures, in SI units, plus their captions."""
+    fd = outdir / "figdata"
+    note = (f"Simulation: standard-linear-solid wall, {A * 1e6:.0f} mL volume amplitude, τ = {sls.tau:g} s. "
+            "No physical measurement.")
+    rows, areas = [], {}
+    for mult in (0.1, 1.0, 10.0):
         lp = pv_loop(fpk * mult, A, sls)
-        ax.plot(np.array(lp["V"]) * 1e6, np.array(lp["P"]) / 1e3, styles[mult], color=shades[mult],
-                lw=1.6 if mult == 1.0 else 1.2,
-                label=f"{fpk * mult:.2f} Hz: {lp['area'] * 1e3:.1f} mJ")
-    ax.set_xlabel("Chamber volume (mL)")
-    ax.set_ylabel("Chamber pressure (kPa)")
-    ax.set_title("The loop is widest at the viscoelastic corner")
-    h, lab = ax.get_legend_handles_labels()
-    order = [0, 2, 1]                                  # list by frequency; the corner loop is drawn last
-    ax.legend([h[i] for i in order], [lab[i] for i in order], loc="upper left",
-              title="Drive frequency: loop area", alignment="left")
-    ax.margins(0.05)
-    figstyle.footnote(fig, note.replace(", τ", ",\nτ") + f" Corner f = 1/(2πτ) = {fpk:.2f} Hz.")
-    figstyle.save(fig, outdir / "fig_pv_loops", formats=("png",)); plt.close(fig)
-
-    # loop area vs frequency: numeric vs analytic
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.6))
-    ax.plot(freqs, area_ana * 1e3, "-", color=C["ref"], lw=1.2, zorder=1)
-    ax.plot(freqs, area_num * 1e3, "o", color=C["pv"], ms=4, mec="white", mew=0.5, zorder=2)
-    ax.set_xscale("log")
-    ax.set_xticks([0.1, 1, 10], ["0.1", "1", "10"])
-    ax.axvline(fpk, ls="--", c=C["ref"], lw=0.8)
-    ax.annotate(f"corner {fpk:.2f} Hz", (fpk, 0.02), xycoords=("data", "axes fraction"), xytext=(4, 0),
-                textcoords="offset points", fontsize=figstyle.SIZE["note"], color=C["ref"])
-    i = int(np.argmin(np.abs(freqs - 8)))
-    figstyle.end_label(ax, freqs[i], area_ana[i] * 1e3, "analytic SLS\ndissipation", C["ref"], dx=8, dy=10)
-    j = int(np.argmin(np.abs(freqs - 0.55)))
-    figstyle.end_label(ax, freqs[j], area_num[j] * 1e3, "numerical ∮P dV", C["pv"], dx=-7, dy=4, ha="right")
-    ax.set_xlabel("Drive frequency (Hz)")
-    ax.set_ylabel("Loop area (mJ per cycle)")
-    ax.set_title("Numerical loop area matches the analytic dissipation")
-    ax.set_ylim(0, None)
-    ax.margins(x=0.04)
+        areas[mult] = lp["area"]
+        rows += [[mult, float(fpk * mult), float(v), float(p)] for v, p in zip(lp["V"], lp["P"])]
+    figure_data.write_csv(fd / "fig_pv_loops.csv", ["freq_multiple", "freq_hz", "volume_m3", "pressure_pa"], rows)
+    loops = "; ".join(f"{fpk * m:.2f} Hz, {areas[m] * 1e3:.1f} mJ" for m in (0.1, 1.0, 10.0))
+    figure_data.write_caption(outdir / "fig_pv_loops", (
+        "The loop is widest at the viscoelastic corner. Chamber pressure against chamber volume over one cycle "
+        f"at 0.1, 1 and 10 times the corner frequency f = 1/(2πτ) = {fpk:.2f} Hz: dashed orange, solid blue and "
+        f"dotted grey. Drive frequency and loop area: {loops}. {note} Values: figdata/fig_pv_loops.csv."))
+    figure_data.write_csv(fd / "fig_loop_area_vs_freq.csv", ["freq_hz", "area_numeric_j", "area_analytic_j"],
+                          [[float(f), float(n), float(a)] for f, n, a in zip(freqs, area_num, area_ana)])
     rel = np.abs(area_num - area_ana) / np.maximum(area_ana, 1e-30)
-    figstyle.footnote(fig, note.replace(", τ", ",\nτ") + f" {len(freqs)} frequencies; "
-                      f"largest relative error {rel.max() * 100:.2f} %.")
-    figstyle.save(fig, outdir / "fig_loop_area_vs_freq", formats=("png",)); plt.close(fig)
-
-    # Gate 0 consistency
-    fig, ax = plt.subplots(figsize=(figstyle.SINGLE, 2.6))
-    ax.plot(tf, ct_g0 * 100, "-", color=C["ref"], lw=2.6, zorder=1)
-    ax.plot(tf, ct_const * 100, "--", color=C["compliance"], lw=1.3, zorder=2)
-    ax.plot(tf, ct_sls * 100, "-", color=C["pv"], lw=1.3, zorder=3)
-    ax.set_xscale("log")
-    ax.set_xticks([0.01, 0.1, 1, 10, 100], ["0.01", "0.1", "1", "10", "100"])
-    k = int(np.argmin(np.abs(tf - 1.2)))
-    ax.annotate("Gate 0 model and\nSLS network with\nconstant C = 1/k1", (tf[k], ct_g0[k] * 100), xytext=(0.012, 10.0),
-                fontsize=figstyle.SIZE["note"], color=C["ref"], ha="left", va="center",
-                arrowprops=dict(arrowstyle="-", lw=0.6, color=C["ref"], shrinkA=2, shrinkB=2))
-    m = int(np.argmin(np.abs(tf - 5)))
-    figstyle.end_label(ax, tf[m], ct_sls[m] * 100, "SLS network,\nfrequency-dependent C(ω)", C["pv"], dx=6, dy=-14)
-    ax.set_xlabel("Drive frequency (Hz)")
-    ax.set_ylabel("Cross-talk |H21/H11| (%)")
-    ax.set_title("With constant compliance the SLS network is Gate 0")
-    ax.margins(x=0.03)
+    figure_data.write_caption(outdir / "fig_loop_area_vs_freq", (
+        "Numerical loop area matches the analytic dissipation. Loop area per cycle against drive frequency: blue "
+        "circles are the numerical ∮P dV and the grey line is the analytic standard-linear-solid dissipation. The "
+        f"dotted line marks the corner frequency {fpk:.2f} Hz. {note} {len(freqs)} frequencies; largest relative "
+        f"error {rel.max() * 100:.2f} %. Values: figdata/fig_loop_area_vs_freq.csv."))
+    figure_data.write_csv(fd / "fig_gate0_consistency.csv", ["freq_hz", "crosstalk_gate0", "crosstalk_sls_constant_c",
+                                                             "crosstalk_sls"],
+                          [[float(f), float(g), float(c), float(x)] for f, g, c, x in zip(tf, ct_g0, ct_const, ct_sls)])
     err = float(np.max(np.abs(ct_const - ct_g0)))
-    figstyle.footnote(fig, "Simulation: three-chamber network with an SLS wall. Largest gap between\n"
-                      f"Gate 0 and the constant-C network: {err:.1e} (cross-talk ratio).")
-    figstyle.save(fig, outdir / "fig_gate0_consistency", formats=("png",)); plt.close(fig)
+    figure_data.write_caption(outdir / "fig_gate0_consistency", (
+        "With constant compliance the SLS network is Gate 0. Relative cross-talk |H21/H11| against drive "
+        "frequency for the Gate 0 model (wide grey line), the SLS network with constant compliance C = 1/k1 "
+        "(dashed blue, on top of the grey line) and the SLS network with frequency-dependent compliance C(ω) "
+        "(solid orange). Simulation: three-chamber network with an SLS wall. Largest gap between Gate 0 and the "
+        f"constant-C network: {err:.1e} (cross-talk ratio). Values: figdata/fig_gate0_consistency.csv."))
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    main(write_results="--replot" not in sys.argv)

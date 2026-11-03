@@ -32,6 +32,10 @@ static and dynamic correctors under shared and isolated supply topologies.
 
 ![Saved policy errors and calibration counts, including the matched-cost clock that ties the P-V trigger](../data/sim/summary/policy_comparison.png)
 
+![Policy table typeset with LaTeX: mean pose error and calibrations per actuator for five policies](tables/policy_table.png)
+
+<details><summary>Table as text</summary>
+
 <!-- policy-summary:start -->
 | Policy | Mean pose error, RMSE (mm) | Calibrations per actuator |
 |:---|---:|---:|
@@ -42,15 +46,17 @@ static and dynamic correctors under shared and isolated supply topologies.
 | Calibration at every stage | 0.019 | 5.0 |
 <!-- policy-summary:end -->
 
+</details>
+
 Saved simulation point summaries for 6 held-out actuators; no uncertainty bars.
-Panel (a) shows mean pose RMSE [mm] and panel (b) calibrations per actuator for
-five policies, marked by shape: initial calibration only (circle), the
-train-selected clock at 2,700 cycles (triangle), the matched-cost clock at
-2,400 cycles (square), the P-V trigger at τ = 0.05 (diamond), calibration at every
-stage (cross). Left is better in both panels. The dashed line in (a) is the
-train-derived error budget, 0.159 mm. A filled marker means the policy is within
-the budget; a hollow marker means it exceeds it: initial calibration only and
-the train-selected clock at 2,700 cycles. At matched cost the clock ties the P-V
+Panel (a) shows mean pose RMSE [mm] as a dot on a line from zero and panel (b)
+calibrations per actuator as a bar from zero, for five policies in shared rows:
+initial calibration only, the train-selected clock at 2,700 cycles, the
+matched-cost clock at 2,400 cycles, the P-V trigger at τ = 0.05 and calibration
+at every stage. Left is better in both panels. The dashed line in (a) is the
+train-derived error budget, 0.159 mm. Filled blue means the policy is within the
+budget; hollow orange means it exceeds it: initial calibration only and the
+train-selected clock at 2,700 cycles. At matched cost the clock ties the P-V
 trigger: both reach 0.058 mm with 2.0 calibrations per actuator. Counts include
 the initial calibration; error averages life stages, then actuators. Values: the
 policy table and policy_comparison.csv. Sources: matched_clock_audit.json and
@@ -59,7 +65,7 @@ study3_results.json; no physical measurements.
 [Caption file](../data/sim/summary/policy_comparison.caption.md) · [matched-cost audit](../data/sim/phaseD/matched_clock_audit.json) ·
 [Study 3](../data/sim/phaseD/study3_results.json) · [download full-precision table](../data/sim/summary/policy_comparison.csv).
 
-Pooled P-V association: `r = 0.885`, actuator-cluster bootstrap `[0.853, 0.950]`;
+Pooled P-V association: $r = 0.885$, actuator-cluster bootstrap $[0.853, 0.950]$;
 leave-one-actuator-out `[0.576, 0.973]`. The point-level interval `[0.835, 0.958]`
 is superseded. [Cluster source](../data/sim/phaseD/study3_cluster_ci_results.json).
 
@@ -111,13 +117,14 @@ physical gripper.
 Saved deterministic Study 4 sweep of the lumped three-chamber network at a 2 Hz
 probe. Cross-talk is the neighbour pressure amplitude divided by the driven
 amplitude. One parameter is varied at a time, as a ratio to its default on a
-logarithmic axis, with all others fixed. Solid line and circles: supply
-resistance R_s; dashed line and squares: manifold compliance C_m. The filled
-diamond is the default network, 6.3%. Dotted lines are the original sweep
-reference levels, 10% and 20%; they are not confidence limits. Cross-talk rises
-with supply resistance, reaching 10% at 1.7 times the default and 20% at 4.3
-times the default, and stays between 5.8% and 6.3% across the compliance sweep.
-No uncertainty band; no physical gripper tested. Values: cross_talk.csv. Source:
+logarithmic axis, with all others fixed. Solid blue line and circles: supply
+resistance R_s; dashed orange line and squares: manifold compliance C_m. The
+filled diamond is the default network, 6.3%. Dotted lines are the original sweep
+reference levels, 10% and 20%; they are not confidence limits. Hollow circles
+mark where the supply-resistance curve crosses them. Cross-talk rises with
+supply resistance, reaching 10% at 1.7 times the default and 20% at 4.3 times
+the default, and stays between 5.8% and 6.3% across the compliance sweep. No
+uncertainty band; no physical gripper tested. Values: cross_talk.csv. Source:
 study4_results.json.
 
 [Caption file](../data/sim/summary/cross_talk.caption.md) · [Download ratios](../data/sim/summary/cross_talk.csv) · [Source](../data/sim/phaseD/study4_results.json).

@@ -14,7 +14,7 @@ from pipeline.dispersion import AXES, SEED, sample_units
 from sim.fatigue import degraded_sls, fatigue_state
 from sim.plant import first_crossing, loop_area, pv_loop
 from sim.sensors import SensorModel, SensorParams
-from scripts import figstyle
+from scripts import figure_data
 from scripts import figure_style as style
 
 DATA = "data/sim/studyA"
@@ -122,56 +122,43 @@ def main():
     for axis, ab in ablation.items():
         print(f"  ablation {axis:12s} SD_between(u=0.9) = {ab['ideal_sd_between_u090']:.3g}")
 
-    plt = figstyle.setup()
-    if plt is None:  # pragma: no cover
-        return
-    C, S = figstyle.COLOR, figstyle.SIZE
-    life = np.asarray(LIFE)
-    mid = life >= 0.5
-    fig = plt.figure(figsize=(figstyle.FULL, 3.0))
-    gs = fig.add_gridspec(2, 2, width_ratios=[1.25, 1], wspace=0.42, hspace=0.6)
-    a = fig.add_subplot(gs[:, 0])
-    b = fig.add_subplot(gs[0, 1])
-    c = fig.add_subplot(gs[1, 1], sharex=b)
-    for h in meas.mean(axis=2):
-        a.plot(LIFE, h, "-", lw=0.7, color=C["unit"], alpha=0.8)
-    a.axhline(1.0 + TAU_TRIGGER, ls="--", color=C["pv"], lw=0.9)
-    a.text(LIFE[0], 1.0 + TAU_TRIGGER + 0.002, f"trigger at τ = {TAU_TRIGGER:g}", fontsize=S["note"],
-           color=figstyle.ink(C["pv"]), va="bottom")
-    a.set_xlabel("Normalized life")
-    a.set_ylabel("Measured P-V loop area / young")
-    a.set_title(f"{N_UNITS} dispersed units fan out after mid-life")
-    a.margins(x=0.02)
-    ratio, icc = np.asarray(m["ratio"]), np.asarray(m["icc"])
-    b.plot(LIFE, ratio, "o-", color=C["always"], ms=3)
-    b.axhline(2.0, ls=":", color=C["ref"], lw=0.8)
-    b.text(LIFE[-1], 2.6, "criterion 2", fontsize=S["note"], color=C["ref"], ha="right", va="bottom")
-    b.set_ylabel("SD ratio,\nbetween / within")
-    b.set_title(f"From mid-life units differ {ratio[mid].min():.0f}–{ratio[mid].max():.0f}× more than noise")
-    c.plot(LIFE, icc, "o-", color=C["always"], ms=3)
-    c.axhline(0.5, ls=":", color=C["ref"], lw=0.8)
-    c.text(LIFE[-1], 0.42, "criterion 0.5", fontsize=S["note"], color=C["ref"], ha="right", va="top")
-    c.set_ylabel("ICC(1)")
-    c.set_ylim(-0.35, 1.1)
-    c.set_xlabel("Normalized life")
-    plt.setp(b.get_xticklabels(), visible=False)
-    c.set_title(f"ICC stays at or above {np.floor(icc[mid].min() * 100) / 100:.2f} from mid-life")
-    figstyle.panel_letter(a, "a", dx=-40)
-    figstyle.panel_letter(b, "b", dx=-60)
-    figstyle.panel_letter(c, "c", dx=-60)
-    figstyle.footnote(fig, f"Simulation: {N_UNITS} synthetic units with assumed degradation-law and plant dispersion, "
-                      f"fixed {F_PROBE_HZ:g} Hz probe, {REPEATS} repeats per stage. Preregistered verdict {v} on its "
-                      f"timing criterion: trigger-life SD {trigger_sd:.3f} life.")
-    figstyle.save(fig, os.path.join(DATA, "studyA_fig_indicator_spread")); plt.close(fig)
-
+    spread_figdata(meas.mean(axis=2), results)
     plot_ablation(results)
-    print(f"results + figures -> {DATA}/")
+    print(f"results + figure inputs -> {DATA}/")
 
 
 ABLATION_NAMES = {"none": "none (all canonical)", "rupture": "rupture life", "mullins": "Mullins softening",
                   "fatigue_law": "degradation law", "leak": "leak", "tau": r"time constant $\tau$",
                   "stiffness": "stiffness", "thickness": "wall thickness", "temperature": "temperature"}
 ZERO = 1e-9   # spreads below this are numerically zero
+
+
+SPREAD = "studyA_fig_indicator_spread"
+
+
+def spread_figdata(unit_means, results):
+    """Per-unit mean indicator trajectories (not stored in the result JSON) and the spread caption.
+
+    Panels (b) and (c) of the figure read ratio and ICC from studyA_results.json directly.
+    """
+    life = results["life_fractions"]
+    figure_data.write_csv(os.path.join(DATA, "figdata", SPREAD + ".csv"), ["unit"] + [f"u{u:.2f}" for u in life],
+                          [[i] + [float(v) for v in h] for i, h in enumerate(unit_means)])
+    m = results["measured"]
+    mid = np.asarray(life) >= 0.5
+    ratio = np.asarray([np.inf if v is None else v for v in m["ratio"]], dtype=float)
+    icc = np.asarray(m["icc"], dtype=float)
+    figure_data.write_caption(os.path.join(DATA, SPREAD), (
+        f"{results['n_units']} dispersed units fan out after mid-life. (a) Measured P-V loop area as a multiple of "
+        f"its young value against normalized life, one grey line per unit (mean of {results['repeats']} repeats "
+        f"per stage); the dashed orange line is the trigger level at τ = {results['tau_trigger']:g}. (b) Ratio of "
+        "the standard deviation between units to the standard deviation within units; from mid-life units differ "
+        f"{ratio[mid].min():.0f} to {ratio[mid].max():.0f} times more than noise. (c) Intraclass correlation "
+        f"ICC(1), which stays at or above {np.floor(icc[mid].min() * 100) / 100:.2f} from mid-life. Dotted lines "
+        "are the preregistered criteria 2 and 0.5. Simulation: synthetic units with assumed degradation-law and "
+        f"plant dispersion, fixed {results['probe_hz']:g} Hz probe. Preregistered verdict {results['verdict']} on "
+        f"its timing criterion: trigger-life SD {results['trigger_life_sd']:.3f} life. Values: figdata/{SPREAD}.csv "
+        "and studyA_results.json."))
 
 
 def ablation_rows(results):
@@ -224,8 +211,13 @@ def plot_ablation(results):
 
 if __name__ == "__main__":
     import sys
-    if "--replot" in sys.argv:      # redraw the ablation figure from the saved result; no simulation
-        plot_ablation(json.load(open(os.path.join(DATA, "studyA_results.json"))))
-        print("replotted the ablation figure from the saved result")
+    if "--replot" in sys.argv:
+        # Figure inputs only: the ablation caption from the saved result, and the per-unit trajectories
+        # (about 10 s, no ablation runs). studyA_results.json is not rewritten.
+        saved = json.load(open(os.path.join(DATA, "studyA_results.json")))
+        plot_ablation(saved)
+        units = sample_units(N_UNITS, SEED)
+        spread_figdata(np.asarray([trajectories(u, i)[1] for i, u in enumerate(units)]).mean(axis=2), saved)
+        print("wrote the figure inputs and captions from the saved result")
     else:
         main()

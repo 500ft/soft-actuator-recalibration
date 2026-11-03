@@ -5,8 +5,15 @@
     "data/sim/phaseD/study3_results.json": "128c17e9ad3b5c7e777f0b7d14e459e9af47567134453e1cc1fef3ea99b77341",
     "data/sim/phaseD/study4_results.json": "63179a65ac1d2454274f52460ab26ec59d7d41234c5939dc6e014533dd3c8f3e"
   },
-  "generator_sha256": "37e87e99888c59dd35c152c881c695a124f838446277bb1bbcb1a0b1eb9f8957",
-  "style_sha256": "4bcc148d9fbfd5be1a55245b835ef45f24516a9708ec73c5e14bf8d72bdbb019",
+  "generator_sha256": "afd513007a2a18de2b133df6f218111f0305b15441b67972ded01152b7485f61",
+  "style_sha256": "ac186a9472cffb3086043a7e7cee8def5a99db4c4842a0d07eb25b87eb047eab",
+  "renderer": "MATLAB R2025b, figures/matlab/figs_summary.m",
+  "renderer_sha256": {
+    "figures/matlab/figs_summary.m": "bb0bebb998935648069146d875cc82abc267d422b3a5dd0fb78b445645f4382e",
+    "figures/matlab/make_policy_graph.m": "a7865919b10750f18015a792b09757f8390caaa9e85da68526d69ca33b0b9533",
+    "figures/matlab/make_crosstalk_plot.m": "f5905a00a32bcc7ce8e1a6129982688f80d1f713884c97f29a4bc8bd9e22e405",
+    "figures/matlab/fig_style.m": "dd3eba06c4e9f9e56c9dd0d1df11f53013d4c9ff59b0a4e6fe2a754b12304c30"
+  },
   "matplotlib_version": "3.11.2",
   "style_reference": "https://github.com/500ft/evidence-sufficiency-benchmark/pull/26",
   "csv_note": "Generated views; original JSON remains the numeric source of truth."

@@ -45,6 +45,9 @@ def test_every_entry_has_the_required_keys_and_a_unique_id(manifest):
         assert f["outputs"], f"{f['id']}: declares no outputs"
 
 
+MATLAB_RENDER = "matlab -batch \"addpath('figures/matlab'); render_figures\""
+
+
 def test_generators_and_command_modules_exist(manifest):
     for f in manifest["figures"]:
         assert (ROOT / f["generator"]).is_file(), f"{f['id']}: generator {f['generator']} not in tree"
@@ -52,7 +55,13 @@ def test_generators_and_command_modules_exist(manifest):
         assert mods, f"{f['id']}: command has no `python -m` module"
         for m in mods:
             assert (ROOT / (m.replace(".", "/") + ".py")).is_file(), f"{f['id']}: module {m} does not resolve"
-        assert f["generator"] == mods[-1].replace(".", "/") + ".py", f"{f['id']}: generator is not the last command module"
+        python_generator = f["generator"]
+        if f["generator"].endswith(".m"):
+            # MATLAB draws the image from what the Python data generator writes, so the command must run both.
+            assert f["command"].endswith(MATLAB_RENDER), f"{f['id']}: command does not end with the MATLAB render"
+            assert f["generator"] in f["inputs"], f"{f['id']}: MATLAB generator not listed as an input"
+            python_generator = f["data_generator"]
+        assert python_generator == mods[-1].replace(".", "/") + ".py", f"{f['id']}: generator is not the last command module"
 
 
 def test_every_declared_output_is_committed(manifest, tracked):

@@ -47,13 +47,13 @@ proprioception pipeline actually sees).
 Outputs
 -------
   data/gate0/gate0_results.json     machine-readable verdict + metrics
-  data/gate0/fig_crosstalk_vs_freq.png
-  data/gate0/fig_crosstalk_vs_compliance.png
-  data/gate0/fig_dc_independence.png
-and a printed PASS / FAIL / WEAK verdict.
+  data/gate0/figdata/*.csv          plotted curves of the frequency and DC-gain figures
+  data/gate0/*.caption.md           figure captions
+and a printed PASS / FAIL / WEAK verdict. The figures themselves are drawn by
+figures/matlab/render_figures.m from these files.
 
 Run:  python -m scripts.gate0_lumped_rc
-      python -m scripts.gate0_lumped_rc --replot   (redraws fig_crosstalk_vs_compliance from the JSON)
+      python -m scripts.gate0_lumped_rc --replot   (figure inputs only; gate0_results.json untouched)
 """
 
 from __future__ import annotations
@@ -66,11 +66,8 @@ from pathlib import Path
 import numpy as np
 from scipy.stats import spearmanr
 
-from scripts import figstyle, figure_style
-
-# matplotlib is optional at run time; degrade gracefully if headless/missing.
-plt = figstyle.setup(style=False)
-_HAVE_MPL = plt is not None
+from scripts import figure_data, figure_style
+from scripts.figure_style import plt
 
 
 # --------------------------------------------------------------------------- #
@@ -358,85 +355,46 @@ def _interpretation(verdict, p: Params, best_freq, band) -> str:
 # --------------------------------------------------------------------------- #
 # Plots
 # --------------------------------------------------------------------------- #
-def make_plots(results: dict, outdir: Path):
-    if not _HAVE_MPL:
-        return []
-    figstyle.apply()
-    C = figstyle.COLOR
-    pl = results["_plot"]
+FREQ_STEPS = 5   # compliance steps drawn in fig_crosstalk_vs_freq
+
+
+def write_figdata(results: dict, outdir: Path) -> list[Path]:
+    """Write the curves of the frequency and DC-gain figures, and their captions.
+
+    These curves live only in the in-memory ``_plot`` block of a run, so they are
+    saved as CSV under ``figdata/`` for the MATLAB renderer. gate0_results.json is
+    not touched here.
+    """
+    pl, p = results["_plot"], results["params"]
     freqs = np.asarray(pl["freqs_hz"])
     fat = np.asarray(pl["fatigue_levels"])
-    f_act = results["params"]["f_actuation_hz"]
-    saved = []
-    sim_note = ("Simulation: lumped R-C model, three chambers on one manifold. Chamber-1 compliance\n"
-                "is scaled; all other parameters are fixed. No physical measurement.")
-
-    # 1) cross-talk vs frequency for five compliance steps (ratio + measurable amplitude)
-    idxs = np.linspace(0, len(fat) - 1, 5).astype(int)
-    shades = figstyle.ramp(C["compliance"], len(idxs))
-    fig, (axL, axR) = plt.subplots(1, 2, figsize=(figstyle.FULL, 2.7), gridspec_kw={"wspace": 0.55})
-    for i, col in zip(idxs, shades):
-        axL.plot(freqs, pl["ct_vs_freq"][i] * 100, color=col)
-        axR.plot(freqs, pl["ctabs_vs_freq"][i], color=col)
-        figstyle.end_label(axL, freqs[-1], pl["ct_vs_freq"][i][-1] * 100, f"{fat[i]:.1f}×", col)
-    axL.text(0.02, 0.97, "Line labels: chamber-1\ncompliance, × healthy", transform=axL.transAxes,
-             fontsize=figstyle.SIZE["note"], color=figstyle.ink(C["compliance"]), ha="left", va="top")
-    for ax in (axL, axR):
-        ax.set_xscale("log")
-        ax.axvline(f_act, ls="--", lw=0.8, color=C["ref"])
-        ax.set_xlabel("Drive frequency (Hz)")
-        ax.set_xticks([0.01, 0.1, 1, 10, 100], ["0.01", "0.1", "1", "10", "100"])
-        ax.margins(x=0.02)
-    axR.set_yscale("log")
-    axR.set_yticks([3e10, 1e11, 3e11, 6e11], ["3×10¹⁰", "10¹¹", "3×10¹¹", "6×10¹¹"])
-    axR.yaxis.set_minor_formatter(plt.NullFormatter())
-    axL.text(f_act * 1.15, 0.03, f"{f_act:.0f} Hz actuation", transform=axL.get_xaxis_transform(),
-             fontsize=figstyle.SIZE["note"], color=C["ref"], ha="left", va="bottom")
-    axL.set_ylabel("Relative cross-talk\n|H21/H11| (%)")
-    axR.set_ylabel("Neighbour pressure |H21|\n(Pa per unit Δg)")
-    axL.set_title("Softer chamber raises cross-talk above 0.1 Hz")
-    axR.set_title("Neighbour response peaks near the actuation band")
-    figstyle.panel_letter(axL, "a")
-    figstyle.panel_letter(axR, "b")
-    figstyle.footnote(fig, sim_note + " Δg: valve-conductance step on chamber 1.\n"
-                      f"Dashed line: {f_act:.0f} Hz actuation frequency.")
-    f1 = outdir / "fig_crosstalk_vs_freq"
-    figstyle.save(fig, f1, formats=("png",)); plt.close(fig); saved.append(f1.with_suffix(".png"))
-
-    # 3) DC independence: healthy vs fatigued static gain matrices (signed, diverging about zero)
-    G = [np.asarray(pl["G_healthy"]), np.asarray(pl["G_fatigued"])]
-    scale = 1e12
-    lim = max(np.abs(g).max() for g in G) / scale
-    fig, axes = plt.subplots(1, 2, figsize=(figstyle.WIDE, 2.5), gridspec_kw={"wspace": 0.25})
-    cmap = plt.get_cmap("PuOr_r")
-    for ax, g, ttl, letter in zip(axes, G, ["Healthy chamber 1", "Chamber-1 compliance 2×"], "ab"):
-        im = ax.imshow(g / scale, cmap=cmap, vmin=-lim, vmax=lim)
-        n = g.shape[0]
-        ax.set_xticks(range(n), [str(k + 1) for k in range(n)])
-        ax.set_yticks(range(n), [str(k + 1) for k in range(n)])
-        ax.tick_params(length=0)
-        for s in ax.spines.values():
-            s.set_visible(False)
-        ax.set_xlabel("Driven valve")
-        ax.set_title(ttl)
-        figstyle.panel_letter(ax, letter, dx=-20)
-        for (r, c), v in np.ndenumerate(g / scale):
-            light = abs(v) / lim < 0.55
-            ax.text(c, r, f"{v:.3g}".replace("-", "\u2212"), ha="center", va="center", fontsize=figstyle.SIZE["note"],
-                    color="#222222" if light else "white")
-    axes[0].set_ylabel("Chamber pressure")
-    cb = fig.colorbar(im, ax=axes, fraction=0.035, pad=0.03)
-    cb.set_label("DC gain (10¹² Pa per unit Δg)", fontsize=figstyle.SIZE["note"])
-    cb.ax.tick_params(labelsize=figstyle.SIZE["tick"])
-    fig.suptitle("Static gain is identical at both compliances, so the coupling drift is dynamic",
-                 x=0.06, y=1.02, ha="left", fontsize=figstyle.SIZE["label"])
+    idxs = np.linspace(0, len(fat) - 1, FREQ_STEPS).astype(int)
+    fd = outdir / "figdata"
+    header = ["freq_hz"] + [f"ratio_c{fat[i]:.1f}" for i in idxs] + [f"abs_c{fat[i]:.1f}" for i in idxs]
+    rows = [[float(f)] + [float(pl["ct_vs_freq"][i][k]) for i in idxs] + [float(pl["ctabs_vs_freq"][i][k]) for i in idxs]
+            for k, f in enumerate(freqs)]
+    out = [figure_data.write_csv(fd / "fig_crosstalk_vs_freq.csv", header, rows)]
+    G = {"healthy": np.asarray(pl["G_healthy"]), "fatigued": np.asarray(pl["G_fatigued"])}
+    rows = [[case, r + 1, c + 1, float(G[case][r, c])] for case in G for r in range(G[case].shape[0])
+            for c in range(G[case].shape[1])]
+    out.append(figure_data.write_csv(fd / "fig_dc_independence.csv", ["condition", "pressure_row", "valve_col", "dc_gain"], rows))
+    levels = ", ".join(f"{fat[i]:.1f}" for i in idxs)
+    f_act = p["f_actuation_hz"]
+    figure_data.write_caption(outdir / "fig_crosstalk_vs_freq", (
+        "A softer chamber raises cross-talk above 0.1 Hz, and the neighbour response peaks near the actuation "
+        f"band. (a) Relative cross-talk |H21/H11| and (b) neighbour pressure |H21| per unit valve-conductance "
+        f"step Δg on chamber 1, against drive frequency, for chamber-1 compliance {levels} times healthy (light "
+        f"to dark blue; labels in (a)). The dotted line is the {f_act:g} Hz actuation frequency. Simulation: "
+        f"lumped R-C model, {p['n_chambers']} chambers on one manifold; chamber-1 compliance is scaled and all "
+        "other parameters are fixed. No physical measurement. Values: figdata/fig_crosstalk_vs_freq.csv."))
     dci = results["dc_independence"]
-    figstyle.footnote(fig, f"Simulation, lumped R-C model. DC cross-talk change from 1× to 2× compliance: "
-                      f"{dci['relative_change'] * 100:.4f} %.")
-    f3 = outdir / "fig_dc_independence"
-    figstyle.save(fig, f3, formats=("png",)); plt.close(fig); saved.append(f3.with_suffix(".png"))
-    saved.append(plot_compliance(results, outdir))
-    return saved
+    figure_data.write_caption(outdir / "fig_dc_independence", (
+        "Static gain is identical at both compliances, so the coupling drift is dynamic. DC gain from each valve "
+        "(column) to each chamber pressure (row), in 10¹² Pa per unit Δg, for (a) a healthy chamber 1 and (b) "
+        "chamber-1 compliance 2× healthy. Orange cells are positive and blue cells negative; the number in each "
+        f"cell is the gain. DC cross-talk change from 1× to 2× compliance: {dci['relative_change'] * 100:.4f} %. "
+        "Simulation: lumped R-C model. No physical measurement. Values: figdata/fig_dc_independence.csv."))
+    return out
 
 
 def compliance_caption(results: dict) -> str:
@@ -481,14 +439,19 @@ def plot_compliance(results: dict, outdir: Path) -> Path:
 def main():
     repo = Path(__file__).resolve().parents[1]
     outdir = repo / "data" / "gate0"
-    if "--replot" in sys.argv:  # redraw the one figure the saved result holds; no model run
-        print(f"Wrote: {plot_compliance(json.loads((outdir / 'gate0_results.json').read_text()), outdir)}")
+    if "--replot" in sys.argv:
+        # Figure inputs only: recompute the deterministic curves, write figdata and captions,
+        # and leave gate0_results.json untouched (no robustness sweep). MATLAB draws the images.
+        plot_compliance(json.loads((outdir / "gate0_results.json").read_text()), outdir)
+        for f in write_figdata(run_gate(Params()), outdir):
+            print(f"Wrote: {f}")
         return
     outdir.mkdir(parents=True, exist_ok=True)
 
     p = Params()
     results = run_gate(p)
-    figs = make_plots(results, outdir)
+    figs = write_figdata(results, outdir)
+    plot_compliance(results, outdir)
 
     print("Running robustness sweep (400 randomized parameter sets)...")
     results["robustness"] = robustness_sweep()
