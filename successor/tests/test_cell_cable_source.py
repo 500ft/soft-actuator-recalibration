@@ -1,11 +1,15 @@
 """HBK broad-face exit regression and actual conservative route checks."""
 import copy
+import importlib.util
 import json
 from pathlib import Path
 import sys
 import unittest
 
 import numpy as np
+
+if importlib.util.find_spec('cadquery') is None:
+    raise unittest.SkipTest('Host CAD checks require CadQuery; executed Windows results are committed under successor/cad/runs/.')
 
 CAD=Path(__file__).resolve().parents[1]/'cad'
 sys.path.insert(0,str(CAD))
