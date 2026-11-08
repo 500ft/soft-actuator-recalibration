@@ -1,0 +1,17 @@
+{
+  "accepted": null,
+  "status": "DRAFT / HOLD; owner review and device-specific inputs pending",
+  "working_pressure_kPa_gauge": 500.0,
+  "proof_pressure_kPa_gauge": 750.0,
+  "blocked_force_envelope_N": 571.4551421048819,
+  "minimum_pullout_force_N": 1142.9102842097639,
+  "proposed_cell_rated_N": 1000.0,
+  "frame_design_case_N": 857.1827131573228,
+  "existing_frame_and_cell_qualify_for_pullout": false,
+  "reason": "Required pull-out load exceeds the proposed cell rating and frame design case; no separate pull-out machine/fixture has been identified or qualified.",
+  "leak_duration_s": null,
+  "leak_decay_limit_kPa": null,
+  "detail_plan_gate_closed": false,
+  "physical_work_authorized": false,
+  "pressure_rating_established": false
+}
