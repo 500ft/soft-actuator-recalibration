@@ -1,0 +1,70 @@
+{
+  "pn": "SAR-0506",
+  "revision": "01",
+  "status": "CONCEPT / HOLD",
+  "accepted": null,
+  "cad_route": "CadQuery with independent closed-form oracle where available; native optional per handoff 04",
+  "evidence_state": "provisional_design",
+  "holds": [
+    "O12: specimen materials",
+    "O13: pressure/load cell/interfaces",
+    "O14b: Mac sensor audit",
+    "O15: reference volume",
+    "P1-P7: pressure qualification plan"
+  ],
+  "metrics": {
+    "volume_mm3": 726.4032127075872,
+    "centroid_mm": [
+      -3.032313792564403e-16,
+      -3.9194414767069343e-16,
+      9.687087816800716
+    ],
+    "bbox_mm": [
+      9.237604307034012,
+      8.000000000000002,
+      17.7
+    ],
+    "principal_volume_moments_mm5": [
+      6299.064891823856,
+      18871.413018068433,
+      18871.41318827959
+    ],
+    "solid_count": 1,
+    "valid": true,
+    "adaptive_integration_error": 1.211134699348085e-15
+  },
+  "step_roundtrip_matches": {
+    "volume_mm3": true,
+    "centroid_mm": true,
+    "bbox_mm": true,
+    "principal_volume_moments_mm5": true
+  },
+  "independent_volume_mm3": 726.4032127075874,
+  "independent_volume_matches": true,
+  "reused_existing_step": true,
+  "omitted_features": {
+    "pressure_sensor_and_tee_port": "O14b owner_only",
+    "reference_chamber_seal_grooves": "P3 standard gland selection pending",
+    "regulator_valve_geometry": "No part numbers or envelopes supplied; routing diagram only",
+    "purchased_profile_detail": "2040 bounding envelope only; no inferred T-slot section",
+    "thread_helices": "Nominal major-diameter mating envelopes; tap drills and engagement require detail review"
+  },
+  "pressure_rating_established": false,
+  "file": "C:\\Users\\Admin\\Desktop\\soft-actuator-recalibration\\03_EXPORTS\\STEP\\SAR-0506_01_FITTING-PUSH-IN-M5-TO-4-MM.STEP",
+  "properties": {
+    "PartNo": "SAR-0506",
+    "Revision": "01",
+    "Description": "FITTING, PUSH-IN, M5 TO 4 MM",
+    "Material": "Reference envelope; see source",
+    "Finish": "Deburr / see checklist",
+    "Process": "not made",
+    "Project": "soft-actuator-recalibration",
+    "Status": "HOLD",
+    "SourceKey": "successor/cad/geometry.json",
+    "Evidence": "provisional_design; source identified for every input",
+    "ToleranceStd": "ISO 2768-mK; explicit tolerances take precedence",
+    "SimIDs": "SAR-SIM-01..03 after owner/detail gates; SAR-SIM-04 optional",
+    "DrawnBy": "Codex",
+    "Date": "2026-11-08"
+  }
+}

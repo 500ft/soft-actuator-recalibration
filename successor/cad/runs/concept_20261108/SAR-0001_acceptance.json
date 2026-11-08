@@ -1,0 +1,69 @@
+{
+  "pn": "SAR-0001",
+  "revision": "01",
+  "status": "CONCEPT / HOLD",
+  "accepted": null,
+  "cad_route": "CadQuery with independent closed-form oracle where available; native optional per handoff 04",
+  "evidence_state": "provisional_design",
+  "holds": [
+    "O12: specimen materials",
+    "O13: pressure/load cell/interfaces",
+    "O14b: Mac sensor audit",
+    "O15: reference volume",
+    "P1-P7: pressure qualification plan"
+  ],
+  "metrics": {
+    "volume_mm3": 2092604.931267787,
+    "centroid_mm": [
+      0.005334408750590084,
+      -11.460508992947846,
+      325.1163172407167
+    ],
+    "bbox_mm": [
+      200.0,
+      92.0,
+      656.0
+    ],
+    "principal_volume_moments_mm5": [
+      9644679905.735441,
+      88687237303.62418,
+      95786527514.76053
+    ],
+    "solid_count": 24,
+    "valid": true,
+    "adaptive_integration_error": 3.7065819506733236e-13
+  },
+  "step_roundtrip_matches": {
+    "volume_mm3": true,
+    "centroid_mm": true,
+    "bbox_mm": true,
+    "principal_volume_moments_mm5": true
+  },
+  "independent_volume_mm3": 2092604.9312592119,
+  "independent_volume_matches": true,
+  "omitted_features": {
+    "pressure_sensor_and_tee_port": "O14b owner_only",
+    "reference_chamber_seal_grooves": "P3 standard gland selection pending",
+    "regulator_valve_geometry": "No part numbers or envelopes supplied; routing diagram only",
+    "purchased_profile_detail": "2040 bounding envelope only; no inferred T-slot section",
+    "thread_helices": "Nominal major-diameter mating envelopes; tap drills and engagement require detail review"
+  },
+  "pressure_rating_established": false,
+  "file": "C:\\Users\\Admin\\Desktop\\soft-actuator-recalibration\\03_EXPORTS\\STEP\\SAR-0001_01_ASSEMBLY-BLOCKED-FORCE-TEST-RIG.STEP",
+  "properties": {
+    "PartNo": "SAR-0001",
+    "Revision": "01",
+    "Description": "ASSEMBLY, BLOCKED FORCE TEST RIG",
+    "Material": "Reference envelope; see source",
+    "Finish": "Deburr / see checklist",
+    "Process": "Concept assembly",
+    "Project": "soft-actuator-recalibration",
+    "Status": "HOLD",
+    "SourceKey": "successor/cad/geometry.json",
+    "Evidence": "provisional_design; source identified for every input",
+    "ToleranceStd": "ISO 2768-mK; explicit tolerances take precedence",
+    "SimIDs": "SAR-SIM-01..03 after owner/detail gates; SAR-SIM-04 optional",
+    "DrawnBy": "Codex",
+    "Date": "2026-11-08"
+  }
+}

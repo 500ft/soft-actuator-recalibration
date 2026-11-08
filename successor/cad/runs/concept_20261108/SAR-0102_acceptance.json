@@ -1,0 +1,69 @@
+{
+  "pn": "SAR-0102",
+  "revision": "01",
+  "status": "CONCEPT / HOLD",
+  "accepted": null,
+  "cad_route": "CadQuery with independent closed-form oracle where available; native optional per handoff 04",
+  "evidence_state": "provisional_design",
+  "holds": [
+    "O12: specimen materials",
+    "O13: pressure/load cell/interfaces",
+    "O14b: Mac sensor audit",
+    "O15: reference volume",
+    "P1-P7: pressure qualification plan"
+  ],
+  "metrics": {
+    "volume_mm3": 9030.65950750976,
+    "centroid_mm": [
+      -3.0056201857089553e-15,
+      -7.134678755275246e-16,
+      34.99498113086086
+    ],
+    "bbox_mm": [
+      20.0,
+      20.0,
+      52.0
+    ],
+    "principal_volume_moments_mm5": [
+      439751.6890528295,
+      1302082.20423715,
+      1302082.2532887273
+    ],
+    "solid_count": 1,
+    "valid": true,
+    "adaptive_integration_error": 8.376291476619221e-16
+  },
+  "step_roundtrip_matches": {
+    "volume_mm3": true,
+    "centroid_mm": true,
+    "bbox_mm": true,
+    "principal_volume_moments_mm5": true
+  },
+  "independent_volume_mm3": 9030.659507509763,
+  "independent_volume_matches": true,
+  "omitted_features": {
+    "pressure_sensor_and_tee_port": "O14b owner_only",
+    "reference_chamber_seal_grooves": "P3 standard gland selection pending",
+    "regulator_valve_geometry": "No part numbers or envelopes supplied; routing diagram only",
+    "purchased_profile_detail": "2040 bounding envelope only; no inferred T-slot section",
+    "thread_helices": "Nominal major-diameter mating envelopes; tap drills and engagement require detail review"
+  },
+  "pressure_rating_established": false,
+  "file": "C:\\Users\\Admin\\Desktop\\soft-actuator-recalibration\\03_EXPORTS\\STEP\\SAR-0102_01_PLUG-END-CLOSED.STEP",
+  "properties": {
+    "PartNo": "SAR-0102",
+    "Revision": "01",
+    "Description": "PLUG, END, CLOSED",
+    "Material": "6061-T6 or brass",
+    "Finish": "Deburr / see checklist",
+    "Process": "turned",
+    "Project": "soft-actuator-recalibration",
+    "Status": "HOLD",
+    "SourceKey": "successor/cad/geometry.json",
+    "Evidence": "provisional_design; source identified for every input",
+    "ToleranceStd": "ISO 2768-mK; explicit tolerances take precedence",
+    "SimIDs": "SAR-SIM-01..03 after owner/detail gates; SAR-SIM-04 optional",
+    "DrawnBy": "Codex",
+    "Date": "2026-11-08"
+  }
+}

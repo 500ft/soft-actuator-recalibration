@@ -1,0 +1,119 @@
+{
+  "stage": "CONCEPT",
+  "evidence_state": "provisional_design",
+  "holds": ["O12: specimen materials", "O13: pressure/load cell/interfaces", "O14b: Mac sensor audit", "O15: reference volume", "P1-P7: pressure qualification plan"],
+  "omitted_features": {"pressure_sensor_and_tee_port": "O14b owner_only", "reference_chamber_seal_grooves": "P3 standard gland selection pending", "regulator_valve_geometry": "No part numbers or envelopes supplied; routing diagram only", "purchased_profile_detail": "2040 bounding envelope only; no inferred T-slot section", "thread_helices": "Nominal major-diameter mating envelopes; tap drills and engagement require detail review"},
+  "specimen": {
+    "active_length": {"value": 200.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff mckibben/specimen/active_length_L0; O12 default"},
+    "bladder_id": {"value": 6.35, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff mckibben/bladder/ID, vendor nominal"},
+    "bladder_od": {"value": 9.525, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff mckibben/bladder/OD, vendor nominal"},
+    "braid_wall": {"value": 0.635, "unit": "mm", "evidence_state": "vendor_drawing", "source": "handoff mckibben/braid/wall_thickness; uncrimped sleeve envelope"},
+    "braid_mid_diameter": {"rule": "bladder_od + braid_wall", "unit": "mm", "evidence_state": "derived", "source": "handoff mckibben/braid/braid_mid_diameter_on_bladder; derive it when specimen dimensions change"},
+    "angle_cases": {"value": [20.0, 25.0, 32.0], "unit": "deg", "evidence_state": "provisional_design", "source": "handoff corrected load cases; actual braid angle unmeasured"},
+    "working_pressure": {"value": 500.0, "unit": "kPa gauge", "evidence_state": "provisional_design", "source": "O13 default; not an approved pressure rating"},
+    "proof_pressure": {"value": 750.0, "unit": "kPa gauge", "evidence_state": "provisional_design", "source": "handoff P4 proposed hydrostatic proof; no test authorized"}
+  },
+  "plug": {
+    "root_diameter": {"value": 6.35, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K1/barb_root_OD"},
+    "crest_diameter": {"value": 7.94, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K1/barb_crest_OD"},
+    "barb_count": {"value": 3, "unit": "-", "evidence_state": "provisional_design", "source": "handoff K1/barb_count_and_pitch"},
+    "barb_pitch": {"value": 3.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K1/barb_count_and_pitch"},
+    "grip_length": {"value": 24.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff sealing and braid-clamp zones; designer constant-root continuation"},
+    "head_diameter": {"value": 20.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K1/ported_head_OD upper default"},
+    "head_length": {"value": 28.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer choice separates fluid path from blind mechanical thread"},
+    "flow_bore": {"value": 3.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K1/through_bore"},
+    "flow_end_from_head_start": {"value": 8.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer blind bore end; leaves solid web to mechanical thread"},
+    "radial_port_from_head_start": {"value": 7.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer port position in fixed-end head"},
+    "port_major": {"value": 5.0, "unit": "mm", "evidence_state": "provisional_design", "source": "O13 M5x0.8 default, modeled as thread-major envelope"},
+    "mechanical_major": {"value": 8.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff M8x1.25 female mechanical interface"},
+    "mechanical_depth": {"value": 12.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K1/mechanical_thread full thread target"}
+  },
+  "ferrule": {
+    "id": {"value": 13.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K1/ferrule_ID_before_crimp"},
+    "od": {"value": 15.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer stock envelope; final crimp geometry and material pending"},
+    "length": {"value": 25.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff 24-26 mm default; uncrimped envelope only"}
+  },
+  "frame": {
+    "rail_length": {"value": 600.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K2/rail_length"},
+    "rail_section": {"value": [20.0, 40.0], "unit": "mm", "evidence_state": "vendor_drawing", "source": "https://8020.net/20-2040.html; bounding envelope only"},
+    "rail_area": {"value": 275.0, "unit": "mm2", "evidence_state": "provisional_design", "source": "80/20 20-2040 vendor nominal area; not the solid envelope area"},
+    "rail_spacing": {"value": 150.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer choice clears the 80 mm cell and conservative cable bend envelope"},
+    "plate_width": {"value": 200.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer choice; end attachment details await selected extrusion"},
+    "plate_depth": {"value": 80.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer choice"},
+    "plate_thickness": {"value": 12.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K2/frame_architecture"},
+    "end_bolt_clearance": {"value": 5.5, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer M5 clearance at provisional extrusion end-core locations; exact profile must be checked before detail"},
+    "adjuster_clearance": {"value": 8.5, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer M8 adjustment-rod clearance through end plate"},
+    "locknut_allowance": {"value": 10.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer allowance above upper plate; actual fine-thread lock hardware pending"},
+    "ear_width": {"value": 28.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer integral fork envelope"},
+    "ear_thickness": {"value": 6.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer choice"},
+    "ear_height": {"value": 32.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer choice"},
+    "fork_gap": {"value": 12.5, "unit": "mm", "evidence_state": "provisional_design", "source": "12 mm bearing-collar envelope plus 0.5 mm total axial clearance"},
+    "pin_from_plate": {"value": 18.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer choice; fork pin axis above plate"},
+    "adjust_block_size": {"value": [32.0, 32.0, 24.0], "unit": "mm", "evidence_state": "provisional_design", "source": "Designer fine-thread adjustment block envelope"},
+    "adjust_thread_major": {"value": 8.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff M8x1 fine-thread rod and lock nut"},
+    "adjust_thread_pitch": {"value": 1.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K2/length_adjuster"},
+    "pin_diameter": {"value": 8.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff hardened pin h6"},
+    "pin_length": {"value": 34.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer choice for fork stack and retention"},
+    "pin_head_diameter": {"value": 12.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer choice"},
+    "pin_head_length": {"value": 2.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer choice"},
+    "pin_cross_hole": {"value": 2.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer retention hole, cotter hardware not selected"},
+    "shield_thickness": {"value": 4.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer polycarbonate front shield; containment performance unqualified"},
+    "shield_standoff": {"value": 50.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer stand-off in front of load axis; fixings not selected"}
+  },
+  "coupler": {
+    "pn": "SAR-0110",
+    "pin_spacing": {"value": 40.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer double-clevis link closes the fourth-pin load chain; no new end-fitting thread standard"},
+    "width": {"value": 28.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer fork width"},
+    "depth": {"value": 26.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer fork depth"},
+    "pin_end_distance": {"value": 13.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer edge distance >=1.5 times 8 mm pin"}
+  },
+  "cell": {
+    "size": {"value": [80.0, 25.4, 60.0], "unit": "mm xyz", "evidence_state": "vendor_drawing", "source": "HBK B03594 02 E00 01 p2, 2025-02-28"},
+    "rated_force": {"value": 1000.0, "unit": "N", "evidence_state": "vendor_drawing", "source": "HBK B03594 p3"},
+    "displacement_cases": {"value": [0.13, 0.21], "unit": "mm", "evidence_state": "vendor_drawing", "source": "Old B3594-1.3 p4 versus current B03594 02 E00 01 p3 for 1 kN; O13 must select applicable revision"},
+    "eye_to_eye": {"value": 105.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer midpoint within HBK 104-106.2 mm assembled range"},
+    "cable_bend_radius": {"value": 10.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "HBK B03594 p2 minimum"},
+    "grommet_diameter": {"value": 11.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "HBK B03594 p2"},
+    "grommet_protrusion": {"value": 1.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "HBK B03594 p2"},
+    "cable_exit_x": {"value": 31.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "https://www.hbm.com/fileadmin/mediapool/hbmdoc/technical/B03594.pdf p2: front-view cable centre; local X is right, body centre X=0"},
+    "cable_exit_face": {"value": "-Y broad face; cable axis -Y", "evidence_state": "vendor_drawing", "source": "HBK B03594 02 E00 01 p2; chosen local front face Y=-size_y/2"},
+    "cable_exit_z": {"value": 21.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "HBK B03594 p2 above lower cell face"},
+    "routing_radius": {"value": 12.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer routing radius exceeds vendor minimum"},
+    "routing_stub": {"value": 3.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer straight run before cable bend"},
+    "routing_end_y": {"value": -50.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer routing exit toward front after two opposite quarter bends; actual slack loop and strain relief pending"},
+    "routing_envelope_diameter": {"value": 11.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Conservative routing envelope uses grommet OD; actual cable OD and bend fit require confirmation"}
+  },
+  "rod_end": {
+    "eye_diameter": {"value": 24.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "HBK B03594 p6 ZGW"},
+    "eye_width": {"value": 12.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "HBK B03594 p6 bearing collar maximum width; body 9 mm"},
+    "eye_bore": {"value": 8.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "HBK B03594 p6 8 H7"},
+    "centre_to_stud_tip": {"value": 32.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "HBK B03594 p6"},
+    "stud_diameter": {"value": 8.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "HBK B03594 p6 M8 major envelope"}
+  },
+  "chamber": {
+    "target_main_cavity_volume": {"value": 6334.0, "unit": "mm3", "evidence_state": "provisional_design", "source": "O15 default matched to nominal active lumen; port dead volume reported separately"},
+    "bore_diameter": {"value": 16.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K3 reference-volume default"},
+    "barrel_od": {"value": 22.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K3 wall-check envelope"},
+    "flange_od": {"value": 46.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer bolted-cap concept; >=1.5d outer edge distance for M4"},
+    "flange_length": {"value": 10.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer blind cap-bolt engagement region"},
+    "cap_thickness": {"value": 6.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer bolted-cap concept; replaces integral printed cap"},
+    "bolt_pcd": {"value": 32.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer six-hole cap pattern, independent of sensor port"},
+    "bolt_count": {"value": 6, "unit": "-", "evidence_state": "provisional_design", "source": "Designer choice"},
+    "bolt_major": {"value": 4.0, "unit": "mm", "evidence_state": "provisional_design", "source": "M4 blind thread major envelope"},
+    "bolt_clearance": {"value": 4.5, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer cap M4 clearance"},
+    "bolt_depth": {"value": 8.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer blind hole, no thread helix or drill point yet"}
+  },
+  "pneumatic": {
+    "tube_od": {"value": 4.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K4/tube"},
+    "tube_id": {"value": 2.5, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K4/tube nominal ID"},
+    "fitting_length": {"value": 17.7, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K1/port_fitting_hex source detail KQ2H04-M5A"},
+    "fitting_hex_af": {"value": 8.0, "unit": "mm", "evidence_state": "provisional_design", "source": "handoff K1/port_fitting_hex"},
+    "fitting_stud_length": {"value": 3.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer reference-envelope simplification; exact vendor CAD pending"},
+    "routing_lengths": {"value": [300.0, 200.0, 150.0], "unit": "mm", "evidence_state": "provisional_design", "source": "Designer routing allowances: regulator-valve, valve-reference, reference-muscle; final hardware and sensor tee omitted"}
+  },
+  "material": {
+    "aluminum_E": {"value": 68900.0, "unit": "MPa", "evidence_state": "model_assumption", "source": "handoff rail stiffness basis; nominal modulus"},
+    "aluminum_yield": {"value": 276.0, "unit": "MPa", "evidence_state": "model_assumption", "source": "handoff K3 6061-T6 nominal, not a pressure allowable"},
+    "steel_E": {"value": 200000.0, "unit": "MPa", "evidence_state": "model_assumption", "source": "Nominal steel modulus for adjustment-rod compliance screen"}
+  }
+}

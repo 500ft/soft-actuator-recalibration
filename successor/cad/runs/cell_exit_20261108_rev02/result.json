@@ -1,0 +1,219 @@
+{
+  "stage": "CONCEPT",
+  "accepted": null,
+  "part_count": 19,
+  "all_original_register_parts_present": true,
+  "added_part": "SAR-0110: double-clevis coupler required for four-pin load chain",
+  "pin_z_mm": [
+    30.0,
+    374.0,
+    414.0,
+    519.0
+  ],
+  "adjuster_length_mm": 89.0,
+  "cut_latex_braid_length_mm": 248.0,
+  "main_cavity_volume_mm3": 6334.0,
+  "caps_port_dead_volume_mm3": 84.82300164692441,
+  "rail_clearances_mm": {
+    "coupler": 51.0,
+    "cell": 25.0,
+    "adjust_block": 49.0,
+    "adjuster": 61.0
+  },
+  "cable_keepout_to_rail_clearance_mm": 28.5,
+  "cell_cable_source_geometry": {
+    "accepted": true,
+    "checks": {
+      "volume_mm3": true,
+      "centroid_mm": true,
+      "bbox_mm": true,
+      "principal_volume_moments_mm5": true,
+      "grommet_axis_diameter_position": true,
+      "cable_starts_at_grommet_tip": true,
+      "cable_exit_tangent": true,
+      "cable_end": true,
+      "two_bends_and_radius": true,
+      "cable_volume": true,
+      "centerline_length": true,
+      "rail_clearance": true
+    },
+    "cell_oracle": {
+      "volume_mm3": 122015.0331777711,
+      "centroid_mm": [
+        0.024144799490498692,
+        -0.010281011395954281,
+        29.992990219502758
+      ],
+      "bbox_mm": [
+        80.0,
+        26.4,
+        60.0
+      ],
+      "principal_volume_moments_mm5": [
+        43155739.1783226,
+        71687374.03239399,
+        101700414.83881067
+      ],
+      "grommet": {
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "base_center_mm": [
+          31.0,
+          -12.7,
+          21.0
+        ],
+        "tip_center_mm": [
+          31.0,
+          -13.7,
+          21.0
+        ],
+        "diameter_mm": 11.0,
+        "protrusion_mm": 1.0
+      }
+    },
+    "cell_actual": {
+      "volume_mm3": 122015.03317777107,
+      "centroid_mm": [
+        0.024144799490502036,
+        -0.010281011395954498,
+        29.99299021950277
+      ],
+      "bbox_mm": [
+        80.0,
+        26.4,
+        60.0
+      ],
+      "principal_volume_moments_mm5": [
+        43155739.17758336,
+        71687374.03313316,
+        101700414.83881062
+      ],
+      "solid_count": 1,
+      "valid": true,
+      "adaptive_integration_error": 2.2430358084150427e-16
+    },
+    "cylindrical_faces": [
+      {
+        "axis": [
+          -0.0,
+          1.0,
+          -1.1102230246251565e-16
+        ],
+        "origin_mm": [
+          31.0,
+          -12.7,
+          21.0
+        ],
+        "diameter_mm": 11.0,
+        "y_extents_mm": [
+          -13.7,
+          -12.7
+        ]
+      }
+    ],
+    "routing_oracle": {
+      "start_mm": [
+        31.0,
+        -13.7,
+        457.5
+      ],
+      "end_mm": [
+        7.0,
+        -50.0,
+        457.5
+      ],
+      "bend_radius_mm": 12.0,
+      "bend_count": 2,
+      "centerline_length_mm": 49.999111843077515,
+      "keepout_volume_mm3": 4751.574484179859,
+      "outward_exit_axis": [
+        0.0,
+        -1.0,
+        0.0
+      ]
+    },
+    "actual_bend_radii_mm": [
+      12.000000000000007,
+      12.000000000000012
+    ],
+    "cable_volume_mm3": 4751.574484179893,
+    "rail_clearance_mm": 28.5,
+    "physical_mass_cg_or_cable_force_qualified": false
+  },
+  "cable_reservation_step": {
+    "file": "C:\\Users\\Admin\\Desktop\\soft-actuator-recalibration\\03_EXPORTS\\STEP\\SAR-0001_02_CELL-CABLE-ROUTING-KEEPOUT.STEP",
+    "checks": {
+      "volume_mm3": true,
+      "centroid_mm": true,
+      "bbox_mm": true,
+      "principal_volume_moments_mm5": true
+    },
+    "scope": "Provisional routing reservation; excluded from physical BOM/mass"
+  },
+  "rod_end_to_fork_side_clearance_mm": 0.25,
+  "ported_plug_minimum_web_mm": 6.5,
+  "screening": {
+    "result_kind": "screening_prediction",
+    "force_cases": [
+      {
+        "angle_deg": 20.0,
+        "blocked_force_N": 571.4551421048819,
+        "proof_pressure_force_N": 857.1827131573228,
+        "muscle_stiffness_N_per_mm": 9.179876106490227,
+        "required_series_stiffness_N_per_mm": 908.8077345425324
+      },
+      {
+        "angle_deg": 25.0,
+        "blocked_force_N": 332.3117309998193,
+        "proof_pressure_force_N": 498.467596499729,
+        "muscle_stiffness_N_per_mm": 5.592724939914288,
+        "required_series_stiffness_N_per_mm": 553.6797690515145
+      },
+      {
+        "angle_deg": 32.0,
+        "blocked_force_N": 167.09758246735345,
+        "proof_pressure_force_N": 250.64637370103017,
+        "muscle_stiffness_N_per_mm": 3.1145127119272984,
+        "required_series_stiffness_N_per_mm": 308.33675848080253
+      }
+    ],
+    "frame_components_N_per_mm": {
+      "two_rails": 63158.333333333336,
+      "one_plate_strip": 11288.576,
+      "adjuster_rod": 80967.1441530317
+    },
+    "frame_stiffness_cases": [
+      {
+        "cell_rated_displacement_mm": 0.13,
+        "series_stiffness_N_per_mm": 2981.9220049459864,
+        "predicted_force_bias_fraction": 0.00306906166073491,
+        "passes_1pct_screen": true
+      },
+      {
+        "cell_rated_displacement_mm": 0.21,
+        "series_stiffness_N_per_mm": 2407.5838290566867,
+        "predicted_force_bias_fraction": 0.0037984169022723772,
+        "passes_1pct_screen": true
+      }
+    ],
+    "frame_limitations": "Clevis, thread, plate-joint, support and contact compliance omitted. Not a frame qualification; SAR-SIM-02 and a dial-gauge load test remain required.",
+    "reference_main_cavity_length_mm": 31.502731548252033,
+    "reference_barrel_inner_hoop_MPa": 2.4342105263157894,
+    "reference_cap_simple_plate_stress_MPa": 1.0,
+    "pressure_rating_established": false,
+    "physical_tests_performed": false
+  },
+  "omitted_features": {
+    "pressure_sensor_and_tee_port": "O14b owner_only",
+    "reference_chamber_seal_grooves": "P3 standard gland selection pending",
+    "regulator_valve_geometry": "No part numbers or envelopes supplied; routing diagram only",
+    "purchased_profile_detail": "2040 bounding envelope only; no inferred T-slot section",
+    "thread_helices": "Nominal major-diameter mating envelopes; tap drills and engagement require detail review"
+  },
+  "seal_zone_note": "Only the free active latex/braid is shown in the muscle assembly; deformed sealing/crimp zones require measured materials and trials. Standalone stock cut-length envelopes include those zones.",
+  "pneumatic_note": "Straight tube runs show length allowances, not a connected pressurizable assembly. Regulator, valve and sensor/tee geometry remain omitted.",
+  "geometry_sha256": "1799f564231251c21907a9fe45126a044a41bd90eb09024a617931eee5742421"
+}

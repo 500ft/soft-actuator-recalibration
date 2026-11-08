@@ -1,5 +1,5 @@
 pn,rev,title,type,repo,material,process,qty,parent,source_key,status,hold_on,handoff_task
-SAR-0001,01,"ASSEMBLY, BLOCKED FORCE TEST RIG",ASM,soft-actuator-recalibration,,,1,,,CONCEPT,"O12,O13,decision 0004",K2
+SAR-0001,02,"ASSEMBLY, BLOCKED FORCE TEST RIG",ASM,soft-actuator-recalibration,,,1,,,CONCEPT,"O12,O13",K2
 SAR-0002,01,"ASSEMBLY, MCKIBBEN MUSCLE, 200 MM",ASM,soft-actuator-recalibration,,,1,SAR-0001,,CONCEPT,O12,K1
 SAR-0003,01,"ASSEMBLY, PNEUMATIC, SINGLE CHANNEL",ASM,soft-actuator-recalibration,,,1,,,CONCEPT,"O13,P1-P7",K4
 SAR-0101,01,"PLUG, END, PORTED",MFG-MACH,soft-actuator-recalibration,6061-T6 or brass,turned,1,SAR-0002,,CONCEPT (pressure part: no fabrication before P1-P7),"O12,O13,P1-P7",K1
@@ -11,9 +11,10 @@ SAR-0106,01,"PIN, CLEVIS, 8 MM",MFG-MACH,soft-actuator-recalibration,steel h6,tu
 SAR-0107,01,"BODY, REFERENCE VOLUME CHAMBER",MFG-MACH,soft-actuator-recalibration,6061-T6,turned,1,SAR-0003,reference-volume (machined),CONCEPT (pressure part),"O15,P1-P7",K3
 SAR-0108,01,"CAP, REFERENCE VOLUME CHAMBER",MFG-MACH,soft-actuator-recalibration,6061-T6,turned,2,SAR-0003,,CONCEPT (pressure part),"O15,P1-P7",K3
 SAR-0109,01,"SHIELD, TEST FRAME",MFG-CUT,soft-actuator-recalibration,polycarbonate,laser/router,1,SAR-0001,,CONCEPT,,K2
-SAR-0501,01,"ENVELOPE, LOAD CELL, HBM S2M 1 KN",REF,soft-actuator-recalibration,,not made,1,SAR-0001,vendor drawing,CONCEPT,,K1-K4
+SAR-0501,02,"ENVELOPE, LOAD CELL, HBM S2M 1 KN",REF,soft-actuator-recalibration,,not made,1,SAR-0001,vendor drawing,CONCEPT,,K1-K4
 SAR-0502,01,"ENVELOPE, ROD END, HBM ZGW",REF,soft-actuator-recalibration,,not made,1,SAR-0001,vendor drawing,CONCEPT,,K1-K4
 SAR-0503,01,"EXTRUSION, 2040",REF,soft-actuator-recalibration,,not made,1,SAR-0001,vendor drawing; cut length tabulated,CONCEPT,,K1-K4
 SAR-0504,01,"TUBE, LATEX, 1/4 ID X 3/8 OD",REF,soft-actuator-recalibration,,not made,1,SAR-0001,vendor nominal,CONCEPT,,K1-K4
 SAR-0505,01,"SLEEVE, BRAIDED PET, TECHFLEX PTN0.50",REF,soft-actuator-recalibration,,not made,1,SAR-0001,vendor drawing,CONCEPT,,K1-K4
 SAR-0506,01,"FITTING, PUSH-IN, M5 TO 4 MM",REF,soft-actuator-recalibration,,not made,1,SAR-0001,vendor nominal,CONCEPT,,K1-K4
+SAR-0110,01,"COUPLER, DOUBLE CLEVIS",MFG-MACH,soft-actuator-recalibration,6061-T6,milled,1,SAR-0001,complete four-pin axial load chain,CONCEPT,O13,K2

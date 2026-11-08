@@ -1,0 +1,21 @@
+{
+  "status": "DRAFT / HOLD; owner review and device-specific inputs pending",
+  "source": "Owner handoff v6, 05_requirements_and_interfaces.txt section 4 P1-P7",
+  "pressure_unit": "kPa gauge",
+  "working_pressure_source": "geometry.json: specimen.working_pressure",
+  "proof_pressure_source": "geometry.json: specimen.proof_pressure",
+  "relief_set_max_kPa_gauge": 550,
+  "commercial_component_min_rating_kPa": 1000,
+  "proof_to_working_ratio": 1.5,
+  "hydrostatic_min_hold_minutes": 10,
+  "pullout_factor_of_blocked_force": 2,
+  "leak_duration_s": null,
+  "leak_pressure_decay_limit_kPa": null,
+  "leak_limit_hold": "O14b sensor identity/resolution, temperature stability and institution-approved procedure",
+  "proof_method": "Water-filled hydrostatic, shielded; no leak or permanent deformation",
+  "leak_method": "Separate air test at working pressure; fixed-duration pressure decay plus bubble check",
+  "gland_basis": "Standard AS568 or ISO 3601 O-ring/gland; exact material, size and groove remain pending",
+  "method_reference": "https://www.jlab.org/sites/default/files/engdiv/press_syst/JLab%20Pressure%20and%20Vacuum%20Systems%20Supplement.pdf",
+  "method_reference_scope": "Part 6 is a procedural model only; the owner's institution selects the governing procedure and qualified reviewer",
+  "physical_work_authorized": false
+}
