@@ -5,14 +5,30 @@ import json
 from pathlib import Path
 import shutil
 
-import cadquery as cq
-
-import oracle
-
 HERE=Path(__file__).resolve().parent
 
 
+def copy_sources(root):
+    """Merge editable sources and recorded evidence into the Desktop packet."""
+    destination=Path(root)/'01_CAD/Parametric_Source'
+    allowed={'.py','.json','.csv','.txt','.md','.png'}
+    copied=[]
+    for name,origin in [('cad',HERE),('docs',HERE.parent/'docs'),('tests',HERE.parent/'tests')]:
+        for file in origin.rglob('*'):
+            if not file.is_file() or file.suffix.lower() not in allowed:continue
+            relative=file.relative_to(origin)
+            if '__pycache__' in relative.parts:continue
+            target=destination/name/relative
+            target.parent.mkdir(parents=True,exist_ok=True)
+            if not target.exists() or target.read_bytes()!=file.read_bytes():shutil.copy2(file,target)
+            copied.append(str(target))
+    return copied
+
+
 def main():
+    import cadquery as cq
+    import oracle
+
     parser=argparse.ArgumentParser();parser.add_argument('--desktop',type=Path,required=True)
     parser.add_argument('--analysis-name',default='successor-concepts');args=parser.parse_args()
     root=args.desktop;analysis=root/'04_ANALYSIS'/args.analysis_name;g=json.loads((HERE/'geometry.json').read_text())
@@ -66,12 +82,7 @@ def main():
         'P6 needs a separately qualified pull-out load train: its load exceeds the proposed 1 kN cell and 857 N frame basis.\n'
         'Standard seal grooves and pressure-sensor/tee ports remain omitted. No test result or pressure rating is claimed.\n'
         'No purchases, physical work, pressurization, or fabrication release are authorized. Closed-study files remain unchanged.\n')
-    source=root/'01_CAD/Parametric_Source';(source/'cad').mkdir(parents=True,exist_ok=True);(source/'docs').mkdir(exist_ok=True)
-    for file in HERE.iterdir():
-        if file.is_file():shutil.copy2(file,source/'cad'/file.name)
-    for file in (HERE.parent/'docs').glob('*.md'):shutil.copy2(file,source/'docs'/file.name)
-    (source/'tests').mkdir(exist_ok=True)
-    for file in (HERE.parent/'tests').glob('*.py'):shutil.copy2(file,source/'tests'/file.name)
+    copy_sources(root)
     (root/'06_INSPECTION/README.txt').write_text('CONCEPT / HOLD. No hardware has been inspected.\n'
         'Use 02_DRAWINGS checklists for source dimensions and applicable datums. Physical inspection must identify part/revision, instrument and uncertainty.\n'
         'P1-P7 records, seal/fit selection, material traceability and reviewer approval are required before the corresponding qualification/release.\n'
