@@ -25,14 +25,15 @@ Does qualified pressure retention predict independently measured functional
 loss within the next N cycles, beyond cycle count and load history, on unseen
 manufacturing batches?
 
-Done: source-supported local metrology calculations, independent equation tests
-and a theoretical figure. The [successor record](docs/decisions/0002-successor-software-preparation.md)
-pins that result and locates the separate local repository. Its `ROADMAP.md`
-is the full dependency plan for the successor; it does not reopen this study.
-The owner adopted the dependency plan and this cleanup, without approving
-physical work, a public name or publication. The owner then chose the
-successor's specimen and endpoint, in-house McKibben muscles and blocked force
-at fixed length; see [decision 0003](docs/decisions/0003-successor-specimen-and-endpoint.md).
+New successor hardware work lives under [successor/](successor/README.md).
+[Decision 0004](docs/decisions/0004-successor-hardware-in-this-repo.md) records
+the owner's approval to publish its CAD, drawings, calculations, analysis
+inputs and copied notes here. Physical work and the public name remain pending.
+
+The local repository named in [decision 0002](docs/decisions/0002-successor-software-preparation.md)
+and [decision 0003](docs/decisions/0003-successor-specimen-and-endpoint.md)
+remains the record of earlier successor work. Its notes will be copied into
+`successor/` by the owner. The closed study above remains unchanged.
 
 ## Dependencies and remaining evidence
 
