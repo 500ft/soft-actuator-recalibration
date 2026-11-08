@@ -30,6 +30,8 @@ def check_models(g, data):
         if abs(error)>1e-5:raise RuntimeError(f'Independent volume mismatch {pn}: {error}')
         records[pn]=m
     records['cable_keepout']=cad.metrics(data['cable_keepout'])
+    cable_checks=cad.cell_cable_checks(g,data)
+    if not cable_checks['accepted']:raise RuntimeError('Cell/cable source geometry check failed: '+repr(cable_checks['checks']))
     return records
 
 

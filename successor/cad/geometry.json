@@ -75,10 +75,12 @@
     "cable_bend_radius": {"value": 10.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "HBK B03594 p2 minimum"},
     "grommet_diameter": {"value": 11.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "HBK B03594 p2"},
     "grommet_protrusion": {"value": 1.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "HBK B03594 p2"},
+    "cable_exit_x": {"value": 31.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "https://www.hbm.com/fileadmin/mediapool/hbmdoc/technical/B03594.pdf p2: front-view cable centre; local X is right, body centre X=0"},
+    "cable_exit_face": {"value": "-Y broad face; cable axis -Y", "evidence_state": "vendor_drawing", "source": "HBK B03594 02 E00 01 p2; chosen local front face Y=-size_y/2"},
     "cable_exit_z": {"value": 21.0, "unit": "mm", "evidence_state": "vendor_drawing", "source": "HBK B03594 p2 above lower cell face"},
     "routing_radius": {"value": 12.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer routing radius exceeds vendor minimum"},
     "routing_stub": {"value": 3.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer straight run before cable bend"},
-    "routing_end_y": {"value": -50.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer routing exit toward front; actual slack loop and strain relief pending"},
+    "routing_end_y": {"value": -50.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Designer routing exit toward front after two opposite quarter bends; actual slack loop and strain relief pending"},
     "routing_envelope_diameter": {"value": 11.0, "unit": "mm", "evidence_state": "provisional_design", "source": "Conservative routing envelope uses grommet OD; actual cable OD and bend fit require confirmation"}
   },
   "rod_end": {

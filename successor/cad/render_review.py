@@ -1,5 +1,6 @@
 """Render the actual concept solids and a symbolic pneumatic routing diagram."""
 import argparse
+import csv
 import json
 import math
 from pathlib import Path
@@ -68,9 +69,11 @@ def main():
         plotter.add_text('SAR-0001 | Rig concept' if column==0 else 'Load chain and cable keep-out',position='upper_left',font_size=14,color='#223344')
         plotter.add_text('CONCEPT / HOLD — NO PHYSICAL WORK',position='lower_left',font_size=11,color='#8b2839')
         plotter.add_axes()
-    plotter.screenshot(str(args.output/'SAR-0001_01_review.png'));plotter.close()
+    revisions={row['pn']:row['rev'] for row in csv.DictReader((HERE/'part_number_register.csv').open())}
+    review=args.output/f'SAR-0001_{revisions["SAR-0001"]}_review.png'
+    plotter.screenshot(str(review));plotter.close()
     schematic(g,args.output/'SAR-0003_01_routing.svg')
-    print(args.output/'SAR-0001_01_review.png')
+    print(review)
 
 
 if __name__=='__main__':main()

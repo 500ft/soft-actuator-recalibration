@@ -22,9 +22,13 @@ materials and crimp procedure are selected. Standalone stock envelopes carry the
 show their uncrimped condition. The fitting's fluid passage ends before the blind mechanical thread; the result
 records their minimum remaining web.
 
-The S2M cable has a separate conservative routing keep-out, checked against the rails and excluded from physical
-part volume. Its bend exceeds the vendor minimum. Actual cable diameter, slack loop, strain relief and cable force
-still require inspection. The pressure hose must be clamped to the fixed frame so its force bypasses the load cell.
+The S2M reference includes the cable grommet on its broad front face. The local front is −Y; cable position and
+projection come from the HBK drawing in `geometry.json`. The separate routing keep-out begins at that tip,
+leaves along −Y and uses two opposite quarter bends toward the load axis. Actual cylindrical-face and path
+readbacks are checked against independent source-position, volume and bend-radius expressions. The route is
+checked against the actual rail envelopes and excluded from physical part volume. Actual cable diameter,
+slack loop, strain relief and cable force still require inspection. The pressure hose must be clamped to the
+fixed frame so its force bypasses the load cell.
 
 ## Reference chamber and pressure hold
 
@@ -44,7 +48,8 @@ qualified load train or obtain a reviewed redesign. The plan remains on HOLD and
 
 ## Executed checks and limitations
 
-The output `04_ANALYSIS/successor-concepts/result.json` holds the force and stiffness screen, the named clearances,
+The current output `04_ANALYSIS/successor-cell-exit-rev02/result.json` holds the corrected cable source/readback,
+force and stiffness screen, named clearances,
 the cavity and port volumes, and the input hash. The original and current HBK displacement values are retained as
 separate cases: the current [HBK B03594 datasheet](https://www.hbm.com/fileadmin/mediapool/hbmdoc/technical/B03594.pdf)
 changed the 1 kN rated displacement from the older sheet used by the handoff. O13 must identify the applicable cell.
@@ -67,6 +72,11 @@ python successor/cad/redrive_concepts.py --output <analysis-folder>/redrive_resu
 python successor/cad/render_review.py --output <analysis-folder>
 python -m unittest discover -s successor/tests -v
 ```
+
+For the corrected cell-reference batch, pass `--analysis-name successor-cell-exit-rev02` to the build and packet
+scripts. SAR-0501 and its rig assembly advance to revision 02. Other reference/part revisions remain unchanged;
+existing STEP exports are re-imported and checked rather than overwritten. Earlier analysis results and failed
+clash attempts remain available. Use a new analysis name for a later run so those records remain intact.
 
 Code is MIT licensed. CAD, drawings and documents are CC BY 4.0 under decision 0004. The closed study and its tests
 remain unchanged.

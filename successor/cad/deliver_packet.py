@@ -13,8 +13,9 @@ HERE=Path(__file__).resolve().parent
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--desktop',type=Path,required=True);args=parser.parse_args()
-    root=args.desktop;analysis=root/'04_ANALYSIS/successor-concepts';g=json.loads((HERE/'geometry.json').read_text())
+    parser=argparse.ArgumentParser();parser.add_argument('--desktop',type=Path,required=True)
+    parser.add_argument('--analysis-name',default='successor-concepts');args=parser.parse_args()
+    root=args.desktop;analysis=root/'04_ANALYSIS'/args.analysis_name;g=json.loads((HERE/'geometry.json').read_text())
     rows=list(csv.DictReader((HERE/'part_number_register.csv').open()));revision=[]
     for row in rows:
         pn=row['pn'];path=analysis/(pn+'_acceptance.json');record=json.loads(path.read_text());step=Path(record['file'])
@@ -42,9 +43,12 @@ def main():
     # The flat frame shield is a cut sheet. Its local development is width x height.
     width=oracle.v(g,'frame','plate_width');height=oracle.v(g,'frame','rail_length');thickness=oracle.v(g,'frame','shield_thickness')
     shape=cq.Workplane('XY').rect(width,height).extrude(thickness);record=json.loads((analysis/'SAR-0109_acceptance.json').read_text());stem=Path(record['file']).stem
-    dxf=root/'03_EXPORTS/DXF'/(stem+'.DXF');cq.exporters.export(shape.faces('>Z').wires(),str(dxf))
+    dxf=root/'03_EXPORTS/DXF'/(stem+'.DXF')
+    if not dxf.exists():cq.exporters.export(shape.faces('>Z').wires(),str(dxf))
     wires=cq.importers.importDXF(str(dxf)).wires().vals();area=cq.Face.makeFromWires(wires[0]).Area()
-    packet={'accepted':len(wires)==1 and abs(area-width*height)<1e-6,'scope':'Concept metadata, checklist and shield DXF only',
+    source_checks=json.loads((analysis/'result.json').read_text())['cell_cable_source_geometry']
+    packet={'accepted':len(wires)==1 and abs(area-width*height)<1e-6 and source_checks['accepted'],'scope':'Concept metadata, checklist, shield DXF and cell/cable source geometry',
+            'cell_cable_source_geometry':source_checks,
             'shield_dxf':{'file':str(dxf),'area_mm2':area,'expected_mm2':width*height},'physical_work_authorized':False,'pressure_rating_established':False}
     (analysis/'packet_result.json').write_text(json.dumps(packet,indent=2)+'\n')
     with (root/'00_ADMIN/CONCEPT_REVISION_LOG.csv').open('w',newline='') as stream:
@@ -56,7 +60,7 @@ def main():
         writer=csv.DictWriter(stream,fieldnames=list(current[0]));writer.writeheader();writer.writerows(current)
     (root/'00_ADMIN/STATUS.json').write_text(json.dumps({'parts':current,'accepted':None,'physical_work_authorized':False,'pressure_plan':'../01_CAD/Parametric_Source/docs/pressure_qualification_plan.md'},indent=2)+'\n')
     (root/'00_ADMIN/README.txt').write_text('All original 18 SAR entries plus SAR-0110 have concept models and executed STEP/independent-volume checks.\n'
-        '86 geometry re-drive cases and four mechanics tests passed. Inputs O12/O13/O14b/O15 remain open.\n'
+        f'Current geometry/source checks: 04_ANALYSIS/{args.analysis_name}/. Inputs O12/O13/O14b/O15 remain open.\n'
         'Editable source: 01_CAD/Parametric_Source/cad/. Drawings are checklists only.\n'
         'Draft P1-P7 plan: 01_CAD/Parametric_Source/docs/pressure_qualification_plan.md. It does not close the detail gate.\n'
         'P6 needs a separately qualified pull-out load train: its load exceeds the proposed 1 kN cell and 857 N frame basis.\n'
@@ -66,6 +70,8 @@ def main():
     for file in HERE.iterdir():
         if file.is_file():shutil.copy2(file,source/'cad'/file.name)
     for file in (HERE.parent/'docs').glob('*.md'):shutil.copy2(file,source/'docs'/file.name)
+    (source/'tests').mkdir(exist_ok=True)
+    for file in (HERE.parent/'tests').glob('*.py'):shutil.copy2(file,source/'tests'/file.name)
     (root/'06_INSPECTION/README.txt').write_text('CONCEPT / HOLD. No hardware has been inspected.\n'
         'Use 02_DRAWINGS checklists for source dimensions and applicable datums. Physical inspection must identify part/revision, instrument and uncertainty.\n'
         'P1-P7 records, seal/fit selection, material traceability and reviewer approval are required before the corresponding qualification/release.\n'

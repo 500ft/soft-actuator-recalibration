@@ -87,6 +87,74 @@ def make_end_plate(g):
     return pin_hole(shape,v('pin_diameter'),t+v('pin_from_plate'),v('fork_gap')+2*v('ear_thickness'))
 
 
+def make_cell(g):
+    cl=lambda key:oracle.v(g,'cell',key)
+    body=box(*cl('size'))
+    # The source's front view is the broad -Y face, not the +X end.
+    grommet=tube(cl('grommet_diameter'),0,cl('grommet_protrusion')).rotate((0,0,0),(1,0,0),90)
+    grommet=grommet.translate((cl('cable_exit_x'),-cl('size')[1]/2,cl('cable_exit_z')))
+    return body.fuse(grommet).clean()
+
+
+def make_cable_keepout(g, cell_bottom):
+    cl=lambda key:oracle.v(g,'cell',key)
+    radius=cl('routing_radius');r=cl('routing_envelope_diameter')/2
+    if radius<cl('cable_bend_radius') or radius<=r:
+        raise ValueError('Cable bend below vendor minimum or routing envelope radius')
+    x0=cl('cable_exit_x');y0=-cl('size')[1]/2-cl('grommet_protrusion')
+    y1=y0-cl('routing_stub');z=cell_bottom+cl('cable_exit_z')
+    if cl('routing_end_y')>=y1-2*radius:
+        raise ValueError('Cable routing endpoint must follow both quarter bends')
+    # Start tangent -Y at the actual exit. Opposite quarter bends offset toward
+    # the load axis and return the outgoing tangent to -Y, away from both rails.
+    path=(cq.Workplane('XY',origin=(0,0,z)).moveTo(x0,y0).lineTo(x0,y1)
+          .threePointArc((x0-radius+radius/math.sqrt(2),y1-radius/math.sqrt(2)),(x0-radius,y1-radius))
+          .threePointArc((x0-radius-radius/math.sqrt(2),y1-2*radius+radius/math.sqrt(2)),(x0-2*radius,y1-2*radius))
+          .lineTo(x0-2*radius,cl('routing_end_y')))
+    wire=path.wire().val()
+    cable=cq.Workplane('XZ',origin=(x0,y0,z)).circle(r).sweep(wire).val()
+    return cable,wire
+
+
+def cell_cable_checks(g, data):
+    """Read the actual cylindrical face and swept path against analytic sources."""
+    from OCP.BRepAdaptor import BRepAdaptor_Surface
+    expected=oracle.cell_geometry(g);actual=metrics(data['shapes']['SAR-0501'])
+    checks={key:bool(np.allclose(actual[key],expected[key],rtol=1e-7,atol=1e-6))
+            for key in ['volume_mm3','centroid_mm','bbox_mm','principal_volume_moments_mm5']}
+    cylinders=[]
+    for face in data['shapes']['SAR-0501'].Faces():
+        if face.geomType()!='CYLINDER':continue
+        surface=BRepAdaptor_Surface(face.wrapped).Cylinder();axis=surface.Axis()
+        center=axis.Location();direction=axis.Direction();bounds=face.BoundingBox()
+        cylinders.append({'axis':[direction.X(),direction.Y(),direction.Z()],
+                          'origin_mm':[center.X(),center.Y(),center.Z()],
+                          'diameter_mm':2*surface.Radius(),
+                          'y_extents_mm':[bounds.ymin,bounds.ymax]})
+    target=expected['grommet'];match=cylinders[0] if len(cylinders)==1 else None
+    checks['grommet_axis_diameter_position']=bool(match is not None and
+        np.allclose(np.abs(match['axis']),[0,1,0],rtol=0,atol=1e-9) and
+        abs(match['diameter_mm']-target['diameter_mm'])<1e-6 and
+        np.allclose([match['origin_mm'][0],match['origin_mm'][2]],
+                    [target['base_center_mm'][0],target['base_center_mm'][2]],rtol=0,atol=1e-6) and
+        np.allclose(match['y_extents_mm'],[target['tip_center_mm'][1],target['base_center_mm'][1]],rtol=0,atol=1e-6))
+    path=data['cable_path'];edges=path.Edges();arcs=[edge for edge in edges if edge.geomType()=='CIRCLE']
+    cable=oracle.cable_geometry(g,data['cell_bottom_mm']);radii=[edge.radius() for edge in arcs]
+    checks['cable_starts_at_grommet_tip']=bool(np.allclose(edges[0].startPoint().toTuple(),cable['start_mm'],rtol=0,atol=1e-6))
+    checks['cable_exit_tangent']=bool(np.allclose(edges[0].tangentAt(0).toTuple(),cable['outward_exit_axis'],rtol=0,atol=1e-9))
+    checks['cable_end']=bool(np.allclose(edges[-1].endPoint().toTuple(),cable['end_mm'],rtol=0,atol=1e-6))
+    checks['two_bends_and_radius']=len(radii)==2 and bool(np.allclose(radii,[cable['bend_radius_mm']]*2,rtol=0,atol=1e-6)) and min(radii)>=oracle.v(g,'cell','cable_bend_radius')-1e-6
+    measured_volume=metrics(data['cable_keepout'])['volume_mm3']
+    checks['cable_volume']=abs(measured_volume-cable['keepout_volume_mm3'])<1e-5
+    checks['centerline_length']=abs(path.Length()-cable['centerline_length_mm'])<1e-6
+    checks['rail_clearance']=data['cable_rail_clearance_mm']>0
+    return {'accepted':all(checks.values()),'checks':checks,'cell_oracle':expected,
+            'cell_actual':actual,'cylindrical_faces':cylinders,'routing_oracle':cable,
+            'actual_bend_radii_mm':radii,'cable_volume_mm3':measured_volume,
+            'rail_clearance_mm':data['cable_rail_clearance_mm'],
+            'physical_mass_cg_or_cable_force_qualified':False}
+
+
 def build(g):
     v=lambda group,key:oracle.v(g,group,key)
     f=lambda key:v('frame',key)
@@ -127,7 +195,7 @@ def build(g):
     for z in [0,cu('pin_spacing')]:coupling=coupling.cut(box(cu('width'),f('fork_gap'),2*cu('pin_end_distance'),z))
     for z in [cu('pin_end_distance'),h-cu('pin_end_distance')]:coupling=pin_hole(coupling,f('pin_diameter'),z,cu('depth'))
     shapes['SAR-0110']=coupling.clean()
-    shapes['SAR-0501']=box(*v('cell','size'))
+    shapes['SAR-0501']=make_cell(g)
     sx,sy=f('rail_section');shapes['SAR-0503']=box(sx,sy,f('rail_length'))
     cut_length=v('specimen','active_length')+2*v('plug','grip_length')
     shapes['SAR-0504']=tube(v('specimen','bladder_od'),v('specimen','bladder_id'),cut_length)
@@ -176,14 +244,7 @@ def build(g):
     # Conservative cable keep-out for clearance only; excluded from physical part volume/mass.
     cl=lambda key:v('cell',key)
     if cl('routing_radius')<cl('cable_bend_radius'):raise ValueError('Cable bend below vendor minimum')
-    cable_z=cell_bottom+cl('cable_exit_z')
-    x0=cl('size')[0]/2+cl('grommet_protrusion');x1=x0+cl('routing_stub');radius=cl('routing_radius')
-    path=(cq.Workplane('XY',origin=(0,0,cable_z)).moveTo(x0,0).lineTo(x1,0)
-          .threePointArc((x1+radius/math.sqrt(2),-radius+radius/math.sqrt(2)),(x1+radius,-radius))
-          .lineTo(x1+radius,cl('routing_end_y')))
-    cable=cq.Workplane('YZ',origin=(x0,0,cable_z)).circle(cl('routing_envelope_diameter')/2).sweep(path).val()
-    grommet=tube(cl('grommet_diameter'),0,cl('grommet_protrusion')).rotate((0,0,0),(0,1,0),90).translate((cl('size')[0]/2,0,cable_z))
-    cable=cable.fuse(grommet).clean()
+    cable,cable_path=make_cable_keepout(g,cell_bottom)
     cable_clearance=min(cable.distance(rail) for rail in rails)
     if cable_clearance<=0:raise ValueError('Cable keep-out intersects a rail')
     plates=[shapes['SAR-0104'],shapes['SAR-0104'].translate((0,0,upper_base))]
@@ -203,22 +264,27 @@ def build(g):
             'adjuster_length_mm':rod_top-rod_bottom,'cut_latex_braid_length_mm':cut_length,
             'main_cavity_length_mm':length,'caps_port_dead_volume_mm3':2*math.pi/4*v('plug','flow_bore')**2*c('cap_thickness'),
             'load_chain_parts':{'coupler':coupling,'cell':cell,'adjust_block':adjust_block,'adjuster':adjuster},
-            'rail_instances':rails,'shield_instance':shield,'cable_keepout':cable,'cable_rail_clearance_mm':cable_clearance}
+            'rail_instances':rails,'shield_instance':shield,'cable_keepout':cable,'cable_path':cable_path,
+            'cell_bottom_mm':cell_bottom,'cable_rail_clearance_mm':cable_clearance}
 
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--analysis-name',default='successor-concepts')
     args=parser.parse_args();g=json.loads((HERE/'geometry.json').read_text())
     result=build(g);shapes=result.pop('shapes')
     rows={r['pn']:r for r in csv.DictReader((HERE/'part_number_register.csv').open(encoding='utf-8-sig'))}
     if set(rows)!=set(shapes):raise ValueError(f'Part register mismatch {set(rows)^set(shapes)}')
     step=args.output/'03_EXPORTS/STEP';step.mkdir(parents=True,exist_ok=True)
-    out=args.output/'04_ANALYSIS/successor-concepts';out.mkdir(parents=True,exist_ok=True)
+    out=args.output/'04_ANALYSIS'/args.analysis_name
+    if (out/'result.json').exists():raise FileExistsError('Preserve previous result; select a new --analysis-name')
+    out.mkdir(parents=True,exist_ok=True)
     (out/'geometry.json').write_text(json.dumps(g,indent=2)+'\n')
     expected=oracle.volumes(g,result['adjuster_length_mm']);records={}
     for pn,shape in shapes.items():
         row=rows[pn];stem=f'{pn}_{row["rev"]}_{row["title"].replace(",", "").replace(" ", "-").replace("/", "-")}'
-        path=step/(stem+'.STEP');cq.exporters.export(shape,str(path))
+        path=step/(stem+'.STEP');reused=path.exists()
+        if not reused:cq.exporters.export(shape,str(path))
         before,after=metrics(shape),metrics(cq.importers.importStep(str(path)).val())
         checks={k:bool(np.allclose(before[k],after[k],rtol=1e-7,atol=1e-6)) for k in ['volume_mm3','centroid_mm','bbox_mm','principal_volume_moments_mm5']}
         volume=expected.get(pn)
@@ -227,12 +293,20 @@ def main():
                 'cad_route':'CadQuery with independent closed-form oracle where available; native optional per handoff 04',
                 'evidence_state':'provisional_design','holds':g['holds'],'metrics':before,
                 'step_roundtrip_matches':checks,'independent_volume_mm3':volume,'independent_volume_matches':anchor,
+                'reused_existing_step':reused,
                 'omitted_features':g['omitted_features'],'pressure_rating_established':False,'file':str(path)}
         (out/(pn+'_acceptance.json')).write_text(json.dumps(record,indent=2)+'\n')
         if not all(checks.values()) or not before['valid'] or anchor is False:raise RuntimeError(f'Concept geometry check failed {pn}')
         records[pn]=record
         print(pn,'STEP roundtrip OK','oracle',anchor,flush=True)
     screen=oracle.screening(g,result['adjuster_length_mm'])
+    cell_checks=cell_cable_checks(g,{**result,'shapes':shapes})
+    cable_file=step/f'SAR-0001_{rows["SAR-0001"]["rev"]}_CELL-CABLE-ROUTING-KEEPOUT.STEP'
+    if cable_file.exists():raise FileExistsError('Cable reservation target exists: '+str(cable_file))
+    cq.exporters.export(result['cable_keepout'],str(cable_file))
+    cable_before=metrics(result['cable_keepout']);cable_after=metrics(cq.importers.importStep(str(cable_file)).val())
+    cable_roundtrip={key:bool(np.allclose(cable_before[key],cable_after[key],rtol=1e-7,atol=1e-6))
+                     for key in ['volume_mm3','centroid_mm','bbox_mm','principal_volume_moments_mm5']}
     # Keep the pressure plan and detailed tests as explicit gates. CAD is not a pressure rating.
     summary={'stage':'CONCEPT','accepted':None,'part_count':len(records),
              'all_original_register_parts_present':True,'added_part':'SAR-0110: double-clevis coupler required for four-pin load chain',
@@ -242,6 +316,9 @@ def main():
              'caps_port_dead_volume_mm3':result['caps_port_dead_volume_mm3'],
              'rail_clearances_mm':{name:min(body.distance(rail) for rail in result['rail_instances']) for name,body in result['load_chain_parts'].items()},
              'cable_keepout_to_rail_clearance_mm':result['cable_rail_clearance_mm'],
+             'cell_cable_source_geometry':cell_checks,
+             'cable_reservation_step':{'file':str(cable_file),'checks':cable_roundtrip,
+                                        'scope':'Provisional routing reservation; excluded from physical BOM/mass'},
              'rod_end_to_fork_side_clearance_mm':(oracle.v(g,'frame','fork_gap')-oracle.v(g,'rod_end','eye_width'))/2,
              'ported_plug_minimum_web_mm':oracle.v(g,'plug','head_length')-oracle.v(g,'plug','mechanical_depth')-max(oracle.v(g,'plug','flow_end_from_head_start'),oracle.v(g,'plug','radial_port_from_head_start')+oracle.v(g,'plug','port_major')/2),
              'screening':screen,'omitted_features':g['omitted_features'],
@@ -249,6 +326,7 @@ def main():
              'pneumatic_note':'Straight tube runs show length allowances, not a connected pressurizable assembly. Regulator, valve and sensor/tee geometry remain omitted.',
              'geometry_sha256':hashlib.sha256((HERE/'geometry.json').read_bytes()).hexdigest()}
     (out/'result.json').write_text(json.dumps(summary,indent=2)+'\n')
+    if not cell_checks['accepted'] or not all(cable_roundtrip.values()):raise RuntimeError('Cell/cable source checks failed')
     print(json.dumps(summary,indent=2),flush=True)
 
 

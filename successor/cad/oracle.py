@@ -12,6 +12,38 @@ def chamber_length(g):
     return v(g, 'chamber', 'target_main_cavity_volume')/(math.pi*(v(g, 'chamber', 'bore_diameter')/2)**2)
 
 
+def cell_geometry(g):
+    """Uniform reference-envelope moments, not the physical cell's mass/CG."""
+    import numpy as np
+    c=lambda key:v(g,'cell',key)
+    x,y,z=c('size');radius=c('grommet_diameter')/2;length=c('grommet_protrusion')
+    volumes=[x*y*z,math.pi*radius**2*length]
+    centers=[np.array([0.,0.,z/2]),np.array([c('cable_exit_x'),-y/2-length/2,c('cable_exit_z')])]
+    volume=sum(volumes);center=sum(m*p for m,p in zip(volumes,centers))/volume
+    tensors=[np.diag([volumes[0]*(y*y+z*z)/12,volumes[0]*(x*x+z*z)/12,volumes[0]*(x*x+y*y)/12]),
+             np.diag([volumes[1]*(3*radius**2+length**2)/12,volumes[1]*radius**2/2,volumes[1]*(3*radius**2+length**2)/12])]
+    inertia=sum(t+mass*(np.eye(3)*np.dot(p-center,p-center)-np.outer(p-center,p-center))
+                for t,mass,p in zip(tensors,volumes,centers))
+    return {'volume_mm3':volume,'centroid_mm':center.tolist(),
+            'bbox_mm':[x,y+length,z],
+            'principal_volume_moments_mm5':np.linalg.eigvalsh(inertia).tolist(),
+            'grommet':{'axis':[0.,-1.,0.],'base_center_mm':[c('cable_exit_x'),-y/2,c('cable_exit_z')],
+                       'tip_center_mm':[c('cable_exit_x'),-y/2-length,c('cable_exit_z')],
+                       'diameter_mm':2*radius,'protrusion_mm':length}}
+
+
+def cable_geometry(g,cell_bottom):
+    c=lambda key:v(g,'cell',key)
+    radius=c('routing_radius');start_y=-c('size')[1]/2-c('grommet_protrusion')
+    after_stub=start_y-c('routing_stub');end_bends=after_stub-2*radius
+    x,z=c('cable_exit_x'),cell_bottom+c('cable_exit_z')
+    length=c('routing_stub')+math.pi*radius+end_bends-c('routing_end_y')
+    return {'start_mm':[x,start_y,z],'end_mm':[x-2*radius,c('routing_end_y'),z],
+            'bend_radius_mm':radius,'bend_count':2,'centerline_length_mm':length,
+            'keepout_volume_mm3':math.pi*(c('routing_envelope_diameter')/2)**2*length,
+            'outward_exit_axis':[0.,-1.,0.]}
+
+
 def plug_volume(g, ported):
     q = lambda k: v(g, 'plug', k)
     root, crest, head = q('root_diameter')/2, q('crest_diameter')/2, q('head_diameter')/2
@@ -53,7 +85,7 @@ def volumes(g, adjuster_length=None):
         'SAR-0503': math.prod(a(f,'rail_section'))*a(f,'rail_length'),
         'SAR-0504': annulus(a('specimen','bladder_od'),a('specimen','bladder_id'),a('specimen','active_length')+2*a('plug','grip_length')),
         'SAR-0505': annulus(a('specimen','bladder_od')+2*a('specimen','braid_wall'),a('specimen','bladder_od'),a('specimen','active_length')+2*a('plug','grip_length')),
-        'SAR-0501': math.prod(a('cell','size'))
+        'SAR-0501': math.prod(a('cell','size'))+annulus(a('cell','grommet_diameter'),0,a('cell','grommet_protrusion'))
     }
     hole_area=math.pi/4*a(f,'pin_diameter')**2
     results['SAR-0104']=(a(f,'plate_width')*a(f,'plate_depth')-math.pi/4*(4*a(f,'end_bolt_clearance')**2+a(f,'adjuster_clearance')**2))*a(f,'plate_thickness')+2*a(f,'ear_width')*a(f,'ear_thickness')*a(f,'ear_height')-2*a(f,'ear_thickness')*hole_area
