@@ -1,0 +1,32 @@
+{
+  "accepted": true,
+  "tests": {
+    "command": "python -m unittest discover -s successor/tests -v",
+    "run": 9,
+    "failures": 0,
+    "errors": 0
+  },
+  "redrive_cases": 87,
+  "prior_delivery_step_bytes_preserved": {
+    "SAR-0001": true,
+    "SAR-0002": true,
+    "SAR-0003": true,
+    "SAR-0101": true,
+    "SAR-0102": true,
+    "SAR-0103": true,
+    "SAR-0104": true,
+    "SAR-0105": true,
+    "SAR-0106": true,
+    "SAR-0107": true,
+    "SAR-0108": true,
+    "SAR-0109": true,
+    "SAR-0501": true,
+    "SAR-0502": true,
+    "SAR-0503": true,
+    "SAR-0504": true,
+    "SAR-0505": true,
+    "SAR-0506": true,
+    "SAR-0110": true
+  },
+  "scope": "Source/cable reference geometry and concept package only; no physical/native work"
+}

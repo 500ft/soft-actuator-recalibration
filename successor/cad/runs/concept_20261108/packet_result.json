@@ -1,0 +1,11 @@
+{
+  "accepted": true,
+  "scope": "Concept metadata, checklist and shield DXF only",
+  "shield_dxf": {
+    "file": "C:\\Users\\Admin\\Desktop\\soft-actuator-recalibration\\03_EXPORTS\\DXF\\SAR-0109_01_SHIELD-TEST-FRAME.DXF",
+    "area_mm2": 120000.0,
+    "expected_mm2": 120000.0
+  },
+  "physical_work_authorized": false,
+  "pressure_rating_established": false
+}

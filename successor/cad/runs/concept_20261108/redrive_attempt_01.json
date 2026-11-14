@@ -1,0 +1,705 @@
+{
+  "accepted": false,
+  "scope": "CadQuery concept geometry re-drive; no pressure or native release",
+  "analysis_only_inputs": [
+    [
+      "cell",
+      "displacement_cases"
+    ],
+    [
+      "cell",
+      "rated_force"
+    ],
+    [
+      "frame",
+      "adjust_thread_pitch"
+    ],
+    [
+      "frame",
+      "rail_area"
+    ],
+    [
+      "specimen",
+      "angle_cases"
+    ],
+    [
+      "specimen",
+      "proof_pressure"
+    ],
+    [
+      "specimen",
+      "working_pressure"
+    ]
+  ],
+  "cases": [
+    {
+      "parameter": "specimen.active_length",
+      "from": 200.0,
+      "to": 198.0,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0504",
+        "SAR-0505",
+        "SAR-0002",
+        "SAR-0001",
+        "cable_keepout"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "specimen.bladder_id",
+      "from": 6.35,
+      "to": 6.286499999999999,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0504",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "specimen.bladder_od",
+      "from": 9.525,
+      "to": 9.42975,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0504",
+        "SAR-0505",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "specimen.braid_wall",
+      "from": 0.635,
+      "to": 0.62865,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0505",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "plug.root_diameter",
+      "from": 6.35,
+      "to": 6.286499999999999,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0101",
+        "SAR-0102",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "plug.crest_diameter",
+      "from": 7.94,
+      "to": 7.860600000000001,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0101",
+        "SAR-0102",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "plug.barb_count",
+      "from": 3,
+      "to": 4,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0101",
+        "SAR-0102",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "plug.barb_pitch",
+      "from": 3.0,
+      "to": 2.9699999999999998,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0101",
+        "SAR-0102",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "plug.grip_length",
+      "from": 24.0,
+      "to": 23.759999999999998,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0101",
+        "SAR-0102",
+        "SAR-0504",
+        "SAR-0505",
+        "SAR-0002",
+        "SAR-0001",
+        "cable_keepout"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "plug.head_diameter",
+      "from": 20.0,
+      "to": 19.8,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0101",
+        "SAR-0102",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "plug.head_length",
+      "from": 28.0,
+      "to": 27.72,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0101",
+        "SAR-0102",
+        "SAR-0002",
+        "SAR-0001",
+        "cable_keepout"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "plug.flow_bore",
+      "from": 3.0,
+      "to": 2.9699999999999998,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0101",
+        "SAR-0108",
+        "SAR-0002",
+        "SAR-0001",
+        "SAR-0003"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "plug.flow_end_from_head_start",
+      "from": 8.0,
+      "to": 7.92,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0101",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "plug.radial_port_from_head_start",
+      "from": 7.0,
+      "to": 6.93,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0101",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "plug.port_major",
+      "from": 5.0,
+      "to": 4.95,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0101",
+        "SAR-0506",
+        "SAR-0002",
+        "SAR-0001",
+        "SAR-0003"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "plug.mechanical_major",
+      "from": 8.0,
+      "to": 7.92,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0101",
+        "SAR-0102",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "plug.mechanical_depth",
+      "from": 12.0,
+      "to": 11.879999999999999,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0101",
+        "SAR-0102",
+        "SAR-0002",
+        "SAR-0001",
+        "cable_keepout"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "ferrule.id",
+      "from": 13.0,
+      "to": 12.87,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0103",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "ferrule.od",
+      "from": 15.0,
+      "to": 14.85,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0103",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "ferrule.length",
+      "from": 25.0,
+      "to": 24.75,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0103",
+        "SAR-0002",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.rail_length",
+      "from": 600.0,
+      "to": 594.0,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0109",
+        "SAR-0503",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.rail_section[0]",
+      "from": 20.0,
+      "to": 19.8,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0503",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5999999999999943
+    },
+    {
+      "parameter": "frame.rail_section[1]",
+      "from": 40.0,
+      "to": 39.6,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0104",
+        "SAR-0503",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.rail_spacing",
+      "from": 150.0,
+      "to": 148.5,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0104",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 2.75
+    },
+    {
+      "parameter": "frame.plate_width",
+      "from": 200.0,
+      "to": 198.0,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0104",
+        "SAR-0109",
+        "SAR-0001",
+        "SAR-0003"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.plate_depth",
+      "from": 80.0,
+      "to": 79.2,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0104",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.plate_thickness",
+      "from": 12.0,
+      "to": 11.879999999999999,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0104",
+        "SAR-0002",
+        "SAR-0001",
+        "SAR-0003",
+        "cable_keepout"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.end_bolt_clearance",
+      "from": 5.5,
+      "to": 5.445,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0104",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.adjuster_clearance",
+      "from": 8.5,
+      "to": 8.415,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0104",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.locknut_allowance",
+      "from": 10.0,
+      "to": 9.9,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.ear_width",
+      "from": 28.0,
+      "to": 27.72,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0104",
+        "SAR-0105",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.ear_thickness",
+      "from": 6.0,
+      "to": 5.9399999999999995,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0104",
+        "SAR-0105",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.ear_height",
+      "from": 32.0,
+      "to": 31.68,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0104",
+        "SAR-0105",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.fork_gap",
+      "from": 12.5,
+      "to": 12.375,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0104",
+        "SAR-0105",
+        "SAR-0110",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.pin_from_plate",
+      "from": 18.0,
+      "to": 17.82,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0104",
+        "SAR-0105",
+        "SAR-0002",
+        "SAR-0001",
+        "cable_keepout"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.adjust_block_size[0]",
+      "from": 32.0,
+      "to": 31.68,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0105",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.adjust_block_size[1]",
+      "from": 32.0,
+      "to": 31.68,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0105",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.adjust_block_size[2]",
+      "from": 24.0,
+      "to": 23.759999999999998,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0105",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.adjust_thread_major",
+      "from": 8.0,
+      "to": 7.92,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0105",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.pin_diameter",
+      "from": 8.0,
+      "to": 7.92,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0104",
+        "SAR-0105",
+        "SAR-0106",
+        "SAR-0110",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.pin_length",
+      "from": 34.0,
+      "to": 33.66,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0106",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.pin_head_diameter",
+      "from": 12.0,
+      "to": 11.879999999999999,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0106",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.pin_head_length",
+      "from": 2.0,
+      "to": 1.98,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0106",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.pin_cross_hole",
+      "from": 2.0,
+      "to": 1.98,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0106",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.shield_thickness",
+      "from": 4.0,
+      "to": 3.96,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0109",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "frame.shield_standoff",
+      "from": 50.0,
+      "to": 49.5,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "coupler.pin_spacing",
+      "from": 40.0,
+      "to": 39.6,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0110",
+        "SAR-0001",
+        "cable_keepout"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "coupler.width",
+      "from": 28.0,
+      "to": 27.72,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0110",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "coupler.depth",
+      "from": 26.0,
+      "to": 25.74,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0110",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "coupler.pin_end_distance",
+      "from": 13.0,
+      "to": 12.87,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0110",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "cell.size[0]",
+      "from": 80.0,
+      "to": 79.2,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0501",
+        "SAR-0001",
+        "cable_keepout"
+      ],
+      "cable_rail_clearance_mm": 3.8999999999999986
+    },
+    {
+      "parameter": "cell.size[1]",
+      "from": 25.4,
+      "to": 25.145999999999997,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0501",
+        "SAR-0001"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "cell.size[2]",
+      "from": 60.0,
+      "to": 59.4,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0501",
+        "SAR-0001",
+        "cable_keepout"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "cell.eye_to_eye",
+      "from": 105.0,
+      "to": 105.5,
+      "passed": true,
+      "affected_geometry": [
+        "SAR-0001",
+        "cable_keepout"
+      ],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "cell.cable_bend_radius",
+      "from": 10.0,
+      "to": 9.9,
+      "passed": true,
+      "affected_geometry": [],
+      "cable_rail_clearance_mm": 3.5
+    },
+    {
+      "parameter": "cell.grommet_diameter",
+      "from": 11.0,
+      "to": 10.89,
+      "passed": false,
+      "error": "RuntimeError('Parameter produced no geometric change')"
+    }
+  ]
+}

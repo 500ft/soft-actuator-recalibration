@@ -1,0 +1,6 @@
+{
+  "command": "python -m unittest discover -s successor/tests -v",
+  "tests": 4,
+  "passed": 4,
+  "scope": "Pressure-volume virtual work, pressure/angle limits, solved cavity volume and series compliance identities"
+}

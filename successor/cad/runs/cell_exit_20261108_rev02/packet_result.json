@@ -1,0 +1,133 @@
+{
+  "accepted": true,
+  "scope": "Concept metadata, checklist, shield DXF and cell/cable source geometry",
+  "cell_cable_source_geometry": {
+    "accepted": true,
+    "checks": {
+      "volume_mm3": true,
+      "centroid_mm": true,
+      "bbox_mm": true,
+      "principal_volume_moments_mm5": true,
+      "grommet_axis_diameter_position": true,
+      "cable_starts_at_grommet_tip": true,
+      "cable_exit_tangent": true,
+      "cable_end": true,
+      "two_bends_and_radius": true,
+      "cable_volume": true,
+      "centerline_length": true,
+      "rail_clearance": true
+    },
+    "cell_oracle": {
+      "volume_mm3": 122015.0331777711,
+      "centroid_mm": [
+        0.024144799490498692,
+        -0.010281011395954281,
+        29.992990219502758
+      ],
+      "bbox_mm": [
+        80.0,
+        26.4,
+        60.0
+      ],
+      "principal_volume_moments_mm5": [
+        43155739.1783226,
+        71687374.03239399,
+        101700414.83881067
+      ],
+      "grommet": {
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "base_center_mm": [
+          31.0,
+          -12.7,
+          21.0
+        ],
+        "tip_center_mm": [
+          31.0,
+          -13.7,
+          21.0
+        ],
+        "diameter_mm": 11.0,
+        "protrusion_mm": 1.0
+      }
+    },
+    "cell_actual": {
+      "volume_mm3": 122015.03317777107,
+      "centroid_mm": [
+        0.024144799490502036,
+        -0.010281011395954498,
+        29.99299021950277
+      ],
+      "bbox_mm": [
+        80.0,
+        26.4,
+        60.0
+      ],
+      "principal_volume_moments_mm5": [
+        43155739.17758336,
+        71687374.03313316,
+        101700414.83881062
+      ],
+      "solid_count": 1,
+      "valid": true,
+      "adaptive_integration_error": 2.2430358084150427e-16
+    },
+    "cylindrical_faces": [
+      {
+        "axis": [
+          -0.0,
+          1.0,
+          -1.1102230246251565e-16
+        ],
+        "origin_mm": [
+          31.0,
+          -12.7,
+          21.0
+        ],
+        "diameter_mm": 11.0,
+        "y_extents_mm": [
+          -13.7,
+          -12.7
+        ]
+      }
+    ],
+    "routing_oracle": {
+      "start_mm": [
+        31.0,
+        -13.7,
+        457.5
+      ],
+      "end_mm": [
+        7.0,
+        -50.0,
+        457.5
+      ],
+      "bend_radius_mm": 12.0,
+      "bend_count": 2,
+      "centerline_length_mm": 49.999111843077515,
+      "keepout_volume_mm3": 4751.574484179859,
+      "outward_exit_axis": [
+        0.0,
+        -1.0,
+        0.0
+      ]
+    },
+    "actual_bend_radii_mm": [
+      12.000000000000007,
+      12.000000000000012
+    ],
+    "cable_volume_mm3": 4751.574484179893,
+    "rail_clearance_mm": 28.5,
+    "physical_mass_cg_or_cable_force_qualified": false
+  },
+  "shield_dxf": {
+    "file": "C:\\Users\\Admin\\Desktop\\soft-actuator-recalibration\\03_EXPORTS\\DXF\\SAR-0109_01_SHIELD-TEST-FRAME.DXF",
+    "area_mm2": 120000.0,
+    "expected_mm2": 120000.0
+  },
+  "physical_work_authorized": false,
+  "pressure_rating_established": false
+}
