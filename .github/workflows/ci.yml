@@ -18,6 +18,8 @@ jobs:
           python -m pip install -r requirements.txt pytest reportlab pypdf
       - name: Run tests
         run: python -m pytest
+      - name: Check executed successor guard evidence
+        run: python successor/cad/guard_mount/check_guard_evidence.py
       - name: Check manuscript numbers
         run: python -m scripts.check_manuscript_numbers
       - name: arXiv PDF pre-flight (fonts embedded, no encryption/JS)

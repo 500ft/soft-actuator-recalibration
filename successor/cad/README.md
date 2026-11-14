@@ -1,5 +1,20 @@
 # McKibben successor concepts
 
+## Guard and mounting candidate
+
+The [executed guard package](guard_mount/README.md) adds the cable passage and
+four provisional mounting envelopes. Its archived STEP/DXF exports, property
+checks and registered parameter re-drives are available with a portable
+read-only evidence reader. The original runners retain their recorded host
+paths; no portable CAD replay or native SOLIDWORKS verification is claimed.
+
+The package preserves the existing cell/stud reference-envelope overlaps and
+leaves the pneumatic layout unresolved. Actual rail-slot fasteners, containment,
+frame FEA and physical qualification remain pending. It supplies no pressure
+rating or fabrication release.
+
+## Original concept generation
+
 The original eighteen register entries and the added double-clevis coupler have parametric CadQuery models. All
 nineteen exports pass STEP round-trip checks and independent volume checks. The geometry re-drive report records
 the exercised dimensions, positions and clearance constraints. This remains CONCEPT / HOLD; no pressure rating or

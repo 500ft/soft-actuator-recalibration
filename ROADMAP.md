@@ -30,6 +30,11 @@ New successor hardware work lives under [successor/](successor/README.md).
 the owner's approval to publish its CAD, drawings, calculations, analysis
 inputs and copied notes here. Physical work and the public name remain pending.
 
+The [executed guard candidate](successor/cad/guard_mount/README.md) now provides
+a cable passage and provisional mounting envelopes with saved geometric checks.
+The complete fixture still needs selected interfaces, a resolved pneumatic
+layout and independently qualified frame stiffness. Successor research stays open.
+
 The local repository named in [decision 0002](docs/decisions/0002-successor-software-preparation.md)
 and [decision 0003](docs/decisions/0003-successor-specimen-and-endpoint.md)
 remains the record of earlier successor work. Its notes will be copied into

@@ -1,0 +1,2803 @@
+{
+  "schema": "sar-guard-executed-delivery-v1",
+  "archive": "SAR_Guard_Mount_Executed_Evidence_2026-11-14.zip",
+  "archive_sha256": "b2ac33052a232d4917c0e35850d479d1b5977932ddd5ac6d917bb593431a40f1",
+  "assembly_method": "Sorted explicit whitelist; fixed ZIP timestamps/modes; lossless exact source bytes; no source rewriting",
+  "historical_paths": "Original path strings are preserved in records. Explicit mappings apply only to shipped files; no original host path is opened by the reader.",
+  "scope": "Executed nonpressure guard/mounting geometry and finite parameter records. No independent portable CAD replay, frame FE, actual fixing/containment qualification or pressure release.",
+  "files": [
+    {
+      "original_source": "C:\\Users\\Admin\\Desktop\\soft-actuator-recalibration\\03_EXPORTS\\STEP\\SAR-0001_02_ASSEMBLY-BLOCKED-FORCE-TEST-RIG.STEP",
+      "member": "baseline_exports/SAR-0001_02_ASSEMBLY-BLOCKED-FORCE-TEST-RIG.STEP",
+      "sha256": "89c5b0520e6796c9fb13d5c19472c229211482868c34ff9462e7bd8903ece536",
+      "bytes": 875657,
+      "role": "frozen_original_context_not_rebuilt"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Desktop\\soft-actuator-recalibration\\03_EXPORTS\\STEP\\SAR-0109_01_SHIELD-TEST-FRAME.STEP",
+      "member": "baseline_exports/SAR-0109_01_SHIELD-TEST-FRAME.STEP",
+      "sha256": "704acfa8497c809da589aa4ee706b14b819bfd99d6f4872ca5d2afb7e0a4eb32",
+      "bytes": 15485,
+      "role": "frozen_original_context_not_rebuilt"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Desktop\\soft-actuator-recalibration\\04_ANALYSIS\\AUDIT_2026-11-08\\assembly_clearance.json",
+      "member": "baseline_exports/assembly_clearance.json",
+      "sha256": "4f40fadbb77c957625233800712d05504ac413b5cef6185e2f3d6368e3daa9fe",
+      "bytes": 8296,
+      "role": "frozen_original_context_not_rebuilt"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\CAD_WORK_2026-11-08\\repos\\soft-actuator-recalibration\\successor\\cad\\build_concepts.py",
+      "member": "baseline_source/build_concepts.py",
+      "sha256": "d8de6a5a3edcb66c698bd5442a89f1fd0879303ac58c082936ad3987598ef2e9",
+      "bytes": 22536,
+      "role": "exact_frozen_baseline_source"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\CAD_WORK_2026-11-08\\repos\\soft-actuator-recalibration\\successor\\cad\\geometry.json",
+      "member": "baseline_source/geometry.json",
+      "sha256": "1799f564231251c21907a9fe45126a044a41bd90eb09024a617931eee5742421",
+      "bytes": 14957,
+      "role": "exact_frozen_baseline_source"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\CAD_WORK_2026-11-08\\repos\\soft-actuator-recalibration\\successor\\cad\\oracle.py",
+      "member": "baseline_source/oracle.py",
+      "sha256": "ce260a20f52bf1c92fa13af7fe03ab21eb72565595581b252f53df0a701cf139",
+      "bytes": 10407,
+      "role": "exact_frozen_baseline_source"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\CAD_WORK_2026-11-08\\repos\\soft-actuator-recalibration\\successor\\cad\\redrive_concepts.py",
+      "member": "baseline_source/redrive_concepts.py",
+      "sha256": "6450a2d9c8ccc76a70124907c8ae0af4baaee2d9f7537a4267e75c19954604f2",
+      "bytes": 4364,
+      "role": "exact_frozen_baseline_source"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\PILOT_INDEPENDENT_REVIEW.json",
+      "member": "guard_candidate/PILOT_INDEPENDENT_REVIEW.json",
+      "sha256": "df00154eb9c567d4dc2851acf940a6a34224012f107cc843c205d35a621d3585",
+      "bytes": 13125,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\baseline_geometry_snapshot.json",
+      "member": "guard_candidate/baseline_geometry_snapshot.json",
+      "sha256": "1799f564231251c21907a9fe45126a044a41bd90eb09024a617931eee5742421",
+      "bytes": 14957,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\export_review_dxf.py",
+      "member": "guard_candidate/export_review_dxf.py",
+      "sha256": "c907d1e01f9b894128ccb472c76ae5dce84fc0fe0c264ed41c41c23efafaa2b1",
+      "bytes": 4773,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\freeze_candidate_inputs.py",
+      "member": "guard_candidate/freeze_candidate_inputs.py",
+      "sha256": "6dc3857c3de04d163377d06b6efa435bcfbdb77483f1bc0ba9d1ab72a654d7a8",
+      "bytes": 4929,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\guard_model.py",
+      "member": "guard_candidate/guard_model.py",
+      "sha256": "1c105ea33c352f971302402db9a7febe799649267f691ad9e6a49d0a62633d68",
+      "bytes": 1662,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\guard_oracle.py",
+      "member": "guard_candidate/guard_oracle.py",
+      "sha256": "8d1e9e09ea40d32ae80e7cbe9eed918eb2555bed89b461cee1e0316b14debdbf",
+      "bytes": 4626,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\guard_spec.json",
+      "member": "guard_candidate/guard_spec.json",
+      "sha256": "250e8009cf0c166b95ea4a5dea264f69222bf1ad95706d71814ad1316b9d9ac3",
+      "bytes": 5679,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\mount_subsystem_candidate\\NOMINAL_RESULT_INDEPENDENT_REVIEW.json",
+      "member": "guard_candidate/mount_subsystem_candidate/NOMINAL_RESULT_INDEPENDENT_REVIEW.json",
+      "sha256": "58caa33c1f10eb090c24e589dd9c5255035ca3b5fe24c288b964d2e594cfd8b9",
+      "bytes": 58887,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\mount_subsystem_candidate\\REDRIVE_PROPOSAL.json",
+      "member": "guard_candidate/mount_subsystem_candidate/REDRIVE_PROPOSAL.json",
+      "sha256": "33b14ffafa6c7522fbfd7d83f92867003a676628c1e3c3689a7c832629460efe",
+      "bytes": 14520,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\mount_subsystem_candidate\\freeze_subsystem_inputs.py",
+      "member": "guard_candidate/mount_subsystem_candidate/freeze_subsystem_inputs.py",
+      "sha256": "423dfbb11b269dc67a6b3e334aa4891d22da424f8dd71ddc154918bbda3f4ed0",
+      "bytes": 10019,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\mount_subsystem_candidate\\mount_oracle.py",
+      "member": "guard_candidate/mount_subsystem_candidate/mount_oracle.py",
+      "sha256": "a14ea3b150d028679d98d67a8e600faffe3d6c561083052bcf30b49f23ca88e7",
+      "bytes": 2054,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\mount_subsystem_candidate\\nominal_20261114\\MOUNT-ENVELOPE-01_CONCEPT-HOLD.STEP",
+      "member": "guard_candidate/mount_subsystem_candidate/nominal_20261114/MOUNT-ENVELOPE-01_CONCEPT-HOLD.STEP",
+      "sha256": "afa0b0c4a1895f34fcbed023960174b2bb5a9614e1827952fbe58ba4bbc28b0d",
+      "bytes": 19149,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\mount_subsystem_candidate\\nominal_20261114\\MOUNT-ENVELOPE-02_CONCEPT-HOLD.STEP",
+      "member": "guard_candidate/mount_subsystem_candidate/nominal_20261114/MOUNT-ENVELOPE-02_CONCEPT-HOLD.STEP",
+      "sha256": "8082a9fe166e38c3062258d808ae4ca5d74d8b8a51e4c195b7b1012096eb068e",
+      "bytes": 19181,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\mount_subsystem_candidate\\nominal_20261114\\MOUNT-ENVELOPE-03_CONCEPT-HOLD.STEP",
+      "member": "guard_candidate/mount_subsystem_candidate/nominal_20261114/MOUNT-ENVELOPE-03_CONCEPT-HOLD.STEP",
+      "sha256": "8db77d049585d705457d06e3ef91c246bc8c7397e48644b4fd1106c1faba251e",
+      "bytes": 19117,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\mount_subsystem_candidate\\nominal_20261114\\MOUNT-ENVELOPE-04_CONCEPT-HOLD.STEP",
+      "member": "guard_candidate/mount_subsystem_candidate/nominal_20261114/MOUNT-ENVELOPE-04_CONCEPT-HOLD.STEP",
+      "sha256": "81f1e694ff932d32f4b8b94b5ef1baf4dc92093207e6d942d618e029ccdaca44",
+      "bytes": 19149,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\mount_subsystem_candidate\\nominal_20261114\\SAR-GUARD-MOUNT-CONTEXT_CONCEPT-HOLD.STEP",
+      "member": "guard_candidate/mount_subsystem_candidate/nominal_20261114/SAR-GUARD-MOUNT-CONTEXT_CONCEPT-HOLD.STEP",
+      "sha256": "f54017641f8f739bb48fc307b86e219b76a17c4ecce0cf62000f4b9388be3341",
+      "bytes": 981716,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\mount_subsystem_candidate\\nominal_20261114\\SAR-GUARD-MOUNT-SUBSYSTEM_WITH-CABLE-KEEPOUT_CONCEPT-HOLD.STEP",
+      "member": "guard_candidate/mount_subsystem_candidate/nominal_20261114/SAR-GUARD-MOUNT-SUBSYSTEM_WITH-CABLE-KEEPOUT_CONCEPT-HOLD.STEP",
+      "sha256": "c82c5b59006766d4dbc11d0150127b858abd65f20b466a3b019726d2ada8076a",
+      "bytes": 163010,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\mount_subsystem_candidate\\nominal_20261114\\result.json",
+      "member": "guard_candidate/mount_subsystem_candidate/nominal_20261114/result.json",
+      "sha256": "87603a11132fb6f863748aed726a601376712ada54e2008dff90115cae8b7ec8",
+      "bytes": 147827,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\mount_subsystem_candidate\\run_mount_subsystem.py",
+      "member": "guard_candidate/mount_subsystem_candidate/run_mount_subsystem.py",
+      "sha256": "69ace0815aa665fb88da958328c5db35a2ea77746cae658a044f8c1865089750",
+      "bytes": 18354,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\mount_subsystem_candidate\\subsystem_spec.json",
+      "member": "guard_candidate/mount_subsystem_candidate/subsystem_spec.json",
+      "sha256": "b3aa8501425ec28b5ebb43b3c148ce04d60ce6e64cfd92659b87d999f169675d",
+      "bytes": 5539,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\pilot_20261114\\SAR-0109_02_CONCEPT-GUARD-PILOT.STEP",
+      "member": "guard_candidate/pilot_20261114/SAR-0109_02_CONCEPT-GUARD-PILOT.STEP",
+      "sha256": "0ffc22ea16caef0f28bc7d6b96fd37607e0d61a6da46668d05c195e41a792e76",
+      "bytes": 33663,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\pilot_20261114\\result.json",
+      "member": "guard_candidate/pilot_20261114/result.json",
+      "sha256": "a0a9c981bed0998b2e01b05bd3d5de52f8b4ca3881a94af688876bd1c3edfd7a",
+      "bytes": 23531,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\FINITE30_EXPECTED_ZERO_TENSOR_TERMS.csv",
+      "member": "guard_candidate/redrive_candidate/FINITE30_EXPECTED_ZERO_TENSOR_TERMS.csv",
+      "sha256": "ccc65ef623de4911b88a40377a761d58355bf04cca5fe72b82cec2563cb07ccc",
+      "bytes": 363617,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\FINITE30_RESULT_INDEPENDENT_REVIEW.json",
+      "member": "guard_candidate/redrive_candidate/FINITE30_RESULT_INDEPENDENT_REVIEW.json",
+      "sha256": "6654bc2680a66417cf4c600483b17fe2d71106deabbeda18b5b572939290d90d",
+      "bytes": 95661,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\01\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/01/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "4d5c35a909f281bcca9c988b42fb67efce9b65e687360e16ee502388767a06f7",
+      "bytes": 162985,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\01\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/01/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "05a95f757121d8ecff1d6eaf4fd2393e894496158a84d0bd3a8a1db6a6cfdd80",
+      "bytes": 13771,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\01\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/01/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "4b9692db6f1d71ebef87c609d02192eed37ba36119cb6e973c2d5f5ab0a7e284",
+      "bytes": 33766,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\01\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/01/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "1652b37e256bc33f3d89b51d168ca42edae4cabc2a4fc4fc5af4c78d3402f6e5",
+      "bytes": 19149,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\01\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/01/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "89918206c1afb93dd874f4d4f8f45bdf6a51336518281dd45fd48e23de87de97",
+      "bytes": 19181,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\01\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/01/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "14ff7f438157e6da6e7c853dded26ec53ce173f61b49e0a92a9df3098801ea90",
+      "bytes": 19117,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\01\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/01/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "fe518a7f40969e8bf80d1370816f2e987e4d0e6c5916ad67b8b53d6046088959",
+      "bytes": 19149,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\01\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/01/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "e276bb026ea2caf0ed1fa42d836620fb95e7bb801cb898a2d53566b108ae61fd",
+      "bytes": 15509,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\01\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/01/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "be6c7d1bf6579642c746e93d23459fe78ba266eb12406a222164e8266c336f72",
+      "bytes": 15483,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\01\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/01/result.json",
+      "sha256": "b07fbe32de6800d851f11c521079c34d441aa68d03326629d9e64a898bebc0df",
+      "bytes": 213370,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\01\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/01/synthetic_geometry_inputs.json",
+      "sha256": "73bd931fcdc24257f9683bd080f9e79307254d5cc70572dfce8e10252083ba9e",
+      "bytes": 19066,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\01\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/01/synthetic_guard_spec.json",
+      "sha256": "91bd9438325eac6eec3a97275b1066fe3bc4f1a61482e5181a154693376dec77",
+      "bytes": 6241,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\02\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/02/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "53f37e02afdf388645a3befca7abea83bc5461e5c0f8b2f67167faf6effb465b",
+      "bytes": 163008,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\02\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/02/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "46ff276b4a94c579fe0d98bdc4a22ced1ba5d8144d2019d44d1667d0b18c5a45",
+      "bytes": 13782,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\02\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/02/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "1ab17f9537c63d43c844d8c6f9992b1508dffc8b4dab486068d4dc92dc1c3d54",
+      "bytes": 33757,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\02\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/02/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "deb4aa52c4180b931302eb195f09e1bb2f6d2cb248a7ddaf2077a2a04b412684",
+      "bytes": 19151,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\02\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/02/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "ea587341116e56f8657cec1a32d68ec30c5b276601c7a3fa1dec8f2a2d8a930c",
+      "bytes": 19183,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\02\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/02/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "a7f30140ca9bb4242f42fb149d261adfd9564d85f0d193c0644dae72c6a1bb51",
+      "bytes": 19119,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\02\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/02/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "bf1137e94e99599c7ab36390c07a28fed12f480eaaeb4cb46b9604d04284ad00",
+      "bytes": 19151,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\02\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/02/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "b1de0a898b395df38ca1654827348b597af1f29686faf7daa0c38cf1894422f3",
+      "bytes": 15511,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\02\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/02/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "f552ea9d7cc03b84a35b2b8c4e8e43b440837e844e291cfd675e4ee3525980ca",
+      "bytes": 15485,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\02\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/02/result.json",
+      "sha256": "79e39c49ff80d9cc5ec5186c48730ddb0d9129ea5ccd72e6f3554737a036d471",
+      "bytes": 213807,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\02\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/02/synthetic_geometry_inputs.json",
+      "sha256": "81fd5c3822a8b62ee095a32c87c3cb80fa2fba918ead5f4353161bf6873d54f5",
+      "bytes": 19054,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\02\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/02/synthetic_guard_spec.json",
+      "sha256": "510dddd22fdf175bdb3ee6358d5a11c5798d2e561fd2c0369eca3ec4f42e8e33",
+      "bytes": 6229,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\03\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/03/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "f50712d99d9066e29cf74eed4fb65c9c83b5d3c8595621c5e13369d2c5db1ac3",
+      "bytes": 163128,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\03\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/03/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "cddbf2fe210995bfa1655c46558577fd3135b7af3c51e8bb7e6423efd50778dd",
+      "bytes": 13773,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\03\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/03/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d7a42d41256cbc917c56944ad2063b51702d570bf1f7316f2e9564a3876dec66",
+      "bytes": 33821,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\03\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/03/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "19c0c2ab036207919508bc19588c69c8e6b70425ea0571ec37cc1c436f351fb9",
+      "bytes": 19167,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\03\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/03/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "a54c80eee9b4721f9fffcc67ba46a84faebdb7c7110906cc963aa4a4d27d946e",
+      "bytes": 19199,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\03\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/03/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "fa2f404de1f31bb49558f36e4758ac48ab6b02725accce2646d6475a48cbdf0f",
+      "bytes": 19135,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\03\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/03/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "9cb5667e6810f947121e6f95af878c9bfb8d05b25c0207d549b8674ae70ff1d0",
+      "bytes": 19167,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\03\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/03/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "f430fbd56c1c9b06dcf5dd9f77051ba9f75bfc2f84e34cdcf02097b01d77f909",
+      "bytes": 15511,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\03\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/03/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "b7a4900f55eee443c0709ee21bf3174f7bfa5a68b21a6e8df54c223f6da90bc6",
+      "bytes": 15485,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\03\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/03/result.json",
+      "sha256": "ad3bd3ddded3dce205773228cb205484cd70889d3d5c49e50d790b0f879cf095",
+      "bytes": 211849,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\03\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/03/synthetic_geometry_inputs.json",
+      "sha256": "3b01b6bdfc82e5b3f0ed56d624161b8a4bda3d023714f9d229211712536d5125",
+      "bytes": 19055,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\03\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/03/synthetic_guard_spec.json",
+      "sha256": "d24aa9d3c462079344ea820886e85c1b4fa134151bdc7a2f1b00d1ec509fc345",
+      "bytes": 6231,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\04\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/04/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "32ce6fd3341114317c3868866a71014cca49a3b807503b5e6f1676247bbf89f6",
+      "bytes": 163136,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\04\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/04/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "eff0115603b314b95e9560dcdd63d4e0dc254fbf67af8eabd5a12ab774a28abe",
+      "bytes": 13773,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\04\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/04/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "a0441a554211cdcf983cb93ddb42cc47f90188d581d2175912e14d9b758a4136",
+      "bytes": 33777,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\04\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/04/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "ad4facaa586f093691ceac158cf2ebc95560bac09191731ac5ed0c6326b72c97",
+      "bytes": 19180,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\04\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/04/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "ff063e32f4e8b2ec4ce2295f63119e5785bcff4d3686075d55e999af6b686045",
+      "bytes": 19212,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\04\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/04/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "6dc04ff27f6ab4970d3070b9a6ffc96f7ba30afd13dccd2dd564997f2371e20a",
+      "bytes": 19148,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\04\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/04/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "ffc4b7297919d85c89e2477a1e9e8965243c67c49314b6016e5070e2f96fef63",
+      "bytes": 19180,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\04\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/04/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "3fa6fca5e130f2e80a79fe7319e9d0557d1403f411a4439ac107b3b150f2f72f",
+      "bytes": 15511,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\04\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/04/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "5976118703ad6704ae3a618462b117661a5d7568f25b45b725e18d7be2aa201d",
+      "bytes": 15485,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\04\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/04/result.json",
+      "sha256": "8ae61a8e315456432310e8763c7a1dc9525b1b0954bdd09a549f22a0ca1e69a6",
+      "bytes": 214282,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\04\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/04/synthetic_geometry_inputs.json",
+      "sha256": "afb0ae247390ebdb7481ffd76659fc1f57495116eeb500488f8796e2b3555976",
+      "bytes": 19051,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\04\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/04/synthetic_guard_spec.json",
+      "sha256": "2f2408166a3574cf0b21f97b2067c9fb22f9b5a1b283801d6cd58658a2351553",
+      "bytes": 6225,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\05\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/05/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "fc86332ff06ecd44260eeaebb9c12f0d72ca58e6786a92ca7f082407094d6dbc",
+      "bytes": 163120,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\05\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/05/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "46ced1e454da7c3dcee592367436dfcbe16780799d6452530968a8247a34a963",
+      "bytes": 13773,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\05\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/05/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "bbe9d36ba3aa1f47684f12e4ddac308d9985cad756923c6ca7c9748083ef1675",
+      "bytes": 33757,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\05\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/05/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "a2f157594c2633411b4c29e75d6c53c173f583dac96ab2eab1d99287996c0181",
+      "bytes": 19181,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\05\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/05/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "bbeefccc2d374691da245c2a3a118a143efdebcc16f7637955e85f2a2a184044",
+      "bytes": 19213,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\05\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/05/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "02fed8cd81bcf37378cb654658f3778efac96353d3450766f13dafd75d4b074a",
+      "bytes": 19149,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\05\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/05/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "679117d3eec0a66b8805d6b63f171bbac064d35b3784d638ce01f87c610b9f1d",
+      "bytes": 19181,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\05\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/05/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "b785cfbe06d96a8b4a3f14d7e5f14054a045084da225471b3a0dd9bc46d19e63",
+      "bytes": 15511,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\05\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/05/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "81a7da611a6d76af6e94e8d373e3b4a3af9519c263b93bb6f56adbb867dc3e93",
+      "bytes": 15485,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\05\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/05/result.json",
+      "sha256": "0179dfd187e6781bed34146a6c064325d2be68c81fc04b7b6b441610e4dfa6c4",
+      "bytes": 211788,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\05\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/05/synthetic_geometry_inputs.json",
+      "sha256": "68f82643f60523feb5b7e739c7c7a284a2954feb15c927c340cecec870d17e4d",
+      "bytes": 19052,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\05\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/05/synthetic_guard_spec.json",
+      "sha256": "2166592ed30e7620171edfdffe6fbdbb43f5e8dddf1e7617680af0d072acf718",
+      "bytes": 6226,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\06\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/06/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "75c9e013950a67642868de0574dee011cdc4217fbfe52bacbd3a1c57526f9a82",
+      "bytes": 163120,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\06\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/06/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "02fe71273260f491ca93638051bb8cb4d737c30e59e679a5dc47c0b8565a35d1",
+      "bytes": 13773,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\06\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/06/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "56d8eff2ac60967d9800a925c6eacce514138e71ed7dc6750fd9005f06fca874",
+      "bytes": 33757,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\06\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/06/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "df744f48f3826c8f491a3647923a0db4217210cfe383422348bd676d0b726400",
+      "bytes": 19181,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\06\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/06/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "c92f756098a82172c8fa868ad4b208fff1cf03b845bc95dfe8af2e76a2777c07",
+      "bytes": 19213,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\06\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/06/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "3c51533794198506a612a0ab3d35cd02aa244b54648e9af8d42fb6031fcd6a8a",
+      "bytes": 19149,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\06\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/06/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d5649cc185f86e25171ddb04fe84b27d4801daa6946ddeae9dfc139d0c73a4ef",
+      "bytes": 19181,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\06\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/06/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "88a8c9a41396c8d9133342a11487f645b6c7ee73f8d78a46756d5846aa421148",
+      "bytes": 15511,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\06\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/06/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "5376d6a4421b61c3962d8f551e4ed7e88f519ed1235bea6ffe6a89265eb39690",
+      "bytes": 15485,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\06\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/06/result.json",
+      "sha256": "9d37c9023c8ec17b2b6df549e27ff0e1d7c374fd516ce7a1763c8310257f312a",
+      "bytes": 212937,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\06\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/06/synthetic_geometry_inputs.json",
+      "sha256": "d44cff819f529f622f8f213b95dc6b795f339ce0e49dafb653c803b82c7d70db",
+      "bytes": 19053,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\06\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/06/synthetic_guard_spec.json",
+      "sha256": "5a473938f74032891464e65ee388b406cbd4f3e7be9a5bdbb8770286467ccd17",
+      "bytes": 6227,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\07\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/07/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "903e52f712868e824453c835abd9e27bbf74398ade207e37892caf3f5044f4a9",
+      "bytes": 162974,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\07\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/07/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "2ca713b1af409bcf26cc3fae3a87f2298def2620370b6d96cc1d249bac4efe2c",
+      "bytes": 13773,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\07\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/07/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "27cd13e78dc75d34b49871aabfecd74b2bfaa4fa4af3cf520fb9e56ac7b3bc28",
+      "bytes": 33731,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\07\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/07/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "2b8b021635a43eaa13d90c2b7a1d90052ccb20439a38f9c322827f06a20dde53",
+      "bytes": 19151,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\07\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/07/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "1914771e88d945a0863c271abb8595b6e5ff944f7b544f44e6d59e24ebf18be0",
+      "bytes": 19183,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\07\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/07/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "547e5b66b8230d414afa5d0078515efa22ead315bddbf74de93bf2df7f43b397",
+      "bytes": 19119,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\07\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/07/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "e17b913d19ae243df30eff1b5ac20ccabe08ef687e19c5827581cddcbfc11e42",
+      "bytes": 19151,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\07\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/07/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "6f92c80c1440f7f2bceae1a58c2120f86f87bc03e5e66f8460963d5d97b0724e",
+      "bytes": 15511,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\07\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/07/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "f6b5fe73f7cd9aee1ece621f7deb8f7a4f553d9c7950a0cbe67ee78d9656e017",
+      "bytes": 15485,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\07\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/07/result.json",
+      "sha256": "7ae53679b521f48fe0b97c353985ab683dbc2e78fdc85613ddf497ac5c290e46",
+      "bytes": 213302,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\07\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/07/synthetic_geometry_inputs.json",
+      "sha256": "4e77d03855f2e4d0717bd50aa45dc618b163cc4643192e13da67144c0beae922",
+      "bytes": 19045,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\07\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/07/synthetic_guard_spec.json",
+      "sha256": "70912d0a53bb6642b2aa220354cf18ddf8c5380740821cb895fcaaad4077dc0d",
+      "bytes": 6219,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\08\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/08/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "94c8786b2eb5750c70b3c7633affd5f12f77453e10e54897cef6b0796a9e1cb8",
+      "bytes": 163347,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\08\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/08/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "961049373f64acb91a009e150b989f3ac795a4a39094837d3e99be65805ceb34",
+      "bytes": 13782,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\08\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/08/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "a96bec1f930b518d6e45a58565d856cd50fd45695568fbaa453bc0159027100e",
+      "bytes": 33887,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\08\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/08/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "ad64e4f8affe62f589a8540b8422f872f3578c0462752624f4348c2808b4f3fc",
+      "bytes": 19203,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\08\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/08/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "a00f81440152d06b542e50087aa688707d934b06732b1c5273e3a02e2309a67f",
+      "bytes": 19235,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\08\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/08/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "67e3d03b744d137d56cbd9d61eb87f8883b230e8a4315c1fe06a7b3eb0c7550d",
+      "bytes": 19171,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\08\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/08/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "6d1cceff79fdfc5534cdc72f854867081c61355238caa7e1efce697c6321fbe8",
+      "bytes": 19203,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\08\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/08/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "c2813fc38c695f8167b9bd7b6e6f405dcd0d68ca22d31106a7dc3dd2953e935a",
+      "bytes": 15511,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\08\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/08/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "e466bce5d91dae20165473d43d404f2f366eaf824d9551c0d1e6fe389dd56866",
+      "bytes": 15485,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\08\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/08/result.json",
+      "sha256": "645ae7540df5772b91d0953e1c0981885ac4b9d30b9ac82c6222b4cf30d97e00",
+      "bytes": 212645,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\08\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/08/synthetic_geometry_inputs.json",
+      "sha256": "ca288b4d60214200a5ba7ce1a7a019a1015cf85acf516a40f9345562f822f605",
+      "bytes": 19050,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\08\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/08/synthetic_guard_spec.json",
+      "sha256": "0b6d5de64a3de986012f9c8b45a466eb558ad07f9b3c17342a02aa999dd0b3b7",
+      "bytes": 6223,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\09\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/09/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "a55c53fc060cc127e7d264029d22207983d5e6a1ffceecb214bf218101b5b7e2",
+      "bytes": 163000,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\09\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/09/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "9d261ba35bfa0325f876d9073e993ac808d63ad3feeba6ac34a7850b2e32d0cd",
+      "bytes": 13773,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\09\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/09/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "c267bdd80b4efe93738c432488dada7d59a885a159daff6d275debd51b99299a",
+      "bytes": 33757,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\09\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/09/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "fbcacfbe33d0ab4b534a9b77354d6ab665db2d4d7a8a16312d01e6b16e8ea7fb",
+      "bytes": 19151,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\09\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/09/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "eee8896ba54095abe90fcd2710decd07606a81aaae0fa91ad075be1cce9a9eb0",
+      "bytes": 19183,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\09\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/09/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "3d82782308b49676884ff209ea3aa75e4e714d7c78a13fb4458f736cf6259ca0",
+      "bytes": 19119,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\09\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/09/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "b837a70569126892d87506497f5ae009e4aeff9ff9c5175264030b37d6b7ab58",
+      "bytes": 19151,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\09\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/09/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "cf4652fd7d413f5d7a8ceb909e8a7a8a24fa19c1f125b3746e463b72dcfbefff",
+      "bytes": 15511,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\09\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/09/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "8b7997eccbd42f44590cbd48fac5751058979fe9e3e64da962551206f8646b24",
+      "bytes": 15485,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\09\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/09/result.json",
+      "sha256": "a736b846868a084c8e1d3b50bfffc51b03e5e17b9a7b5b3367408a686162d234",
+      "bytes": 211317,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\09\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/09/synthetic_geometry_inputs.json",
+      "sha256": "2c2d17b8a414c6f8a071ebfcc5dffa91deaa8190366e01773392cc021c41aa22",
+      "bytes": 19045,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\09\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/09/synthetic_guard_spec.json",
+      "sha256": "fa80e2f142ac0576f94de35aacbc347e23939ba5ec710060e78577585c211014",
+      "bytes": 6219,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\10\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/10/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "dcd7ac3441d2f96ec7834d5c3b332a24c19bbf199aae265a9f4ca399e78027eb",
+      "bytes": 163424,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\10\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/10/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "e59976657252bb7a9ecfe0ccd3db5cf8ab67b36c9c1c16739426d572d502e983",
+      "bytes": 13773,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\10\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/10/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "1eefdc9734a055039d79ad6a3c316625b0ce320456b728e5522aac863f417394",
+      "bytes": 33821,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\10\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/10/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "a9c9ee3db9a8cb6758278d912a510561baea19db6328581531262a7957e1fcae",
+      "bytes": 19215,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\10\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/10/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "a542b14c05a8929e4dccf4ee7e1689372b75e4b034d41325a9abef1306f462b9",
+      "bytes": 19247,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\10\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/10/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "08f00335fd14383a400161fdb1f4203060120211901daed6547e5032453c5b5d",
+      "bytes": 19183,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\10\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/10/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "96c41befe34942cd1ca06f228c1e34a8a277360f34dd91343f3df415faf8f8f2",
+      "bytes": 19215,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\10\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/10/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "acd344699bc0cd7de9a59b813f4669a6bb799c838ead10a250845354f52b535d",
+      "bytes": 15563,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\10\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/10/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d0f331f673dad300d0154d643e9677850d237ca7cef10b5e2f3ed2a680d0dc26",
+      "bytes": 15537,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\10\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/10/result.json",
+      "sha256": "1091318ef38570bbdef16f698ff7d16947b3dfd2a9144a75acb119024e5007ee",
+      "bytes": 213183,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\10\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/10/synthetic_geometry_inputs.json",
+      "sha256": "f3bf3ac52bb9f1679b6117c43b1fbdc2713f59591800cc4a37d1b32428403c57",
+      "bytes": 19046,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\10\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/10/synthetic_guard_spec.json",
+      "sha256": "09694a01ca1be224e68a4462e70d35abcba1ab1c66a58d732eb01bee0169bac0",
+      "bytes": 6220,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\11\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/11/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "81e07d824f435e9f6110dc35aaced7d0263b832a32f81eca0da55d8aff7938d0",
+      "bytes": 163163,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\11\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/11/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "36f575b55c1cb07a4963f8164ad4b799a34e53708b3fa19ca6fab6170b144204",
+      "bytes": 13776,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\11\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/11/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "4746f270dc4869b7893c810dc6e34c6c010c47b8acd4865894df82bf2e9741bd",
+      "bytes": 33813,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\11\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/11/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "08efdbc8d6f979e0492a1613428fa800e46eeff236b53ed0ea2ed9a19f267435",
+      "bytes": 19177,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\11\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/11/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "3863e3f3054dab81c8a10278cd2311468852b1417b510403d5e7f20199b869c3",
+      "bytes": 19209,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\11\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/11/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "2ad326772afc7f5fe07623cbf2e22abf47dd140d1c0a20bd6a63c2d41be2dc62",
+      "bytes": 19145,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\11\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/11/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "2a895d6b25c962ef1e996783999d8dfbe502c9e8177e6b20660979b8f5ebe3de",
+      "bytes": 19177,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\11\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/11/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "f31d71c3240df0ca19a37e43acf78025d9c911b32dc04fab1a87d10e0016221f",
+      "bytes": 15511,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\11\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/11/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "f84a29ec6d5e84c879148c4b1948b5dca3474ed40647383f6ecedd59d44aac83",
+      "bytes": 15485,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\11\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/11/result.json",
+      "sha256": "0842114672ef1e2de06783179e27a3492e7b1febe17cef5fc1fe7e7bba5c3710",
+      "bytes": 214117,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\11\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/11/synthetic_geometry_inputs.json",
+      "sha256": "829f44c2b5e6ed09f4e8d819cd971123dcb2f670e68af1f482e8f7c9d6ec50f7",
+      "bytes": 19048,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\11\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/11/synthetic_guard_spec.json",
+      "sha256": "27a323cb6b55fb2aa58706565f8b2339fdc6d912965719c61bc11974d71ee9e1",
+      "bytes": 6222,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\12\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/12/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "cabc495862f2e5764ddb77be47e771ab17737a66bd1c84597d0927ff8a8947d8",
+      "bytes": 163459,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\12\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/12/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d19a3b2a2c017cd92f0a42b7d7fce02896bf0152c1f8c3482c54bf8b8d48f7ca",
+      "bytes": 13795,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\12\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/12/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "ec6b99a1543515d29b4d6b46fe220136913bb9dcf5dd0b7a8eca668938a9b1a5",
+      "bytes": 33844,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\12\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/12/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "f48e35df81586d6d62eef7c35e9efcc452b0b725caa9d33b541c3fb74eba7c94",
+      "bytes": 19211,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\12\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/12/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "e957127b2462af2d1e48e8ee4214a00eca7803872fd828e3e11c25a965016d91",
+      "bytes": 19243,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\12\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/12/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "b086cbbc5d1e1f1d24095766c5ff0595b0160afac03eca57430356c21f8d2434",
+      "bytes": 19179,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\12\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/12/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "400ea24c9181a64c56ff0e194539265899cf3630704d5493ff030754bb605f07",
+      "bytes": 19211,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\12\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/12/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "f82b7b2261f5e8f561a1a1c0ae1ebc1e6fc72a97ceeb03bc8f8d93d0482eb48a",
+      "bytes": 15565,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\12\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/12/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "e1b6b1d722970d35e5b26794ef3f5534685a4b7a776b8b1e7db1a340e416c13d",
+      "bytes": 15539,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\12\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/12/result.json",
+      "sha256": "7f0591094149b844a8da90f6763e9c35e1b4501eea6698505945f271841476ba",
+      "bytes": 212129,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\12\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/12/synthetic_geometry_inputs.json",
+      "sha256": "697a6c46e3904d4fb24dd7eb58fd6586a97374c9ba0ab1784e88af4283f7c1c1",
+      "bytes": 19076,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\12\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/12/synthetic_guard_spec.json",
+      "sha256": "d9f7dce09d6d60a473021f3de20541bc64ced05926c0c0639d4c0de0965dd886",
+      "bytes": 6236,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\13\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/13/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "21113083702c967cc159bd764592ec2d6b15d8198691e3aec3114d027f40edc4",
+      "bytes": 163083,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\13\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/13/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "eb68c27e8e8ad7496cc523fc090462ee80dfb00ea8a54bcf22343f0a60c266c6",
+      "bytes": 13775,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\13\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/13/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "bcbe3a2a650b5b85694ab2f3e4de8a1bf628f89111b53e3368cdf81521d502cd",
+      "bytes": 33759,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\13\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/13/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "1eb3a3f4dd4acdf9951e6ab5676c9b53df8c78950dc72ad103ffb709f0c2dadb",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\13\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/13/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "95d775ace508414c7a2d9f7ea209dd1e6b6b8f9ecf48f24a0364bfc2108156b3",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\13\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/13/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "6af200a9fe12206c056c4a7f6459a412a0af3afe203698ca5befa76d3a92433b",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\13\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/13/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "a683e381f0a3154cb9835cee734bcb84e5ce5c15c95b978347f0370f0538b773",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\13\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/13/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "915fc59f05f19dbc0fa1a533552e9370bd059051455a732e9d1e1575a434f0d2",
+      "bytes": 15543,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\13\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/13/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "e82b85def4120d29f2d0c1ee4f2060f1b74e3570cbe230c14dc3dfe142a2ec2f",
+      "bytes": 15517,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\13\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/13/result.json",
+      "sha256": "25aea81c437e3e8895cee188ec02368317fd992a8b0328870f545db5ed680809",
+      "bytes": 211703,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\13\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/13/synthetic_geometry_inputs.json",
+      "sha256": "c434c00982f63922713b1ce36a7f254d54df251172ae656730e1b89b8cddabf4",
+      "bytes": 19055,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\13\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/13/synthetic_guard_spec.json",
+      "sha256": "429683acaef9b13e93af94f3ba62df82c86b97fdcf05e7274e98d5ce8fe7d7a8",
+      "bytes": 6229,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\14\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/14/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "ddb70390d37508c04ab8c7ed8ed302aede2d3f55c23721f515cf78077c15bc49",
+      "bytes": 163150,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\14\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/14/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "bffca6999853b3da4bab182ab09014f416d71d1b45e7eda6ddf06f20a89f21d4",
+      "bytes": 13775,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\14\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/14/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "4609f4ce3ed0a4529ecda6e9a8de903c588539b239687d4770dfc6579314100f",
+      "bytes": 33759,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\14\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/14/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "b0be3ee3a78abfb06a00d7ef12fc8874f59ba68900f9377102985a99aeb1c285",
+      "bytes": 19169,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\14\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/14/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "fb53d973b488fa2c4552b968b96b0ea19751ba11cc145a1cf570d14c81e9472d",
+      "bytes": 19201,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\14\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/14/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "0ada7893b9a8a039437012930f1b4496ab4838913590a995f8e2c90021fe94ad",
+      "bytes": 19137,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\14\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/14/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d8e75a81101a9607ebb0297defce395c5bb5032978d9e8f6ac9ed24ca37998bc",
+      "bytes": 19169,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\14\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/14/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "7f1f75d3d1d2a4d758e5c501e310695fd2d6b0e79bef2b22666650be1ac2e076",
+      "bytes": 15543,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\14\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/14/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "4639d02595a9a1d0adde47cbd522e9fa46b51e780d68293a90c62e9362ef6632",
+      "bytes": 15517,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\14\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/14/result.json",
+      "sha256": "66dd3ff64c8c9c528c57f5bd59250b2d2b89d9e514127ff6ff7afb194bb8a000",
+      "bytes": 209028,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\14\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/14/synthetic_geometry_inputs.json",
+      "sha256": "971160d5c0a4184ecf909eef4759c75ce3182410c97c70724dda580157f4018f",
+      "bytes": 19055,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\14\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/14/synthetic_guard_spec.json",
+      "sha256": "c9bd62e32f97b5e2603f34e4b8b5905a918b97d2ccfb65ae834f9ec458a479fa",
+      "bytes": 6229,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\15\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/15/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "bb1a678fb7199bb220753bfaa15049bf55ca8d94ae60d3661658226a549fce33",
+      "bytes": 163074,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\15\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/15/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "abf927abf078cde1943853fb4518bec86f826496cc8ce7188ee3b2d8fae50d62",
+      "bytes": 13812,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\15\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/15/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "f4b0294136e2b788b387fe5d053b36878288ff4ba9d55f468d3e9b9e46b0c921",
+      "bytes": 33770,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\15\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/15/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "ef49ae361285080465b7def403905528261bad0fc47abdfe3072dc9d793ae62c",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\15\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/15/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d50a99c835bdaa1d72580c5da6aff57c542bee615a8d481a3a59a21b32c3cc78",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\15\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/15/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "5f398aaba53095253ee82f2f0134a43c1968d3ce34b9e91a9790b56a9c762216",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\15\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/15/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "626ae6c452e297d7c7455ef2b9e35470ea4b4d51a3d2a15c74ec01dcdc97019f",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\15\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/15/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "30f7685bfcde91ca7694ad6ae8c51bb5ae85715b1af8690129a7f0b1d0791b0b",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\15\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/15/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "df9f296cdae2e6c9025d8ed9b8d7a75fbfcc4d80322bb7b6104f81ea5958eb48",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\15\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/15/result.json",
+      "sha256": "f510b9ad4e375482084bd350c5415f529e90adb807eb72061f55a0422f9184cd",
+      "bytes": 212620,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\15\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/15/synthetic_geometry_inputs.json",
+      "sha256": "51bc34cb5c1e1bf97a201d4efab306615f568481b419e41e2a65992cbda0578d",
+      "bytes": 19049,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\15\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/15/synthetic_guard_spec.json",
+      "sha256": "3ac0561aec9502fb1af649d04b56954cd0d6b5b74ef8daaf6cd44338c5874808",
+      "bytes": 6222,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\16\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/16/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "8dcd766e6aaa3e1db984ab4cafe754727301664e7812e96e4c4374f3176d8b95",
+      "bytes": 163057,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\16\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/16/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "f96dd1f7d21a238da2a843fef0c85fd3e15015b633f8dba207d1c8c2c77c66a5",
+      "bytes": 13795,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\16\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/16/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "9bfeccc823323e1b82c72097dcbe6d0a3b60debabbdf1b9a2d0b47f5193aefbb",
+      "bytes": 33770,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\16\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/16/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "6a6fdc1cb45314e5df5ab98d821d2a493c349103cb850eb59b81affaaf26ca24",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\16\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/16/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "8dc7b1e9df46306a9d46c1b8f4c64616161f9d454647fff5a8aecafc58ec6c49",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\16\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/16/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "35980c4028b3190a02cd459a1e29e2608874979fca49a5f258b35514aea3f680",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\16\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/16/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "b4777ca0f0a059614c2a7515e367281e1e6a7249fd6479aec7fc49f69b013ab5",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\16\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/16/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "9a14fdced07712f8c4e8b5486c8e2b2e508721ca8fec2f637223258a8fc7c8cc",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\16\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/16/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "3a0c5361686f4baa09d982b4319ac2f70eecd3494452e304719aa1a4a3144931",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\16\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/16/result.json",
+      "sha256": "7a5a49d2239bfd99a07bcb7b92d7308e68229693713258b2198e5276a0f5d176",
+      "bytes": 214145,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\16\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/16/synthetic_geometry_inputs.json",
+      "sha256": "589b2e11c116ebcc4e6575a273e9b27cd105e9061225bc5a000a7f22537b2dd2",
+      "bytes": 19055,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\16\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/16/synthetic_guard_spec.json",
+      "sha256": "84b80b06e943beb2b8e5443c82a3544547b578a0a3fdbcf022a840643b74f3b7",
+      "bytes": 6228,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\17\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/17/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "be0510d82a08fbe3332ad7019fe39e9b9e41c87b3607a2301d47155b867d332a",
+      "bytes": 163057,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\17\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/17/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "1ec813a548b595254ca2e5795f1fc685866d503fb4d2962d70e5e404465ac3d9",
+      "bytes": 13795,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\17\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/17/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "0e97c904a0bd91739ccee6ffd86275cbb9d9737c9e9d6d02d5ad081f2db4216b",
+      "bytes": 33770,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\17\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/17/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "7d2f5a27a60e70b5c068498f8141c9ec4091c67171fc4869640c0bb8ceeb8e84",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\17\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/17/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "468aa4050c924c72a4fe8858d56934e14c90697774256e7f5eabe66b03bfe805",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\17\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/17/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "8bccca3295d54d327f84f03e7b9d111e4d967a43c727e353af740b5db43e29f8",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\17\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/17/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "bb6a0e0bd30f79e79f44c69abdb03b26d14fd1127862854d996c71c03edfef70",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\17\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/17/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "0d2baee3e7914deaf625ded9a46ae5d35fbc2ef3ae25c2ee42926cff93c7818b",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\17\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/17/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "b7d54aad6a4dfe99aef826b988fb9b65019f7374cf818e8f82041e2db5f47f00",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\17\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/17/result.json",
+      "sha256": "f525275a379c0d92203b2b98ed6c9d1442573998a6706ee6968dfa70c1ace41c",
+      "bytes": 213606,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\17\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/17/synthetic_geometry_inputs.json",
+      "sha256": "0f28bb9e227499f9510b28507daa8e44476dd7e8ff46cf7c21540ac906e5db36",
+      "bytes": 19076,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\17\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/17/synthetic_guard_spec.json",
+      "sha256": "fb00bffeff7a57f50988412263d24fe8c89340dce8c1a46972c7d432c3810e8e",
+      "bytes": 6236,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\18\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/18/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "def4bb03899781ba636828345fca65d445cf770ac3e52aa2f24e68d50b164d4a",
+      "bytes": 163091,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\18\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/18/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "b8dda6bf31690b3142636a2c62ce5690af9de3dd7909741820d02244de408090",
+      "bytes": 13829,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\18\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/18/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "2237ccbf8074f0984e22729ea24d77f1a6fbb0cb16d6e0ff5e56bd33d535160d",
+      "bytes": 33770,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\18\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/18/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "b3c838530ccf0bc40caa71f1be63eff21cd7bd103d22e223f9e6754b823ae311",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\18\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/18/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d56032bc88b5db4ca5f91e0bf5c15893fbce6eb90a9ea506e9cb7821655306ec",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\18\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/18/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "cd8dec02ff34cf4c2af7c1e24d9ba1b0f2ab89bb2bffba1c5f294a9c595245d0",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\18\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/18/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "ff732bf387208b1712ba4b72edd9f9e1dd8b859cb550fc2e3b5c4ed08deb33d1",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\18\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/18/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "73464d5c3979fb44f0264502fec80254914651d512368cd5a10272983055f9e0",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\18\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/18/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "db7be2ba96107c77bd1d35ac3543b30abe7ec7e20a53ba36b9beb497bc55c667",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\18\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/18/result.json",
+      "sha256": "88d80c451a5befba81919fea4352e304f73eaaa9d3e0131cb0f0f23b8a6fb085",
+      "bytes": 212653,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\18\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/18/synthetic_geometry_inputs.json",
+      "sha256": "b242bc8dcd802f9f65a851cb1a3fc7229326923eabfbdb9a0b93a7f2db4e2340",
+      "bytes": 19045,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\18\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/18/synthetic_guard_spec.json",
+      "sha256": "f95df5537bd5669d73f220f42c3ad8d88137a3632607183805724fd52a4ab23f",
+      "bytes": 6218,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\19\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/19/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "262159e9144b1e364c3bd616bbdda78de9a4ceecd075441b8d2504db79b63440",
+      "bytes": 163057,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\19\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/19/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "8f49070fc6b95b53d17183c4862b5e5072ffb181740e8bfaf3252b5ead9c9a97",
+      "bytes": 13795,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\19\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/19/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "2535925be9173689403741cfdc586f5249b8e1ad57099be439a4edf9a92c40d0",
+      "bytes": 33770,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\19\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/19/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "bff3bfcc7c0609d844d1d8fd5bbdef809689db7c29eaebe868888aa60efbef81",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\19\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/19/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "fa8c735cd99446389a60cadf22438340a7fc458e811eee1356f1fe51ceaf8a06",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\19\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/19/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "98542e06f9b0f2f1db52b7791d48e6dd9221500415385b8fb2f8af09e938233d",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\19\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/19/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "dff48cd2706dde1b6265ac62af15317be1cd6150a136c2db6e40cee4e3dcffd7",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\19\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/19/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "1553f59119f43ae152c86af0442908dbd9610b1b26ff6c52e8a1d948510e6501",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\19\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/19/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "00d8eebb9e727a7551266ecaff2e5a54dbeeb29e57723f60fb8455d80fe98e38",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\19\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/19/result.json",
+      "sha256": "8233cecb8911f788ede925be425476704d899539bdbc291339fa97c0795f978b",
+      "bytes": 213798,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\19\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/19/synthetic_geometry_inputs.json",
+      "sha256": "839fb5797b81d9d1a855fe30ddde0b7aeafff76a9920e7c48620f6af00a52519",
+      "bytes": 19071,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\19\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/19/synthetic_guard_spec.json",
+      "sha256": "902dfbc69531471c0b66efb3c750120e76fe7861c01aef8385fe0396777dde0e",
+      "bytes": 6231,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\20\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/20/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "548166ee37fb3aec7ae6540dcb9a21f10d9c30ec53d9075ca5a30636d46d552c",
+      "bytes": 163026,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\20\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/20/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "147fa8042b6f9ef3dd083f7500f521bd7fcab7c94822da7bb8fd40ecc9cc0eca",
+      "bytes": 13775,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\20\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/20/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "e36706ed62a3ed747996c94b489068c781c0d4554027c90bce9a924d22619d2e",
+      "bytes": 33759,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\20\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/20/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "99b70eeb0afd5a3217b3f4b7d8e20fa04e292c9e8bd08163e989a9429373d1c7",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\20\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/20/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "87aaa473d44502391ec68a4c96b8ba1d3766ce85cf4c15a652c75218a9953359",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\20\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/20/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d1f5df5287b416aa35c38f8a924c766bdbaefbb0cd4995ed711daac22c6a1b85",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\20\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/20/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "bf52669297e170fbef6f89ff11609986947473f0fabedbd5fe2a77744f24efcc",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\20\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/20/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "9e45e3ed47c4672c9a66dd2b62ee0cd3e6a541523b19e18a6a1e6ac9036024b6",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\20\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/20/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "eb47caab7c9dead6b1814b763997b746a54e3b47143c0483abe0181476c1ec51",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\20\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/20/result.json",
+      "sha256": "a2fa9bb91cead80e433f637875cc2853b900f8deeb97183c52b09e841ed4cc24",
+      "bytes": 212320,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\20\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/20/synthetic_geometry_inputs.json",
+      "sha256": "402e05199c8fae8fc01d18a3fb0f19d2b852aacda236eaff0914a97a88619f2d",
+      "bytes": 19050,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\20\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/20/synthetic_guard_spec.json",
+      "sha256": "cb8809c74a75e7c4772aa5550551336b0eb06c3b7de498ef918f6a541902d7cb",
+      "bytes": 6224,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\21\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/21/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "46a13f7aaad2b0c096667e663f131e9b74d151b911ecf5205d80072200cb8f26",
+      "bytes": 163045,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\21\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/21/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "5aa979f2c267660a814cfeb930b0d510c6791a64ddea1ee0ed096321b4e9ce5c",
+      "bytes": 13791,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\21\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/21/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "5f007f9dee5be294022c7fcb5544e2fbb500d47fb2132a8a587f7655492fa431",
+      "bytes": 33762,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\21\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/21/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "60e586482246b49469259eb8d942ded90be127356daae61d71b4484701e65ef5",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\21\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/21/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "4446b4337c2b0b7935828d6b75e5cd27c32b1d041d10f11f1e6f07859d65923c",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\21\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/21/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "5908e9ab98d3d46ef669ec355930fe012eda566b3193865aa41e2c68bfbb9c4d",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\21\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/21/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "e438db166142b18995c2fad372e4778cd81d65856809bb852fd28f6845c7f544",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\21\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/21/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "8cc75152f953bfe0ed3fa551525ba3d20a1b421b78b72a6eeac48c9974de69be",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\21\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/21/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "4d09958e3fb9b4e730fd0797d142a09a5e1a3ca5f08664a6fa392d7eee4135cc",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\21\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/21/result.json",
+      "sha256": "034dcb326274ead03a68aa9bebd5389a3ad0e3f72e797042f52a14979d22aa5e",
+      "bytes": 213698,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\21\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/21/synthetic_geometry_inputs.json",
+      "sha256": "5ac1093a4ea4456a64aa84bda86435aa314b9d95691782cf06125ff885eaa7bc",
+      "bytes": 19046,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\21\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/21/synthetic_guard_spec.json",
+      "sha256": "aedb54b562c081e8e15c6fd03f9a81fe3ecd885a0a388e813a1e8bb33f8fbcd5",
+      "bytes": 6220,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\22\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/22/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "65ffd5f8b7f757716c2a80f7660cbd8ffce06e8b00d531c4ebea394f99016f71",
+      "bytes": 163057,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\22\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/22/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "1951c1795c2b1c5e80193fd3ca016602f6d0703df2e6d04e3cde2f728b018a5f",
+      "bytes": 13795,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\22\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/22/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "ae34306ff75cc8d9848d08d7d47a98517e6446e5e499a65dfd8a4277dfc3fe43",
+      "bytes": 33770,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\22\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/22/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "007ce745451e4bd065bc16b9ea1698eb3320bab3390b204ba9088ca363274b3d",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\22\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/22/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "4b4c8b9d7941af9aeecfee0853cdd906105b1dc65152f99d27e61012b0e4c8e3",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\22\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/22/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "fb1c7c0bd4a532d97408886ee4cd570f21c5c1127ff6d2977701d9515fbea7df",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\22\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/22/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "7fe12ffe0778fe5ec78e2c9f725cf8cc3961809134ea10231f8afe056871267d",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\22\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/22/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "6e32620e45f7c9e6771abb753d736def9e8bccba405ac25377d0b79aa9c801d4",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\22\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/22/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "38465b0b04d8796a365c2493c416f85692a17139cea6c995e3e038cbba39479a",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\22\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/22/result.json",
+      "sha256": "86201d51d1419635a958c48bbbd840b213a2099ef97c5e76cb6575768e0b8659",
+      "bytes": 213773,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\22\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/22/synthetic_geometry_inputs.json",
+      "sha256": "ed36fdfecabb2015f4c0c7f6b43a5acb3f557dfaecc6c461ca69b7d80aea1204",
+      "bytes": 19043,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\22\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/22/synthetic_guard_spec.json",
+      "sha256": "5d9206d5881caaa3c48ad1db8ba7034d4f5f95520d808b5509b0378ff14b1306",
+      "bytes": 6217,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\23\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/23/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "8881667381cfe56e0751ebc09df19110b8f5da88a4bf3f94fa347ebc619e8abd",
+      "bytes": 163061,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\23\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/23/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d3e09776b67f9e7cccfd7b9dc6214ead0a04a69bea3a5ffbc3e0fec5d6aed3c1",
+      "bytes": 13807,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\23\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/23/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "4a4243733077a24905ab44e47a218fd3333f4b0639db0ff158eeb54f80d47b5f",
+      "bytes": 33762,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\23\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/23/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "38f82d5b3d7e6fed5653a0033888a589f9ea572ffdefaccccb54fefb3153d3e4",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\23\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/23/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "963e0aabf9b6e71fbb9dd3f041b57c72e8edbca120fd06136b6b583460f03a9f",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\23\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/23/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "510f5546a16ee9f191bd5879e178cc82aa6f626a4eb47cf2b56b56807d4d6ed0",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\23\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/23/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "36e1af6ed6fd9caa00e654a775a5935876b385b5cbeed5a5b4549e6846c53826",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\23\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/23/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "4f4d372127487115f962cb4f81378787caf58cec60960690e34123468942af33",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\23\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/23/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "ab7c9b6123a1c2d00872d910b2fa52753367231d153dd0f499304145dc7aa344",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\23\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/23/result.json",
+      "sha256": "d7f3c45e68a329d2cf585176afa13e2c66a7a866ee161817cd0e340bfab8c390",
+      "bytes": 214081,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\23\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/23/synthetic_geometry_inputs.json",
+      "sha256": "03431ddc4017b0d5ce7ef0a2b8c7b4e8676e936091940982230fabd956c81edd",
+      "bytes": 19046,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\23\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/23/synthetic_guard_spec.json",
+      "sha256": "0bf51ed4cc062d2339c7dbde2f2ca9308d74452d160a1b6044b9aee1d196364f",
+      "bytes": 6220,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\24\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/24/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "2c1bbb1efa659cf2b72dbfd9921fa26943b61b1d18d13792b518c5b32e42b28c",
+      "bytes": 163089,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\24\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/24/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "4c1da19ab7dc44f84e740ff2f8af6407ebf6ee43475087cbf6aaf1fe3ef6815d",
+      "bytes": 13822,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\24\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/24/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "96d880f605dff1f4a3f4afcb9a4202941e0620be881bc8bbc284dc4f8d46c95b",
+      "bytes": 33775,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\24\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/24/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "627a6f3c45f575666a095025fe66da5911137fcf4f87bd988ca82eca833b6e9d",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\24\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/24/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "076f97e0a6edc799e77ad83f819629f597b461fea4d9d58d2e9583be7c14c131",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\24\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/24/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "0ec17c1aaf177987092a316507e77a7be7e0c7b4fb014b3500fd506980f5b37e",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\24\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/24/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "df29aefdc1392f46a76cf5ddf19919c771bdd7e9c7ecf2103746bcb2c11c38d7",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\24\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/24/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "43edc1c533f51349d314bfda034d2548ab6a1585725ad5fdebd777d8e1cc189b",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\24\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/24/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d56f4a026b46efc34b3b8a197eb41a7b956c797bc1196f3989164896e3319068",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\24\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/24/result.json",
+      "sha256": "6f3bbf07def5c008b3e8b90dca452577a473485a41dbf59ef46c1642b5d60245",
+      "bytes": 213843,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\24\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/24/synthetic_geometry_inputs.json",
+      "sha256": "79740b3c27a83f76092bdbf8c80dd2559ff2785816cde61a9f91617d50dc9d65",
+      "bytes": 19046,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\24\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/24/synthetic_guard_spec.json",
+      "sha256": "7874b97ac10b917d9a7f9cae4bfa43c7a57536af8816fb2c419e5c0faf5596b5",
+      "bytes": 6219,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\25\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/25/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d2dfbe4b065463f4747277c65c1408006c055ed4d6c40c47c99623623d9a209c",
+      "bytes": 163089,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\25\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/25/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "8580bd6636c15c5952a0435c47353f85227cd79b6abeba67c7457a5ea1b0d559",
+      "bytes": 13827,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\25\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/25/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "374ca542e3ae7258edc0fb007d1b1b3324851a3053a2850482241d4a055915a8",
+      "bytes": 33770,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\25\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/25/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "17c1255078e19e46f5184f81b94b18d3d390f72ccdb66be6c8a8a7c76a529e6d",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\25\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/25/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "b8ec52177f09f2a77c4621f45aa66cfc974f355141a879f04da47b29b5cc5d6c",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\25\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/25/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d40424c9b938265cd72e267d5568feadb3e48306fc9d31861ca720e2864ed5a8",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\25\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/25/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "5e28ae5d46e5536d7f07d1e23bf36548e653eca909a078cea1977bb526312d71",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\25\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/25/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "337f95662cb2568e659fa913a72591422945407a7c608742572fa8fdc915067b",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\25\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/25/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "11bef5bee12c8ade7a5941d9d9271c70547efdb3f6fdee92f8ca1eca51b5a684",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\25\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/25/result.json",
+      "sha256": "d8cb91328e248aaaa84264a4e36b10c02736efe16c5a5c9add0a523a25628dfa",
+      "bytes": 214020,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\25\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/25/synthetic_geometry_inputs.json",
+      "sha256": "100e73b2ce8c540637c69ab73acf09b039bbc9e5e2ec6b04d1151ed184731a5e",
+      "bytes": 19046,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\25\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/25/synthetic_guard_spec.json",
+      "sha256": "44915fc7895e30475460bc4e16752c03c37241b740c239039110c3ad0a0206a7",
+      "bytes": 6219,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\26\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/26/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "845ec383905da972e5551ba4675df0c5f6e2192b839d07e3123fd1d623218a92",
+      "bytes": 163076,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\26\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/26/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "8a05a264392b2289cfc442259d1372150a3c90c29bb50ae77b18505e008f0a1a",
+      "bytes": 13809,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\26\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/26/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "73ea783f2cc80d822a85b3745504ab3275b15daaa07634d7d9f639d8f531af1a",
+      "bytes": 33775,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\26\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/26/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "5175d11175e51833420581eea12b4f9cb09955f1f5156bdfd61f737232f884d7",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\26\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/26/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d09f853c734c0e5a8b83a6fb8736e58c0ac41e1035521baf53acae649180f8d7",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\26\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/26/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "44011b7d4d361de6f7596b71cdbcaeba0996fe6d993db0dc4fab095b6adb8cf1",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\26\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/26/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "a34ec4bc2c92c81e6eaaa6cdf1ed08f45afe5a1cac8e538a8a9da18a276d84d4",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\26\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/26/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "fb0f6cf8fd1640017c321732c51bc10b5f38ee4b620b94d9138f82ff84ffba87",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\26\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/26/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "f653dc1c14cb99a7c9dd287a408c061c4b59ce620b078a35f1fee04c51d17cef",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\26\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/26/result.json",
+      "sha256": "476e7c54611acb3a95c9037916122f0c45a14b2b035d7e7091da635bc748daa9",
+      "bytes": 213847,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\26\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/26/synthetic_geometry_inputs.json",
+      "sha256": "9190076285fc358970eaca4a6b9a67b35fa7df59cd0aa9d82b06e7d8cdc9b94e",
+      "bytes": 19074,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\26\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/26/synthetic_guard_spec.json",
+      "sha256": "1410d80cc051b0d2bb9cc6acb7b3792a5072fd11e87e275f7188f424c7567e1d",
+      "bytes": 6234,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\27\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/27/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "6e2816e8480cfe3cea7e3df26fe057050a928b170bec389fa45bd9b7d809ba3a",
+      "bytes": 163099,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\27\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/27/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "b9d055811428b73299c3c588ad1252ef6d9f5b38029ce85ec7b2e1e02ed5eb5d",
+      "bytes": 13829,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\27\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/27/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "c4ae1dded58f794a94d35eb7e1fb757f8e1740bfc742059218b9b28b049d7e64",
+      "bytes": 33778,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\27\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/27/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "cc48745a24d26aaf79731cc3cb566c4c61879ae94e7091815ff1407f60291b75",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\27\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/27/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "48c3c541a70bfab81a642f0a6f66c897d943318c680811624c0ce8c9031bf78b",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\27\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/27/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "bb1240c22a83e50ea639512854d12f0bf5cf7838a1fa2546c7697e3fcd694395",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\27\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/27/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "6cee950a407847862537c53f1d250b875c033858ebe4bb3ebf23195d4bb836b4",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\27\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/27/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d15df00e3ed732cf833c2bb4495fc41876e91cbec89d0f50ad4f0747637d3b64",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\27\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/27/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "90b6eb8f192f8f7aade7a336019f63792e54edeb97fd3bff4b0680b54a627948",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\27\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/27/result.json",
+      "sha256": "154a3176e2301ed3d5ffcece9e554a1a0f3cbc25442da0edb118f601e742cce2",
+      "bytes": 212496,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\27\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/27/synthetic_geometry_inputs.json",
+      "sha256": "d54051875ddce12439ffa0a52165a2c18557216d9586057245f97c70104f50e4",
+      "bytes": 19059,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\27\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/27/synthetic_guard_spec.json",
+      "sha256": "fb29d06a37cfbc86a4e6a994871252b6dbe4c5ececb84a7e74ad620d76e92377",
+      "bytes": 6232,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\28\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/28/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "432619afe8302afc037c037b9d44e301944e91624d91af8f0872c163630a8277",
+      "bytes": 163044,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\28\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/28/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "499c9af62a6613a050cb3eed5ef85b651c08fa8afeda75efbc8d05782ec6e222",
+      "bytes": 13793,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\28\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/28/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "37cb3e736092dbaea05190d9659402419e65e7fd3f3d967bf30e838ccb6d77bd",
+      "bytes": 33759,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\28\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/28/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "047b94e76821090b5c98daa93489e727e5c9b387415901e12f0078a90e0bc216",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\28\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/28/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "92f5fb48c85ee5c0cfe73a2c115bb512998f4b59e2c06e8d2d0585e47dca5f4e",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\28\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/28/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "a7a0b0b27bb18df991e312f978212a2790e473cab9978404706d83caef69d7d5",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\28\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/28/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "eda3c2e7830699f25d16d4985b9889a96648c6db5c96dedb2e7c58c5e72de5d7",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\28\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/28/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "c058c16d73e2d6950b694a8552571c58330773c2942c926c0fbc50ecefb8dd8e",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\28\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/28/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "5677aa0f961bb7897defc0515bd036616eb1142b6c3a08776147e62d27af11fe",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\28\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/28/result.json",
+      "sha256": "8d760a567cc79c5d63933d871267ce06f5a398a94c4bcc6a35a44eeb0efefbd9",
+      "bytes": 213856,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\28\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/28/synthetic_geometry_inputs.json",
+      "sha256": "a84374ca4a9d7faf209d4cf1f291c86e0acef76a762ffff2db7107d9312d45e0",
+      "bytes": 19051,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\28\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/28/synthetic_guard_spec.json",
+      "sha256": "4558307e12d1755374c94a4d97ce2e5787fa00a100af6b3c9036915065245b6e",
+      "bytes": 6224,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\29\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/29/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "8696e7f3d866c277ed6a9cf81825e273f25bb70ea62a3a3326a34b95b1036140",
+      "bytes": 163047,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\29\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/29/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "87c1fb800dd476d82d311829356fc70fb70adc4d1a7fe65566723533989b6838",
+      "bytes": 13796,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\29\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/29/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "45006689b2a313e1360eb25cbe3f7c4f52f5b0033aa397d786356e35f3c436aa",
+      "bytes": 33759,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\29\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/29/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "7c04dc08d9aecd83383dcaae2022150ad9c77c30ab31fa2d7f290aad92f010d3",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\29\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/29/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "8ebd5f47657b71fbb1424c739f230104ea6f5c4ee7334ef83074559a923568e6",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\29\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/29/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "b1b8522ec0d422d80944b6f2eeaab733d0958304df1ab112f3c123880c217ecc",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\29\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/29/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "11593c927a82272a8b6b10c2805322de747f052e94ddf3dd16ba23598b902cc8",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\29\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/29/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "ab5491d57af1e73f4ce8e5a6596a83345f3bf3f278437aba4818eed95801498a",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\29\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/29/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "566d5235af69ce9e33943b5d87875769f6bc6d6d755e4c6d33d53b621b47c6d1",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\29\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/29/result.json",
+      "sha256": "c0c2eaf26d053fab6093db689d8dda6b37ed11edadda3ede1b5138254197a941",
+      "bytes": 213230,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\29\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/29/synthetic_geometry_inputs.json",
+      "sha256": "6b31b147402e585cc37cea7240ee94fa7d30e428cbeb85ca10ff6c8212333ffc",
+      "bytes": 19073,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\29\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/29/synthetic_guard_spec.json",
+      "sha256": "4b6ace08bad4af9bce1f01d7337350ffe2a3c8ba0aeece94ce952d29032216ed",
+      "bytes": 6232,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\30\\SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/30/SUBSYSTEM_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "d8281c5eaf331e6925077558f5ed6c4c90a47b5d098444a142997bc943255619",
+      "bytes": 163064,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\30\\cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/30/cable_reservation_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "5f6c77c1ff0f8a13178b95055873345bb807154c28f137e0763db0de9f23243c",
+      "bytes": 13813,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\30\\guard_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/30/guard_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "1e20a8a31acb8abfd7f781c0b14a270cbedfddd1d70dddb087ee2d6fc8cddae4",
+      "bytes": 33759,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\30\\mount_1_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/30/mount_1_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "3052f890c3eadb4f3990c18cde2bca1a02eb19ce36a526c2f8b5f18a00d4533b",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\30\\mount_2_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/30/mount_2_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "4120686945c6191ebc5d4899a9c72da8be19b4b34ab0f53fc1c899ce24e7b34b",
+      "bytes": 19185,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\30\\mount_3_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/30/mount_3_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "425bcf7f989334e66980d7352dbb25e1075b135e0040ddf58a701abe716d7636",
+      "bytes": 19121,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\30\\mount_4_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/30/mount_4_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "7e9812885051b5e89df28244515a6e4315db8cd78fb3d3601bd2b0b77a2df633",
+      "bytes": 19153,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\30\\rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/30/rail_negative_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "5f525ae132815902322596ceae01f24effd50d11d36673c5c3116da83108850d",
+      "bytes": 15513,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\30\\rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/30/rail_positive_SYNTHETIC-REDRIVE.STEP",
+      "sha256": "6c05163506e18ba5e4c2a4d662aa18d3f0ef3ceb53e1f8b6b1ef3935ef3d56b6",
+      "bytes": 15487,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\30\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/30/result.json",
+      "sha256": "d8b96ef79b9cf9a1ee1ea0fcdc3c4ab7b4640082eb72ce5df47fbe37328bf22b",
+      "bytes": 214027,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\30\\synthetic_geometry_inputs.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/30/synthetic_geometry_inputs.json",
+      "sha256": "3e902ed2db7361d45b8d12695c832de3cd5a95263421d80950049a8215f61185",
+      "bytes": 19074,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\30\\synthetic_guard_spec.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/30/synthetic_guard_spec.json",
+      "sha256": "d0530dc4fe7947c00c801483e16fdb6a9eb0f549b3b7a1d87daa09fc01c9f033",
+      "bytes": 6234,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\finite_30_20261114\\result.json",
+      "member": "guard_candidate/redrive_candidate/finite_30_20261114/result.json",
+      "sha256": "45d12cb70b7452dac6a39d04c7edc5b6941df26e793aa6ecf3a362e2173d2294",
+      "bytes": 34909,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\freeze_redrive_inputs.py",
+      "member": "guard_candidate/redrive_candidate/freeze_redrive_inputs.py",
+      "sha256": "183ee823f1c1bf752bf255892dfb13ff79cda29d073ab08e2f31c239c3a2cadc",
+      "bytes": 4167,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\redrive_oracle.py",
+      "member": "guard_candidate/redrive_candidate/redrive_oracle.py",
+      "sha256": "fc7c8294ca991bbf7d9225abe33298aa5f54510742fc836fca6b11861763d9d0",
+      "bytes": 1396,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\redrive_spec.json",
+      "member": "guard_candidate/redrive_candidate/redrive_spec.json",
+      "sha256": "35cf837b41a7cb6afe35045608f9d5c9592802f00bee8928530b000aaf13377c",
+      "bytes": 9741,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\redrive_candidate\\run_guard_redrives.py",
+      "member": "guard_candidate/redrive_candidate/run_guard_redrives.py",
+      "sha256": "952b3746f81df2d5b89b9fb574e15d0496740b9b96903316e5925be69a51deec",
+      "bytes": 23738,
+      "role": "executed_source_spec_or_actual_review"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\review_dxf_20261114\\SAR-0109_02_CONCEPT-GUARD-PILOT.DXF",
+      "member": "guard_candidate/review_dxf_20261114/SAR-0109_02_CONCEPT-GUARD-PILOT.DXF",
+      "sha256": "546cf8b495987a62fe7b4fc912655a4ec154eb67b669283009c598d392c065a5",
+      "bytes": 20032,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\review_dxf_20261114\\result.json",
+      "member": "guard_candidate/review_dxf_20261114/result.json",
+      "sha256": "34281fb89124f9242184ea6e7bb3003bfc072538099bc08ed213e34c59184676",
+      "bytes": 1817,
+      "role": "executed_result_or_export"
+    },
+    {
+      "original_source": "C:\\Users\\Admin\\Documents\\ChatGPT\\PIVOT_CLOSURE_2026-11-13\\sar_frame_followup\\guard_candidate\\run_one_guard_pilot.py",
+      "member": "guard_candidate/run_one_guard_pilot.py",
+      "sha256": "3ff534511ddeb18deb72fbc1cd1fd6e0525b106ceeafbbefa09a639d689ee9e7",
+      "bytes": 10358,
+      "role": "executed_source_spec_or_actual_review"
+    }
+  ]
+}
